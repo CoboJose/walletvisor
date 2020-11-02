@@ -1,9 +1,4 @@
+import { createAction } from '@reduxjs/toolkit'
 import * as actionTypes from './actionTypes';
 
-export const updateBalance = (amount, typee) => {
-    return {
-        type: actionTypes.UPDATE_BALANCE,
-        amount: amount,
-        typee: typee
-    }
-}
+export const updateBalance = createAction(actionTypes.UPDATE_BALANCE)

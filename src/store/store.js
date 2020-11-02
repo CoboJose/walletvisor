@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import addTransactionReducer from './reducers/addTransaction'
+import addTransactionSlice from './addTransactionSlice'
 
 const store = configureStore({
     reducer: {
-      addTransaction: addTransactionReducer
+      addTransaction: addTransactionSlice
     }
   })
 

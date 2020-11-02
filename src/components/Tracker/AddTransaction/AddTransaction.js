@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './AddTransaction.css'
 import * as actions from '../../../store/actions/actionsIndex'
 
-
+console.log(actions.updateBalance)
 
 const addTransaction = () => {
 
@@ -44,8 +44,7 @@ const addTransaction = () => {
         }
 
         setTransactions(newTransaction); 
-        //setBalance(type ==='expense' ? parseFloat((balance - amount).toFixed(2)) : parseFloat((balance + amount).toFixed(2)));
-        dispatch(actions.updateBalance(newAmount, type))
+        dispatch(actions.updateBalance({newAmount, type}))
     }
     
     const changeTypeHandler = event => {
