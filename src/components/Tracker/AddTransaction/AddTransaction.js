@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-//import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './AddTransaction.css'
+import * as actions from '../../../store/actions/actionsIndex'
 
 
 
@@ -9,7 +10,8 @@ const addTransaction = () => {
 
     console.log("RECARGANDO ADD TRANSACTION")
 
-    //const dispatch = useDispatch(); //This allows to dispatch actions to redux.
+    const dispatch = useDispatch(); //This allows to dispatch actions to redux.
+    const balance = useSelector(state => state.addTransaction.balance)
 
     //state
     const [title, setTitle] = useState(''); // The initial state
@@ -17,7 +19,7 @@ const addTransaction = () => {
     const [category, setCategory] = useState('food');
     const [type, setType] = useState('expense');
     const [transactions, setTransactions] = useState('')
-    const [balance, setBalance] = useState(0);
+    //const [balance, setBalance] = useState(0);
 
     //Categories:
     let categories = []
@@ -42,7 +44,8 @@ const addTransaction = () => {
         }
 
         setTransactions(newTransaction); 
-        setBalance(type ==='expense' ? parseFloat((balance - amount).toFixed(2)) : parseFloat((balance + amount).toFixed(2)));
+        //setBalance(type ==='expense' ? parseFloat((balance - amount).toFixed(2)) : parseFloat((balance + amount).toFixed(2)));
+        dispatch(actions.updateBalance(newAmount, type))
     }
     
     const changeTypeHandler = event => {
