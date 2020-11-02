@@ -8,9 +8,8 @@ const initialState = {
 const reducer = createReducer(initialState, {
     
     [actions.UPDATE_BALANCE] (state, action){
-        const newAmount = action.payload.type ==='expense' ? -action.payload.newAmount : action.payload.newAmount;
         
-        state.balance = parseFloat((state.balance + newAmount).toFixed(2));
+        state.balance = parseFloat((state.balance + action.amount).toFixed(2));
     }
 })
 

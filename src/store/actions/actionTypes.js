@@ -1,1 +1,1 @@
-export const UPDATE_BALANCE = 'ADD_INGREDIENT';
+export const UPDATE_BALANCE = 'UPDATE_BALANCE';

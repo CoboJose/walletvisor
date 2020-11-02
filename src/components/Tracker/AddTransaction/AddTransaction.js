@@ -44,7 +44,7 @@ const addTransaction = () => {
         }
 
         setTransactions(newTransaction); 
-        dispatch(actions.updateBalance({newAmount, type}))
+        dispatch(actions.updateBalance(newAmount, type))
     }
     
     const changeTypeHandler = event => {

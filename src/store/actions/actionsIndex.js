@@ -1,3 +1,3 @@
 export {
     updateBalance
-} from '../addTransactionSlice'
+} from './addTransaction'
