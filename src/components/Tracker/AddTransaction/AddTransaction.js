@@ -1,25 +1,31 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 
 import './AddTransaction.css'
 import * as actions from '../../../store/actions/actionsIndex'
 
-console.log(actions.updateBalance)
-
 const addTransaction = () => {
 
-    console.log("RECARGANDO ADD TRANSACTION")
+    console.log("RECHARGING ADD_TRANSACTION")
 
-    const dispatch = useDispatch(); //This allows to dispatch actions to redux.
-    const balance = useSelector(state => state.addTransaction.balance)
-
-    //state
+    // ######################## State ########################
+    // Local State
     const [title, setTitle] = useState(''); // The initial state
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('food');
     const [type, setType] = useState('expense');
-    const [transactions, setTransactions] = useState('')
-    //const [balance, setBalance] = useState(0);
+    // Redux State
+    const dispatch = useDispatch(); //This allows to dispatch actions to redux.
+
+    //How we handle the form
+    const addTransactionHandler = event => {
+        
+        event.preventDefault(); // Don`t recharge the page as it would do with a normal form
+        const newAmount = parseFloat(amount.toFixed(2));
+
+        dispatch(actions.addTransaction(title, newAmount, category, type));
+        dispatch(actions.updateBalance(newAmount, type));
+    }
 
     //Categories:
     let categories = []
@@ -27,24 +33,6 @@ const addTransaction = () => {
         categories = ["food", "shopping", "transport", "bills", "other"];
     }else{
         categories = ["salary", "business", "gifts", "other"];
-    }
-
-    
-    //How we handle the form
-    const addTransactionHandler = event => {
-        event.preventDefault(); // Don`t recharge the page as it would do with a normal form
-
-        const newAmount = parseFloat(amount.toFixed(2))
-        
-        const newTransaction = {
-            title: title,
-            amount: newAmount,
-            category: category,
-            type: type
-        }
-
-        setTransactions(newTransaction); 
-        dispatch(actions.updateBalance(newAmount, type))
     }
     
     const changeTypeHandler = event => {
@@ -55,8 +43,6 @@ const addTransaction = () => {
 
     return (
         <div className="AddTransaction">
-            
-            <p>Balance: {balance}€</p>
 
             <div className="AddTransactionForm">
                 <form onSubmit={addTransactionHandler}>
@@ -81,9 +67,6 @@ const addTransaction = () => {
                     <button type="submit">Add transaction</button>
                 </form>
             </div>
-
-            <p>Transactions:</p>
-            {transactions.title}
 
         </div>
     );

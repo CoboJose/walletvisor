@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import addTransactionReducer from './reducers/addTransaction'
+import trackerReducer from './reducers/tracker'
 
 const store = configureStore({
     reducer: {
-      addTransaction: addTransactionReducer
+      tracker: trackerReducer
     }
   })
 
