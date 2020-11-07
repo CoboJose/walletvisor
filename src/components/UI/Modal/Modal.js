@@ -1,11 +1,14 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import styles from './Modal.module.css';
 import Backdrop from '../Backdrop/Backdrop';
 
 const modal = props => {
   
-  console.log("RECHARGING MODAL");
+  if(useSelector(state => state.tracker.debug.recharging) === true){
+    console.log("RECHARGING MODAL");
+  }
   
   return (
       <>

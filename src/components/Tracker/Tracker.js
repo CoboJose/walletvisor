@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import './Tracker.css'
 import Balance from './Balance/Balance'
@@ -7,7 +8,9 @@ import Transactions from './Transactions/Transactions'
 
 const tracker = () => {
 
-    console.log("RECHARGING TRACKER")
+    if(useSelector(state => state.tracker.debug.recharging) === true){
+        console.log("RECHARGING TRACKER");
+    }
 
     return(
         <div className="Tracker">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch} from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 
 import './AddTransaction.css';
 import * as actions from '../../../store/actions/actionsIndex';
@@ -7,14 +7,17 @@ import Categories from '../Utils/Categories/Categories';
 
 const addTransaction = () => {
 
-    console.log("RECHARGING ADD_TRANSACTION");
-
+    if(useSelector(state => state.tracker.debug.recharging) === true){
+        console.log("RECHARGING ADD_TRANSACTION");
+    }
     // ######################## State ########################
     // Local State
     const [title, setTitle] = useState(''); // The initial state
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('food');
     const [type, setType] = useState('expense');
+    const [date, setDate] = useState(new Date().toISOString().slice(0,10));
+    
     // Redux State
     const dispatch = useDispatch(); //This allows to dispatch actions to redux.
 
@@ -24,7 +27,7 @@ const addTransaction = () => {
         event.preventDefault(); // Don`t recharge the page as it would do with a normal form
         const newAmount = parseFloat(amount.toFixed(2));
 
-        dispatch(actions.addTransaction(title, newAmount, category, type));
+        dispatch(actions.addTransaction(title, newAmount, category, type, date));
     }
 
     //Managing the categories in case none is selected
@@ -57,6 +60,9 @@ const addTransaction = () => {
                             (<option key={c.key} value={c.key}>{c.name}</option>)
                         )}
                     </select>
+
+                    <label htmlFor="date">Date</label>
+                    <input type='date' value={date} onChange={e => setDate(e.target.value)}></input>
 
                     <button type="submit">Add transaction</button>
                 </form>

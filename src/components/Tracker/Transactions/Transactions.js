@@ -7,7 +7,10 @@ import Transaction from './Transaction/Transaction';
 
 const transactions = () => {
     
-    console.log("RECHARGING TRANSACTIONS")
+    //DEBUG
+    if(useSelector(state => state.tracker.debug.recharging) === true){
+        console.log("RECHARGING TRANSACTIONS")
+    }
 
     //State
     const transactions = useSelector(state => state.tracker.transactions) //Get the data from redux store
@@ -16,10 +19,7 @@ const transactions = () => {
         <div className={styles.Transactions}>
             <p>Transactions:</p>
             {transactions.map(t => (
-                <Transaction
-                    key = {t.title}
-                    t = {t}
-                />
+                <Transaction key = {t.id} t = {t}/>
             ))}
         </div>
     );

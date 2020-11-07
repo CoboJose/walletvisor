@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import * as actions from '../../../../store/actions/actionsIndex';
 import './Transaction.css';
@@ -8,7 +8,10 @@ import TransactionExpanded from './TransactionExpanded'
 
 const transaction = (props) => {
 
-    console.log("RECHARGING TRANSACTION");
+    if(useSelector(state => state.tracker.debug.recharging) === true){
+        console.log("RECHARGING TRANSACTION");
+    }
+
     //STATE
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false)
@@ -28,7 +31,7 @@ const transaction = (props) => {
             </Modal>
             <div className="Transaction" onClick={openTransactionModal}>
                 {props.t.title}, {props.t.amount}€<br />
-                <button onClick={() => dispatch(actions.deleteTransaction(props.t.title))}>Delete</button>
+                <button onClick={() => dispatch(actions.deleteTransaction(props.t.id))}>Delete</button>
             </div>
         </>
     );
