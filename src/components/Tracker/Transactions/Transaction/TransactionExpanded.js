@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import * as actions from '../../../../store/actions/actionsIndex';
+import Categories from '../../Utils/Categories/Categories'
 
 const transactionExpanded = (props) => {
     
+    console.log("RECHARGING TRANSACTION_EXPANDED")
+
     const dispatch = useDispatch();
     const [edit, setEdit] = useState(false)
     const [title, setTitle] = useState(props.t.title);
@@ -45,12 +48,13 @@ const transactionExpanded = (props) => {
                         <option value="expense">Expense</option>
                         <option value="income">Income</option>
                     </select>
-                    {/*}
+                    
                     <label htmlFor="category">Category </label>
                     <select value={category} onChange={e => setCategory(e.target.value)} disabled={!edit}>
-                        <option>o</option>
+                        {Categories.filter(c => c.type===type).map(c => 
+                            (<option key={c.key} value={c.key}>{c.name}</option>)
+                        )}
                     </select>
-                    */}
 
                     <button type="submit">Edit transaction</button>
                 </form>

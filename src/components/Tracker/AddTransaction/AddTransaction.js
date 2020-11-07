@@ -7,7 +7,7 @@ import Categories from '../Utils/Categories/Categories';
 
 const addTransaction = () => {
 
-    console.log("RECHARGING ADD_TRANSACTION")
+    console.log("RECHARGING ADD_TRANSACTION");
 
     // ######################## State ########################
     // Local State
@@ -27,9 +27,11 @@ const addTransaction = () => {
         dispatch(actions.addTransaction(title, newAmount, category, type));
     }
 
-    //Categories:
-    const categories = type==='expense' ? Categories.expense : Categories.income;
-    
+    //Managing the categories in case none is selected
+    const setTypeHandler = (newType) => {
+        setType(newType)
+        newType==='expense' ? setCategory('food') : setCategory('salary')
+    }
 
     return (
         <div className="AddTransaction">
@@ -44,16 +46,16 @@ const addTransaction = () => {
                     <input type="number" value={amount} onChange={e => setAmount(parseFloat(e.target.value))} placeholder="Enter amount..." required/>
 
                     <label htmlFor="type">Type </label>
-                    <select value={type} onChange={e => setType(e.target.value)}>
+                    <select value={type} onChange={e => setTypeHandler(e.target.value)}>
                         <option value="expense">Expense</option>
                         <option value="income">Income</option>
                     </select>
 
                     <label htmlFor="category">Category </label>
-                    <select onChange={e => setCategory(e.target.value)}>
-                        {Object.entries(categories).map(([key, value]) => (
-                            <option key={key} value={key}>{value.name}</option>
-                        ))}
+                    <select value={category} onChange={e => setCategory(e.target.value)}>
+                        {Categories.filter(c => c.type===type).map(c => 
+                            (<option key={c.key} value={c.key}>{c.name}</option>)
+                        )}
                     </select>
 
                     <button type="submit">Add transaction</button>
@@ -65,17 +67,3 @@ const addTransaction = () => {
 }
 
 export default addTransaction;
-
-/*
-let categories = []
-    if(type === "expense"){
-        categories = ["food", "shopping", "transport", "bills", "other"];
-    }else{
-        categories = ["salary", "business", "gifts", "other"];
-    }
-
-<label htmlFor="category">Category </label>
-                    <select value={category} onChange={e => setCategory(e.target.value)}>
-                        {categories.map(c => (<option key={c} value={c}>{c}</option>))}
-                    </select>
-*/
