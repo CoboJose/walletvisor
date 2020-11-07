@@ -2,21 +2,40 @@ import { createReducer } from '@reduxjs/toolkit'
 import * as actions from '../actions/actionTypes'
 
 const initialState = {
-    balance: 0,
-    transactions: []
+    transactions: [
+        {
+            title: "title1",
+            amount: 10,
+            category: "food", 
+            type: "expense",
+        },
+        {
+            title: "title2",
+            amount: 10,
+            category: "food", 
+            type: "expense",
+        }
+    ]
 }
 
 const reducer = createReducer(initialState, {
     
     [actions.ADD_TRANSACTION] (state, action){
         
-        state.transactions.push(action.transaction)
+        state.transactions.push(action.transaction);
     },
 
-    [actions.UPDATE_BALANCE] (state, action){
+    [actions.UPDATE_TRANSACTION] (state, action){
         
-        state.balance = parseFloat((state.balance + action.amount).toFixed(2));
+        const transactionIndex = state.transactions.findIndex(t => t.title == action.transaction.title);
+
+        state.transactions[transactionIndex] = action.transaction
+    },
+
+    [actions.DELETE_TRANSACTION] (state, action){
+          
+        state.transactions = state.transactions.filter(t => t.title !== action.title);
     },
 })
 
-export default reducer
+export default reducer;

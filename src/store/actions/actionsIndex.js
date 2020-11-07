@@ -1,4 +1,5 @@
 export {
     addTransaction,
-    updateBalance,
+    updateTransaction,
+    deleteTransaction,
 } from './tracker'

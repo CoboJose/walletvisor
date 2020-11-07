@@ -8,7 +8,10 @@ const balance = () => {
     console.log("RECHARGING BALANCE")
 
     //State
-    const balance = useSelector(state => state.tracker.balance) //Get the data from redux store
+    const transactions = useSelector(state => state.tracker.transactions)
+    
+    let balance = 0;
+    transactions.map(t => (balance = balance + (t.type==='expense' ? -t.amount : t.amount)));
 
     return(
         <div className="Balance">

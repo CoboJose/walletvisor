@@ -5,12 +5,14 @@
     background-color: rgb(115, 93, 168);
   }
   
+.AddTransaction
 label,
 input {
     display: block;
     width: 98%;
   }
   
+.AddTransaction 
 input {
     font: inherit;
     padding: 0.1rem 0.25rem;
@@ -19,12 +21,14 @@ input {
     margin-bottom: 1rem;
 }
   
+.AddTransaction 
 input:focus {
     outline: none;
     border-bottom-color: #38b61f;
 }
   
-  button {
+.AddTransaction 
+button {
     background-color: rgb(103, 190, 15);
     color: white;
     border-radius: 5%;

@@ -1,0 +1,7 @@
+.Transaction{
+    background-color: rgb(227, 214, 255);
+    color: black;
+    border: 2px outset cornflowerblue;
+    margin: 5px;
+    padding: 5px;
+}

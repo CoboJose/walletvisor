@@ -1,7 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 
-import './Transactions.css'
+import styles from './Transactions.module.css'
+import './Transaction/Transaction'
+import Transaction from './Transaction/Transaction';
 
 const transactions = () => {
     
@@ -11,16 +13,16 @@ const transactions = () => {
     const transactions = useSelector(state => state.tracker.transactions) //Get the data from redux store
 
     return(
-        <div className="Transactions">
+        <div className={styles.Transactions}>
             <p>Transactions:</p>
-            {transactions.map((t, index) => (
-                <div key={index} className="transaction">
-                    {t.title}, {t.amount}€<br/>
-                    {t.category},{t.type}
-                </div>
+            {transactions.map(t => (
+                <Transaction
+                    key = {t.title}
+                    t = {t}
+                />
             ))}
         </div>
-    )
+    );
 }
 
-export default transactions
+export default transactions;
