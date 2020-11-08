@@ -2,3 +2,8 @@
 export const ADD_TRANSACTION = 'ADD_TRANSACTION';
 export const UPDATE_TRANSACTION = 'UPDATE_TRANSACTION';
 export const DELETE_TRANSACTION = 'DELETE_TRANSACTION';
+
+// auth
+export const AUTH_START = 'AUTH_START';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAIL = 'AUTH_FAIL';

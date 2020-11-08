@@ -3,3 +3,7 @@ export {
     updateTransaction,
     deleteTransaction,
 } from './tracker'
+
+export{
+    auth,
+} from './auth'

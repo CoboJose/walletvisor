@@ -1,7 +1,20 @@
 //import { createAction } from '@reduxjs/toolkit'
 import * as actionTypes from './actionTypes';
+import axios from '../../axios';
 
 export const addTransaction = (title, amount, category, type, date) => {
+    
+    const test = {
+        a:'a',
+        b:{
+            c:'c',
+            d:'d'
+        }
+    }
+    axios.post('/tests.json', test)
+        .then(response => console.log(response))
+        .catch(error => console.log(error));
+    
     return {
         type: actionTypes.ADD_TRANSACTION,
         
