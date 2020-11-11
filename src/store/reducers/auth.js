@@ -24,6 +24,11 @@ const reducer = createReducer(initialState, {
         state.error = action.error;
         state.loading = false;
     },
+
+    [actions.AUTH_LOGOUT] (state){
+        state.token = null;
+        state.userId = null;
+    },
 })
 
 export default reducer;

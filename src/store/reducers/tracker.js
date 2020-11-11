@@ -4,31 +4,24 @@ import * as actions from '../actions/actionTypes'
 const initialState = {
     //DELETE:
     debug: {recharging:false},
-
-    transactions: [
-        {   
-            id:"0",
-            title: "title1",
-            amount: 10,
-            category: "food", 
-            type: "expense",
-            date: "2020-11-05",
-        },
-        {   
-            id:"1",
-            title: "title2",
-            amount: 10,
-            category: "food", 
-            type: "expense",
-            date: "2020-11-06",
-        }
-    ]
+    transactions: [],
+    error: null,
+    loading: false,
 }
 
 const reducer = createReducer(initialState, {
     
-    [actions.ADD_TRANSACTION] (state, action){
-        state.transactions.push(action.transaction);
+    [actions.ADD_TRANSACTION_START] (state){
+        state.loading = true;
+    },
+    [actions.ADD_TRANSACTION_SUCCESS] (state, action){
+        const transaction = {...action.transaction, id: action.id};
+        state.transactions.push(transaction);
+        state.loading = false;
+    },
+    [actions.ADD_TRANSACTION_FAIL] (state, action){
+        state.loading = false;
+        state.error = action.error;
     },
 
     [actions.UPDATE_TRANSACTION] (state, action){
@@ -39,6 +32,18 @@ const reducer = createReducer(initialState, {
 
     [actions.DELETE_TRANSACTION] (state, action){
         state.transactions = state.transactions.filter(t => t.id !== action.id);
+    },
+
+    [actions.GET_TRANSACTIONS_START] (state){
+        state.loading = true;
+    },
+    [actions.GET_TRANSACTIONS_SUCCESS] (state, action){
+        state.transactions = action.transactions;
+        state.loading = false;
+    },
+    [actions.GET_TRANSACTIONS_FAIL] (state, action){
+        state.loading = false;
+        state.error = action.error;
     },
 })
 

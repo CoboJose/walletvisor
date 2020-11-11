@@ -19,6 +19,7 @@ const addTransaction = () => {
     const [date, setDate] = useState(new Date().toISOString().slice(0,10));
     
     // Redux State
+    const token = useSelector(s => s.auth.token);
     const dispatch = useDispatch(); //This allows to dispatch actions to redux.
 
     //How we handle the form
@@ -27,7 +28,7 @@ const addTransaction = () => {
         event.preventDefault(); // Don`t recharge the page as it would do with a normal form
         const newAmount = parseFloat(amount.toFixed(2));
 
-        dispatch(actions.addTransaction(title, newAmount, category, type, date));
+        dispatch(actions.addTransaction(title, newAmount, category, type, date, token));
     }
 
     //Managing the categories in case none is selected
