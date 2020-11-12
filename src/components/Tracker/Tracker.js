@@ -5,10 +5,10 @@ import * as actions from '../../store/actions/actionsIndex';
 import './Tracker.css'
 import Balance from './Balance/Balance'
 import AddTransaction from './AddTransaction/AddTransaction'
-import Transactions from './Transactions/Transactions'
+import Transactions from './Transactions/Transactions';
 
 const tracker = () => {
-
+    
     if(useSelector(state => state.tracker.debug.recharging) === true){
         console.log("RECHARGING TRACKER");
     }

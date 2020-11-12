@@ -1,8 +1,10 @@
 //import { createAction } from '@reduxjs/toolkit'
 
 import * as actionTypes from './actionTypes';
-import axios from '../../axios';
+import axios from 'axios';
+import {dbTrackerApi} from '../../serverAPI/ServerAPI';
 
+const trackerApi = new dbTrackerApi();
 
 const addTransactionStart = () => {
     return{
@@ -32,10 +34,11 @@ export const addTransaction = (title, amount, category, type, date, token) => {
         date: date,
     }
     return dispatch => {
-        
+       
         dispatch(addTransactionStart());
         
-        axios.post('/transactions.json?auth='+token, transaction)
+        const url = trackerApi.addTransaction(token);
+        axios.post(url, transaction)
         .then(response => {
             dispatch(addTransactionSuccess(transaction, response.data.name));
         })
@@ -66,9 +69,11 @@ const getTransactionsFail = (error) => {
 
 export const getTransactions = (token, userId) => {
     return dispatch => {
-        console.log(userId)
+        
         dispatch(getTransactionsStart());
-        axios.get('/transactions.json?auth='+token)
+
+        const url = trackerApi.addTransaction(token, userId);
+        axios.get(url)
             .then( res => {
                 const transactions = [];
                 for(let id in res.data){

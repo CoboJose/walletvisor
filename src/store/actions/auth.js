@@ -1,7 +1,9 @@
 import axios from 'axios'
+
+import {dbAuthApi} from '../../serverAPI/ServerAPI';
 import * as actionTypes from './actionTypes';
 
-const API_KEY = 'AIzaSyCWNRiy2aAlXKX93xI57uF25dXMpcb-HWw';
+const authApi = new dbAuthApi();
 
 export const auth = (email, password, remember, isSignIn) => {
     return dispatch => {
@@ -13,9 +15,8 @@ export const auth = (email, password, remember, isSignIn) => {
             password: password,
             returnSecureToken: true
         }
-        const authUrl = 'https://identitytoolkit.googleapis.com/v1/accounts:';
-        const url = authUrl + (isSignIn ? 'signInWithPassword' : 'signUp') + '?key=' + API_KEY;
-
+        
+        const url = isSignIn ? authApi.login() : authApi.signUp();
         axios.post(url, authData)
             .then(response => {
                 remember && localStorage.setItem('refreshToken', response.data.refreshToken);
@@ -40,6 +41,7 @@ export const tryAutoLogIn = () => {
 
 export const logout = () => {
     localStorage.removeItem('refreshToken');
+    console.log(authApi.refreshToken())
     return {
         type: actionTypes.AUTH_LOGOUT,
     };
@@ -69,13 +71,12 @@ const authFail = (error) => {
 
 // set a timer for the duration of the token, and when it expires, request a new one
 const getNewTokenTimeout = (refreshToken, expirationTime) => {
-    const refreshData = 'grant_type=refresh_token&refresh_token=' + refreshToken;
-    const url = 'https://securetoken.googleapis.com/v1/token?key=' + API_KEY;
-
     return dispatch => {
-
+        
         setTimeout(() => {
-            axios.post(url, refreshData)
+            
+            const url = authApi.refreshToken(refreshToken);
+            axios.post(url.url, url.data)
                 .then(response => {
                     console.log('refreshing token')
                     dispatch(authSuccess(response.data.id_token, response.data.user_id));
@@ -86,6 +87,5 @@ const getNewTokenTimeout = (refreshToken, expirationTime) => {
                 });
 
         }, (expirationTime > 0) ? ((expirationTime - 5) * 1000) : 0);
-
     };
 };
