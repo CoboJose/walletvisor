@@ -1,11 +1,15 @@
+import axios from 'axios';
+
 export class dbAuthApi {
     constructor(){
         this.BASE_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:';
         this.API_KEY = 'AIzaSyCWNRiy2aAlXKX93xI57uF25dXMpcb-HWw';
     }
 
-    login(){
-        return this.BASE_URL + 'signInWithPassword?key=' + this.API_KEY;
+    login(data){
+        //return this.BASE_URL + 'signInWithPassword?key=' + this.API_KEY;
+        const url = this.BASE_URL + 'signInWithPassword?key=' + this.API_KEY
+        return axios.post(url, data);
     }
     signUp(){
         return this.BASE_URL + 'signUp?key=' + this.API_KEY;

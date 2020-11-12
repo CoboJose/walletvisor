@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 
-import * as actions from '../../store/actions/actionsIndex';
+import {logIn} from '../../store/auth'
 import classes from './Auth.module.css';
 import Spinner from '../UI/Spinner/Spinner'
 
@@ -20,7 +20,8 @@ const auth = () => {
 
     const authFormHandler = event => {
         event.preventDefault();
-        dispatch(actions.auth(email, password, remember, isSignIn));
+
+        dispatch(logIn({email: email, password: password})); //, remember, isSignIn
     }
 
     return(

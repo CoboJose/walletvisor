@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 
 import './AddTransaction.css';
-import * as actions from '../../../store/actions/actionsIndex';
 import Categories from '../Utils/Categories/Categories';
 
 const addTransaction = () => {
@@ -28,7 +27,7 @@ const addTransaction = () => {
         event.preventDefault(); // Don`t recharge the page as it would do with a normal form
         const newAmount = parseFloat(amount.toFixed(2));
 
-        dispatch(actions.addTransaction(title, newAmount, category, type, date, token));
+        //dispatch(actions.addTransaction(title, newAmount, category, type, date, token));
     }
 
     //Managing the categories in case none is selected

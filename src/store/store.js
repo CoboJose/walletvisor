@@ -1,12 +1,12 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 
-import trackerReducer from './reducers/tracker'
-import authReducer from './reducers/auth'
+import trackerSlice from './tracker';
+import authSlice from './auth';
 
 const store = configureStore({
     reducer: {
-      tracker: trackerReducer,
-      auth: authReducer,
+      tracker: trackerSlice,
+      auth: authSlice,
     }
   })
 

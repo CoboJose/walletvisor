@@ -1,7 +1,7 @@
 import React, { useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import * as actions from '../../store/actions/actionsIndex';
+import fetchTransactions from '../../store/tracker'
 import './Tracker.css'
 import Balance from './Balance/Balance'
 import AddTransaction from './AddTransaction/AddTransaction'
@@ -19,7 +19,8 @@ const tracker = () => {
     const token = useSelector(s => s.auth.token);
     const userId = useSelector(s => s.auth.userId);
     useEffect(() => {
-        dispatch(actions.getTransactions(token, userId));
+        //dispatch(actions.getTransactions(token, userId));
+        //dispatch(fetchTransactions(token,userId))
     }, []);
 
     return(

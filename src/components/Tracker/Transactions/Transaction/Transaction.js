@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import * as actions from '../../../../store/actions/actionsIndex';
 import './Transaction.css';
 import Modal from '../../../UI/Modal/Modal';
 import TransactionExpanded from './TransactionExpanded'
@@ -31,7 +30,7 @@ const transaction = (props) => {
             </Modal>
             <div className="Transaction" onClick={openTransactionModal}>
                 {props.t.title}, {props.t.amount}€<br />
-                <button onClick={() => dispatch(actions.deleteTransaction(props.t.id))}>Delete</button>
+                
             </div>
         </>
     );
@@ -39,3 +38,5 @@ const transaction = (props) => {
 }
 
 export default transaction;
+
+//<button onClick={() => dispatch(actions.deleteTransaction(props.t.id))}>Delete</button>

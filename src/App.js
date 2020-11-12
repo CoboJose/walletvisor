@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import * as actions from './store/actions/actionsIndex';
 import logo from './assets/images/logo.png';
 import './App.css';
 import Tracker from './components/Tracker/Tracker';
@@ -18,7 +17,7 @@ const App = () => {
   const userId = useSelector(s => s.auth.userId);
 
   useEffect(() => {
-    dispatch(actions.tryAutoLogIn());
+    //dispatch(actions.tryAutoLogIn());
   }, [])
   
   const view = userToken ? 'tracker' : 'auth';
@@ -37,7 +36,7 @@ const App = () => {
     <div className="App">
       <img src={logo} alt="logo"/><br/>
       {userToken && <p>Welcome, &apos;{userId}&apos;.</p>}
-      {userToken && <div><button onClick={() => dispatch(actions.logout())}>Log out</button><br></br><br></br></div>}
+      {/*userToken && <div><button onClick={() => dispatch(actions.logout())}>Log out</button><br></br><br></br></div>*/}
       
       {render}
     </div>
