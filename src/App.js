@@ -5,6 +5,7 @@ import logo from './assets/images/logo.png';
 import './App.css';
 import Tracker from './components/Tracker/Tracker';
 import Auth from './components/Auth/Auth';
+import {logout, authWithRefreshTkn} from './store/auth';
 
 const App = () => {
   
@@ -17,7 +18,9 @@ const App = () => {
   const userId = useSelector(s => s.auth.userId);
 
   useEffect(() => {
-    //dispatch(actions.tryAutoLogIn());
+    const refreshToken = localStorage.getItem('refreshToken');
+    if(refreshToken !== null)
+      dispatch(authWithRefreshTkn({refreshToken}));
   }, [])
   
   const view = userToken ? 'tracker' : 'auth';
@@ -36,7 +39,7 @@ const App = () => {
     <div className="App">
       <img src={logo} alt="logo"/><br/>
       {userToken && <p>Welcome, &apos;{userId}&apos;.</p>}
-      {/*userToken && <div><button onClick={() => dispatch(actions.logout())}>Log out</button><br></br><br></br></div>*/}
+      {userToken && <div><button onClick={() => dispatch(logout())}>Log out</button><br></br><br></br></div>}
       
       {render}
     </div>
