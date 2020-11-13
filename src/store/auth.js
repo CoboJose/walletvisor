@@ -11,11 +11,12 @@ export const authorize = createAsyncThunk('auth/authorize', async (args, {reject
     }
     try {
         const response = await (args.isLogin ? authApi.login(authData) : authApi.signUp(authData));
-        
-        const to = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.data.refreshToken})), (response.data.expiresIn - 5)*1000);
+        //The token has a 'expiresIn' lifespan. a timeout is set to request a new token in this time - 5 seconds.
+        const timer = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.data.refreshToken})), (response.data.expiresIn - 5)*1000);
+        //If the user want to autologin, we store the refresh token in the local storage
         args.remember && localStorage.setItem('refreshToken', response.data.refreshToken);
         
-        return {...response.data, to};
+        return {...response.data, timer};
     } 
     catch (error) {return rejectWithValue(error.response.data)}
 });
@@ -23,8 +24,8 @@ export const authorize = createAsyncThunk('auth/authorize', async (args, {reject
 export const authWithRefreshTkn = createAsyncThunk('auth/authWithRefreshTkn', async (args, {rejectWithValue, dispatch}) => {
         try{
             const response = await authApi.authWithRefrehTkn(args.refreshToken);
-            const to = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.data.refresh_token})), (response.data.expires_in - 5)*1000);
-            return {...response.data, to}
+            const timer = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.data.refresh_token})), (response.data.expires_in - 5)*1000);
+            return {...response.data, timer}
         }
         catch(error){return rejectWithValue(error.response.data)}
 });
@@ -36,7 +37,7 @@ const authSlice = createSlice({
         userId: null,
         error: null,
         loading: false,
-        to: null,
+        timer: null,
     },
 
     reducers: {
@@ -44,8 +45,9 @@ const authSlice = createSlice({
             reducer: (state) => {
                 state.token = null;
                 state.userId = null;
-                clearTimeout(state.to)
-                state.to = null;
+                //The setted timeout is deleted to prevnt an unwanted autologin
+                clearTimeout(state.timer)
+                state.timer = null;
             },
             prepare: () => {
                 localStorage.removeItem('refreshToken');
@@ -66,7 +68,7 @@ const authSlice = createSlice({
             state.loading = false;
             state.token = action.payload.idToken;
             state.userId = action.payload.localId;
-            state.to = action.payload.to;
+            state.timer = action.payload.timer;
         },
 
         [authWithRefreshTkn.pending]: (state) => {
@@ -82,7 +84,7 @@ const authSlice = createSlice({
             state.loading = false;
             state.token = action.payload.id_token;
             state.userId = action.payload.user_id;
-            state.to = action.payload.to;
+            state.timer = action.payload.timer;
         },
     }
 });

@@ -9,8 +9,8 @@ const auth = () => {
     //DEBUG:
     if(useSelector(state => state.tracker.debug.recharging) === true) console.log("RERENDERING AUTH");
 
-    const [email, setEmail] = useState('test1@test.com');
-    const [password, setPassword] = useState('password');
+    const [email, setEmail] = useState('user1@test.com');
+    const [password, setPassword] = useState('useRpas$');
     const [remember, setRemember] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
     
