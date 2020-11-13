@@ -11,12 +11,13 @@ export const authorize = createAsyncThunk('auth/authorize', async (args, {reject
     }
     try {
         const response = await (args.isLogin ? authApi.login(authData) : authApi.signUp(authData));
+        console.log(response)
         //The token has a 'expiresIn' lifespan. a timeout is set to request a new token in this time - 5 seconds.
-        const timer = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.data.refreshToken})), (response.data.expiresIn - 5)*1000);
+        //const timer = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.data.refreshToken})), (response.data.expiresIn - 5)*1000);
         //If the user want to autologin, we store the refresh token in the local storage
-        args.remember && localStorage.setItem('refreshToken', response.data.refreshToken);
+        //args.remember && localStorage.setItem('refreshToken', response.data.refreshToken);
         
-        return {...response.data, timer};
+        return {...response /*timer*/};
     } 
     catch (error) {return rejectWithValue(error.response.data)}
 });
@@ -65,6 +66,7 @@ const authSlice = createSlice({
             state.error = action.payload.error;
         },
         [authorize.fulfilled]: (state, action) => {
+            console.log(action.payload)
             state.loading = false;
             state.token = action.payload.idToken;
             state.userId = action.payload.localId;
@@ -88,6 +90,19 @@ const authSlice = createSlice({
         },
     }
 });
+/*
+export const authorize = (args) => async dispatch => {
+    dispatch(authSlice.actions.authPending());
+    const authData = {
+        email: args.email,
+        password: args.password,
+        returnSecureToken: true,
+    }
+    const response = await authApi.login(authData);
+    console.log(response)
+    console.log('Here')
+    dispatch(authSlice.actions.authFullfiled(response.data))
+}*/
 
 export const {logout} = authSlice.actions;
 export default authSlice.reducer;

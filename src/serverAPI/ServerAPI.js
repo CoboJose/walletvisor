@@ -6,11 +6,25 @@ export class dbAuthApi {
         this.API_KEY = 'AIzaSyCWNRiy2aAlXKX93xI57uF25dXMpcb-HWw';
     }
 
-    login(data) {
+    login(data){
         const url = this.BASE_URL + 'signInWithPassword?key=' + this.API_KEY
-        const response = axios.post(url, data);
-        return response;
+        return new Promise(function(resolve, reject){
+            axios.post(url, data)
+                .then(res => {
+                    resolve({
+                        token: res.data.idToken,
+                        userId: res.data.localId,
+                    })
+                })
+                .catch(error => {
+                    console.log(error)
+                    reject({
+                        error: 'error.response.data'
+                    })
+                })
+            });
     }
+
     signUp(data) {
         const url = this.BASE_URL + 'signUp?key=' + this.API_KEY
         return axios.post(url, data);
