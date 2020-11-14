@@ -7,10 +7,7 @@ import Transaction from './Transaction/Transaction';
 
 const transactions = () => {
     
-    //DEBUG
-    if(useSelector(state => state.tracker.debug.recharging) === true){
-        console.log("RECHARGING TRANSACTIONS")
-    }
+    if(useSelector(s => s.config.debug.renders)) console.log("RENDERING TRANSACTIONS");
 
     //State
     const transactions = useSelector(state => state.tracker.transactions) //Get the data from redux store

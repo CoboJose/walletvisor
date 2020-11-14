@@ -68,11 +68,61 @@ export class dbTrackerApi {
         this.BASE_URL = 'https://walletvisor.firebaseio.com';
     }
 
-    addTransaction(token) {
-        return this.BASE_URL + '/transactions.json?auth=' + token;
+    fetchTransactions(token, userId) {
+        const url = this.BASE_URL + '/transactions.json?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+
+        return new Promise(function(resolve, reject){
+            axios.get(url)
+                .then(res => resolve({
+                    transactions: res.data,
+                }))
+                .catch(error => reject({
+                    error:error.response,
+                }))
+        });
     }
-    getTransactions(token, userId) {
-        console.log(userId)
-        return this.BASE_URL + '/transactions.json?auth=' + token;
+    
+    addTransaction(token, transaction) {
+        const url = this.BASE_URL + '/transactions.json?auth=' + token;
+
+        return new Promise(function(resolve, reject){
+            axios.post(url, transaction)
+                .then(res => resolve({
+                    id: res.data.name,
+                }))
+                .catch(error => reject({
+                    message: error.response.data.error,
+                    code: error.response.status,
+                    codeText: error.response.statusText
+                }))
+        });
+    }
+
+    updateTransaction(token, transactionId, transaction) {
+        const url = this.BASE_URL + '/transactions/' + transactionId + '.json?auth=' + token;
+        
+        return new Promise(function(resolve, reject){
+            axios.put(url, transaction)
+                .then(res => resolve({
+                    res: res,
+                }))
+                .catch(error => reject({
+                    error:error.response,
+                }))
+        });
+    }
+
+    deleteTransaction(token, transactionId) {
+        const url = this.BASE_URL + '/transactions/'+ transactionId + '.json?auth=' + token;
+        
+        return new Promise(function(resolve, reject){
+            axios.delete(url)
+                .then(res => resolve({
+                    res: res,
+                }))
+                .catch(error => reject({
+                    error:error.response,
+                }))
+        });
     }
 }

@@ -6,8 +6,8 @@ import classes from './Auth.module.css';
 import Spinner from '../UI/Spinner/Spinner'
 
 const auth = () => {
-    //DEBUG:
-    if(useSelector(state => state.tracker.debug.recharging) === true) console.log("RERENDERING AUTH");
+    
+    if(useSelector(s => s.config.debug.renders)) console.log("RENDERING AUTH");
 
     const [email, setEmail] = useState('user1@test.com');
     const [password, setPassword] = useState('useRpas$');

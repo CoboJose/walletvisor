@@ -5,9 +5,7 @@ import styles from './Backdrop.module.css';
 
 const backdrop = (props) => {
     
-    if(useSelector(state => state.tracker.debug.recharging) === true){
-        console.log("RECHARGING BACKDROP");
-    }
+    if(useSelector(s => s.config.debug.renders)) console.log("RENDERING BACKDROP");
     
     return(
         props.show ? <div className={styles.Backdrop} onClick={props.clicked}></div> : null

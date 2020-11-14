@@ -6,9 +6,7 @@ import Backdrop from '../Backdrop/Backdrop';
 
 const modal = props => {
   
-  if(useSelector(state => state.tracker.debug.recharging) === true){
-    console.log("RECHARGING MODAL");
-  }
+  if(useSelector(s => s.config.debug.renders)) console.log("RENDERING MODAL");
   
   return (
       <>

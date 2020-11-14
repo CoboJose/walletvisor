@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 
+import { addTransaction } from '../../../store/slices/tracker';
 import './AddTransaction.css';
 import Categories from '../Utils/Categories/Categories';
 
-const addTransaction = () => {
+const addTransactionForm = () => {
 
-    if(useSelector(state => state.tracker.debug.recharging) === true){
-        console.log("RECHARGING ADD_TRANSACTION");
-    }
+    if(useSelector(s => s.config.debug.renders)) console.log("RENDERING ADD_TRANSACTION");
+
     // ######################## State ########################
     // Local State
     const [title, setTitle] = useState(''); // The initial state
@@ -16,18 +16,17 @@ const addTransaction = () => {
     const [category, setCategory] = useState('food');
     const [type, setType] = useState('expense');
     const [date, setDate] = useState(new Date().toISOString().slice(0,10));
-    
     // Redux State
     const token = useSelector(s => s.auth.token);
+    const userId = useSelector(s => s.auth.userId);
     const dispatch = useDispatch(); //This allows to dispatch actions to redux.
-
+    
+    
     //How we handle the form
     const addTransactionHandler = event => {
-        
         event.preventDefault(); // Don`t recharge the page as it would do with a normal form
-        const newAmount = parseFloat(amount.toFixed(2));
-
-        //dispatch(actions.addTransaction(title, newAmount, category, type, date, token));
+        
+        dispatch(addTransaction({title, amount, category, type, date, token, userId}));
     }
 
     //Managing the categories in case none is selected
@@ -72,4 +71,4 @@ const addTransaction = () => {
     );
 }
 
-export default addTransaction;
+export default addTransactionForm;

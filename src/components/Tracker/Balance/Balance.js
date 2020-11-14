@@ -5,9 +5,7 @@ import './Balance.css'
 
 const balance = () => {
     
-    if(useSelector(state => state.tracker.debug.recharging) === true){
-        console.log("RECHARGING BALANCE");
-    }
+    if(useSelector(s => s.config.debug.renders)) console.log("RENDERING BALANCE");
     
     const [balance, incomes, expenses] = calculate(useSelector(state => state.tracker.transactions));
 
@@ -25,7 +23,6 @@ export default balance;
 
 const calculate = (transactions) => {
     let balance=0, incomes=0, expenses=0, t;
-
     for (t of transactions){
         if(t.type==='expense')
             balance += -t.amount, expenses += t.amount;

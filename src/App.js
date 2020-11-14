@@ -9,9 +9,7 @@ import {logout, authWithRefreshTkn} from './store/slices/auth';
 
 const App = () => {
   
-  if(useSelector(state => state.tracker.debug.recharging) === true){
-    console.log("RERENDERING APP");
-  }
+  if(useSelector(s => s.config.debug.renders)) console.log("RENDERING APP");
   
   const dispatch = useDispatch();
   const userToken = useSelector(s => s.auth.token);
