@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 
-import * as actions from '../../store/actions/actionsIndex';
+import {authorize} from '../../store/slices/auth'
 import classes from './Auth.module.css';
 import Spinner from '../UI/Spinner/Spinner'
 
@@ -9,10 +9,10 @@ const auth = () => {
     //DEBUG:
     if(useSelector(state => state.tracker.debug.recharging) === true) console.log("RERENDERING AUTH");
 
-    const [email, setEmail] = useState('test@test.com');
-    const [password, setPassword] = useState('password');
+    const [email, setEmail] = useState('user1@test.com');
+    const [password, setPassword] = useState('useRpas$');
     const [remember, setRemember] = useState(false);
-    const [isSignIn, setIsSignIn] = useState(true);
+    const [isLogin, setIsLogin] = useState(true);
     
     const loading = useSelector(state => state.auth.loading);
     const error = useSelector(state => state.auth.error);
@@ -20,7 +20,8 @@ const auth = () => {
 
     const authFormHandler = event => {
         event.preventDefault();
-        dispatch(actions.auth(email, password, remember, isSignIn));
+
+        dispatch(authorize({email, password, isLogin, remember: isLogin ? remember : false}));
     }
 
     return(
@@ -33,15 +34,15 @@ const auth = () => {
                 <label htmlFor="password">Password</label>
                 <input type='password' value={password} onChange={e => setPassword(e.target.value)}/>
                 
-                {isSignIn && <label htmlFor="checkbox">Remember me</label>}
-                {isSignIn && <input type='checkbox' onChange={e => setRemember(e.target.checked)}/>}
+                {isLogin && <label htmlFor="checkbox">Remember me</label>}
+                {isLogin && <input type='checkbox' onChange={e => setRemember(e.target.checked)} checked={remember}/>}
 
-                <button type="submit">{isSignIn ? 'Sign In' : 'Sign Up'}</button>
+                <button type="submit">{isLogin ? 'Log In' : 'Sign Up'}</button>
             </form>
 
-            <button onClick={() => setIsSignIn(!isSignIn)}>Switch to {isSignIn ? 'Sign Up' : 'Sign In'}</button>
+            <button onClick={() => setIsLogin(!isLogin)}>Switch to {isLogin ? 'Sign Up' : 'Log In'}</button>
             {loading && <Spinner/>}
-            <p>{error && error.message}</p>
+            <p>{error && error}</p>
 
         </div>
     );

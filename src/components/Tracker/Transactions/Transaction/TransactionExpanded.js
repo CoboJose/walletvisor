@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import * as actions from '../../../../store/actions/actionsIndex';
 import Categories from '../../Utils/Categories/Categories'
 
 const transactionExpanded = (props) => {
@@ -23,7 +22,7 @@ const transactionExpanded = (props) => {
         event.preventDefault(); // Don`t recharge the page as it would do with a normal form
         const newAmount = parseFloat(amount.toFixed(2));
 
-        dispatch(actions.updateTransaction(props.t.id, title, newAmount, category, type));
+        //dispatch(actions.updateTransaction(props.t.id, title, newAmount, category, type));
         setEdit(false)
     }
 
