@@ -1,7 +1,7 @@
 import React, { useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import fetchTransactions from '../../store/tracker'
+import fetchTransactions from '../../store/slices/tracker'
 import './Tracker.css'
 import Balance from './Balance/Balance'
 import AddTransaction from './AddTransaction/AddTransaction'

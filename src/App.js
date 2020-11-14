@@ -5,7 +5,7 @@ import logo from './assets/images/logo.png';
 import './App.css';
 import Tracker from './components/Tracker/Tracker';
 import Auth from './components/Auth/Auth';
-import {logout, authWithRefreshTkn} from './store/auth';
+import {logout, authWithRefreshTkn} from './store/slices/auth';
 
 const App = () => {
   

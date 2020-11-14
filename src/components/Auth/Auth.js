@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 
-import {authorize} from '../../store/auth'
+import {authorize} from '../../store/slices/auth'
 import classes from './Auth.module.css';
 import Spinner from '../UI/Spinner/Spinner'
 
@@ -21,7 +21,7 @@ const auth = () => {
     const authFormHandler = event => {
         event.preventDefault();
 
-        dispatch(authorize({email, password, isLogin, remember}));
+        dispatch(authorize({email, password, isLogin, remember: isLogin ? remember : false}));
     }
 
     return(
@@ -35,7 +35,7 @@ const auth = () => {
                 <input type='password' value={password} onChange={e => setPassword(e.target.value)}/>
                 
                 {isLogin && <label htmlFor="checkbox">Remember me</label>}
-                {isLogin && <input type='checkbox' onChange={e => setRemember(e.target.checked)}/>}
+                {isLogin && <input type='checkbox' onChange={e => setRemember(e.target.checked)} checked={remember}/>}
 
                 <button type="submit">{isLogin ? 'Log In' : 'Sign Up'}</button>
             </form>

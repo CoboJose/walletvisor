@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, unwrapResult } from '@reduxjs/toolkit'
 import axios from 'axios';
-import {dbTrackerApi} from '../serverAPI/ServerAPI';
+import {dbTrackerApi} from '../../serverAPI/ServerAPI';
 
 const trackerApi = new dbTrackerApi();
 
