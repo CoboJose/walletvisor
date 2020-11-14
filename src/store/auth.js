@@ -11,15 +11,14 @@ export const authorize = createAsyncThunk('auth/authorize', async (args, {reject
     }
     try {
         const response = await (args.isLogin ? authApi.login(authData) : authApi.signUp(authData));
-        console.log(response)
         //The token has a 'expiresIn' lifespan. a timeout is set to request a new token in this time - 5 seconds.
-        //const timer = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.data.refreshToken})), (response.data.expiresIn - 5)*1000);
+        const timer = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.refreshToken})), (response.expiresIn - 5)*1000);
         //If the user want to autologin, we store the refresh token in the local storage
-        //args.remember && localStorage.setItem('refreshToken', response.data.refreshToken);
-        
-        return {...response /*timer*/};
+        args.remember && localStorage.setItem('refreshToken', response.refreshToken);
+
+        return {...response, timer};
     } 
-    catch (error) {return rejectWithValue(error.response.data)}
+    catch (error) {return rejectWithValue(error)}
 });
 
 export const authWithRefreshTkn = createAsyncThunk('auth/authWithRefreshTkn', async (args, {rejectWithValue, dispatch}) => {
@@ -28,7 +27,7 @@ export const authWithRefreshTkn = createAsyncThunk('auth/authWithRefreshTkn', as
             const timer = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.data.refresh_token})), (response.data.expires_in - 5)*1000);
             return {...response.data, timer}
         }
-        catch(error){return rejectWithValue(error.response.data)}
+        catch(error){ console.log(error)/*return rejectWithValue(error)*/}
 });
 
 const authSlice = createSlice({
@@ -63,14 +62,13 @@ const authSlice = createSlice({
         },
         [authorize.rejected]: (state, action) => {
             state.loading = false;
-            state.error = action.payload.error;
+            state.error = action.payload.message;
         },
         [authorize.fulfilled]: (state, action) => {
-            console.log(action.payload)
             state.loading = false;
-            state.token = action.payload.idToken;
-            state.userId = action.payload.localId;
             state.timer = action.payload.timer;
+            state.token = action.payload.token;
+            state.userId = action.payload.userId;
         },
 
         [authWithRefreshTkn.pending]: (state) => {

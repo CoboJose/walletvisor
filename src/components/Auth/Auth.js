@@ -42,7 +42,7 @@ const auth = () => {
 
             <button onClick={() => setIsLogin(!isLogin)}>Switch to {isLogin ? 'Sign Up' : 'Log In'}</button>
             {loading && <Spinner/>}
-            <p>{error && error.message}</p>
+            <p>{error && error}</p>
 
         </div>
     );

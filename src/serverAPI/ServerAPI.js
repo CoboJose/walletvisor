@@ -14,12 +14,14 @@ export class dbAuthApi {
                     resolve({
                         token: res.data.idToken,
                         userId: res.data.localId,
+                        refreshToken: res.data.refreshToken,
+                        expiresIn: res.data.expiresIn,
                     })
                 })
                 .catch(error => {
-                    console.log(error)
                     reject({
-                        error: 'error.response.data'
+                        code: error.response.data.error.code,
+                        message: error.response.data.error.message,
                     })
                 })
             });
