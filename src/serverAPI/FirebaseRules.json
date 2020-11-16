@@ -1,0 +1,60 @@
+{
+    "rules": {
+      
+      "transactions": {
+        
+        "$uid":{
+          
+          ".read": "auth.uid == $uid",
+          ".write": "auth.uid == $uid",
+          
+          "$id":{
+            
+            ".validate": "newData.hasChildren(['amount','category','type','date'])",
+              
+            "title": {
+              ".validate": "newData.isString()"
+            },
+            "amount": {
+              ".validate": "newData.isNumber() &&
+                            newData.val() >= 0"
+            },
+            "category": {
+              ".validate": "newData.isString() && 
+                            (newData.val().length > 0) &&
+                            (!newData.val().contains(',')) &&
+                            (newData.parent().child('type').val() === 'expense' ? 
+                            root.child('transactions').child('validation')
+                            .child('categories').child('expenses').val().contains(newData.val()) :
+                            root.child('transactions').child('validation')
+                            .child('categories').child('incomes').val().contains(newData.val()))" 
+            },
+            "type": {
+              ".validate": "newData.isString() && 
+                            newData.val().length > 0 &&
+                            !newData.val().contains(',') &&
+                            root.child('transactions').child('validation')
+                            .child('types').val().contains(newData.val())"
+            },
+            "date": {
+              ".validate": "newData.isNumber()"
+            }
+              
+          }
+        }
+      }
+    },
+
+
+    "data":{
+      "transactions" : {
+        "validation" : {
+          "categories" : {
+            "expenses" : "food, shopping, transport, bills, home, entertainment, other",
+            "incomes" : "salary, business, gifts, other"
+          },
+          "types" : "income, expense"
+        }
+      }
+    }
+}

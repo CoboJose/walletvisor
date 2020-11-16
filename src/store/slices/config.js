@@ -4,7 +4,7 @@ const configSlice = createSlice({
     name: 'config',
     initialState: {
         debug:{
-            renders: false,
+            renders: true,
         },
     },
 

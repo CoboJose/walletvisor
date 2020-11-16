@@ -1,16 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {dbAuthApi} from '../../serverAPI/ServerAPI';
 
-const authApi = new dbAuthApi();
-
 export const authorize = createAsyncThunk('auth/authorize', async (args, {rejectWithValue, dispatch}) => {
-    const authData = {
-        email: args.email,
-        password: args.password,
-        returnSecureToken: true,
-    }
+    const authApi = new dbAuthApi();
     try {
-        const response = await (args.isLogin ? authApi.login(authData) : authApi.signUp(authData));
+        const response = await (args.isLogin ? authApi.login(args.email, args.password) : authApi.signUp(args.email, args.password));
         //The token has a 'expiresIn' lifespan. a timeout is set to request a new token in this time - 5 seconds.
         const timer = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.refreshToken})), (response.expiresIn - 5)*1000);
         //If the user want to autologin, we store the refresh token in the local storage
@@ -22,12 +16,13 @@ export const authorize = createAsyncThunk('auth/authorize', async (args, {reject
 });
 
 export const authWithRefreshTkn = createAsyncThunk('auth/authWithRefreshTkn', async (args, {rejectWithValue, dispatch}) => {
-        try{
-            const response = await authApi.authWithRefrehTkn(args.refreshToken);
-            const timer = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.refreshToken})), (response.expiresIn - 5)*1000);//(response.expiresIn - 5)*1000
-            return {...response, timer}
-        }
-        catch(error){return rejectWithValue(error)}
+    const authApi = new dbAuthApi();    
+    try{
+        const response = await authApi.authWithRefrehTkn(args.refreshToken);
+        const timer = setTimeout(() => dispatch(authWithRefreshTkn({refreshToken: response.refreshToken})), (response.expiresIn - 5)*1000);
+        return {...response, timer}
+    }
+    catch(error){return rejectWithValue(error)}
 });
 
 const authSlice = createSlice({

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteTransaction } from '../../../../store/slices/tracker'
 import './Transaction.css';
 import Modal from '../../../UI/Modal/Modal';
-import TransactionExpanded from './TransactionExpanded'
+import TransactionExpanded from './TransactionExpanded/TransactionExpanded'
 
 const transaction = (props) => {
 
@@ -13,7 +13,6 @@ const transaction = (props) => {
     //STATE
     const [showModal, setShowModal] = useState(false);
     const dispatch = useDispatch();
-    const token = useSelector(s => s.auth.token);
     const transactionId = props.t.id;
     
     const openTransactionModal = () => {
@@ -31,7 +30,7 @@ const transaction = (props) => {
             </Modal>
             <div className="Transaction" onClick={openTransactionModal}>
                 {props.t.title}, {props.t.amount}€<br />
-                <button onClick={() => dispatch(deleteTransaction({token, transactionId}))}>Delete</button>
+                <button onClick={() => dispatch(deleteTransaction({transactionId}))}>Delete</button>
             </div>
         </>
     );

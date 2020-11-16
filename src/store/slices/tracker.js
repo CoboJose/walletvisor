@@ -1,58 +1,58 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { logout } from './auth'
 import {dbTrackerApi} from '../../serverAPI/ServerAPI';
+import helpers from '../../utils/helpers'
 
-const trackerApi = new dbTrackerApi();
 
-export const fetchTransactions = createAsyncThunk('tracker/fetchTransactions', async (args, {rejectWithValue}) => {
+export const fetchTransactions = createAsyncThunk('tracker/fetchTransactions', async (args, {getState, rejectWithValue}) => {
     try{
-        const response = await trackerApi.fetchTransactions(args.token, args.userId);
+        const authState = getState().auth
+        const trackerApi = new dbTrackerApi(authState.token, authState.userId);
+
+        const response = await trackerApi.fetchTransactions();
+
         const transactions = []
         for(let id in response.transactions){
             transactions.push({...response.transactions[id], id})
         }
+
         return transactions;
     }
     catch(error){return rejectWithValue(error)}
 });
 
-export const addTransaction = createAsyncThunk('tracker/addTransaction', async (args, {rejectWithValue}) => {
-    const transaction = {
-        title: args.title,
-        amount: Math.round(args.amount*100)/100,
-        category: args.category, 
-        type: args.type,
-        date: args.date,
-        userId: args.userId,
-    }
+export const addTransaction = createAsyncThunk('tracker/addTransaction', async (args, {getState, rejectWithValue}) => {
+    const authState = getState().auth
+    const trackerApi = new dbTrackerApi(authState.token, authState.userId);
+    const transaction = {title: args.title, amount: helpers.round(args.amount,2), category: args.category, type: args.type, date: args.date}
+    
     try{
-        const response = await trackerApi.addTransaction(args.token, transaction);
+        const response = await trackerApi.addTransaction(transaction);
         transaction.id = response.id
         return transaction;
     }
     catch(error){return rejectWithValue(error)}
 });
 
-export const updateTransaction = createAsyncThunk('tracker/updateTransaction', async (args, {rejectWithValue}) => {
-    const transaction = {
-        title: args.title,
-        amount: Math.round(args.amount*100)/100,
-        category: args.category, 
-        type: args.type,
-        date: args.date,
-        userId: args.userId,
-    }
+export const updateTransaction = createAsyncThunk('tracker/updateTransaction', async (args, {getState, rejectWithValue}) => {
+    const authState = getState().auth
+    const trackerApi = new dbTrackerApi(authState.token, authState.userId);
+    const transaction = {title: args.title, amount: helpers.round(args.amount,2), category: args.category, type: args.type, date: args.date}
+    
     try{
-        await trackerApi.updateTransaction(args.token,args.transactionId, transaction);
+        await trackerApi.updateTransaction(args.transactionId, transaction);
         
         return {...transaction, id: args.transactionId};
     }
     catch(error){return rejectWithValue(error)}
 });
 
-export const deleteTransaction = createAsyncThunk('tracker/deleteTransaction', async (args, {rejectWithValue}) => {
+export const deleteTransaction = createAsyncThunk('tracker/deleteTransaction', async (args, {getState, rejectWithValue}) => {
+    const authState = getState().auth
+    const trackerApi = new dbTrackerApi(authState.token, authState.userId);
     try{
-        await trackerApi.deleteTransaction(args.token, args.transactionId);
+        await trackerApi.deleteTransaction(args.transactionId);
         return args.transactionId;
     }
     catch(error){return rejectWithValue(error)}
@@ -121,6 +121,10 @@ const trackerSlice = createSlice({
             state.loading = false;
             state.transactions = state.transactions.filter(t => t.id !== action.payload)
         },
+
+        [logout]:(state) => {
+            state.transactions = []; //Delete all the transactions from the state when the user logout
+        }
     }
 });
 

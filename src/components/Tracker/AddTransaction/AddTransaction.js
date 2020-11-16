@@ -3,7 +3,8 @@ import { useSelector, useDispatch} from 'react-redux';
 
 import { addTransaction } from '../../../store/slices/tracker';
 import './AddTransaction.css';
-import Categories from '../Utils/Categories/Categories';
+import Categories from '../../../utils/categories/Categories';
+import helpers from '../../../utils/helpers';
 
 const addTransactionForm = () => {
 
@@ -15,18 +16,16 @@ const addTransactionForm = () => {
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('food');
     const [type, setType] = useState('expense');
-    const [date, setDate] = useState(new Date().toISOString().slice(0,10));
-    // Redux State
-    const token = useSelector(s => s.auth.token);
-    const userId = useSelector(s => s.auth.userId);
+    const [date, setDate] = useState(helpers.getCurrentStringDate());
     const dispatch = useDispatch(); //This allows to dispatch actions to redux.
-    
-    
+
+   
     //How we handle the form
     const addTransactionHandler = event => {
-        event.preventDefault(); // Don`t recharge the page as it would do with a normal form
+        event.preventDefault(); // Don`t recharge the page as it would do with a normal form 
+        const timestamp = helpers.stringDatetoTimeStamp(date);
         
-        dispatch(addTransaction({title, amount, category, type, date, token, userId}));
+        dispatch(addTransaction({title, amount, category, type, date: timestamp}));
     }
 
     //Managing the categories in case none is selected
@@ -37,7 +36,7 @@ const addTransactionForm = () => {
 
     return (
         <div className="AddTransaction">
-
+            
             <div className="AddTransactionForm">
                 <form onSubmit={addTransactionHandler}>
 

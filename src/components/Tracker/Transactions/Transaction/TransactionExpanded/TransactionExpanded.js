@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Categories from '../../Utils/Categories/Categories'
-import { updateTransaction } from '../../../../store/slices/tracker'
+import Categories from '../../../../../utils/categories/Categories';
+import { updateTransaction } from '../../../../../store/slices/tracker';
+import helpers from '../../../../../utils/helpers';
 
 const transactionExpanded = (props) => {
     
@@ -14,19 +15,16 @@ const transactionExpanded = (props) => {
     const [amount, setAmount] = useState(props.t.amount);
     const [category, setCategory] = useState(props.t.category);
     const [type, setType] = useState(props.t.type);
-    const [date, setDate] = useState(props.t.date);
+    const [date, setDate] = useState(helpers.timestampToStringDate(props.t.date));
 
-    const token = useSelector(s => s.auth.token);
-    const userId = useSelector(s => s.auth.userId);
     const transactionId = props.t.id;
 
 
     const editTransactionHandler = event => {
-        
         event.preventDefault(); // Don`t recharge the page as it would do with a normal form
-        
+        const timestamp = helpers.stringDatetoTimeStamp(date);
 
-        dispatch(updateTransaction({token,transactionId, title, amount, category, type, date, userId}));
+        dispatch(updateTransaction({transactionId, title, amount, category, type, date: timestamp}));
         setEdit(false)
     }
 

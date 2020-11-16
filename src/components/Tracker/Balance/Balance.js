@@ -1,7 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 
-import './Balance.css'
+import './Balance.css';
+import helpers from '../../../utils/helpers'
 
 const balance = () => {
     
@@ -29,5 +30,5 @@ const calculate = (transactions) => {
         else
             balance += t.amount, incomes += t.amount;
     }
-    return [balance,incomes,expenses].map(e => e.toFixed(2));
+    return [balance,incomes,expenses].map(e => helpers.round(e,2));
 }
