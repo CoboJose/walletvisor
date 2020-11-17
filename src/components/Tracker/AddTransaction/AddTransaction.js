@@ -1,73 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 
 import { addTransaction } from '../../../store/slices/tracker';
 import './AddTransaction.css';
-import Categories from '../../../utils/categories/Categories';
-import helpers from '../../../utils/helpers';
+import TransactionForm from '../shared/TransactionForm'
 
-const addTransactionForm = () => {
+const AddTransaction = () => {
 
     if(useSelector(s => s.config.debug.renders)) console.log("RENDERING ADD_TRANSACTION");
-
-    // ######################## State ########################
-    // Local State
-    const [title, setTitle] = useState(''); // The initial state
-    const [amount, setAmount] = useState('');
-    const [category, setCategory] = useState('food');
-    const [type, setType] = useState('expense');
-    const [date, setDate] = useState(helpers.getCurrentStringDate());
     const dispatch = useDispatch(); //This allows to dispatch actions to redux.
 
-   
-    //How we handle the form
-    const addTransactionHandler = event => {
-        event.preventDefault(); // Don`t recharge the page as it would do with a normal form 
-        const timestamp = helpers.stringDatetoTimeStamp(date);
-        
-        dispatch(addTransaction({title, amount, category, type, date: timestamp}));
-    }
-
-    //Managing the categories in case none is selected
-    const setTypeHandler = (newType) => {
-        setType(newType)
-        newType==='expense' ? setCategory('food') : setCategory('salary')
+    const addTransactionHandler = (transaction) => {
+        dispatch(addTransaction(transaction))
     }
 
     return (
         <div className="AddTransaction">
-            
-            <div className="AddTransactionForm">
-                <form onSubmit={addTransactionHandler}>
-
-                    <label htmlFor="text">Text</label>
-                    <input type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Enter a title if you wish" />
-
-                    <label htmlFor="amount">Amount</label>
-                    <input type="number" value={amount} onChange={e => setAmount(parseFloat(e.target.value))} placeholder="Enter amount..." required/>
-
-                    <label htmlFor="type">Type </label>
-                    <select value={type} onChange={e => setTypeHandler(e.target.value)}>
-                        <option value="expense">Expense</option>
-                        <option value="income">Income</option>
-                    </select>
-
-                    <label htmlFor="category">Category </label>
-                    <select value={category} onChange={e => setCategory(e.target.value)}>
-                        {Categories.filter(c => c.type===type).map(c => 
-                            (<option key={c.key} value={c.key}>{c.name}</option>)
-                        )}
-                    </select>
-
-                    <label htmlFor="date">Date</label>
-                    <input type='date' value={date} onChange={e => setDate(e.target.value)}></input>
-
-                    <button type="submit">Add transaction</button>
-                </form>
-            </div>
-
+            <p>Add a new Transaction</p>
+            <TransactionForm onSubmit = {addTransactionHandler}/>
         </div>
     );
 }
 
-export default addTransactionForm;
+export default AddTransaction;

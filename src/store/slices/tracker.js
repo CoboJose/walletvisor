@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { logout } from './auth'
 import {dbTrackerApi} from '../../serverAPI/ServerAPI';
-import helpers from '../../utils/helpers'
 
 
 export const fetchTransactions = createAsyncThunk('tracker/fetchTransactions', async (args, {getState, rejectWithValue}) => {
@@ -22,10 +21,9 @@ export const fetchTransactions = createAsyncThunk('tracker/fetchTransactions', a
     catch(error){return rejectWithValue(error)}
 });
 
-export const addTransaction = createAsyncThunk('tracker/addTransaction', async (args, {getState, rejectWithValue}) => {
+export const addTransaction = createAsyncThunk('tracker/addTransaction', async (transaction, {getState, rejectWithValue}) => {
     const authState = getState().auth
     const trackerApi = new dbTrackerApi(authState.token, authState.userId);
-    const transaction = {title: args.title, amount: helpers.round(args.amount,2), category: args.category, type: args.type, date: args.date}
     
     try{
         const response = await trackerApi.addTransaction(transaction);
@@ -35,15 +33,16 @@ export const addTransaction = createAsyncThunk('tracker/addTransaction', async (
     catch(error){return rejectWithValue(error)}
 });
 
-export const updateTransaction = createAsyncThunk('tracker/updateTransaction', async (args, {getState, rejectWithValue}) => {
+export const updateTransaction = createAsyncThunk('tracker/updateTransaction', async (transaction, {getState, rejectWithValue}) => {
     const authState = getState().auth
     const trackerApi = new dbTrackerApi(authState.token, authState.userId);
-    const transaction = {title: args.title, amount: helpers.round(args.amount,2), category: args.category, type: args.type, date: args.date}
     
+    const transactionNoId = {...transaction};
+    delete transactionNoId.id;
+
     try{
-        await trackerApi.updateTransaction(args.transactionId, transaction);
-        
-        return {...transaction, id: args.transactionId};
+        await trackerApi.updateTransaction(transaction.id, transactionNoId);
+        return transaction;
     }
     catch(error){return rejectWithValue(error)}
 });
