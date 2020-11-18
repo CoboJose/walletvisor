@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 
-import './Balance.css';
+import styles from './Balance.module.css';
 import helpers from '../../../utils/helpers'
 
 const balance = () => {
@@ -11,7 +11,7 @@ const balance = () => {
     const [balance, incomes, expenses] = calculate(useSelector(state => state.tracker.transactions));
 
     return(
-        <div className="Balance">
+        <div className={styles.Balance}>
             <p>Balance: {balance}€</p>
 
             <p>Incomes: {incomes}€</p>

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 
 import { addTransaction } from '../../../store/slices/tracker';
-import './AddTransaction.css';
+import styles from './AddTransaction.module.css';
 import TransactionForm from '../shared/TransactionForm'
 
 const AddTransaction = () => {
@@ -15,7 +15,7 @@ const AddTransaction = () => {
     }
 
     return (
-        <div className="AddTransaction">
+        <div className={styles.AddTransaction}>
             <p>Add a new Transaction</p>
             <TransactionForm onSubmit = {addTransactionHandler}/>
         </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { deleteTransaction, updateTransaction } from '../../../../store/slices/tracker'
-import './Transaction.css';
+import styles from './Transaction.module.css';
 import helpers from '../../../../utils/helpers';
 import TransactionForm from '../../shared/TransactionForm';
 
@@ -40,7 +40,7 @@ const transaction = ({t}) => {
             <p>Category: {t.category}</p>
             <p>Title: {t.title}</p>
             <p>Type: {t.type}</p>
-            <p>Date: {helpers.timestampToStringDate(t.date)}</p>
+            <p>Date: {helpers.stringDateFormatted(helpers.timestampToStringDate(t.date))}</p>
             <button onClick={() => showUpdateFormHandler()}>Update</button>
             <button onClick={() => dispatch(deleteTransaction({transactionId: t.id}))}>Delete</button>
         </div>
@@ -48,7 +48,7 @@ const transaction = ({t}) => {
 
     return(
         
-        <div className="Transaction">
+        <div className={styles.Transaction}>
 
             <div className="nodetails" onClick={clickTransactionHandler}>
                 {t.category}, {t.amount}€, {t.type}<br/>

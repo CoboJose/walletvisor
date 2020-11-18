@@ -5,6 +5,11 @@ const helpers = {
         return new Date(timestamp).toISOString().slice(0,10);
     },
 
+    stringDateFormatted: function(date){
+        let dateArray = date.split("-");
+        return dateArray.reverse().join("/");
+    },
+
     stringDatetoTimeStamp: function(date){
         return new Date(date).getTime();
     },

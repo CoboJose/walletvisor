@@ -5,3 +5,8 @@
     margin: 5px;
     padding: 5px;
 }
+
+.Transaction
+button{
+    background-color: aquamarine;
+}
