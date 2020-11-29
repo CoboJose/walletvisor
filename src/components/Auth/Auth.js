@@ -43,6 +43,7 @@ const auth = () => {
     
     const submitFormHandler = event => {
         event.preventDefault();
+        
         if(validateForm()){
             dispatch(authorize({email, password, isLogin, remember: isLogin ? remember : false}));
         }
@@ -52,6 +53,7 @@ const auth = () => {
         <div className={styles.Auth}>
             
             <form onSubmit={submitFormHandler}>
+                
                 <label htmlFor="email">Email</label>
                 <input type='text' value={email} onChange={e => setEmail(e.target.value)}/>
                 {errorMSG("email")}
@@ -63,10 +65,11 @@ const auth = () => {
                 {isLogin && <label htmlFor="checkbox">Remember me</label>}
                 {isLogin && <input type='checkbox' onChange={e => setRemember(e.target.checked)} checked={remember}/>}
 
-                <button type="submit">{isLogin ? 'Log In' : 'Sign Up'}</button>
+                <button className="BtnSubmit" type="submit">{isLogin ? 'Log In' : 'Sign Up'}</button>
+
             </form>
 
-            <button onClick={() => setIsLogin(!isLogin)}>Switch to {isLogin ? 'Sign Up' : 'Log In'}</button>
+            <button className="BtnSwitch" onClick={() => setIsLogin(!isLogin)}>Switch to {isLogin ? 'Sign Up' : 'Log In'}</button>
             {loading && <Spinner/>}
             <p>{error && error}</p>
 

@@ -12,10 +12,10 @@ const balance = () => {
     
     return(
         <div className={styles.Balance}>
-            <p>Balance: {balance}€</p>
+            <p className='Total'>Balance: {balance}€</p>
 
-            <p>Incomes: {incomes}€</p>
-            <p>Expenses: {expenses}€</p>
+            <p className='Incomes'>Incomes: {incomes}€</p>
+            <p className='Expenses'>Expenses: {expenses}€</p>
         </div>
     )
 }
