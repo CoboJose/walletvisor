@@ -46,9 +46,14 @@ describe('Auth/Auth', () => {
 
     it('should display an error msg when the form is submitted and the data is not valid', () => {
         const emailInput = wrapper.find('input').at(0);
+        const passwordInput = wrapper.find('input').at(1);
+
         emailInput.simulate('change', {target: {value:'test'}})
+        passwordInput.simulate('change', {target: {value:'test'}})
+        
         wrapper.find('form').simulate('submit', { preventDefault: () => null})
         
-        expect(wrapper.find('.errormsg').text()).toBe('The email must follow this pattern: example@domain.com')
+        expect(wrapper.find('.errormsg').at(0).text()).toBe('The email must follow this pattern: example@domain.com')
+        expect(wrapper.find('.errormsg').at(1).text()).toBe('The passsword must be at least 6 character long')
     })
 })

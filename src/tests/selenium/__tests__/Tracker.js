@@ -1,6 +1,6 @@
 const { Builder, By } = require('selenium-webdriver');
 import { getElementByCss } from "../helpers";
-describe('Auth/Auth', () => {
+describe('Tracker', () => {
   jest.setTimeout(30000);
   let driver;
 
@@ -25,5 +25,3 @@ describe('Auth/Auth', () => {
     expect(await logOutBtn.getText()).toBe("Log out")
   })
 })
-
-

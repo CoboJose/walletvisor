@@ -40,7 +40,7 @@ const authSlice = createSlice({
             reducer: (state) => {
                 state.token = null;
                 state.userId = null;
-                //The setted timeout is deleted to prevnt an unwanted autologin
+                //The setted timeout is deleted to prevent an unwanted autologin
                 clearTimeout(state.timer)
                 state.timer = null;
             },
