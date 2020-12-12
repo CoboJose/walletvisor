@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import logo from './assets/images/logo.png';
 import './App.css';
 import Tracker from './components/Tracker/Tracker';
-import Auth from './components/Auth/Auth';
+import Welcome from './components/Welcome/Welcome';
 import {logout, authWithRefreshTkn} from './store/slices/auth';
 
 const App = () => {
@@ -26,7 +25,7 @@ const App = () => {
   let render;
   switch(view){
     case 'auth':
-      render = (<Auth/>);
+      render = (<Welcome/>);
       break;
     case 'tracker':
       render = (<Tracker/>);
@@ -35,7 +34,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <img src={logo} alt="logo"/><br/>
       {userToken && <p>Welcome, &apos;{userId}&apos;.</p>}
       {userToken && <div><button onClick={() => dispatch(logout())}>Log out</button><br></br><br></br></div>}
       

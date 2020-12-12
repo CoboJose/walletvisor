@@ -1,0 +1,147 @@
+.msg {
+    color: #9830ff;
+    border-bottom: 3px solid rgb(80, 52, 126);
+    border-radius: 5px;
+    width: 80%;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+}
+@media (max-width: 768px){
+    .msg{
+        margin: 5px;
+        padding: 5px;
+    }
+}
+
+.form{
+    width: 90%;
+    padding: 10px;
+    margin-top: 5px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.formInput{
+    width: 95%;
+    padding: 5px;
+}
+
+.formInput input{
+    height: 30px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    outline: 0;
+    transition: .2s;
+}
+
+.formInput input:focus{
+    border-color: #9830ff;
+}
+
+.errormsg{
+    color: rgb(247, 65, 65);
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.checkbox{
+    display: flex;
+    width: 95%;
+    justify-content: flex-start;
+    margin: 10px;
+}
+
+.checkbox label{
+    width: 110px;
+}
+
+.checkbox input{
+    width: 15px;
+    margin-top: 3px;
+}
+
+.buttonAndSpinner{
+    margin-top: 15px;
+    display: flex;
+    position: relative;
+}
+.buttonAndSpinner button{
+    background-color: rgb(50, 196, 113);
+    color: rgb(255, 255, 255);
+    border: 2px solid rgb(50, 196, 113);
+    border-radius: 5px;
+    width: 85px;
+    height: 30px;
+    font-size: 17px;
+    font-weight: bold;
+    transition: transform .5s;
+}
+.buttonAndSpinner button:hover{
+    transform: scale(1.1);
+    box-shadow: rgb(50, 196, 113) 0px 2px 10px 0px;
+}
+.buttonAndSpinner .spinner{
+    position: absolute;
+    margin-left: 10px;
+    right: -45px;
+    border: 5px solid #000000;
+    border-top: 5px solid #9830ff; 
+    border-radius: 50%;
+    width: 20px; 
+    height: 20px;
+    animation: spinner 2s linear infinite;
+}
+@keyframes spinner{
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.serverError{
+    margin-top: 15px;
+    padding: 5px;
+    color: rgb(247, 65, 65);
+}
+
+.switch{
+    margin-top: 10px;
+    width: 85%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+@media (max-width: 768px){
+    .switch{
+        margin-top: 5px;
+        padding: 5px;
+    }
+}
+.switch h2{
+    color: #b56cff;
+    margin: 5px;
+}
+
+.switch button{
+    background-color: #9830ff;
+    color: rgb(255, 255, 255);
+    margin-top: 20px;
+    padding: 5px;
+    border: 2px solid #9830ff;
+    border-radius: 5px;
+    width: 140px;
+    align-self: center;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform .5s;
+}
+
+.switch button:hover{
+    transform: scale(1.1);
+    box-shadow: #9830ff 0px 2px 10px 0px;
+}

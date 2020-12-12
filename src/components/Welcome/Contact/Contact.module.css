@@ -1,0 +1,50 @@
+.title{
+    color: rgb(108, 49, 202);
+    border-bottom: 2px solid rgb(94, 55, 158);
+    border-radius: 3px;
+    font-size: 25px;
+    font-weight: bold;
+    padding: 5px;
+}
+.name{
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px;
+    margin-top: 25px;
+}
+.links{
+    display: flex;
+    margin-top: 20px;
+}
+
+.links img{
+    width: 50px;
+    padding: 15px;
+    transition: transform .3s;
+}
+.links img:hover{
+    transform: scale(1.2);
+}
+
+.source button{
+    background-color: #9830ff;
+    color: white;
+    margin-top: 40px;
+    padding: 5px;
+    border: 2px solid #9830ff;
+    border-radius: 5px;
+    width: 140px;
+    align-self: center;
+    font-size: 16px;
+    transition: transform .5s;
+}
+.source button:hover{
+    transform: scale(1.1);
+    box-shadow: #9830ff 0px 2px 10px 0px;
+}
+
+@media (max-width: 768px){
+    .source button{
+        margin-top: 5px;
+    }
+}

@@ -1,0 +1,95 @@
+.welcome{
+    background-image: url('/src/assets/images/wellcome_background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 0.2fr 2.5fr 1.1fr 0.2fr;
+    grid-template-rows:  0.2fr 2.2fr 1.4fr 0.2fr;
+    gap: 5px 5px;
+    grid-template-areas:
+        ". . . ."
+        ". intro auth ."
+        ". intro contact ."
+        " . . . .";
+}
+
+.intro{
+    background-color: rgba(49, 49, 49, 0.938);
+    grid-area: intro;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: rgba(82, 5, 170, 0.746) 0px 7px 29px 0px;
+    transition: transform .5s;
+}
+.intro:hover{
+    transform: scale(1.02);
+    box-shadow: rgb(142, 81, 204) 0px 7px 29px 0px;
+}
+
+.auth{
+    background-color: rgba(17, 17, 17, 0.945);
+    grid-area: auth;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: rgba(82, 5, 170, 0.746) 0px 7px 29px 0px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform .5s;
+}
+.auth:hover{
+    transform: scale(1.02);
+    box-shadow: rgb(142, 81, 204) 0px 7px 29px 0px;
+}
+
+.contact{
+    background-color: rgb(180, 179, 179);
+    grid-area: contact;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: rgba(82, 5, 170, 0.746) 0px 7px 29px 0px;
+    transition: transform .5s;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.contact:hover{
+    transform: scale(1.02);
+    box-shadow: rgb(142, 81, 204) 0px 7px 29px 0px;
+}
+
+@media(max-width: 768px){
+    
+    .welcome{
+        background: none;
+        grid-template-columns: 1fr;
+        grid-template-rows:  0.5fr 2fr 0.5fr;
+        gap: 5px;
+        grid-template-areas:
+            "auth"
+            "intro"
+            "contact";
+    }
+
+    .auth{
+        width: 70%;
+    }
+
+    .intro{
+        width: 70%;
+    }
+
+    .contact{
+        width: 70%;
+    }
+}

@@ -1,14 +1,14 @@
-const { Builder, By } = require('selenium-webdriver');
-import { getAsyncElementByCss} from "../helpers";
+const { Builder/*, By*/ } = require('selenium-webdriver');
+/*import { getAsyncElementByCss} from "../helpers";*/
 
 const PAGE = "http://localhost:3000/";
 const TIMEOUT = 30000;
 const BROWSER = 'chrome';
-
+/*
 const USER_1 = "selenium1@walletvisortest.test";
 const USER_SIGNUP = "seleniumsignup@walletvisortest.test";
 const PASSWORD = "c@npL€Ex*P4$s";
-
+*/
 describe('Auth/Auth', () => {
   jest.setTimeout(TIMEOUT);
   let driver;
