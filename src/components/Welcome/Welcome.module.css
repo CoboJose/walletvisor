@@ -72,6 +72,7 @@
     
     .welcome{
         background: none;
+        display: grid;
         grid-template-columns: 1fr;
         grid-template-rows:  0.5fr 2fr 0.5fr;
         gap: 5px;
@@ -79,17 +80,18 @@
             "auth"
             "intro"
             "contact";
+        justify-items: center;
     }
 
     .auth{
-        width: 70%;
+        width: 90%;
     }
 
     .intro{
-        width: 70%;
+        width: 90%;
     }
 
     .contact{
-        width: 70%;
+        width: 90%;
     }
 }

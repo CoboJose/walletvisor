@@ -2,21 +2,20 @@ import React from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 
 import { addTransaction } from '../../../store/slices/tracker';
-import styles from './AddTransaction.module.css';
+import './AddTransaction.css';
 import TransactionForm from '../shared/TransactionForm'
 
 const AddTransaction = () => {
-
     if(useSelector(s => s.config.debug.renders)) console.log("RENDERING ADD_TRANSACTION");
-    const dispatch = useDispatch(); //This allows to dispatch actions to redux.
+    const dispatch = useDispatch();
 
     const addTransactionHandler = (transaction) => {
         dispatch(addTransaction(transaction))
     }
 
     return (
-        <div className={styles.AddTransaction}>
-            <p>Add a new Transaction</p>
+        <div className='trk-addtrn'>
+            <div className='title'>New Transaction</div>
             <TransactionForm onSubmit = {addTransactionHandler}/>
         </div>
     );

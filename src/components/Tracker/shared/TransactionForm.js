@@ -3,7 +3,7 @@ import { useSelector} from 'react-redux';
 
 import categories from '../../../utils/categories/Categories';
 import helpers from '../../../utils/helpers';
-import styles from './TransactionForm.module.css';
+import './TransactionForm.css';
 
 const TransactionForm = ({onSubmit, onCancel, t}) => {
     //If a transaction(t) is present, it is an update, else it is a creation.
@@ -63,12 +63,12 @@ const TransactionForm = ({onSubmit, onCancel, t}) => {
 
     const errorMSG = (field) => {
         if(errors[field]){
-            return(<p className={styles.errormsg}>{errors[field]}</p>)
+            return(<p className={'err-msg'}>{errors[field]}</p>)
         }
     }
 
     return (
-        <div className={t ? styles.formUpdate : styles.formAdd}>
+        <div className={t ? 'add-trn' : 'updt-trn'}>
             <form onSubmit={submitTransactionHandler}>
 
                 <label htmlFor="text">Title</label>

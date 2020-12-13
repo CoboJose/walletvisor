@@ -1,0 +1,6 @@
+.add-trn, .updt-trn{
+    background-color: purple;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+}

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 
-import styles from './Transactions.module.css'
+import './Transactions.css'
 import {fetchTransactions} from '../../../store/slices/tracker'
 import Transaction from './Transaction/Transaction'
 
@@ -20,11 +20,13 @@ const transactions = () => {
     }, []);
 
     return(
-        <div className={styles.Transactions}>
-            <p>Transactions:</p>
-            {transactions.map(t => (
-                <Transaction key={t.id} t={t}/>
-            ))}
+        <div className='trk-trn-list'>
+            <h3>Transactions</h3>
+            <div className='list'>
+                {transactions.map(t => (
+                    <Transaction key={t.id} t={t}/>
+                ))}
+            </div>
         </div>
     );
 }

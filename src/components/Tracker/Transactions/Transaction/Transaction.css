@@ -1,0 +1,42 @@
+.trk-trn{
+    background-color: rgb(78, 78, 78);
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.trk-trn > .resume{
+    display: flex;
+    justify-content: space-between;
+}
+.trk-trn > .resume:hover{
+    cursor: pointer;
+}
+.trk-trn > .resume > .arrow{
+    color:rgb(158, 61, 214);
+    padding: 7px;
+}
+
+.trk-trn > .resume > .text{
+    padding: 7px;
+}
+
+.trk-trn > .resume .lateral-income, .lateral-expense{
+    border-left: 2.5px solid black;
+    border-radius: 2px;
+    width: 7%;
+    height: 34px;
+    margin: 0.2px;
+    
+}
+.trk-trn > .resume .lateral-income{
+    background-color: rgb(10, 161, 10);
+}
+.trk-trn > .resume .lateral-expense{
+    background-color: red;
+}
+
+.trk-trn > .details{
+    border-top: 2px solid black;
+    padding: 7px;
+}
