@@ -1,6 +1,95 @@
-.add-trn, .updt-trn{
-    background-color: purple;
+.trk-trn-form{
+    width: 90%;
     margin-top: 10px;
+    
+    padding: 5px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    grid-template-areas:
+        "left right";
+}
+
+.trk-trn-form.trk-updt-trn{
+    padding: 10px;
+    margin:auto;
+}
+.trk-trn-form .left{
+    grid-area: left;
+    padding-right: 15px;
+    border-right: 2px solid black;
+}
+.trk-trn-form .right{
+    grid-area: right;
+}
+
+@media(max-width: 768px){
+    .trk-trn-form{
+        display: flex;
+        flex-direction: column;
+    }
+    .trk-trn-form .left{
+        padding-right: 0;
+        border-right: none;
+    }
+}
+
+.trk-trn-form  .input-field{
     display: flex;
     flex-direction: column;
+}
+.trk-trn-form .input-field > label{
+    color: var(--purple_3);
+    margin-bottom: 5px;
+    font-size: 14px; 
+}
+
+.trk-trn-form .input-field > input,select{
+    background-color: var(--form_input_background);
+    color: var(--form_input_text);
+    border: 2px solid var(--form_input_background);
+
+    border-radius: 4px;
+    width: 95%;
+    margin-bottom: 7px;
+    padding: 7px;
+
+    outline: 0;
+    transition: .2s;
+}
+.trk-trn-form .input-field > input:focus, select:focus{
+    border-color: var(--purple_1);
+}
+.trk-trn-form .input-field > select{
+    width: 100%;
+    padding: 5px;
+}
+
+.trk-trn-form .buttons{
+    display: flex;
+    flex-wrap: wrap;
+    
+    justify-content: center;
+}
+
+.trk-trn-form button{
+    background-color: var(--btn_green);
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 150px;
+    margin: 10px 10px 0 0;
+    height: 35px;
+}
+.trk-trn-form button:hover{
+    box-shadow: var(--btn_green) 0px 2px 10px 0px;
+}
+
+.trk-trn-form .btn-cancel{
+    background-color: var(--btn_red);
+    width: 60px;
+}
+.trk-trn-form .btn-cancel:hover{
+    box-shadow: var(--btn_red) 0px 2px 10px 0px;
 }

@@ -1,42 +1,120 @@
 .trk-trn{
-    background-color: rgb(78, 78, 78);
-    border: 2px solid rgb(0, 0, 0);
+    background-color: var(--background_2);
+    border: 1px solid black;
     border-radius: 5px;
     margin-bottom: 10px;
 }
 
 .trk-trn > .resume{
+    background-color: var(--background_3);
     display: flex;
     justify-content: space-between;
+}
+.trk-trn > .resume.expanded{
+    border-bottom: 1px solid black;
 }
 .trk-trn > .resume:hover{
     cursor: pointer;
 }
 .trk-trn > .resume > .arrow{
-    color:rgb(158, 61, 214);
+    color:var(--btn_purple);
     padding: 7px;
 }
 
 .trk-trn > .resume > .text{
     padding: 7px;
+    width: 100%;
+    max-height: 18px;
+    margin-left: 3%;
+    
+    display:flex;
+    justify-content: center;
+    overflow: hidden;
+}
+.trk-trn > .resume > .text > .amount{
+    width: 25%;
+    overflow: hidden;
+}
+.trk-trn > .resume > .text > .category{
+    width: 30%;
+    overflow: hidden;
+}
+.trk-trn > .resume > .text > .title{
+    width: 45%;
+    margin: auto 0 auto 0;
+    overflow: hidden;
+    font-size: small;
+    color: rgb(151, 151, 151);
+}
+@media(max-width: 1000px){
+    .trk-trn > .resume > .text{
+        font-size: small;
+    }
+    .trk-trn > .resume > .text > .amount{
+        width: 35%;
+    }
+    .trk-trn > .resume > .text > .category{
+        width: 40%;
+    }
+    .trk-trn > .resume > .text > .title{
+        width: 25%;
+    }
 }
 
 .trk-trn > .resume .lateral-income, .lateral-expense{
-    border-left: 2.5px solid black;
-    border-radius: 2px;
-    width: 7%;
-    height: 34px;
-    margin: 0.2px;
+    
+    border-radius: 0 5px 5px 0;
+    width: 10px;
+    height: 34.1px;
+    margin: 0 0.2px 0px 0.2px;
     
 }
 .trk-trn > .resume .lateral-income{
-    background-color: rgb(10, 161, 10);
+    background-color: var(--green_1);
 }
 .trk-trn > .resume .lateral-expense{
-    background-color: red;
+    background-color: var(--red_1);
 }
 
 .trk-trn > .details{
-    border-top: 2px solid black;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px 0;
+}
+.trk-trn > .details > .details-elements{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 30px;
+    justify-content: center;
+}
+
+.trk-trn > .details > .details-elements > .detail-element > .detail-title{
+    color: var(--purple_3);
+    margin-right: 5px;
+}
+
+.trk-trn > .details .details-btns{
+    display: flex;
+    justify-content: center;
+    gap: 0 20px;
+}
+.trk-trn > .details .details-btns button{
+    border-radius: 5px;
     padding: 7px;
+    color: white;
+    font-weight: bold;
+}
+.trk-trn > .details .details-btns .btn-update{
+    background-color: var(--btn_green);
+}
+.trk-trn > .details .details-btns .btn-delete{
+    background-color: var(--btn_red);
+}
+
+.trk-trn > .details .details-btns .btn-update:hover{
+    box-shadow: var(--btn_green) 0px 2px 10px 0px;
+}
+.trk-trn > .details .details-btns .btn-delete:hover{
+    box-shadow: var(--btn_red) 0px 2px 10px 0px;
 }

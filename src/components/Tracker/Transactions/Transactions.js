@@ -12,6 +12,8 @@ const transactions = () => {
     //State
     const transactions = useSelector(state => state.tracker.transactions) //Get the data from redux store
     
+    const loading = useSelector(state => state.tracker.loading);
+    const error = useSelector(state => state.tracker.error);
     //Getting the transactions from the database
     //UseEffect => In this case, execute it only when the component(AddTransaction.js) has completed rendering ([])
     const dispatch = useDispatch();
@@ -21,7 +23,9 @@ const transactions = () => {
 
     return(
         <div className='trk-trn-list'>
-            <h3>Transactions</h3>
+            <div className='title'>Transactions</div>
+            {loading && <div className='spinner'></div>}
+            {error && <div className='error-msg'>{error}</div>}
             <div className='list'>
                 {transactions.map(t => (
                     <Transaction key={t.id} t={t}/>

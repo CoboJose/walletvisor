@@ -5,6 +5,7 @@ import './App.css';
 import Tracker from './components/Tracker/Tracker';
 import Welcome from './components/Welcome/Welcome';
 import {logout, authWithRefreshTkn} from './store/slices/auth';
+import {initTheme, changeTheme} from './store/slices/config';
 
 const App = () => {
   
@@ -13,11 +14,15 @@ const App = () => {
   const dispatch = useDispatch();
   const userToken = useSelector(s => s.auth.token);
   const userId = useSelector(s => s.auth.userId);
-
+  
   useEffect(() => {
-    const refreshToken = localStorage.getItem('refreshToken');
+    
+    dispatch(initTheme());
+
+    const refreshToken = localStorage.getItem('refreshToken')
     if(refreshToken !== null)
-      dispatch(authWithRefreshTkn({refreshToken}));
+      dispatch(authWithRefreshTkn({refreshToken}))
+      
   }, [])
   
   const view = userToken ? 'tracker' : 'auth';
@@ -33,9 +38,14 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      {userToken && <p>Welcome, &apos;{userId}&apos;.</p>}
-      {userToken && <div><button onClick={() => dispatch(logout())}>Log out</button><br></br><br></br></div>}
+    <div className="app">
+      {userToken &&
+        <div className='temporal'>
+          <p>Welcome, &apos;{userId}&apos;</p>
+          <button onClick={() => dispatch(logout())}>Log out</button>
+          <button onClick={() => dispatch(changeTheme())}>Change Theme</button>
+      </div>
+      }
       
       {render}
     </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux'
 
 import {authorize} from '../../../store/slices/auth'
-import styles from './Auth.module.css'
+import './Auth.css'
 
 const Auth = (props) => {
     
@@ -36,7 +36,7 @@ const Auth = (props) => {
     }
     const errorMSG = (field) => {
         if(formErrors[field]){
-            return(<p className={styles.errormsg}>{formErrors[field]}</p>)
+            return(<p className='errormsg'>{formErrors[field]}</p>)
         }
     }
     
@@ -51,38 +51,38 @@ const Auth = (props) => {
     return(
         <div className={props.className}>
             
-            <h1 className={styles.msg}>{isLogin ? 'Welcome Back' : 'Join now!'}</h1>
+            <h1 className='msg'>{isLogin ? 'Welcome Back' : 'Join now!'}</h1>
 
-            <form className={styles.form} onSubmit={submitFormHandler}>
+            <form className='form' onSubmit={submitFormHandler}>
                 
-                <div className={styles.formInput}>
+                <div className='formInput'>
                     <input type='email' value={email} onChange={e => setEmail(e.target.value)} placeholder="Email Address"/>
                     {errorMSG("email")}
                 </div>
 
-                <div className={styles.formInput}>
+                <div className='formInput'>
                     <input type='password' value={password} onChange={e => setPassword(e.target.value)} placeholder="Password"/>
                     {errorMSG("password")}
                 </div>
 
                 {isLogin &&
-                <div className={styles.checkbox}>
+                <div className='checkbox'>
                     <label>Remember Me</label>
                     <input type='checkbox' onChange={e => setRemember(e.target.checked)} checked={remember}/>
                 </div>
                 }
 
-                <div className={styles.buttonAndSpinner}>
+                <div className='buttonAndSpinner'>
                     <button className='' type="submit">{isLogin ? 'Log In' : 'Sign Up'}</button>
-                    {loading && <span className={styles.spinner}></span>}
+                    {loading && <span className='spinner'></span>}
                 </div>
                 
-                {error && <p className={styles.serverError}>{error}</p>}
+                {error && <p className='serverError'>{error}</p>}
             </form>
             
-            <div className={styles.switch}>
+            <div className='switch'>
                 <h2>{isLogin ? 'Need an account?' : 'Already have an account?'}</h2>
-                <button className={styles.switchBtn} onClick={() => setIsLogin(!isLogin)}>{isLogin ? 'Create Account' : 'Log In'}</button>
+                <button className='switchBtn' onClick={() => setIsLogin(!isLogin)}>{isLogin ? 'Create Account' : 'Log In'}</button>
             </div>
         </div>
     );

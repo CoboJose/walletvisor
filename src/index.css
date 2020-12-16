@@ -1,15 +1,81 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+:root{
+  --grey_1: #313131;
+  --grey_2: rgb(37, 37, 37);
+  --grey_3: rgb(26, 26, 26);
+
+  --purple_1: #9830ff;
+  --purple_2: #50347e;
+  --purple_3: rgb(209, 130, 255);
+
+  --green_1: rgb(16, 190, 16);
+
+  --red_1: rgb(253, 46, 46);
+
+  --btn_purple: #9830ff;
+  --btn_green:rgb(10, 161, 76);
+  --btn_red: rgb(212, 44, 44);
+
+  --error_msg: rgb(247, 65, 65);
+  
+  --box_shadow_color: rgba(82, 5, 170, 0.431);
+  --box_shadow_color_hover: rgb(142, 81, 204);
+}
+
+.dark{
+  --background_1: var(--grey_1);
+  --background_2: var(--grey_2);
+  --background_3: var(--grey_3);
+
+  --form_input_background: rgb(27, 27, 27);
+  --form_input_text: white;
+
+  color:white;
+}
+
+.light{
+  --background_1: white;
+  --background_2: rgb(253, 253, 253);
+  --background_3: rgb(213, 197, 255);
+
+  --purple_1: rgb(68, 0, 131);
+  --purple_2: #300042;
+  --purple_3: rgb(162, 0, 255);
+  
+  --form_input_background: rgb(214, 214, 214);
+  --form_input_text: black;
+
+  --box_shadow_color: rgba(165, 165, 165, 0.431);
+
+  color:black;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
+  
   background-color: #1f1f1f;
-  color: white;
   margin: 0;
 }
 
+button {
+  border: none;
+}
 button:hover{
   cursor: pointer;
+}
+button:focus{
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--purple_1);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--purple_2);
 }

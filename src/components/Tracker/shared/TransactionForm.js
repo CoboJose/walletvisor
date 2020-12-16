@@ -63,45 +63,60 @@ const TransactionForm = ({onSubmit, onCancel, t}) => {
 
     const errorMSG = (field) => {
         if(errors[field]){
-            return(<p className={'err-msg'}>{errors[field]}</p>)
+            return(<div className={'err-msg'}>{errors[field]}</div>)
         }
     }
 
     return (
-        <div className={t ? 'add-trn' : 'updt-trn'}>
-            <form onSubmit={submitTransactionHandler}>
-
-                <label htmlFor="text">Title</label>
-                <input type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Enter a title if you wish" />
+        <form className={'trk-trn-form' + (t ? ' trk-updt-trn' : '')} onSubmit={submitTransactionHandler}>
+            
+            <div className='left'>
+                <div className='input-field'>
+                    <label>Title</label>
+                    <input type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Enter a title if you wish" />
+                </div>
                 {errorMSG("title")}
 
-                <label htmlFor="amount">Amount</label>
-                <input type="number" value={amount} min="0" required onChange={e => e.target.value >= 0 ? setAmount(parseFloat(e.target.value)) : null} placeholder="Enter amount..."/>
-                {errorMSG("amount")}
-
-                <label htmlFor="type">Type </label>
-                <select value={type} required onChange={e => setTypeHandler(e.target.value)}>
-                    <option value="expense">Expense</option>
-                    <option value="income">Income</option>
-                </select>
-                {errorMSG("type")}
-
-                <label htmlFor="category">Category </label>
-                <select value={category} required onChange={e => setCategory(e.target.value)}>
-                    {categories.filter(c => c.type===type).map(c => 
-                        (<option key={c.key} value={c.key}>{c.name}</option>)
-                    )}
-                </select>
+                <div className='input-field'>
+                    <label htmlFor="category">Category</label>
+                    <select value={category} required onChange={e => setCategory(e.target.value)}>
+                        {categories.filter(c => c.type===type).map(c => 
+                            (<option key={c.key} value={c.key}>{c.icon + ' ' + c.name}</option>)
+                        )}
+                    </select>
+                </div>
                 {errorMSG("category")}
-
-                <label htmlFor="date">Date</label>
-                <input type='date' required value={date} onChange={e => setDate(e.target.value)}></input>
+                
+                <div className='input-field'>
+                    <label htmlFor="date">Date</label>
+                    <input type='date' required value={date} onChange={e => setDate(e.target.value)}></input>
+                </div>
                 {errorMSG("date")}
+            </div>
 
-                <button type="submit">{t ? 'Update Transaction' : 'Add Transaction'}</button>
-                {t && <button onClick={onCancel}>Cancel</button>}
-            </form>
-        </div>
+            <div className='right'>
+                <div className='input-field amount'>
+                    <label htmlFor="amount">Amount</label>
+                    <input type="number" value={amount} min="0" max="99999999999" step='any' required onChange={e => e.target.value >= 0 ? setAmount(parseFloat(e.target.value)) : null} placeholder="Enter amount..."/>
+                </div>
+                {errorMSG("amount")}
+                
+                <div className='input-field type'>
+                    <label htmlFor="type">Type</label>
+                    <select value={type} required onChange={e => setTypeHandler(e.target.value)}>
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select>
+                </div>
+                {errorMSG("type")}
+                
+                <div className='buttons'>
+                <button className='btn-submit' type="submit">{t ? 'Update Transaction' : 'Add Transaction'}</button>
+                {t && <button className='btn-cancel' onClick={onCancel}>Cancel</button>}
+                </div>
+            </div>
+
+        </form>
     );
 }
 

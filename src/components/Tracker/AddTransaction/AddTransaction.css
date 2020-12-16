@@ -5,15 +5,12 @@
     align-items: center;
 }
 
-.trk-addtrn .title{
-    color: rgb(156, 109, 243);
-    border-bottom: 2px solid rgb(156, 109, 243);
+.trk-addtrn > .title{
+    color: var(--purple_1);
+    border-bottom: 3px solid var(--purple_2);
     border-radius: 3px;
     width: 95%;
     padding-bottom: 5px;
     text-align: center;
-
-    font-size: 20px;
-    font-weight: bold;
-
+    font-size: 25px;
 }
