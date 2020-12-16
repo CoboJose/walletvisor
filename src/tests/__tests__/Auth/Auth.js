@@ -2,7 +2,7 @@ import React from 'react';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import * as redux from 'react-redux'
-import Auth from '../../../components/Auth/Auth'
+import Auth from '../../../components/Welcome/Auth/Auth'
 
 configure({adapter: new Adapter()});
 
@@ -26,13 +26,13 @@ describe('Auth/Auth', () => {
     });
 
     it('should switch to signUp when the button is clicked and back', () => {
-        expect(wrapper.find('.BtnSubmit').text()).toBe('Log In');
+        expect(wrapper.find('.buttonAndSpinner > button').text()).toBe('Log In');
 
-        wrapper.find('.BtnSwitch').simulate('click');
-        expect(wrapper.find('.BtnSubmit').text()).toBe('Sign Up');
+        wrapper.find('.switch > button').simulate('click');
+        expect(wrapper.find('.buttonAndSpinner > button').text()).toBe('Sign Up');
 
-        wrapper.find('.BtnSwitch').simulate('click');
-        expect(wrapper.find('.BtnSubmit').text()).toBe('Log In');
+        wrapper.find('.switch > button').simulate('click');
+        expect(wrapper.find('.buttonAndSpinner > button').text()).toBe('Log In');
     });
 
     it('should change the state when an input is detected', () => {
