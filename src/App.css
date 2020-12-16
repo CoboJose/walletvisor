@@ -1,5 +1,15 @@
-.App {
-  text-align: center;
-  color: rgb(138, 138, 255);
+.temporal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 40px;
+    padding: 10px 0 20px 0;
+    justify-content: center;
+    font-size: small;
 }
-
+.temporal button{
+    background-color: rgb(70, 70, 70);
+    border-radius: 4px;
+    color: white;
+    padding: 8px;
+    margin: 7px 0 0 0;
+}

@@ -1,0 +1,39 @@
+.trk-trn-list{
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.trk-trn-list > .title{
+    color: var(--purple_1);
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: 25px;
+    width: 95%;
+    margin-bottom: 10px;
+    border-bottom: 3px solid var(--purple_2);
+    border-radius: 3px;
+    position: relative;
+}
+.trk-trn-list > .title > .spinner{
+    position:absolute;
+    right: 5px;
+    border: 4px solid var(--spinner_background);
+    border-top: 4px solid var(--purple_1); 
+    border-radius: 50%;
+    width: 20px; 
+    height: 20px;
+    animation: spinner 1.2s linear infinite;
+}
+@keyframes spinner{
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.trk-trn-list > .list{
+    width: 95%;
+    padding: 0 12px 0 12px;
+    max-height: 420px;
+    overflow-y: auto;
+}
