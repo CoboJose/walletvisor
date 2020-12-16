@@ -21,12 +21,12 @@ const configSlice = createSlice({
 
                 if(theme == 'dark'){
                     document.getElementById('root').className = 'dark'
-                    document.body.style.background = '#1f1f1f'
+                    document.body.style.background = 'var(--body_background_dark)'
                     localStorage.setItem('theme','dark')
                 }
                 else{
                     document.getElementById('root').className = 'light'
-                    document.body.style.background = '#F2F4F6'
+                    document.body.style.background = 'var(--body_background_light)'
                     localStorage.setItem('theme','light')
                 }
                 
@@ -43,12 +43,12 @@ const configSlice = createSlice({
 
                 if(oldTheme == 'dark'){
                     document.getElementById('root').className = 'light'
-                    document.body.style.background = '#f0eded'
+                    document.body.style.background = 'var(--body_background_light)'
                     localStorage.setItem('theme','light')
                 }
                 else{
                     document.getElementById('root').className = 'dark'
-                    document.body.style.background = '#1f1f1f'
+                    document.body.style.background = 'var(--body_background_dark)'
                     localStorage.setItem('theme','dark')
                 }
                 
