@@ -34,3 +34,7 @@ The build is minified and is ready to be deployed.
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.
+
+### 'Añadir Memoria'
+* Requisitos
+    * La conexion con la base de datos debe ser transparente a la aplicacion.

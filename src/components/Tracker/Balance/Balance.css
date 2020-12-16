@@ -1,0 +1,84 @@
+.trk-bal{
+    padding: 20px;
+    text-align: center;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows:  1fr 1fr;
+    gap: 10px 10px;
+    grid-template-areas:
+        "incomes balance"
+        "expenses balance";
+}
+
+.trk-bal > .balance{
+    grid-area: balance;
+}
+.trk-bal > .incomes{
+    grid-area: incomes;
+}
+.trk-bal > .expenses{
+    grid-area: expenses;
+}
+
+.trk-bal > * {
+    background-color: var(--background_2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border: 2px solid black;
+    border-radius: 7px;
+
+    overflow: hidden;
+}
+
+.trk-bal .title{
+    background-color: var(--background_3);
+    color: var(--purple_1);
+    border-bottom: 2px solid black;
+    
+    width: 100%;
+    padding: 7px 0 7px 0;
+
+    font-size: 18px;
+}
+.trk-bal > .balance .title{
+    font-size: 25px;
+    padding: 10px 0 10px 0;
+}
+
+.trk-bal .amount{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 1.3em;
+}
+.trk-bal > .incomes .amount{
+    color: var(--green_1);
+}
+.trk-bal > .expenses .amount{
+    color: var(--red_1);
+}
+.trk-bal > .balance .amount{
+    color: var(--purple_1);
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 2em;
+}
+
+@media(max-width: 768px){
+    .trk-bal .title{
+        font-size: 15px;
+    }
+    .trk-bal > .balance .title{
+        font-size: 20px;
+    }
+    .trk-bal .amount{
+        margin-top: 8px;
+        margin-bottom: 8px;
+        font-size: 1em;
+    }
+    .trk-bal > .balance .amount{
+        font-size: 1.3em;
+    }
+}

@@ -1,0 +1,16 @@
+.trk-addtrn{
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.trk-addtrn > .title{
+    color: var(--purple_1);
+    border-bottom: 3px solid var(--purple_2);
+    border-radius: 3px;
+    width: 95%;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 25px;
+}
