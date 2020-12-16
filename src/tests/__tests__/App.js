@@ -6,7 +6,7 @@ import App from '../../../src/App'
 
 configure({ adapter: new Adapter() });
 
-describe('Tracker/AddTransaction', () => {
+describe('App/App', () => {
 
     let wrapper;
     const spySelector = jest.spyOn(redux, 'useSelector')
@@ -23,7 +23,7 @@ describe('Tracker/AddTransaction', () => {
             .mockReturnValueOnce(null);
         wrapper = shallow(<App />);
 
-        expect(wrapper.find('auth')).toHaveLength(1)
+        expect(wrapper.find('Welcome')).toHaveLength(1)
     });
 
     it('should render the tracker module and user info if an userToken is found', () => {
@@ -33,7 +33,7 @@ describe('Tracker/AddTransaction', () => {
             .mockReturnValueOnce('userId');
         wrapper = shallow(<App />);
 
-        expect(wrapper.find('tracker')).toHaveLength(1)
+        expect(wrapper.find('Tracker')).toHaveLength(1)
         expect(wrapper.find('p').text()).toContain('userId')
     });
 
