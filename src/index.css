@@ -31,13 +31,15 @@
   --form_input_background: rgb(27, 27, 27);
   --form_input_text: white;
 
+  --spinner_background: rgb(14, 14, 14);
+
   color:white;
 }
 
 .light{
   --background_1: white;
   --background_2: rgb(253, 253, 253);
-  --background_3: rgb(213, 197, 255);
+  --background_3: rgb(223, 223, 223);
 
   --purple_1: rgb(68, 0, 131);
   --purple_2: #300042;
@@ -45,6 +47,8 @@
   
   --form_input_background: rgb(214, 214, 214);
   --form_input_text: black;
+
+  --spinner_background: rgb(194, 194, 194);
 
   --box_shadow_color: rgba(165, 165, 165, 0.431);
 

@@ -23,14 +23,20 @@ const transactions = () => {
 
     return(
         <div className='trk-trn-list'>
-            <div className='title'>Transactions</div>
-            {loading && <div className='spinner'></div>}
+            
+            <div className='title'>
+                Transactions {loading && <span className='spinner'></span>}
+            </div>
+            
+
             {error && <div className='error-msg'>{error}</div>}
+            
             <div className='list'>
                 {transactions.map(t => (
                     <Transaction key={t.id} t={t}/>
                 ))}
             </div>
+
         </div>
     );
 }

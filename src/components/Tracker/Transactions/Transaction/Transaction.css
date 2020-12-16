@@ -63,11 +63,9 @@
 
 .trk-trn > .resume .lateral-income, .lateral-expense{
     
-    border-radius: 0 5px 5px 0;
-    width: 10px;
-    height: 34.1px;
-    margin: 0 0.2px 0px 0.2px;
-    
+    border-radius: 0 3.5px 3.5px 0;
+    width: 15px;
+    height: 34.5px;
 }
 .trk-trn > .resume .lateral-income{
     background-color: var(--green_1);
@@ -86,7 +84,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px 30px;
-    justify-content: center;
 }
 
 .trk-trn > .details > .details-elements > .detail-element > .detail-title{
