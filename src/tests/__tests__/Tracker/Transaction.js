@@ -6,7 +6,7 @@ import Transaction from '../../../components/Tracker/Transactions/Transaction/Tr
 
 configure({adapter: new Adapter()});
 
-describe('Tracker/Tracker', () => {
+describe('Tracker/Transaction', () => {
     
     let wrapper;
     const spySelector = jest.spyOn(redux, 'useSelector')
@@ -20,26 +20,25 @@ describe('Tracker/Tracker', () => {
     })
 
     it('should always show the amount', () => {
-        expect(wrapper.find('.nodetails').text()).toContain('10')
+        expect(wrapper.find('.text > .amount').text()).toContain('10')
     });
-
+    
     it('should show more info when clicked, and remove it when clicked again', () => {
-        expect(wrapper.find('p')).toHaveLength(0)
+        expect(wrapper.find('.details')).toHaveLength(0)
 
-        wrapper.find('.nodetails').simulate('click')
-        expect(wrapper.find('p')).toHaveLength(4)
+        wrapper.find('.resume').simulate('click')
+        expect(wrapper.find('.details')).toHaveLength(1)
 
-        wrapper.find('.nodetails').simulate('click')
-        expect(wrapper.find('p')).toHaveLength(0)
+        wrapper.find('.resume').simulate('click')
+        expect(wrapper.find('.details')).toHaveLength(0)
     })
 
     it('should show the form when update is clicked', () => {
         expect(wrapper.find('TransactionForm')).toHaveLength(0)
 
-        wrapper.find('.nodetails').simulate('click')
-        wrapper.find('button').at(0).simulate('click')
+        wrapper.find('.resume').simulate('click')
+        wrapper.find('.btn-update').simulate('click')
 
         expect(wrapper.find('TransactionForm')).toHaveLength(1)
     })
 });
-//console.log(wrapper.debug())

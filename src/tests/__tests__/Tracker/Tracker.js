@@ -6,7 +6,7 @@ import Tracker from '../../../components/Tracker/Tracker';
 
 configure({adapter: new Adapter()});
 
-describe('Tracker/Trackerr', () => {
+describe('Tracker/Tracker', () => {
     
     let wrapper;
     const spySelector = jest.spyOn(redux, 'useSelector')

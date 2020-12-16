@@ -23,7 +23,7 @@ describe('Tracker/Transactions', () => {
 
         wrapper = shallow(<Transactions/>);
 
-        expect(wrapper.find('transaction')).toHaveLength(0)
+        expect(wrapper.find('Transaction')).toHaveLength(0)
     });
 
     it('should render transactions when given', () => {
@@ -34,8 +34,8 @@ describe('Tracker/Transactions', () => {
 
         wrapper = shallow(<Transactions/>);
 
-        expect(wrapper.find('transaction')).toHaveLength(3)
-        expect(wrapper.find('transaction').at(1).props().t.amount).toBe(20.50)
+        expect(wrapper.find('Transaction')).toHaveLength(3)
+        expect(wrapper.find('Transaction').at(1).props().t.amount).toBe(20.50)
     });
 });
 
