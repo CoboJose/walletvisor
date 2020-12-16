@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 import './Balance.css';
-import helpers from '../../../utils/helpers'
+import helpers from '../../../utils/helpers';
 
-const balance = () => {
+const Balance = () => {
     
     if(useSelector(s => s.config.debug.renders)) console.log("RENDERING BALANCE");
     const [balance, incomes, expenses] = calculate(useSelector(state => state.tracker.transactions));
@@ -31,7 +31,7 @@ const balance = () => {
     )
 }
 
-export default balance;
+export default Balance;
 
 const calculate = (transactions) => {
     let balance=0, incomes=0, expenses=0, t;

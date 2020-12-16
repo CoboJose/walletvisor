@@ -1,43 +1,43 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { deleteTransaction, updateTransaction } from '../../../../store/slices/tracker'
-import './Transaction.css'
-import helpers from '../../../../utils/helpers'
-import TransactionForm from '../../shared/TransactionForm'
-import categories from '../../../../utils/categories/Categories'
+import { deleteTransaction, updateTransaction } from '../../../../store/slices/tracker';
+import './Transaction.css';
+import helpers from '../../../../utils/helpers';
+import TransactionForm from '../../shared/TransactionForm';
+import categories from '../../../../utils/categories/Categories';
 
-const transaction = ({t}) => {
+const Transaction = ({t}) => {
 
-    if(useSelector(s => s.config.debug.renders)) console.log("RENDERING TRANSACTION")
+    if(useSelector(s => s.config.debug.renders)) console.log("RENDERING TRANSACTION");
 
     //STATE
     const dispatch = useDispatch();
-    const [showDetails, setShowDetails] = useState(false)
-    const [showUpdateForm, setShowUpdateForm] = useState(false)
+    const [showDetails, setShowDetails] = useState(false);
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
     
 
     const showUpdateFormHandler = () =>{
         setShowDetails(false);
-        setShowUpdateForm(true)
+        setShowUpdateForm(true);
     }
     const clickTransactionHandler = () => {
-        showUpdateForm ? setShowDetails(false) : setShowDetails(!showDetails)
-        setShowUpdateForm(false)
+        showUpdateForm ? setShowDetails(false) : setShowDetails(!showDetails);
+        setShowUpdateForm(false);
     }
     const cancelUpdateHandler = (event) => {
-        event.preventDefault()
-        setShowUpdateForm(false)
-        setShowDetails(true)
+        event.preventDefault();
+        setShowUpdateForm(false);
+        setShowDetails(true);
     }
     const updateTransactionHandler = (transaction) => {
-        setShowUpdateForm(false)
-        setShowDetails(true)
-        dispatch(updateTransaction({...transaction, id:t.id}))
+        setShowUpdateForm(false);
+        setShowDetails(true);
+        dispatch(updateTransaction({...transaction, id:t.id}));
     }
 
-    const cat = categories.find(c => c.key==t.category)
-    const displayCategory= cat.icon + ' ' + cat.name
+    const cat = categories.find(c => c.key==t.category);
+    const displayCategory= cat.icon + ' ' + cat.name;
 
     const transactionDetails = () => (
         <div className='details'>
@@ -80,4 +80,4 @@ const transaction = ({t}) => {
         </div>
     );
 }
-export default transaction;
+export default Transaction;

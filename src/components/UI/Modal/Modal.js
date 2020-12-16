@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import styles from './Modal.module.css';
+import './Modal.css';
 import Backdrop from '../Backdrop/Backdrop';
 
-const modal = props => {
+const Modal = props => {
   
   if(useSelector(s => s.config.debug.renders)) console.log("RENDERING MODAL");
   
@@ -12,7 +12,7 @@ const modal = props => {
       <>
         <Backdrop show={props.show} clicked={props.modalClosed} />
         <div
-          className={styles.Modal}
+          className='modal'
           style={{
             transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
             opacity: props.show ? '1' : '0'
@@ -24,4 +24,4 @@ const modal = props => {
     );
   };
   
-  export default modal;
+  export default Modal;

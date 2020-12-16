@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-import './Welcome.css'
-import Intro from './Intro/Intro'
-import Auth from './Auth/Auth'
-import Contact from './Contact/Contact'
+import './Welcome.css';
+import Intro from './Intro/Intro';
+import Auth from './Auth/Auth';
+import Contact from './Contact/Contact';
 
 const Welcome = () => {
     return(
@@ -14,4 +14,4 @@ const Welcome = () => {
         </div>
     )
 }
-export default Welcome
+export default Welcome;

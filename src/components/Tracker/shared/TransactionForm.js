@@ -57,13 +57,13 @@ const TransactionForm = ({onSubmit, onCancel, t}) => {
     }
     //Managing the categories in case none is selected
     const setTypeHandler = (newType) => {
-        setType(newType)
-        newType==='expense' ? setCategory('food') : setCategory('salary')
+        setType(newType);
+        newType==='expense' ? setCategory('food') : setCategory('salary');
     }
 
     const errorMSG = (field) => {
         if(errors[field]){
-            return(<div className={'err-msg'}>{errors[field]}</div>)
+            return(<div className={'err-msg'}>{errors[field]}</div>);
         }
     }
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch} from 'react-redux';
 
-import {authorize} from '../../../store/slices/auth'
-import './Auth.css'
+import {authorize} from '../../../store/slices/auth';
+import './Auth.css';
 
 const Auth = (props) => {
     
@@ -36,7 +36,7 @@ const Auth = (props) => {
     }
     const errorMSG = (field) => {
         if(formErrors[field]){
-            return(<p className='errormsg'>{formErrors[field]}</p>)
+            return(<p className='errormsg'>{formErrors[field]}</p>);
         }
     }
     

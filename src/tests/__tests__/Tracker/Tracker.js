@@ -6,7 +6,7 @@ import Tracker from '../../../components/Tracker/Tracker';
 
 configure({adapter: new Adapter()});
 
-describe('Tracker/Tracker', () => {
+describe('Tracker/Trackerr', () => {
     
     let wrapper;
     const spySelector = jest.spyOn(redux, 'useSelector')
@@ -20,8 +20,8 @@ describe('Tracker/Tracker', () => {
     })
 
     it('should render the required components', () => {
-        expect(wrapper.find('balance')).toHaveLength(1);
+        expect(wrapper.find('Balance')).toHaveLength(1);
         expect(wrapper.find('AddTransaction')).toHaveLength(1);
-        expect(wrapper.find('transactions')).toHaveLength(1);
+        expect(wrapper.find('Transactions')).toHaveLength(1);
     });
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import './Tracker.css'
+import './Tracker.css';
 import Balance from './Balance/Balance';
 import AddTransaction from './AddTransaction/AddTransaction';
 import Transactions from './Transactions/Transactions';

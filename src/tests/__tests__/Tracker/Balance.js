@@ -16,7 +16,9 @@ describe('Tracker/Balance', () => {
             .mockReturnValueOnce([])
         wrapper = shallow(<Balance/>)
         
-        expect(wrapper.find('p')).toHaveLength(3)
+        expect(wrapper.find('.balance')).toHaveLength(1)
+        expect(wrapper.find('.incomes')).toHaveLength(1)
+        expect(wrapper.find('.expenses')).toHaveLength(1)
     })
 
     it('should calculate the right balance, expense and incomes', () => {
@@ -26,9 +28,9 @@ describe('Tracker/Balance', () => {
             .mockReturnValueOnce(transactions)
         wrapper = shallow(<Balance/>)
 
-        expect(wrapper.find('.Total').text()).toContain("40.5");
-        expect(wrapper.find('.Incomes').text()).toContain("50.5");
-        expect(wrapper.find('.Expenses').text()).toContain("10");
+        expect(wrapper.find('.balance > .amount').text()).toContain("40.5");
+        expect(wrapper.find('.incomes > .amount').text()).toContain("50.5");
+        expect(wrapper.find('.expenses > .amount').text()).toContain("10");
     })
 })
 

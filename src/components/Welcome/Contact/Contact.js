@@ -1,9 +1,9 @@
 import React from 'react';
 
-import './Contact.css'
-import emailIcon  from '../../../assets/icons/email.png'
-import linkedinIcon  from '../../../assets/icons/linkedin.png'
-import githubIcon  from '../../../assets/icons/github.png'
+import './Contact.css';
+import emailIcon  from '../../../assets/icons/email.png';
+import linkedinIcon  from '../../../assets/icons/linkedin.png';
+import githubIcon  from '../../../assets/icons/github.png';
 
 const Contact = (props) => {
     return (

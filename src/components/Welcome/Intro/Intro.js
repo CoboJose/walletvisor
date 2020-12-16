@@ -1,7 +1,7 @@
 import React from 'react';
 
-import './Intro.css'
-import image from '../../../assets/images/budget.png'
+import './Intro.css';
+import image from '../../../assets/images/budget.png';
 
 const Intro = (props) => {
     return (
