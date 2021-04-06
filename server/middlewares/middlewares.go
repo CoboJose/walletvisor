@@ -16,7 +16,7 @@ func CheckToken(role string) echo.MiddlewareFunc {
 			token := c.Request().Header.Get("Authorization")
 
 			//Validate token and get claims
-			claims, err := utils.ValidateToken(token)
+			err, claims := utils.ValidateToken(token)
 			if err != nil {
 				c.JSON(http.StatusUnauthorized, err.Error())
 				return echo.ErrUnauthorized

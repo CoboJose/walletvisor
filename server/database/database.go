@@ -2,36 +2,33 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 
-	_ "github.com/mattn/go-sqlite3" //fe
+	"server/models"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 //DB global variable to perform database actions
 var DB *sql.DB
 
 //InitDB initialises the sqlite Database
-func InitDB() (err error) {
-	DB, err = sql.Open("sqlite3", "./walletvisor.db")
+func InitDB() error {
+	DB, err := sql.Open("sqlite3", "./walletvisor.db")
 	if err != nil {
-		return
+		fmt.Println("Could not init the database")
+		return err
 	}
 
 	//Create all tables if they do not exists
-	createTables()
-
-	return
-}
-
-func createTables() {
-	tables := `
-	CREATE TABLE IF NOT EXISTS users(
-		Id INT NOT NULL PRIMARY KEY,
-		Email TEXT NOT NULL,
-		Password TEXT NOT NULL
-	)
-	`
-	_, err := DB.Exec(tables)
-	if err != nil {
-		panic(err)
+	for _, t := range models.GetTables() {
+		_, err := DB.Exec(t)
+		if err != nil {
+			fmt.Println("Could not create the tables")
+			return err
+		}
 	}
+
+	return nil
+
 }

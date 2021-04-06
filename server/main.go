@@ -9,8 +9,10 @@ import (
 func main() {
 	err := database.InitDB()
 	if err != nil {
-		fmt.Println("could not create database: ", err)
+		fmt.Print("Could not init the database: ", err)
+		//panic(err)
 	}
+	fmt.Println(database.DB)
 	defer database.DB.Close()
 
 	e := routes.SetupRouter()

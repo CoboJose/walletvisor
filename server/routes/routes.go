@@ -31,7 +31,7 @@ func authentication(api *echo.Group) {
 
 	auth.POST("/signup", h.Signup)
 	auth.POST("/login", h.Login)
-	auth.POST("/refreshToken", h.RefreshToken)
+	auth.POST("/refreshToken", h.RefreshToken, middlewares.CheckToken("user"))
 }
 
 func user(api *echo.Group) {
