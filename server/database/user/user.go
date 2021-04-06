@@ -8,7 +8,6 @@ import (
 
 func CreateUser(name, email, password, role string) (errCode string) {
 
-	fmt.Println(database.DB)
 	query := `INSERT INTO users(name, email, password, role) values(?, ?, ?, ?)`
 
 	if _, err := database.DB.Exec(query, email, email, password, role); err != nil {
@@ -24,13 +23,25 @@ func CreateUser(name, email, password, role string) (errCode string) {
 	return ""
 }
 
-func GetPasswordAndRoleFromEmail(email string) (errCode string, password, role string) {
+func GetPasswordAndRoleFromEmail(email string) (errCode, password, role string) {
 
 	query := `SELECT password, role FROM users WHERE email = ?`
 
 	if err := database.DB.QueryRow(query, email).Scan(&password, &role); err != nil {
 		fmt.Println(err.Error())
 		return "AU001", "", ""
+	}
+
+	return
+}
+
+func GetRoleByUserEmail(email string) (role, errCode string) {
+
+	query := `SELECT role FROM users WHERE email = ?`
+
+	if err := database.DB.QueryRow(query, email).Scan(&role); err != nil {
+		fmt.Println(err.Error())
+		return "", "AU001"
 	}
 
 	return

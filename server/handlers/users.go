@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	userdb "server/database/user"
 	"server/utils"
 
@@ -27,7 +26,11 @@ func (h *Handler) Profile(c echo.Context) error {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}
 
-	fmt.Println(user)
+	response := map[string]interface{}{
+		"userId": user.UserId,
+		"name":   user.Name,
+		"email":  user.Email,
+	}
 
-	return c.JSON(200, user)
+	return c.JSON(200, response)
 }

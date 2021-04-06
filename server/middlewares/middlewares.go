@@ -18,12 +18,11 @@ func CheckToken(role string) echo.MiddlewareFunc {
 			//Validate token and get claims
 			err, claims := utils.ValidateToken(token)
 			if err != nil {
-				c.JSON(http.StatusUnauthorized, err.Error())
-				return echo.ErrUnauthorized
+				return c.JSON(http.StatusUnauthorized, err.Error())
 			}
 
 			//Token roles should contain the received param
-			if !strings.Contains(claims["roles"].(string), role) {
+			if !strings.Contains(claims["role"].(string), role) {
 				c.JSON(http.StatusUnauthorized, "This user has not access to this site")
 				return echo.ErrUnauthorized
 			}

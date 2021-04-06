@@ -104,13 +104,13 @@ func (h *Handler) RefreshToken(c echo.Context) error {
 	}
 
 	//Token type should be refresh, so it must not have the roles claims
-	if claims["roles"] != nil {
+	if claims["role"] != nil {
 		return c.JSON(401, "{msg: Not a refresh token}")
 	}
 
 	//Generate new Tokens
 	email := claims["email"].(string)
-	role := claims["role"].(string)
+	role, errCode := userdb.GetRoleByUserEmail(email)
 
 	errCode, token, refreshToken := generateTokens(email, role)
 	if errCode != "" {
