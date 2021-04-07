@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"net/http"
 	"server/handlers"
 	"server/middlewares"
 
@@ -13,13 +12,13 @@ var h = &handlers.Handler{}
 //SetupRouter init the server and provides routing
 func SetupRouter() *echo.Echo {
 	e := echo.New()
+	api := e.Group("/v1")
 
 	//Test connectivity
-	e.GET("/ping", func(c echo.Context) error {
-		return c.String(http.StatusOK, "pong")
+	api.GET("/ping", func(c echo.Context) error {
+		return c.String(200, "pong")
 	})
 
-	api := e.Group("/v1")
 	authentication(api)
 	user(api)
 

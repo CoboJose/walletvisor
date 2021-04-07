@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"os"
+
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -16,7 +18,9 @@ func GenerateError(errorCode string) map[string]string {
 	}
 }
 
-const secret = "feHBE%&656nfw1&=)"
+/////////////////////////////////
+//////////// TOKEN //////////////
+/////////////////////////////////
 
 func ValidateToken(tokenString string) (err error, claims jwt.MapClaims) {
 
@@ -24,7 +28,7 @@ func ValidateToken(tokenString string) (err error, claims jwt.MapClaims) {
 
 	//Validate the token (Expiration, Secret, Integrity...)
 	_, err = jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(secret), nil
+		return []byte(os.Getenv("SECRET")), nil
 	})
 
 	return

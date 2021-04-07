@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 	userdb "server/database/user"
 	"server/utils"
@@ -184,7 +185,6 @@ func validateAuthData(payload *authPayload) string {
 }
 
 func hashPassword(password string) (string, string) {
-
 	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -194,10 +194,7 @@ func hashPassword(password string) (string, string) {
 	return "", string(passwordBytes)
 }
 
-const secret = "feHBE%&656nfw1&=)"
-
 func generateTokens(email, role string) (errCode string, token string, refreshToken string) {
-
 	// TOKEN
 	t := jwt.New(jwt.SigningMethodHS256)
 	claims := t.Claims.(jwt.MapClaims)
@@ -205,7 +202,7 @@ func generateTokens(email, role string) (errCode string, token string, refreshTo
 	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Minute * time.Duration(TOKEN_EXPIRES_MINUTES)).Unix()
 
-	token, err := t.SignedString([]byte(secret))
+	token, err := t.SignedString([]byte(os.Getenv("SECRET")))
 	if err != nil {
 		return "GE000", "", ""
 	}
@@ -216,7 +213,7 @@ func generateTokens(email, role string) (errCode string, token string, refreshTo
 	rtClaims["email"] = email
 	rtClaims["exp"] = time.Now().Add(time.Hour * time.Duration(REFRESH_TOKEN_EXPIRES_HOURS)).Unix()
 
-	refreshToken, err = rt.SignedString([]byte(secret))
+	refreshToken, err = rt.SignedString([]byte(os.Getenv("SECRET")))
 	if err != nil {
 		return "GE000", "", ""
 	}

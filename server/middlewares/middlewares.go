@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"net/http"
+	"os"
 	"server/utils"
 	"strings"
 
@@ -36,11 +37,10 @@ func CheckToken(role string) echo.MiddlewareFunc {
 func APIKey(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		apiKey := c.Request().Header.Get("APIKey")
-		if apiKey != "apikey" {
+		if apiKey != os.Getenv("APIKEY") {
 			c.JSON(http.StatusUnauthorized, "Incorrect API KEY, if you want to get it contact with: cobogue@gmail.com")
 			return echo.ErrUnauthorized
 		}
-
 		return next(c)
 	}
 }
