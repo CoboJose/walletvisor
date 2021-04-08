@@ -12,14 +12,10 @@ import (
 func main() {
 
 	// Environment variables
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Could not read environment variables: ", err.Error())
-		panic(err)
-	}
+	godotenv.Load()
 
 	// Database
-	err = database.InitDB()
+	err := database.InitDB()
 	if err != nil {
 		fmt.Println("Could not init the database: s", err.Error())
 		panic(err)
