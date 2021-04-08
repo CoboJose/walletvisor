@@ -1,0 +1,2 @@
+release: sh -c 'go build'
+web: sh -c 'go run'

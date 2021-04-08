@@ -43,3 +43,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: 'walletvisor'
           heroku_email: 'cobogue@gmail.com'
+          appdir: "server"
+          env:
+            SECRET: ${{secrets.SECRET}}
+            APIKEY: ${{secrets.APIKEY}}
