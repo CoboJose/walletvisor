@@ -3,17 +3,32 @@ name: CI
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
+  
   server:
+    
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+        
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
       
       - name: Build
-        run: echo Building
+        run: go build -v ./...
       
-      - name: Build
+      - name: Test
         env:
           TEST: Test ENV
         run: |
           echo TEST,
           echo OK
+          
+      - name: Production Deploy
+        if: github.ref == refs/heads/mainn
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "walletvisor"
+          heroku_email: "cobogue@gmail.com"
