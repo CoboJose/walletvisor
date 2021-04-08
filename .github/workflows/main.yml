@@ -45,5 +45,5 @@ jobs:
           heroku_email: 'cobogue@gmail.com'
           appdir: "server"
         env:
-          SECRET: ${{secrets.SECRET}}
-          APIKEY: ${{secrets.APIKEY}}
+          HD_SECRET: ${{secrets.SECRET}}
+          HD_APIKEY: ${{secrets.APIKEY}}
