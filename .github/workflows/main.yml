@@ -12,13 +12,24 @@ jobs:
         working-directory: server
         
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
       
-      - name: Build
+      - name: Install Go
+        uses: actions/setup-go@v2
+        
+      - name: Go modules Caching
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      
+      - name: Build server
         run: go build -v ./...
       
-      - name: Test
+      - name: Test server
         env:
           TEST: Test ENV
         run: |
@@ -26,7 +37,7 @@ jobs:
           echo OK
           
       - name: Production Deploy
-        if: github.ref == 'refs/heads/mainn'
+        if: github.ref == 'refs/heads/main'
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
