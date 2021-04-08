@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"server/database"
 	"server/routes"
 
@@ -29,5 +30,5 @@ func main() {
 
 	// Echo Server
 	e := routes.SetupRouter()
-	e.Logger.Fatal(e.Start(":8000"))
+	e.Logger.Fatal(e.Start(os.Getenv("PORT")))
 }
