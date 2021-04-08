@@ -24,6 +24,8 @@ func main() {
 		panic(err)
 	}
 	defer database.DB.Close()
+	
+	fmt.Println("Im on Heroku!")
 
 	// Echo Server
 	e := routes.SetupRouter()
