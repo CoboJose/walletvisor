@@ -26,9 +26,9 @@ jobs:
           echo OK
           
       - name: Production Deploy
-        if: github.ref == refs/heads/mainn
+        if: github.ref == 'refs/heads/mainn'
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "walletvisor"
-          heroku_email: "cobogue@gmail.com"
+          heroku_app_name: 'walletvisor'
+          heroku_email: 'cobogue@gmail.com'
