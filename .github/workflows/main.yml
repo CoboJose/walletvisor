@@ -26,15 +26,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       
-      - name: Build server
-        run: echo go build -v ./...
-      
-      - name: Test server
-        env:
-          TEST: Test ENV
-        run: |
-          echo TEST,
-          echo OK
+      - name: Test
+        run: go test ./...
           
       - name: Production Deploy
         if: github.ref == 'refs/heads/master'
