@@ -11,3 +11,6 @@
 
 # Environment
 *.env
+
+# Database
+*.db

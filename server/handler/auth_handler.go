@@ -1,10 +1,10 @@
-package handlers
+package handler
 
 import (
 	"fmt"
 	"os"
 	"regexp"
-	userdb "server/database/user"
+	"server/database"
 	"server/utils"
 	"time"
 	"unicode"
@@ -17,8 +17,12 @@ import (
 const TOKEN_EXPIRES_MINUTES = 15
 const REFRESH_TOKEN_EXPIRES_HOURS = 720
 
+type AuthHandler struct{}
+
+var userdb = &database.UserDB{}
+
 //Signup creates the user and return a token to access
-func (h *Handler) Signup(c echo.Context) error {
+func (h AuthHandler) Signup(c echo.Context) error {
 
 	// Get Request Data
 	errCode, payload := getAuthPayload(c)
@@ -60,7 +64,7 @@ func (h *Handler) Signup(c echo.Context) error {
 }
 
 //Login creates the user and return a token to access
-func (h *Handler) Login(c echo.Context) error {
+func (h AuthHandler) Login(c echo.Context) error {
 
 	// Get Data
 	errCode, payload := getAuthPayload(c)
@@ -69,7 +73,7 @@ func (h *Handler) Login(c echo.Context) error {
 	}
 
 	// Check in your db if the user exists or not
-	errCode, dbPassword, role := userdb.GetPasswordAndRoleFromEmail(payload.Email)
+	errCode, dbPassword, role := userdb.GetPasswordAndRoleFromEmail(payload.Email) //GetPasswordAndRoleFromEmail(payload.Email)
 	if errCode != "" {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}
@@ -93,7 +97,7 @@ func (h *Handler) Login(c echo.Context) error {
 }
 
 //RefreshToken takes a refresh token and return a pair of new tokens
-func (h *Handler) RefreshToken(c echo.Context) error {
+func (h AuthHandler) RefreshToken(c echo.Context) error {
 
 	//Get token
 	token := c.Request().Header.Get("Authorization")
@@ -112,6 +116,9 @@ func (h *Handler) RefreshToken(c echo.Context) error {
 	//Generate new Tokens
 	email := claims["email"].(string)
 	role, errCode := userdb.GetRoleByUserEmail(email)
+	if errCode != "" {
+		return c.JSON(400, utils.GenerateError(errCode))
+	}
 
 	errCode, token, refreshToken := generateTokens(email, role)
 	if errCode != "" {

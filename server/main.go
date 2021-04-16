@@ -1,28 +1,20 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"server/database"
-	"server/routes"
+	"server/echo"
 
 	"github.com/joho/godotenv"
 )
 
 func main() {
-
-	// Environment variables
+	// Load environment variables
 	godotenv.Load()
 
-	// Database
-	err := database.InitDB()
-	if err != nil {
-		fmt.Println("Could not init the database: s", err.Error())
-		panic(err)
-	}
-	defer database.DB.Close()
+	// Init Database
+	database.Init("./walletvisor.db")
+	defer database.Close()
 
-	// Echo Server
-	e := routes.SetupRouter()
-	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
+	// Init Echo Server
+	echo.Init()
 }

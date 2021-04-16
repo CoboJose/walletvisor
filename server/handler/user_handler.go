@@ -1,14 +1,15 @@
-package handlers
+package handler
 
 import (
-	userdb "server/database/user"
 	"server/utils"
 
 	"github.com/labstack/echo"
 )
 
+type UserHandler struct{}
+
 //Profile returns the profile of the user
-func (h *Handler) Profile(c echo.Context) error {
+func (h UserHandler) Profile(c echo.Context) error {
 
 	//Get token
 	token := c.Request().Header.Get("Authorization")

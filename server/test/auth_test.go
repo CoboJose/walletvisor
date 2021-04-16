@@ -1,14 +1,11 @@
-package tests
+package test
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"server/database"
-	userdb "server/database/user"
-	"server/handlers"
 	"strings"
 	"testing"
 
@@ -17,20 +14,20 @@ import (
 )
 
 var (
-	h  = &handlers.Handler{}
-	db *sql.DB
+	h      = &handlers.Handler{}
+	userdb = &database.UserDB{}
 )
 
 func TestMain(m *testing.M) {
 	//Setup
-	database.InitTestDB()
-	db = database.DB
-	db.Exec(`INSERT INTO users(name, email, password, role) values("user1", "user1@test.com", "$2a$10$ZKGybbkMU6l0Cq3/GcKvP.sCLZIthpAOWmx.1l1VmnurCJHzwL8zO", "user")`)
+	database.InitDB("./test.db")
+	db := database.DB
+	userdb.CreateUser("user1", "user1@test.com", "$2a$10$ZKGybbkMU6l0Cq3/GcKvP.sCLZIthpAOWmx.1l1VmnurCJHzwL8zO", "user")
 	//Run Tests
 	code := m.Run()
 	//Teardown
-	db.Exec(`DROP TABLE users`)
 	db.Close()
+	os.Remove("./test.db")
 	//Exit Tests
 	os.Exit(code)
 }
