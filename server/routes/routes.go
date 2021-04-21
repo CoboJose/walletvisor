@@ -1,4 +1,4 @@
-package echo
+package routes
 
 import (
 	"server/handler"
@@ -14,12 +14,14 @@ var (
 )
 
 // SetupRouter defines the routes and their handlers
-func setupRouter() {
-	api = E.Group("/v1")
+func SetupRouter(e *echo.Echo) {
+	e.Use(middleware.Logger)
+	e.GET("/ping", func(c echo.Context) error { return c.String(200, "pong") }) // Test connectivity
+
+	api = e.Group("/v1")
 
 	authentication()
 	user()
-	ping()
 }
 
 func authentication() {
@@ -34,11 +36,4 @@ func user() {
 	user := api.Group("/user", middleware.CheckToken("user"))
 
 	user.GET("/profile", userHandler.Profile)
-}
-
-func ping() {
-	// Test connectivity
-	api.GET("/ping", func(c echo.Context) error {
-		return c.String(200, "pong")
-	})
 }

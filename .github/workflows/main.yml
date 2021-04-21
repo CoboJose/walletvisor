@@ -39,4 +39,5 @@ jobs:
           appdir: "server"
         env:
           HD_SECRET: ${{secrets.SECRET}}
-          HD_APIKEY: ${{secrets.APIKEY}}
+          HD_TOKEN_EXPIRES: ${{secrets.TOKEN_EXPIRES}}
+          HD_REFRESH_TOKEN_EXPIRES: ${{secrets.REFRESH_TOKEN_EXPIRES}}

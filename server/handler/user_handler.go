@@ -15,14 +15,14 @@ func (h UserHandler) Profile(c echo.Context) error {
 	token := c.Request().Header.Get("Authorization")
 
 	//Validate token and get claims
-	err, claims := utils.ValidateToken(token)
+	claims, err := utils.ValidateToken(token)
 	if err != nil {
 		return c.JSON(401, err.Error())
 	}
 	email := claims["email"].(string)
 
 	// Get user
-	errCode, user := userdb.GetUserByEmail(email)
+	user, errCode := userdb.GetUserByEmail(email)
 	if errCode != "" {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}

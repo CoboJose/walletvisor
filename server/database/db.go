@@ -3,35 +3,28 @@ package database
 import (
 	"database/sql"
 	"server/model"
-	"server/web"
+	"server/utils"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var (
-	db  *sql.DB
-	w   = web.W
-	err error
-)
+var db *sql.DB
 
 // InitDB opens the database, creates the database and/or the tables defined in models if they do not exists
 func Init(dbPath string) {
-
+	var err error
 	// Open the Database
 	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
-		w.Logger.Error("Could not open the database: " + err.Error())
-		w.Close()
+		utils.ErrorLog.Fatalln("Could not open the database: " + err.Error())
 	}
 
-	// Start the Transaction to create the tables
+	// Create the tables
 	tx, _ := db.Begin()
-
 	for _, t := range model.Tables {
 		if _, err = tx.Exec(t); err != nil {
 			tx.Rollback()
-			w.Logger.Error("Could not create the tables: " + err.Error())
-			w.Close()
+			utils.ErrorLog.Fatalln("Could not create the tables: " + err.Error())
 		}
 	}
 	tx.Commit()

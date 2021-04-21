@@ -2,20 +2,14 @@ package handler
 
 import (
 	"fmt"
-	"os"
 	"regexp"
 	"server/database"
 	"server/utils"
-	"time"
 	"unicode"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
 )
-
-const TOKEN_EXPIRES_MINUTES = 15
-const REFRESH_TOKEN_EXPIRES_HOURS = 720
 
 type AuthHandler struct{}
 
@@ -25,7 +19,7 @@ var userdb = &database.UserDB{}
 func (h AuthHandler) Signup(c echo.Context) error {
 
 	// Get Request Data
-	errCode, payload := getAuthPayload(c)
+	payload, errCode := getAuthPayload(c)
 	if errCode != "" {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}
@@ -47,7 +41,7 @@ func (h AuthHandler) Signup(c echo.Context) error {
 	}
 
 	// Create the token
-	errCode, token, refreshToken := generateTokens(payload.Email, "user")
+	token, refreshToken, expiresIn, errCode := utils.GenerateTokens(payload.Email, "user")
 	if errCode != "" {
 		return c.JSON(500, utils.GenerateError(errCode))
 	}
@@ -55,7 +49,7 @@ func (h AuthHandler) Signup(c echo.Context) error {
 	response := map[string]interface{}{
 		"email":        payload.Email,
 		"token":        token,
-		"expiresIn":    TOKEN_EXPIRES_MINUTES,
+		"expiresIn":    expiresIn,
 		"refreshToken": refreshToken,
 		"msg":          "User created succesfully",
 	}
@@ -67,7 +61,7 @@ func (h AuthHandler) Signup(c echo.Context) error {
 func (h AuthHandler) Login(c echo.Context) error {
 
 	// Get Data
-	errCode, payload := getAuthPayload(c)
+	payload, errCode := getAuthPayload(c)
 	if errCode != "" {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}
@@ -81,7 +75,7 @@ func (h AuthHandler) Login(c echo.Context) error {
 		return c.JSON(401, utils.GenerateError("AU002"))
 	}
 
-	errCode, token, refreshToken := generateTokens(payload.Email, role)
+	token, refreshToken, expiresIn, errCode := utils.GenerateTokens(payload.Email, role)
 	if errCode != "" {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}
@@ -89,7 +83,7 @@ func (h AuthHandler) Login(c echo.Context) error {
 	response := map[string]interface{}{
 		"email":        payload.Email,
 		"token":        token,
-		"expiresIn":    TOKEN_EXPIRES_MINUTES,
+		"expiresIn":    expiresIn,
 		"refreshToken": refreshToken,
 	}
 
@@ -103,7 +97,7 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 	token := c.Request().Header.Get("Authorization")
 
 	//Validate token and get claims
-	err, claims := utils.ValidateToken(token)
+	claims, err := utils.ValidateToken(token)
 	if err != nil {
 		return c.JSON(401, err.Error())
 	}
@@ -120,7 +114,7 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}
 
-	errCode, token, refreshToken := generateTokens(email, role)
+	token, refreshToken, expiresIn, errCode := utils.GenerateTokens(email, role)
 	if errCode != "" {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}
@@ -128,7 +122,7 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 	response := map[string]interface{}{
 		"email":        email,
 		"token":        token,
-		"expiresIn":    TOKEN_EXPIRES_MINUTES,
+		"expiresIn":    expiresIn,
 		"refreshToken": refreshToken,
 	}
 
@@ -144,18 +138,17 @@ type authPayload struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func getAuthPayload(c echo.Context) (string, *authPayload) {
-
-	authPayload := new(authPayload)
-	if err := c.Bind(&authPayload); err != nil {
-		return "GE001", nil
+func getAuthPayload(c echo.Context) (res *authPayload, errCode string) {
+	res = new(authPayload)
+	if err := c.Bind(&res); err != nil {
+		return nil, "GE001"
 	}
 
-	if authPayload.Email == "" || authPayload.Password == "" {
-		return "GE002", nil
+	if res.Email == "" || res.Password == "" {
+		return nil, "GE002"
 	}
 
-	return "", authPayload
+	return res, ""
 }
 
 func validateAuthData(payload *authPayload) string {
@@ -199,31 +192,4 @@ func hashPassword(password string) (string, string) {
 	}
 
 	return "", string(passwordBytes)
-}
-
-func generateTokens(email, role string) (errCode string, token string, refreshToken string) {
-	// TOKEN
-	t := jwt.New(jwt.SigningMethodHS256)
-	claims := t.Claims.(jwt.MapClaims)
-	claims["email"] = email
-	claims["role"] = role
-	claims["exp"] = time.Now().Add(time.Minute * time.Duration(TOKEN_EXPIRES_MINUTES)).Unix()
-
-	token, err := t.SignedString([]byte(os.Getenv("SECRET")))
-	if err != nil {
-		return "GE000", "", ""
-	}
-
-	//REFRESH TOKEN
-	rt := jwt.New(jwt.SigningMethodHS256)
-	rtClaims := rt.Claims.(jwt.MapClaims)
-	rtClaims["email"] = email
-	rtClaims["exp"] = time.Now().Add(time.Hour * time.Duration(REFRESH_TOKEN_EXPIRES_HOURS)).Unix()
-
-	refreshToken, err = rt.SignedString([]byte(os.Getenv("SECRET")))
-	if err != nil {
-		return "GE000", "", ""
-	}
-
-	return "", token, refreshToken
 }
