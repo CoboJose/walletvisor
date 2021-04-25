@@ -2,8 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"server/model"
-	"server/utils"
+	"server/util"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -16,21 +15,16 @@ func Init(dbPath string) {
 	// Open the Database
 	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
-		utils.ErrorLog.Fatalln("Could not open the database: " + err.Error())
+		util.ErrorLog.Fatalln("Could not open the database: " + err.Error())
 	}
-
-	// Create the tables
-	tx, _ := db.Begin()
-	for _, t := range model.Tables {
-		if _, err = tx.Exec(t); err != nil {
-			tx.Rollback()
-			utils.ErrorLog.Fatalln("Could not create the tables: " + err.Error())
-		}
-	}
-	tx.Commit()
 }
 
 // Close closes the connection to the database
 func Close() {
 	db.Close()
+}
+
+// GetDB returns a handle to the database
+func Get() *sql.DB {
+	return db
 }

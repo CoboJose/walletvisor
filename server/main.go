@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"server/database"
-	"server/routes"
+	"server/models"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
@@ -14,18 +14,26 @@ func main() {
 	// Load environment variables
 	godotenv.Load()
 
-	// Init Database
 	database.Init("./walletvisor.db")
-	defer database.Close()
+	models.CreateTables()
+
+	/*u := models.NewUser("email1@email", "passrgrg·$feF12", "name1", "user")
+	u.Id = 1
+	errCode := u.Save()
+	if errCode != "" {
+		fmt.Println(util.GenerateError(errCode))
+	}
+	fmt.Println(u.Id)*/
+	us := models.User.GetUserById(1)
+	fmt.Println(us)
 
 	// Init Echo Server
-	initEcho()
+	//initEcho()
 }
 
 func initEcho() {
 	e := echo.New()
 	e.HideBanner = true
-	routes.SetupRouter(e)
 	fmt.Println(banner)
 
 	e.Start(":" + os.Getenv("PORT"))
