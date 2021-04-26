@@ -15,7 +15,7 @@ var errorMessages = map[string]string{
 	"GE003": "Missing values",
 
 	// Authentication
-	"AU000": "The given email already has an account",
+	"AU000": "The given email is already in use",
 	"AU001": "No account with the given email",
 	"AU002": "Incorrect password",
 	"AU003": "Invalid email",
