@@ -40,6 +40,8 @@ jobs:
             ${{ runner.os }}-go-
       
       - name: Test
+        env:
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
         run: go test ./...
           
       - name: Production Deploy
