@@ -1,4 +1,4 @@
-package utils
+package util
 
 func GenerateError(errorCode string) map[string]string {
 	return map[string]string{
@@ -12,6 +12,7 @@ var errorMessages = map[string]string{
 	"GE000": "Unexpected error, please contact with: cobogue@gmail.com",
 	"GE001": "Could not parse the request",
 	"GE002": "Incorrect payload",
+	"GE003": "Missing values",
 
 	// Authentication
 	"AU000": "The given email already has an account",
@@ -21,5 +22,5 @@ var errorMessages = map[string]string{
 	"AU004": "Invalid password, it must have at least one of each: lowercase, uppercase, special character, and more than 8 characters",
 
 	// User
-	"US000": "No user with that email",
+	"US000": "There is no user with that id",
 }

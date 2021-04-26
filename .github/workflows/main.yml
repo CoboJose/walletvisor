@@ -41,3 +41,4 @@ jobs:
           HD_SECRET: ${{secrets.SECRET}}
           HD_TOKEN_EXPIRES: ${{secrets.TOKEN_EXPIRES}}
           HD_REFRESH_TOKEN_EXPIRES: ${{secrets.REFRESH_TOKEN_EXPIRES}}
+          HD_DB_URL: ${{secrets.HEROKU_DB_URL}}

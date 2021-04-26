@@ -3,29 +3,41 @@ package main
 import (
 	"fmt"
 	"os"
-	"server/database"
-	"server/routes"
+	"server/models/user"
 
-	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/labstack/echo"
 )
 
 func main() {
-	// Load environment variables
-	godotenv.Load()
 
-	// Init Database
-	database.Init("./walletvisor.db")
-	defer database.Close()
+	nu := user.NewUser("email3@email.com", "passWOr456$", "name2", "user")
+	errCode := nu.Save()
+	if errCode != "" {
+		fmt.Println(errCode)
+	} else {
+		fmt.Println(nu)
+	}
+
+	/*u, errCode := user.GetUserById(1)
+	if errCode != "" {
+		fmt.Println(errCode)
+	} else {
+		fmt.Println(u)
+	}
+	u.Name = "Please"
+	u.Email = "fenf@fie.com"
+	u.Password = "fjnejfEFJFNdj3&"
+	aa := u.Save()
+	fmt.Println(aa)*/
 
 	// Init Echo Server
-	initEcho()
+	//initEcho()
 }
 
 func initEcho() {
 	e := echo.New()
 	e.HideBanner = true
-	routes.SetupRouter(e)
 	fmt.Println(banner)
 
 	e.Start(":" + os.Getenv("PORT"))
