@@ -24,8 +24,13 @@ var db *sqlx.DB
 
 func init() {
 	db = database.Get()
-	userTable := `CREATE TABLE IF NOT EXISTS users (
-		id			SERIAL	 				PRIMARY KEY,
+	//Drop the table
+	if _, err := db.Exec(`DROP TABLE IF EXISTS users CASCADE`); err != nil {
+		util.ErrorLog.Fatalln("Could not create the Users table: " + err.Error())
+	}
+	//Create the table
+	userTable := `CREATE TABLE users (
+		id			SERIAL	 	PRIMARY KEY,
 		email 		TEXT 		NOT NULL 	UNIQUE,
 		password	TEXT 		NOT NULL,
 		name		TEXT 		NOT NULL,
