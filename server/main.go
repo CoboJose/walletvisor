@@ -3,29 +3,33 @@ package main
 import (
 	"fmt"
 	"os"
-	"server/database"
-	"server/models"
+	"server/models/user"
 
-	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/labstack/echo"
 )
 
 func main() {
-	// Load environment variables
-	godotenv.Load()
 
-	database.Init("./walletvisor.db")
-	models.CreateTables()
-
-	/*u := models.NewUser("email1@email", "passrgrg·$feF12", "name1", "user")
-	u.Id = 1
-	errCode := u.Save()
+	nu := user.NewUser("email3@email.com", "passWOr456$", "name2", "user")
+	errCode := nu.Save()
 	if errCode != "" {
-		fmt.Println(util.GenerateError(errCode))
+		fmt.Println(errCode)
+	} else {
+		fmt.Println(nu)
 	}
-	fmt.Println(u.Id)*/
-	us := models.User.GetUserById(1)
-	fmt.Println(us)
+
+	/*u, errCode := user.GetUserById(1)
+	if errCode != "" {
+		fmt.Println(errCode)
+	} else {
+		fmt.Println(u)
+	}
+	u.Name = "Please"
+	u.Email = "fenf@fie.com"
+	u.Password = "fjnejfEFJFNdj3&"
+	aa := u.Save()
+	fmt.Println(aa)*/
 
 	// Init Echo Server
 	//initEcho()

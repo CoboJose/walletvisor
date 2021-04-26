@@ -22,5 +22,5 @@ var errorMessages = map[string]string{
 	"AU004": "Invalid password, it must have at least one of each: lowercase, uppercase, special character, and more than 8 characters",
 
 	// User
-	"US000": "No user with that email",
+	"US000": "There is no user with that id",
 }

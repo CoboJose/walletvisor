@@ -1,19 +1,20 @@
 package database
 
 import (
-	"database/sql"
+	"os"
 	"server/util"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/jackc/pgx/stdlib"
+	"github.com/jmoiron/sqlx"
+	_ "github.com/joho/godotenv/autoload"
 )
 
-var db *sql.DB
+var db *sqlx.DB
 
-// InitDB opens the database, creates the database and/or the tables defined in models if they do not exists
-func Init(dbPath string) {
+func init() {
 	var err error
-	// Open the Database
-	db, err = sql.Open("sqlite3", dbPath)
+	// Open the Database connection
+	db, err = sqlx.Connect("pgx", os.Getenv("DB_URL"))
 	if err != nil {
 		util.ErrorLog.Fatalln("Could not open the database: " + err.Error())
 	}
@@ -25,6 +26,6 @@ func Close() {
 }
 
 // GetDB returns a handle to the database
-func Get() *sql.DB {
+func Get() *sqlx.DB {
 	return db
 }

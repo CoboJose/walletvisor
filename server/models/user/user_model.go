@@ -1,35 +1,53 @@
-package models
+package user
 
 import (
 	"database/sql"
 	"fmt"
 	"regexp"
+	"server/database"
 	"server/util"
 	"unicode"
 
+	"github.com/jmoiron/sqlx"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	Id       int64  `json:"id"`
+	UserId   int64  `json:"userId" db:"user_id"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Name     string `json:"name"`
 	Role     string `json:"role"`
 }
 
-var userTable = `
-CREATE TABLE IF NOT EXISTS users(
-	userId 		INTEGER NOT NULL PRIMARY KEY,
-	email 		TEXT 	NOT NULL UNIQUE,
-	password	TEXT 	NOT NULL,
-	name		TEXT,
-	role 		TEXT 	NOT NULL CHECK(role IN('user', 'admin'))
-)
-`
+var db *sqlx.DB
+
+func init() {
+	db = database.Get()
+	userTable := `CREATE TABLE IF NOT EXISTS users (
+		id			SERIAL	 				PRIMARY KEY,
+		email 		TEXT 		NOT NULL 	UNIQUE,
+		password	TEXT 		NOT NULL,
+		name		TEXT 		NOT NULL,
+		role 		TEXT 		NOT NULL 	CHECK(role IN('user', 'admin'))
+		)`
+	if _, err := db.Exec(userTable); err != nil {
+		util.ErrorLog.Fatalln("Could not create the Users table: " + err.Error())
+	}
+}
 
 func NewUser(email, password, name, role string) *User {
-	return &User{Id: -1, Email: email, Password: password, Name: name, Role: role}
+	return &User{UserId: -1, Email: email, Password: password, Name: name, Role: role}
+}
+
+func GetUserById(id int64) (user *User, errCode string) {
+	res := new(User)
+
+	if err := db.Get(res, `SELECT * FROM users WHERE user_id = ?`, id); err != nil {
+		return user, "US000"
+	}
+
+	return res, ""
 }
 
 func (user *User) Save() (errCode string) {
@@ -43,12 +61,10 @@ func (user *User) Save() (errCode string) {
 		return errCode
 	}
 
-	if user.Id < 0 { // Create
-		query := `INSERT INTO users(email, password, name, role) values(?, ?, ?, ?)`
-		res, err = db.Exec(query, user.Email, user.Password, user.Name, user.Role)
+	if user.UserId < 0 { // Create
+		res, err = db.NamedExec(`INSERT INTO users(email, password, name, role) values(:email, :password, :name, :role)`, &user)
 	} else { //Update
-		query := `UPDATE users SET email=?, password=?, name=?, role=? WHERE userId=?`
-		res, err = db.Exec(query, user.Email, user.Password, user.Name, user.Role, user.Id)
+		res, err = db.NamedExec(`UPDATE users SET email=:email, password=:password, name=:name, role=:role WHERE user_id=:user_id`, &user)
 	}
 
 	if err != nil {
@@ -60,21 +76,11 @@ func (user *User) Save() (errCode string) {
 		}
 	}
 	//Set the db id
-	if user.Id < 0 {
-		user.Id, _ = res.LastInsertId()
+	if user.UserId < 0 {
+		user.UserId, _ = res.LastInsertId()
 	}
 
 	return ""
-}
-
-func (u User) GetUserById(id int64) (user *User, errCode string) {
-	query := ` SELECT * FROM users WHERE userId = ?`
-	err := db.QueryRow(query, id).Scan(&user.Id, &user.Name, &user.Email, &user.Password, &user.Role)
-	if err != nil {
-		return nil, "US000"
-	}
-
-	return user, ""
 }
 
 func (user *User) hashPassword() (errCode string) {
@@ -91,7 +97,7 @@ func (user *User) hashPassword() (errCode string) {
 
 func (user *User) valid() (errCode string) {
 	// Not null
-	if user.Id == 0 || user.Email == "" || user.Password == "" || user.Name == "" || user.Role == "" {
+	if user.UserId == 0 || user.Email == "" || user.Password == "" || user.Name == "" || user.Role == "" {
 		return "GE003"
 	}
 
