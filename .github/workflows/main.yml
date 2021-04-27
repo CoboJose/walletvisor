@@ -41,7 +41,8 @@ jobs:
       
       - name: Test
         env:
-          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          JWT_SECRET: ${{secrets.JWT_SECRET}}
+          DATABASE_URL: ${{secrets.DATABASE_URL_GITHUB}}
         run: go test ./...
           
       - name: Production Deploy
@@ -53,6 +54,4 @@ jobs:
           heroku_email: 'cobogue@gmail.com'
           appdir: "server"
         env:
-          HD_SECRET: ${{secrets.SECRET}}
-          HD_TOKEN_EXPIRES: ${{secrets.TOKEN_EXPIRES}}
-          HD_REFRESH_TOKEN_EXPIRES: ${{secrets.REFRESH_TOKEN_EXPIRES}}
+          HD_JWT_SECRET: ${{secrets.JWT_SECRET}}

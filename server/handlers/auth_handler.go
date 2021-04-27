@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"server/models/user"
-	"server/util"
+	"server/utils"
 
 	"github.com/labstack/echo"
 )
@@ -11,30 +11,31 @@ type AuthHandler struct{}
 
 //Signup creates the user and return a token to access
 func (h AuthHandler) Signup(c echo.Context) error {
-
 	// Get Request Data
 	payload, errCode := getAuthPayload(c)
 	if errCode != "" {
-		return c.JSON(400, util.GenerateError(errCode))
+		return c.JSON(400, utils.GenerateError(errCode))
 	}
 
 	// Create the user
 	user := user.NewUser(payload.Email, payload.Password, payload.Email, "user")
-	if errCode := user.Save(); errCode != "" {
-		return c.JSON(400, util.GenerateError(errCode))
+	errCode = user.Save()
+	if errCode != "" {
+		return c.JSON(400, utils.GenerateError(errCode))
 	}
 
 	// Create the token
-	token, refreshToken, expiresIn, errCode := util.GenerateTokens(payload.Email, "user")
+	token, refreshToken, errCode := utils.GenerateTokens(user.Id, user.Email, user.Role)
 	if errCode != "" {
-		return c.JSON(500, util.GenerateError(errCode))
+		return c.JSON(500, utils.GenerateError(errCode))
 	}
 
 	response := map[string]interface{}{
-		"email":        payload.Email,
 		"token":        token,
-		"expiresIn":    expiresIn,
 		"refreshToken": refreshToken,
+		"expiresIn":    utils.TOKEN_EXPIRES_MINUTES,
+		"name":         user.Name,
+		"role":         user.Role,
 		"msg":          "User created succesfully",
 	}
 
@@ -46,69 +47,71 @@ func (h AuthHandler) Login(c echo.Context) error {
 	// Get Data
 	payload, errCode := getAuthPayload(c)
 	if errCode != "" {
-		return c.JSON(400, util.GenerateError(errCode))
+		return c.JSON(400, utils.GenerateError(errCode))
 	}
 
-	_, errCode = user.Authenticate(payload.Email, payload.Password)
+	user, errCode := user.Authenticate(payload.Email, payload.Password)
 	if errCode != "" {
-		return c.JSON(400, util.GenerateError(errCode))
+		return c.JSON(401, utils.GenerateError(errCode))
 	}
 
-	token, refreshToken, expiresIn, errCode := util.GenerateTokens(payload.Email, "user")
+	token, refreshToken, errCode := utils.GenerateTokens(user.Id, user.Email, user.Role)
 	if errCode != "" {
-		return c.JSON(400, util.GenerateError(errCode))
+		return c.JSON(500, utils.GenerateError(errCode))
 	}
 
 	response := map[string]interface{}{
-		"email":        payload.Email,
 		"token":        token,
-		"expiresIn":    expiresIn,
 		"refreshToken": refreshToken,
+		"expiresIn":    utils.TOKEN_EXPIRES_MINUTES,
+		"name":         user.Name,
+		"role":         user.Role,
 	}
 
 	return c.JSON(200, response)
 }
 
-/*
 //RefreshToken takes a refresh token and return a pair of new tokens
 func (h AuthHandler) RefreshToken(c echo.Context) error {
-
 	//Get token
-	token := c.Request().Header.Get("Authorization")
+	refreshToken := c.Request().Header.Get("refreshToken")
+	if refreshToken == "" || refreshToken == "null" {
+		return c.JSON(400, utils.GenerateError("AU005"))
+	}
 
 	//Validate token and get claims
-	claims, err := util.ValidateToken(token)
-	if err != nil {
-		return c.JSON(401, err.Error())
+	claims, errCode := utils.ParseToken(refreshToken)
+	if errCode != "" {
+		return c.JSON(401, utils.GenerateError(errCode))
 	}
 
 	//Token type should be refresh, so it must not have the roles claims
-	if claims["role"] != nil {
-		return c.JSON(401, "{msg: Not a refresh token}")
+	if claims.Type != "refresh" {
+		return c.JSON(401, utils.GenerateError("AU006"))
 	}
 
 	//Generate new Tokens
-	email := claims["email"].(string)
-	role, errCode := userdb.GetRoleByUserEmail(email)
+	user, errCode := user.GetUserById(1)
 	if errCode != "" {
-		return c.JSON(400, util.GenerateError(errCode))
+		return c.JSON(400, utils.GenerateError(errCode))
 	}
 
-	token, refreshToken, expiresIn, errCode := util.GenerateTokens(email, role)
+	token, refreshToken, errCode := utils.GenerateTokens(user.Id, user.Email, user.Role)
 	if errCode != "" {
-		return c.JSON(400, util.GenerateError(errCode))
+		return c.JSON(500, utils.GenerateError(errCode))
 	}
 
 	response := map[string]interface{}{
-		"email":        email,
 		"token":        token,
-		"expiresIn":    expiresIn,
 		"refreshToken": refreshToken,
+		"expiresIn":    utils.TOKEN_EXPIRES_MINUTES,
+		"name":         user.Name,
+		"role":         user.Role,
 	}
 
 	return c.JSON(200, response)
 }
-*/
+
 /////////////////
 //// HELPERS ////
 /////////////////
@@ -120,7 +123,8 @@ type authPayload struct {
 
 func getAuthPayload(c echo.Context) (res *authPayload, errCode string) {
 	res = new(authPayload)
-	if err := c.Bind(&res); err != nil {
+	err := c.Bind(&res)
+	if err != nil {
 		return nil, "GE001"
 	}
 	if res.Email == "" || res.Password == "" {

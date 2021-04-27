@@ -2,7 +2,7 @@ package transaction
 
 import (
 	"server/database"
-	"server/util"
+	"server/utils"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -21,6 +21,6 @@ func init() {
 		test			TEXT
 	)`
 	if _, err := db.Exec(userTable); err != nil {
-		util.ErrorLog.Fatalln("Could not create the Transactions table: " + err.Error())
+		utils.ErrorLog.Fatalln("Could not create the Transactions table: " + err.Error())
 	}
 }

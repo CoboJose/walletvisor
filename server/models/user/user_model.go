@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"server/database"
-	"server/util"
+	"server/utils"
 	"strings"
 	"unicode"
 
@@ -36,7 +36,7 @@ func init() {
 		role 		VARCHAR(10)		NOT NULL 	CHECK(role IN('user', 'admin'))
 		)`
 	if _, err := db.Exec(userTable); err != nil {
-		util.ErrorLog.Fatalln("Could not create the User table: " + err.Error())
+		utils.ErrorLog.Fatalln("Could not create the User table: " + err.Error())
 	}
 }
 
@@ -44,11 +44,21 @@ func NewUser(email, password, name, role string) *User {
 	return &User{Id: -1, Email: email, Password: password, Name: name, Role: role}
 }
 
-func GetUserById(id int64) (user *User, errCode string) {
+func GetUserById(id int) (user *User, errCode string) {
 	res := new(User)
-
-	if err := db.Get(res, `SELECT * FROM users WHERE id=$1`, id); err != nil {
+	err := db.Get(res, `SELECT * FROM users WHERE id=$1`, id)
+	if err != nil {
 		return user, "US000"
+	}
+
+	return res, ""
+}
+
+func GetUserByEmail(email string) (user *User, errCode string) {
+	res := new(User)
+	err := db.Get(res, `SELECT * FROM users WHERE email=$1`, email)
+	if err != nil {
+		return user, "US001"
 	}
 
 	return res, ""
@@ -84,10 +94,10 @@ func (user *User) Save() (errCode string) {
 	}
 
 	if err != nil {
-		if strings.Contains(err.Error(), "«users_email_key»") {
+		if strings.Contains(err.Error(), "users_email_key") {
 			return "AU000"
 		} else {
-			util.ErrorLog.Println("Unexpected Error creating a user: ", err.Error())
+			utils.ErrorLog.Println("Unexpected Error creating a user: ", err.Error())
 			return "GE000"
 		}
 	}
