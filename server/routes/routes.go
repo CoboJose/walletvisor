@@ -2,7 +2,7 @@ package routes
 
 import (
 	"server/handlers"
-	"server/middleware"
+	"server/middlewares"
 
 	"github.com/labstack/echo"
 )
@@ -10,12 +10,12 @@ import (
 var (
 	api         *echo.Group
 	authHandler = &handlers.AuthHandler{}
-	//userHandler = &handlers.UserHandler{}
+	userHandler = &handlers.UserHandler{}
 )
 
 // Init defines the routes and their handlers
 func Init(e *echo.Echo) {
-	e.Use(middleware.Logger)
+	e.Use(middlewares.Logger)
 	e.GET("/ping", func(c echo.Context) error { return c.String(200, "pong") }) // Test connectivity
 
 	api = e.Group("/v1")
@@ -29,10 +29,10 @@ func authentication() {
 
 	auth.POST("/signup", authHandler.Signup)
 	auth.POST("/login", authHandler.Login)
-	//auth.POST("/refreshToken", authHandler.RefreshToken)
+	auth.POST("/refreshToken", authHandler.RefreshToken)
 }
 
 func user() {
-	//user := api.Group("/user", middleware.CheckToken("user"))
-	/*user.GET("/profile", userHandler.Profile)*/
+	user := api.Group("/user", middlewares.ValidToken("user"))
+	user.GET("/profile", userHandler.Profile)
 }

@@ -10,6 +10,19 @@ jobs:
     defaults:
       run:
         working-directory: server
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
         
     steps:
       - name: Checkout repository
@@ -27,6 +40,9 @@ jobs:
             ${{ runner.os }}-go-
       
       - name: Test
+        env:
+          JWT_SECRET: ${{secrets.JWT_SECRET}}
+          DATABASE_URL: ${{secrets.DATABASE_URL_GITHUB}}
         run: go test ./...
           
       - name: Production Deploy
@@ -38,6 +54,4 @@ jobs:
           heroku_email: 'cobogue@gmail.com'
           appdir: "server"
         env:
-          HD_SECRET: ${{secrets.SECRET}}
-          HD_TOKEN_EXPIRES: ${{secrets.TOKEN_EXPIRES}}
-          HD_REFRESH_TOKEN_EXPIRES: ${{secrets.REFRESH_TOKEN_EXPIRES}}
+          HD_JWT_SECRET: ${{secrets.JWT_SECRET}}

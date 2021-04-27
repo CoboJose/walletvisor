@@ -2,7 +2,7 @@ package database
 
 import (
 	"os"
-	"server/util"
+	"server/utils"
 
 	_ "github.com/jackc/pgx/stdlib"
 	"github.com/jmoiron/sqlx"
@@ -16,7 +16,7 @@ func init() {
 	// Open the Database connection
 	db, err = sqlx.Connect("pgx", os.Getenv("DATABASE_URL"))
 	if err != nil {
-		util.ErrorLog.Fatalln("Could not open the database: " + err.Error())
+		utils.ErrorLog.Fatalln("Could not open the database: " + err.Error())
 	}
 }
 
