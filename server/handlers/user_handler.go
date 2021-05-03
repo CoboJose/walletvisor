@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"server/models/user"
+	"server/models"
 	"server/utils"
 
 	"github.com/labstack/echo"
@@ -14,7 +14,7 @@ func (h UserHandler) Profile(c echo.Context) error {
 	claims := c.Get("claims").(utils.JwtClaims)
 
 	// Get user
-	user, errCode := user.GetUserById(claims.UserId)
+	user, errCode := models.GetUserById(claims.UserId)
 	if errCode != "" {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}

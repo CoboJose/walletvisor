@@ -1,14 +1,12 @@
-package user
+package models
 
 import (
 	"fmt"
 	"regexp"
-	"server/database"
 	"server/utils"
 	"strings"
 	"unicode"
 
-	"github.com/jmoiron/sqlx"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -20,65 +18,59 @@ type User struct {
 	Role     string `json:"role"`
 }
 
-var (
-	db  *sqlx.DB
-	err error
-)
-
-func init() {
-	db = database.Get()
-	//Create the table
-	userTable := `CREATE TABLE IF NOT EXISTS users (
+var usersTable = `CREATE TABLE IF NOT EXISTS users (
 		id			SERIAL	 		PRIMARY KEY,
 		email 		VARCHAR(100)	NOT NULL 	UNIQUE,
 		password	VARCHAR(250) 	NOT NULL,
 		name		VARCHAR(100) 	NOT NULL,
 		role 		VARCHAR(10)		NOT NULL 	CHECK(role IN('user', 'admin'))
-		)`
-	if _, err := db.Exec(userTable); err != nil {
-		utils.ErrorLog.Fatalln("Could not create the User table: " + err.Error())
-	}
-}
+	)`
+
+/////////
+// NEW //
+/////////
 
 func NewUser(email, password, name, role string) *User {
 	return &User{Id: -1, Email: email, Password: password, Name: name, Role: role}
 }
 
-func GetUserById(id int) (user *User, errCode string) {
-	res := new(User)
-	err := db.Get(res, `SELECT * FROM users WHERE id=$1`, id)
-	if err != nil {
-		return user, "US000"
-	}
+/////////
+// GET //
+/////////
 
-	return res, ""
+func GetUserById(id int) (user *User, errCode string) {
+	user = new(User)
+	if err := db.Get(user, `SELECT * FROM users WHERE id=$1`, id); err != nil {
+		return nil, "US000"
+	}
+	return user, ""
 }
 
 func GetUserByEmail(email string) (user *User, errCode string) {
-	res := new(User)
-	err := db.Get(res, `SELECT * FROM users WHERE email=$1`, email)
-	if err != nil {
-		return user, "US001"
+	user = new(User)
+	if err := db.Get(user, `SELECT * FROM users WHERE email=$1`, email); err != nil {
+		return nil, "US001"
 	}
-
-	return res, ""
+	return user, ""
 }
 
-func Authenticate(email, password string) (user *User, errCode string) {
-	dbUser := new(User)
-
-	if err := db.Get(dbUser, `SELECT * FROM users WHERE email=$1`, email); err != nil {
+func GetUserByAuthentication(email, password string) (user *User, errCode string) {
+	user, errCode = GetUserByEmail(email)
+	if errCode != "" {
 		return nil, "AU001"
 	}
-
-	if !dbUser.passwordMatch(password) {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
 		return nil, "AU002"
 	}
-
-	return dbUser, ""
+	return user, ""
 }
 
+//////////
+// Save //
+//////////
+
 func (user *User) Save() (errCode string) {
+	var err error
 	if errCode := user.validate(); errCode != "" {
 		return errCode
 	}
@@ -97,7 +89,7 @@ func (user *User) Save() (errCode string) {
 		if strings.Contains(err.Error(), "users_email_key") {
 			return "AU000"
 		} else {
-			utils.ErrorLog.Println("Unexpected Error creating a user: ", err.Error())
+			utils.ErrorLog.Println(err.Error())
 			return "GE000"
 		}
 	}
@@ -105,18 +97,20 @@ func (user *User) Save() (errCode string) {
 	return ""
 }
 
+/////////////
+// METHODS //
+/////////////
+
 func (user *User) validate() (errCode string) {
 	// Not null
 	if user.Id == 0 || user.Email == "" || user.Password == "" || user.Name == "" || user.Role == "" {
 		return "GE003"
 	}
-
 	// Email
 	var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 	if !emailRegex.MatchString(user.Email) {
 		return "AU003"
 	}
-
 	// Password
 	has_digit := false
 	has_upper := false
@@ -148,15 +142,6 @@ func (user *User) hashPassword() (errCode string) {
 		fmt.Println(err.Error())
 		return "GE000"
 	}
-
 	user.Password = string(passwordBytes)
-
 	return ""
-}
-
-func (user *User) passwordMatch(password string) (match bool) {
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
-		return false
-	}
-	return true
 }

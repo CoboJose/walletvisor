@@ -2,6 +2,7 @@ package utils
 
 import (
 	"os"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -51,7 +52,7 @@ func ParseToken(token string) (claims JwtClaims, errCode string) {
 		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 	if err != nil {
-		if err.Error() == "Token is expired" {
+		if strings.Contains(err.Error(), "expired") {
 			return JwtClaims{}, "AU008"
 		} else {
 			return JwtClaims{}, "AU009"

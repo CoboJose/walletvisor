@@ -7,7 +7,7 @@ import (
 	"os"
 	"server/database"
 	"server/handlers"
-	"server/models/user"
+	"server/models"
 	"strings"
 	"testing"
 
@@ -21,7 +21,7 @@ var (
 
 func TestMain(m *testing.M) {
 	//Setup
-	u1 := user.NewUser("user1@test.com", "c0mplexPa$$", "user1", "user")
+	u1 := models.NewUser("user1@test.com", "c0mplexPa$$", "user1", "user")
 	u1.Save()
 	//Run Tests
 	code := m.Run()
@@ -101,7 +101,7 @@ func TestSignupOk(t *testing.T) {
 	c := e.NewContext(req, rec)
 
 	if assert.NoError(t, authHandler.Signup(c)) {
-		user, _ := user.GetUserByEmail(email)
+		user, _ := models.GetUserByEmail(email)
 		assert.Equal(t, 201, rec.Code)
 		assert.Equal(t, user.Email, email)
 		assert.Contains(t, rec.Body.String(), "user")

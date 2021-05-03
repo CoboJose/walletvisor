@@ -44,7 +44,7 @@ const App = () => {
           <p>Welcome, &apos;{userId}&apos;</p>
           <button onClick={() => dispatch(logout())}>Log out</button>
           <button onClick={() => dispatch(changeTheme())}>Change Theme</button>
-      </div>
+        </div>
       }
       
       {render}

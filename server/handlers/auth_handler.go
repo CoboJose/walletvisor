@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"server/models/user"
+	"server/models"
 	"server/utils"
 
 	"github.com/labstack/echo"
@@ -18,9 +18,8 @@ func (h AuthHandler) Signup(c echo.Context) error {
 	}
 
 	// Create the user
-	user := user.NewUser(payload.Email, payload.Password, payload.Email, "user")
-	errCode = user.Save()
-	if errCode != "" {
+	user := models.NewUser(payload.Email, payload.Password, payload.Email, "user")
+	if errCode = user.Save(); errCode != "" {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}
 
@@ -50,7 +49,7 @@ func (h AuthHandler) Login(c echo.Context) error {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}
 
-	user, errCode := user.Authenticate(payload.Email, payload.Password)
+	user, errCode := models.GetUserByAuthentication(payload.Email, payload.Password)
 	if errCode != "" {
 		return c.JSON(401, utils.GenerateError(errCode))
 	}
@@ -91,7 +90,7 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 	}
 
 	//Generate new Tokens
-	user, errCode := user.GetUserById(1)
+	user, errCode := models.GetUserById(1)
 	if errCode != "" {
 		return c.JSON(400, utils.GenerateError(errCode))
 	}
