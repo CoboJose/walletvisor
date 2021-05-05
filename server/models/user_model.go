@@ -1,9 +1,9 @@
 package models
 
 import (
-	"fmt"
 	"regexp"
 	"server/utils"
+	"strconv"
 	"strings"
 	"unicode"
 
@@ -38,44 +38,44 @@ func NewUser(email, password, name, role string) *User {
 // GET //
 /////////
 
-func GetUserById(id int) (user *User, errCode string) {
-	user = new(User)
+func GetUserById(id int) (*User, *utils.Cerr) {
+	user := new(User)
 	if err := db.Get(user, `SELECT * FROM users WHERE id=$1`, id); err != nil {
-		return nil, "US000"
+		return nil, utils.NewCerr("US000", err)
 	}
-	return user, ""
+	return user, nil
 }
 
-func GetUserByEmail(email string) (user *User, errCode string) {
-	user = new(User)
+func GetUserByEmail(email string) (*User, *utils.Cerr) {
+	user := new(User)
 	if err := db.Get(user, `SELECT * FROM users WHERE email=$1`, email); err != nil {
-		return nil, "US001"
+		return nil, utils.NewCerr("US001", err)
 	}
-	return user, ""
+	return user, nil
 }
 
-func GetUserByAuthentication(email, password string) (user *User, errCode string) {
-	user, errCode = GetUserByEmail(email)
-	if errCode != "" {
-		return nil, "AU001"
+func GetUserByAuthentication(email, password string) (*User, *utils.Cerr) {
+	user, cerr := GetUserByEmail(email)
+	if cerr != nil {
+		return nil, utils.NewCerr("AU001", cerr.Err)
 	}
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
-		return nil, "AU002"
+		return nil, utils.NewCerr("AU002", err)
 	}
-	return user, ""
+	return user, nil
 }
 
 //////////
 // Save //
 //////////
 
-func (user *User) Save() (errCode string) {
+func (user *User) Save() *utils.Cerr {
 	var err error
-	if errCode := user.validate(); errCode != "" {
-		return errCode
+	if cerr := user.validate(); cerr != nil {
+		return cerr
 	}
-	if errCode := user.hashPassword(); errCode != "" {
-		return errCode
+	if cerr := user.hashPassword(); cerr != nil {
+		return cerr
 	}
 
 	if user.Id < 0 { // Create
@@ -87,29 +87,28 @@ func (user *User) Save() (errCode string) {
 
 	if err != nil {
 		if strings.Contains(err.Error(), "users_email_key") {
-			return "AU000"
+			return utils.NewCerr("AU000", nil)
 		} else {
-			utils.ErrorLog.Println(err.Error())
-			return "GE000"
+			return utils.NewCerr("GE000", err)
 		}
 	}
 
-	return ""
+	return nil
 }
 
 /////////////
 // METHODS //
 /////////////
 
-func (user *User) validate() (errCode string) {
+func (user *User) validate() *utils.Cerr {
 	// Not null
 	if user.Id == 0 || user.Email == "" || user.Password == "" || user.Name == "" || user.Role == "" {
-		return "GE003"
+		return utils.NewCerr("GE003", nil)
 	}
 	// Email
 	var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 	if !emailRegex.MatchString(user.Email) {
-		return "AU003"
+		return utils.NewCerr("AU003", nil)
 	}
 	// Password
 	has_digit := false
@@ -130,18 +129,22 @@ func (user *User) validate() (errCode string) {
 		}
 	}
 	if !(has_digit && has_upper && has_lower && has_special && pass_length >= 8) {
-		return "AU004"
+		return utils.NewCerr("AU004", nil)
 	}
 
-	return ""
+	return nil
 }
 
-func (user *User) hashPassword() (errCode string) {
+func (user *User) hashPassword() *utils.Cerr {
 	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
-		fmt.Println(err.Error())
-		return "GE000"
+		return utils.NewCerr("GE000", err)
 	}
 	user.Password = string(passwordBytes)
-	return ""
+	return nil
+}
+
+func (user *User) ToString() string {
+	return "User: [Id:" + strconv.Itoa(user.Id) + ", Email: " + user.Email +
+		", Password:" + user.Password + ", Name: " + user.Name + "Role: " + user.Role + "]"
 }

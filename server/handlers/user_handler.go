@@ -14,9 +14,9 @@ func (h UserHandler) Profile(c echo.Context) error {
 	claims := c.Get("claims").(utils.JwtClaims)
 
 	// Get user
-	user, errCode := models.GetUserById(claims.UserId)
-	if errCode != "" {
-		return c.JSON(400, utils.GenerateError(errCode))
+	user, cerr := models.GetUserById(claims.UserId)
+	if cerr != nil {
+		return c.JSON(400, cerr.Response())
 	}
 	user.Password = ""
 

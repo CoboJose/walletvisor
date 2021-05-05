@@ -1,10 +1,50 @@
 package utils
 
-func GenerateError(errorCode string) map[string]string {
-	return map[string]string{
-		"errorCode": errorCode,
-		"message":   errorMessages[errorCode],
+type Cerr struct {
+	Code string
+	Err  error
+}
+
+func NewCerr(code string, err error) *Cerr {
+	return &Cerr{Code: code, Err: err}
+}
+
+// Response returns the custom error in JSON format with the code messageto sent it to the client
+func (cerr *Cerr) Response() map[string]interface{} {
+	var errMsg string
+	var response map[string]interface{}
+
+	if cerr.Err != nil {
+		errMsg = cerr.Err.Error()
 	}
+
+	if true {
+		response = map[string]interface{}{
+			"error": map[string]interface{}{
+				"code":  cerr.Code,
+				"msg":   errorMessages[cerr.Code],
+				"debug": errMsg,
+			},
+		}
+	} else {
+		response = map[string]interface{}{
+			"error": map[string]interface{}{
+				"code": cerr.Code,
+				"msg":  errorMessages[cerr.Code],
+			},
+		}
+	}
+
+	return response
+}
+
+func (cerr *Cerr) ToString() string {
+	var errMsg string
+
+	if cerr.Err != nil {
+		errMsg = cerr.Err.Error()
+	}
+	return "Error: [Code: " + cerr.Code + " | Message: " + errorMessages[cerr.Code] + " | Error: " + errMsg + "]"
 }
 
 var errorMessages = map[string]string{

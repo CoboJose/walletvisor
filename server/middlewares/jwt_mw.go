@@ -14,23 +14,23 @@ func ValidToken(roles string) echo.MiddlewareFunc {
 			// Get token
 			token := c.Request().Header.Get("token")
 			if token == "" || token == "null" {
-				return c.JSON(400, utils.GenerateError("AU005"))
+				return c.JSON(400, utils.NewCerr("AU005", nil).Response())
 			}
 
 			// Validate token and get claims. Already validates that the secret is correct and it is not expired
-			claims, errCode := utils.ParseToken(token)
-			if errCode != "" {
-				return c.JSON(401, utils.GenerateError(errCode))
+			claims, cerr := utils.ParseToken(token)
+			if cerr != nil {
+				return c.JSON(401, cerr.Response())
 			}
 
 			// Should be an access token
 			if claims.Type != "access" {
-				return c.JSON(403, utils.GenerateError("AU010"))
+				return c.JSON(403, utils.NewCerr("AU010", nil).Response())
 			}
 
 			// Token roles should contain the received param
 			if !strings.Contains(claims.Role, roles) {
-				return c.JSON(403, utils.GenerateError("AU007"))
+				return c.JSON(403, utils.NewCerr("AU007", nil).Response())
 			}
 
 			// Set the claims in the context to access them in the handlers

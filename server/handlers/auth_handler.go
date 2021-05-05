@@ -12,21 +12,20 @@ type AuthHandler struct{}
 //Signup creates the user and return a token to access
 func (h AuthHandler) Signup(c echo.Context) error {
 	// Get Request Data
-	payload, errCode := getAuthPayload(c)
-	if errCode != "" {
-		return c.JSON(400, utils.GenerateError(errCode))
+	payload, cerr := getAuthPayload(c)
+	if cerr != nil {
+		return c.JSON(400, cerr.Response())
 	}
-
 	// Create the user
 	user := models.NewUser(payload.Email, payload.Password, payload.Email, "user")
-	if errCode = user.Save(); errCode != "" {
-		return c.JSON(400, utils.GenerateError(errCode))
+	if cerr = user.Save(); cerr != nil {
+		return c.JSON(400, cerr.Response())
 	}
 
 	// Create the token
-	token, refreshToken, errCode := utils.GenerateTokens(user.Id, user.Email, user.Role)
-	if errCode != "" {
-		return c.JSON(500, utils.GenerateError(errCode))
+	token, refreshToken, cerr := utils.GenerateTokens(user.Id, user.Email, user.Role)
+	if cerr != nil {
+		return c.JSON(500, cerr.Response())
 	}
 
 	response := map[string]interface{}{
@@ -44,19 +43,19 @@ func (h AuthHandler) Signup(c echo.Context) error {
 //Login creates the user and return a token to access
 func (h AuthHandler) Login(c echo.Context) error {
 	// Get Data
-	payload, errCode := getAuthPayload(c)
-	if errCode != "" {
-		return c.JSON(400, utils.GenerateError(errCode))
+	payload, cerr := getAuthPayload(c)
+	if cerr != nil {
+		return c.JSON(400, cerr.Response())
 	}
 
-	user, errCode := models.GetUserByAuthentication(payload.Email, payload.Password)
-	if errCode != "" {
-		return c.JSON(401, utils.GenerateError(errCode))
+	user, cerr := models.GetUserByAuthentication(payload.Email, payload.Password)
+	if cerr != nil {
+		return c.JSON(401, cerr.Response())
 	}
 
-	token, refreshToken, errCode := utils.GenerateTokens(user.Id, user.Email, user.Role)
-	if errCode != "" {
-		return c.JSON(500, utils.GenerateError(errCode))
+	token, refreshToken, cerr := utils.GenerateTokens(user.Id, user.Email, user.Role)
+	if cerr != nil {
+		return c.JSON(500, cerr.Response())
 	}
 
 	response := map[string]interface{}{
@@ -75,29 +74,29 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 	//Get token
 	refreshToken := c.Request().Header.Get("refreshToken")
 	if refreshToken == "" || refreshToken == "null" {
-		return c.JSON(400, utils.GenerateError("AU005"))
+		return c.JSON(400, utils.NewCerr("AU005", nil).Response())
 	}
 
 	//Validate token and get claims
-	claims, errCode := utils.ParseToken(refreshToken)
-	if errCode != "" {
-		return c.JSON(401, utils.GenerateError(errCode))
+	claims, cerr := utils.ParseToken(refreshToken)
+	if cerr != nil {
+		return c.JSON(401, cerr.Response())
 	}
 
 	//Token type should be refresh, so it must not have the roles claims
 	if claims.Type != "refresh" {
-		return c.JSON(401, utils.GenerateError("AU006"))
+		return c.JSON(401, utils.NewCerr("AU006", nil).Response())
 	}
 
 	//Generate new Tokens
-	user, errCode := models.GetUserById(1)
-	if errCode != "" {
-		return c.JSON(400, utils.GenerateError(errCode))
+	user, cerr := models.GetUserById(claims.UserId)
+	if cerr != nil {
+		return c.JSON(400, cerr.Response())
 	}
 
-	token, refreshToken, errCode := utils.GenerateTokens(user.Id, user.Email, user.Role)
-	if errCode != "" {
-		return c.JSON(500, utils.GenerateError(errCode))
+	token, refreshToken, cerr := utils.GenerateTokens(user.Id, user.Email, user.Role)
+	if cerr != nil {
+		return c.JSON(500, cerr.Response())
 	}
 
 	response := map[string]interface{}{
@@ -120,14 +119,14 @@ type authPayload struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func getAuthPayload(c echo.Context) (res *authPayload, errCode string) {
-	res = new(authPayload)
-	err := c.Bind(&res)
+func getAuthPayload(c echo.Context) (*authPayload, *utils.Cerr) {
+	authPayload := new(authPayload)
+	err := c.Bind(&authPayload)
 	if err != nil {
-		return nil, "GE001"
+		return nil, utils.NewCerr("GE001", err)
 	}
-	if res.Email == "" || res.Password == "" {
-		return nil, "GE002"
+	if authPayload.Email == "" || authPayload.Password == "" {
+		return nil, utils.NewCerr("GE002", nil)
 	}
-	return res, ""
+	return authPayload, nil
 }
