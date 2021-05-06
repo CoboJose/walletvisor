@@ -66,6 +66,16 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
       steps:
+
+        - name: Set env
+          if: github.ref == 'refs/heads/master'
+          run: echo "HOLA" >> $TEST
+        - name: Set env 2
+          if: github.ref == 'refs/heads/dev'
+          run: echo "ADIOS" >> $TEST
+        - name: Test
+          run: echo ${{ env.TEST }}
+
         - name: Checkout repository
           uses: actions/checkout@v2
 
