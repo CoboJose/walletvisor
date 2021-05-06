@@ -25,6 +25,7 @@ func TestMain(m *testing.M) {
 	//Setup Echo
 	e = echo.New()
 	routes.Init(e)
+
 	host = "http://localhost:" + os.Getenv("HOST") + "/v1/"
 	//Setup DB
 	user1 = models.NewUser("user1@test.com", password, "user1", "user")

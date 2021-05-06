@@ -1,0 +1,26 @@
+name: Server CI
+
+on: [push, pull_request]
+
+jobs:
+  Client:
+    
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+        
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+          
+      - name: Production Deploy
+        if: github.ref == 'refs/heads/master'
+        uses: netlify/actions/build@master
+        with:
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NETLIFY_SITE_ID: bc441c4c-c2d9-4992-b3a2-8eef299c4b11
+          NETLIFY_BASE: client
+          NETLIFY_CMD: CI=false npm run build
+          NETLIFY_DIR: client/build
