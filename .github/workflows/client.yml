@@ -1,4 +1,4 @@
-name: Server CI
+name: Client CI
 
 on: [push, pull_request]
 
@@ -17,7 +17,6 @@ jobs:
       - name: Production Deploy
         if: github.ref == 'refs/heads/master'
         uses: netlify/actions/build@master
-        with:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NETLIFY_SITE_ID: bc441c4c-c2d9-4992-b3a2-8eef299c4b11
