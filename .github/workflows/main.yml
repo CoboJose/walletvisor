@@ -4,7 +4,6 @@ on: [push, pull_request]
 
 jobs:
   Server:
-    
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -57,26 +56,15 @@ jobs:
 
 
   Client:
-      
       runs-on: ubuntu-latest
       defaults:
         run:
           working-directory: client
       env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          TEST: "WENO"
+          NETLIFY_PROD_SITE: 63133934-caeb-44c0-a475-e155ecb5450d
 
       steps:
-
-        - name: Set env
-          if: github.ref == 'refs/heads/master'
-          run: echo "HOLA" >> $TEST
-        - name: Set env 2
-          if: github.ref == 'refs/heads/dev'
-          run: echo "ADIOS" >> $TEST
-        - name: Test
-          run: echo ${{ env.TEST }}
-
         - name: Checkout repository
           uses: actions/checkout@v2
 
@@ -98,7 +86,7 @@ jobs:
           if: github.ref == 'refs/heads/master'
           uses: netlify/actions/cli@master
           env:
-            NETLIFY_SITE_ID: 63133934-caeb-44c0-a475-e155ecb5450d
+            NETLIFY_SITE_ID: ${{env.NETLIFY_PROD_SITE}}
           with:
             args: env:set SERVER_URL https://walletvisor.herokuapp.com;
         
@@ -106,6 +94,6 @@ jobs:
           if: github.ref == 'refs/heads/master'
           uses: netlify/actions/cli@master
           env:
-            NETLIFY_SITE_ID: 63133934-caeb-44c0-a475-e155ecb5450d
+            NETLIFY_SITE_ID: ${{env.NETLIFY_PROD_SITE}}
           with:
             args: deploy --dir=client/build --prod
