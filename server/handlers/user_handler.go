@@ -9,8 +9,8 @@ import (
 
 type UserHandler struct{}
 
-//Profile returns the profile of the user
-func (h UserHandler) Profile(c echo.Context) error {
+// Get returns the the user of the provided token, hiding the password
+func (h UserHandler) Get(c echo.Context) error {
 	claims := c.Get("claims").(utils.JwtClaims)
 
 	// Get user

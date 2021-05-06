@@ -5,6 +5,7 @@ import (
 	"server/database"
 	"server/models"
 	"server/routes"
+	"server/utils"
 
 	"testing"
 
@@ -13,20 +14,22 @@ import (
 )
 
 var (
-	e        *echo.Echo
-	host     string
-	user1    *models.User
-	password = "c0mplexPa$$"
+	e          *echo.Echo
+	host       string
+	user1      *models.User
+	password   = "c0mplexPa$$"
+	user1Token string
 )
 
 func TestMain(m *testing.M) {
-	//Setup
+	//Setup Echo
 	e = echo.New()
 	routes.Init(e)
 	host = "http://localhost:" + os.Getenv("HOST") + "/v1/"
-	//Populate DB
+	//Setup DB
 	user1 = models.NewUser("user1@test.com", password, "user1", "user")
 	user1.Save()
+	user1Token, _, _ = utils.GenerateTokens(user1.Id, user1.Email, user1.Role)
 	//Run Tests
 	code := m.Run()
 	//Teardown

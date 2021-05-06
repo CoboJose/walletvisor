@@ -122,10 +122,9 @@ func TestSignupAlreadyExists(t *testing.T) {
 // JWT //
 /////////
 func TestTokenOk(t *testing.T) {
-	token, _, _ := utils.GenerateTokens(user1.Id, user1.Email, user1.Role)
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", host+"user/profile", nil)
-	req.Header.Set("token", token)
+	req := httptest.NewRequest("GET", host+"user", nil)
+	req.Header.Set("token", user1Token)
 	e.ServeHTTP(rec, req)
 
 	assert.Equal(t, 200, rec.Code)
@@ -133,18 +132,76 @@ func TestTokenOk(t *testing.T) {
 }
 func TestNoToken(t *testing.T) {
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", host+"user/profile", nil)
+	req := httptest.NewRequest("GET", host+"user", nil)
 	e.ServeHTTP(rec, req)
 
 	assert.Equal(t, 400, rec.Code)
 	assert.Contains(t, rec.Body.String(), "AU005")
 }
-func TestBadToken(t *testing.T) {
+func TestInvalidToken(t *testing.T) {
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", host+"user/profile", nil)
+	req := httptest.NewRequest("GET", host+"user", nil)
 	req.Header.Set("token", "badToken")
 	e.ServeHTTP(rec, req)
 
 	assert.Equal(t, 401, rec.Code)
 	assert.Contains(t, rec.Body.String(), "AU009")
+}
+func TestTokenRefreshToken(t *testing.T) {
+	_, refreshToken, _ := utils.GenerateTokens(user1.Id, user1.Email, user1.Role)
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", host+"user", nil)
+	req.Header.Set("token", refreshToken)
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, 403, rec.Code)
+	assert.Contains(t, rec.Body.String(), "AU010")
+}
+func TestTokenInvalidRol(t *testing.T) {
+	token, _, _ := utils.GenerateTokens(user1.Id, user1.Email, "badRol")
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", host+"user", nil)
+	req.Header.Set("token", token)
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, 403, rec.Code)
+	assert.Contains(t, rec.Body.String(), "AU007")
+}
+func TestTokenAdminRolOk(t *testing.T) {
+	token, _, _ := utils.GenerateTokens(user1.Id, user1.Email, "admin")
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", host+"user", nil)
+	req.Header.Set("token", token)
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, 200, rec.Code)
+	assert.Contains(t, rec.Body.String(), "name")
+}
+func TestRefreshTokenOk(t *testing.T) {
+	_, refreshToken, _ := utils.GenerateTokens(user1.Id, user1.Email, user1.Role)
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", host+"auth/refreshToken", nil)
+	req.Header.Set("refreshToken", refreshToken)
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, 200, rec.Code)
+	assert.Contains(t, rec.Body.String(), "token")
+}
+func TestRefreshTokenNoRefreshToken(t *testing.T) {
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", host+"auth/refreshToken", nil)
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, 400, rec.Code)
+	assert.Contains(t, rec.Body.String(), "AU005")
+}
+func TestRefreshTokenAccessToken(t *testing.T) {
+	token, _, _ := utils.GenerateTokens(user1.Id, user1.Email, user1.Role)
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", host+"auth/refreshToken", nil)
+	req.Header.Set("refreshToken", token)
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, 401, rec.Code)
+	assert.Contains(t, rec.Body.String(), "AU006")
 }

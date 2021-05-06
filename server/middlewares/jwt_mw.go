@@ -28,8 +28,8 @@ func ValidToken(roles string) echo.MiddlewareFunc {
 				return c.JSON(403, utils.NewCerr("AU010", nil).Response())
 			}
 
-			// Token roles should contain the received param
-			if !strings.Contains(claims.Role, roles) {
+			// Token roles should contain the received param (admin has access to all sites)
+			if !strings.Contains(roles+", admin", claims.Role) {
 				return c.JSON(403, utils.NewCerr("AU007", nil).Response())
 			}
 

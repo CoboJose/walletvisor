@@ -29,10 +29,10 @@ func authentication() {
 
 	auth.POST("/signup", authHandler.Signup)
 	auth.POST("/login", authHandler.Login)
-	auth.POST("/refreshToken", authHandler.RefreshToken)
+	auth.GET("/refreshToken", authHandler.RefreshToken)
 }
 
 func user() {
 	user := api.Group("/user", middlewares.ValidToken("user"))
-	user.GET("/profile", userHandler.Profile)
+	user.GET("", userHandler.Get)
 }

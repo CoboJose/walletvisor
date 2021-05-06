@@ -43,7 +43,7 @@ jobs:
         env:
           JWT_SECRET: ${{secrets.JWT_SECRET}}
           DATABASE_URL: ${{secrets.DATABASE_URL_GITHUB}}
-        run: go test ./tests -v
+        run: go test ./tests
           
       - name: Production Deploy
         if: github.ref == 'refs/heads/master'
