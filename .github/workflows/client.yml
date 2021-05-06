@@ -26,7 +26,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm build
+        run: npm run-script build
           
           #NETLIFY_BASE: client
           #NETLIFY_CMD: CI=false npm run build
