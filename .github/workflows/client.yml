@@ -40,4 +40,3 @@ jobs:
           NETLIFY_SITE_ID: 63133934-caeb-44c0-a475-e155ecb5450d
         with:
           args: deploy --dir=client/build --prod
-          secrets: '["NETLIFY_SITE_ID"]'
