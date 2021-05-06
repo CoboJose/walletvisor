@@ -64,6 +64,7 @@ jobs:
           working-directory: client
       env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          TEST: "WENO"
 
       steps:
 
