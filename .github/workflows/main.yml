@@ -44,13 +44,13 @@ jobs:
           REQUEST_LOGGER: false
         run: |
           go test ./tests -coverpkg "./..." -coverprofile cover.out
-          gocover-cobertura < cover.out > coverage.xml
 
       - name: Run codacy-coverage-reporter
-        uses: codacy/codacy-coverage-reporter-action@v1
+        uses: brpaz/godacov-action@v1
         with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: cobertura.xml
+          reportPath: 'cover.out'
+          codacyToken: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          commitId: ${{ github.sha }}
 
       - name: Development Deploy
         if: github.ref == 'refs/heads/develop'
