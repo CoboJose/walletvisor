@@ -1,0 +1,901 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
+<coverage line-rate="0.76785713" branch-rate="0" version="" timestamp="1620349056905" lines-covered="258" lines-valid="336" branches-covered="0" branches-valid="0" complexity="0">
+	<sources>
+		<source>C:\Program Files\Go\src</source>
+	</sources>
+	<packages>
+		<package name="server/database/" line-rate="0.53846157" branch-rate="0" complexity="0">
+			<classes>
+				<class name="-" filename="server/database/database.go" line-rate="0.53846157" branch-rate="0" complexity="0">
+					<methods>
+						<method name="init" signature="" line-rate="0.5714286" branch-rate="0" complexity="0">
+							<lines>
+								<line number="14" hits="1"></line>
+								<line number="15" hits="1"></line>
+								<line number="16" hits="1"></line>
+								<line number="17" hits="1"></line>
+								<line number="18" hits="0"></line>
+								<line number="19" hits="0"></line>
+								<line number="20" hits="0"></line>
+							</lines>
+						</method>
+						<method name="Close" signature="" line-rate="0" branch-rate="0" complexity="0">
+							<lines>
+								<line number="24" hits="0"></line>
+								<line number="25" hits="0"></line>
+								<line number="26" hits="0"></line>
+							</lines>
+						</method>
+						<method name="Get" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="29" hits="1"></line>
+								<line number="30" hits="1"></line>
+								<line number="31" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="14" hits="1"></line>
+						<line number="15" hits="1"></line>
+						<line number="16" hits="1"></line>
+						<line number="17" hits="1"></line>
+						<line number="18" hits="0"></line>
+						<line number="19" hits="0"></line>
+						<line number="20" hits="0"></line>
+						<line number="24" hits="0"></line>
+						<line number="25" hits="0"></line>
+						<line number="26" hits="0"></line>
+						<line number="29" hits="1"></line>
+						<line number="30" hits="1"></line>
+						<line number="31" hits="1"></line>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="server/handlers/" line-rate="0.85294116" branch-rate="0" complexity="0">
+			<classes>
+				<class name="AuthHandler" filename="server/handlers/auth_handler.go" line-rate="0.8051948" branch-rate="0" complexity="0">
+					<methods>
+						<method name="Signup" signature="" line-rate="0.875" branch-rate="0" complexity="0">
+							<lines>
+								<line number="13" hits="1"></line>
+								<line number="14" hits="1"></line>
+								<line number="15" hits="1"></line>
+								<line number="16" hits="1"></line>
+								<line number="17" hits="1"></line>
+								<line number="18" hits="1"></line>
+								<line number="20" hits="1"></line>
+								<line number="21" hits="1"></line>
+								<line number="22" hits="1"></line>
+								<line number="23" hits="1"></line>
+								<line number="26" hits="1"></line>
+								<line number="27" hits="0"></line>
+								<line number="28" hits="0"></line>
+								<line number="29" hits="0"></line>
+								<line number="31" hits="1"></line>
+								<line number="32" hits="1"></line>
+								<line number="33" hits="1"></line>
+								<line number="34" hits="1"></line>
+								<line number="35" hits="1"></line>
+								<line number="36" hits="1"></line>
+								<line number="37" hits="1"></line>
+								<line number="38" hits="1"></line>
+								<line number="39" hits="1"></line>
+								<line number="40" hits="1"></line>
+							</lines>
+						</method>
+						<method name="Login" signature="" line-rate="0.8695652" branch-rate="0" complexity="0">
+							<lines>
+								<line number="44" hits="1"></line>
+								<line number="45" hits="1"></line>
+								<line number="46" hits="1"></line>
+								<line number="47" hits="1"></line>
+								<line number="48" hits="1"></line>
+								<line number="49" hits="1"></line>
+								<line number="51" hits="1"></line>
+								<line number="52" hits="1"></line>
+								<line number="53" hits="1"></line>
+								<line number="54" hits="1"></line>
+								<line number="56" hits="1"></line>
+								<line number="57" hits="0"></line>
+								<line number="58" hits="0"></line>
+								<line number="59" hits="0"></line>
+								<line number="61" hits="1"></line>
+								<line number="62" hits="1"></line>
+								<line number="63" hits="1"></line>
+								<line number="64" hits="1"></line>
+								<line number="65" hits="1"></line>
+								<line number="66" hits="1"></line>
+								<line number="67" hits="1"></line>
+								<line number="68" hits="1"></line>
+								<line number="69" hits="1"></line>
+							</lines>
+						</method>
+						<method name="RefreshToken" signature="" line-rate="0.7" branch-rate="0" complexity="0">
+							<lines>
+								<line number="73" hits="1"></line>
+								<line number="74" hits="1"></line>
+								<line number="75" hits="1"></line>
+								<line number="76" hits="1"></line>
+								<line number="77" hits="1"></line>
+								<line number="78" hits="1"></line>
+								<line number="81" hits="1"></line>
+								<line number="82" hits="0"></line>
+								<line number="83" hits="0"></line>
+								<line number="84" hits="0"></line>
+								<line number="87" hits="1"></line>
+								<line number="88" hits="1"></line>
+								<line number="89" hits="1"></line>
+								<line number="92" hits="1"></line>
+								<line number="93" hits="0"></line>
+								<line number="94" hits="0"></line>
+								<line number="95" hits="0"></line>
+								<line number="97" hits="1"></line>
+								<line number="98" hits="0"></line>
+								<line number="99" hits="0"></line>
+								<line number="100" hits="0"></line>
+								<line number="102" hits="1"></line>
+								<line number="103" hits="1"></line>
+								<line number="104" hits="1"></line>
+								<line number="105" hits="1"></line>
+								<line number="106" hits="1"></line>
+								<line number="107" hits="1"></line>
+								<line number="108" hits="1"></line>
+								<line number="109" hits="1"></line>
+								<line number="110" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="13" hits="1"></line>
+						<line number="14" hits="1"></line>
+						<line number="15" hits="1"></line>
+						<line number="16" hits="1"></line>
+						<line number="17" hits="1"></line>
+						<line number="18" hits="1"></line>
+						<line number="20" hits="1"></line>
+						<line number="21" hits="1"></line>
+						<line number="22" hits="1"></line>
+						<line number="23" hits="1"></line>
+						<line number="26" hits="1"></line>
+						<line number="27" hits="0"></line>
+						<line number="28" hits="0"></line>
+						<line number="29" hits="0"></line>
+						<line number="31" hits="1"></line>
+						<line number="32" hits="1"></line>
+						<line number="33" hits="1"></line>
+						<line number="34" hits="1"></line>
+						<line number="35" hits="1"></line>
+						<line number="36" hits="1"></line>
+						<line number="37" hits="1"></line>
+						<line number="38" hits="1"></line>
+						<line number="39" hits="1"></line>
+						<line number="40" hits="1"></line>
+						<line number="44" hits="1"></line>
+						<line number="45" hits="1"></line>
+						<line number="46" hits="1"></line>
+						<line number="47" hits="1"></line>
+						<line number="48" hits="1"></line>
+						<line number="49" hits="1"></line>
+						<line number="51" hits="1"></line>
+						<line number="52" hits="1"></line>
+						<line number="53" hits="1"></line>
+						<line number="54" hits="1"></line>
+						<line number="56" hits="1"></line>
+						<line number="57" hits="0"></line>
+						<line number="58" hits="0"></line>
+						<line number="59" hits="0"></line>
+						<line number="61" hits="1"></line>
+						<line number="62" hits="1"></line>
+						<line number="63" hits="1"></line>
+						<line number="64" hits="1"></line>
+						<line number="65" hits="1"></line>
+						<line number="66" hits="1"></line>
+						<line number="67" hits="1"></line>
+						<line number="68" hits="1"></line>
+						<line number="69" hits="1"></line>
+						<line number="73" hits="1"></line>
+						<line number="74" hits="1"></line>
+						<line number="75" hits="1"></line>
+						<line number="76" hits="1"></line>
+						<line number="77" hits="1"></line>
+						<line number="78" hits="1"></line>
+						<line number="81" hits="1"></line>
+						<line number="82" hits="0"></line>
+						<line number="83" hits="0"></line>
+						<line number="84" hits="0"></line>
+						<line number="87" hits="1"></line>
+						<line number="88" hits="1"></line>
+						<line number="89" hits="1"></line>
+						<line number="92" hits="1"></line>
+						<line number="93" hits="0"></line>
+						<line number="94" hits="0"></line>
+						<line number="95" hits="0"></line>
+						<line number="97" hits="1"></line>
+						<line number="98" hits="0"></line>
+						<line number="99" hits="0"></line>
+						<line number="100" hits="0"></line>
+						<line number="102" hits="1"></line>
+						<line number="103" hits="1"></line>
+						<line number="104" hits="1"></line>
+						<line number="105" hits="1"></line>
+						<line number="106" hits="1"></line>
+						<line number="107" hits="1"></line>
+						<line number="108" hits="1"></line>
+						<line number="109" hits="1"></line>
+						<line number="110" hits="1"></line>
+					</lines>
+				</class>
+				<class name="-" filename="server/handlers/auth_handler.go" line-rate="1" branch-rate="0" complexity="0">
+					<methods>
+						<method name="getAuthPayload" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="122" hits="1"></line>
+								<line number="123" hits="1"></line>
+								<line number="124" hits="1"></line>
+								<line number="125" hits="1"></line>
+								<line number="126" hits="1"></line>
+								<line number="127" hits="1"></line>
+								<line number="128" hits="1"></line>
+								<line number="129" hits="1"></line>
+								<line number="130" hits="1"></line>
+								<line number="131" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="122" hits="1"></line>
+						<line number="123" hits="1"></line>
+						<line number="124" hits="1"></line>
+						<line number="125" hits="1"></line>
+						<line number="126" hits="1"></line>
+						<line number="127" hits="1"></line>
+						<line number="128" hits="1"></line>
+						<line number="129" hits="1"></line>
+						<line number="130" hits="1"></line>
+						<line number="131" hits="1"></line>
+					</lines>
+				</class>
+				<class name="UserHandler" filename="server/handlers/user_handler.go" line-rate="1" branch-rate="0" complexity="0">
+					<methods>
+						<method name="Get" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="13" hits="1"></line>
+								<line number="14" hits="1"></line>
+								<line number="15" hits="1"></line>
+								<line number="16" hits="1"></line>
+								<line number="17" hits="1"></line>
+								<line number="18" hits="1"></line>
+								<line number="19" hits="1"></line>
+								<line number="20" hits="1"></line>
+								<line number="21" hits="1"></line>
+								<line number="22" hits="1"></line>
+								<line number="23" hits="1"></line>
+								<line number="24" hits="1"></line>
+								<line number="25" hits="1"></line>
+								<line number="26" hits="1"></line>
+								<line number="27" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="13" hits="1"></line>
+						<line number="14" hits="1"></line>
+						<line number="15" hits="1"></line>
+						<line number="16" hits="1"></line>
+						<line number="17" hits="1"></line>
+						<line number="18" hits="1"></line>
+						<line number="19" hits="1"></line>
+						<line number="20" hits="1"></line>
+						<line number="21" hits="1"></line>
+						<line number="22" hits="1"></line>
+						<line number="23" hits="1"></line>
+						<line number="24" hits="1"></line>
+						<line number="25" hits="1"></line>
+						<line number="26" hits="1"></line>
+						<line number="27" hits="1"></line>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="server/middlewares/" line-rate="0.7777778" branch-rate="0" complexity="0">
+			<classes>
+				<class name="-" filename="server/middlewares/jwt_mw.go" line-rate="1" branch-rate="0" complexity="0">
+					<methods>
+						<method name="ValidToken" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="11" hits="1"></line>
+								<line number="12" hits="1"></line>
+								<line number="13" hits="1"></line>
+								<line number="14" hits="1"></line>
+								<line number="15" hits="1"></line>
+								<line number="16" hits="1"></line>
+								<line number="17" hits="1"></line>
+								<line number="18" hits="1"></line>
+								<line number="21" hits="1"></line>
+								<line number="22" hits="1"></line>
+								<line number="23" hits="1"></line>
+								<line number="24" hits="1"></line>
+								<line number="27" hits="1"></line>
+								<line number="28" hits="1"></line>
+								<line number="29" hits="1"></line>
+								<line number="32" hits="1"></line>
+								<line number="33" hits="1"></line>
+								<line number="34" hits="1"></line>
+								<line number="37" hits="1"></line>
+								<line number="38" hits="1"></line>
+								<line number="39" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="11" hits="1"></line>
+						<line number="12" hits="1"></line>
+						<line number="13" hits="1"></line>
+						<line number="14" hits="1"></line>
+						<line number="15" hits="1"></line>
+						<line number="16" hits="1"></line>
+						<line number="17" hits="1"></line>
+						<line number="18" hits="1"></line>
+						<line number="21" hits="1"></line>
+						<line number="22" hits="1"></line>
+						<line number="23" hits="1"></line>
+						<line number="24" hits="1"></line>
+						<line number="27" hits="1"></line>
+						<line number="28" hits="1"></line>
+						<line number="29" hits="1"></line>
+						<line number="32" hits="1"></line>
+						<line number="33" hits="1"></line>
+						<line number="34" hits="1"></line>
+						<line number="37" hits="1"></line>
+						<line number="38" hits="1"></line>
+						<line number="39" hits="1"></line>
+					</lines>
+				</class>
+				<class name="-" filename="server/middlewares/logger_mw.go" line-rate="0" branch-rate="0" complexity="0">
+					<methods>
+						<method name="Logger" signature="" line-rate="0" branch-rate="0" complexity="0">
+							<lines>
+								<line number="9" hits="0"></line>
+								<line number="10" hits="0"></line>
+								<line number="11" hits="0"></line>
+								<line number="12" hits="0"></line>
+								<line number="13" hits="0"></line>
+								<line number="14" hits="0"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="9" hits="0"></line>
+						<line number="10" hits="0"></line>
+						<line number="11" hits="0"></line>
+						<line number="12" hits="0"></line>
+						<line number="13" hits="0"></line>
+						<line number="14" hits="0"></line>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="server/models/" line-rate="0.7604167" branch-rate="0" complexity="0">
+			<classes>
+				<class name="-" filename="server/models/init_models.go" line-rate="0.6666667" branch-rate="0" complexity="0">
+					<methods>
+						<method name="init" signature="" line-rate="0.6666667" branch-rate="0" complexity="0">
+							<lines>
+								<line number="13" hits="1"></line>
+								<line number="14" hits="1"></line>
+								<line number="15" hits="1"></line>
+								<line number="16" hits="1"></line>
+								<line number="17" hits="1"></line>
+								<line number="18" hits="1"></line>
+								<line number="19" hits="1"></line>
+								<line number="20" hits="0"></line>
+								<line number="21" hits="0"></line>
+								<line number="22" hits="0"></line>
+								<line number="23" hits="0"></line>
+								<line number="25" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="13" hits="1"></line>
+						<line number="14" hits="1"></line>
+						<line number="15" hits="1"></line>
+						<line number="16" hits="1"></line>
+						<line number="17" hits="1"></line>
+						<line number="18" hits="1"></line>
+						<line number="19" hits="1"></line>
+						<line number="20" hits="0"></line>
+						<line number="21" hits="0"></line>
+						<line number="22" hits="0"></line>
+						<line number="23" hits="0"></line>
+						<line number="25" hits="1"></line>
+					</lines>
+				</class>
+				<class name="-" filename="server/models/user_model.go" line-rate="1" branch-rate="0" complexity="0">
+					<methods>
+						<method name="NewUser" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="33" hits="1"></line>
+								<line number="34" hits="1"></line>
+								<line number="35" hits="1"></line>
+							</lines>
+						</method>
+						<method name="GetUserById" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="41" hits="1"></line>
+								<line number="42" hits="1"></line>
+								<line number="43" hits="1"></line>
+								<line number="44" hits="1"></line>
+								<line number="45" hits="1"></line>
+								<line number="46" hits="1"></line>
+							</lines>
+						</method>
+						<method name="GetUserByEmail" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="49" hits="1"></line>
+								<line number="50" hits="1"></line>
+								<line number="51" hits="1"></line>
+								<line number="52" hits="1"></line>
+								<line number="53" hits="1"></line>
+								<line number="54" hits="1"></line>
+							</lines>
+						</method>
+						<method name="GetUserByAuthentication" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="57" hits="1"></line>
+								<line number="58" hits="1"></line>
+								<line number="59" hits="1"></line>
+								<line number="60" hits="1"></line>
+								<line number="61" hits="1"></line>
+								<line number="62" hits="1"></line>
+								<line number="63" hits="1"></line>
+								<line number="64" hits="1"></line>
+								<line number="65" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="33" hits="1"></line>
+						<line number="34" hits="1"></line>
+						<line number="35" hits="1"></line>
+						<line number="41" hits="1"></line>
+						<line number="42" hits="1"></line>
+						<line number="43" hits="1"></line>
+						<line number="44" hits="1"></line>
+						<line number="45" hits="1"></line>
+						<line number="46" hits="1"></line>
+						<line number="49" hits="1"></line>
+						<line number="50" hits="1"></line>
+						<line number="51" hits="1"></line>
+						<line number="52" hits="1"></line>
+						<line number="53" hits="1"></line>
+						<line number="54" hits="1"></line>
+						<line number="57" hits="1"></line>
+						<line number="58" hits="1"></line>
+						<line number="59" hits="1"></line>
+						<line number="60" hits="1"></line>
+						<line number="61" hits="1"></line>
+						<line number="62" hits="1"></line>
+						<line number="63" hits="1"></line>
+						<line number="64" hits="1"></line>
+						<line number="65" hits="1"></line>
+					</lines>
+				</class>
+				<class name="User" filename="server/models/user_model.go" line-rate="0.68333334" branch-rate="0" complexity="0">
+					<methods>
+						<method name="Save" signature="" line-rate="0.5714286" branch-rate="0" complexity="0">
+							<lines>
+								<line number="72" hits="1"></line>
+								<line number="73" hits="1"></line>
+								<line number="74" hits="1"></line>
+								<line number="75" hits="1"></line>
+								<line number="76" hits="1"></line>
+								<line number="77" hits="0"></line>
+								<line number="78" hits="0"></line>
+								<line number="79" hits="0"></line>
+								<line number="81" hits="1"></line>
+								<line number="82" hits="1"></line>
+								<line number="83" hits="1"></line>
+								<line number="84" hits="0"></line>
+								<line number="85" hits="0"></line>
+								<line number="86" hits="0"></line>
+								<line number="88" hits="1"></line>
+								<line number="89" hits="1"></line>
+								<line number="90" hits="1"></line>
+								<line number="91" hits="0"></line>
+								<line number="92" hits="0"></line>
+								<line number="93" hits="0"></line>
+								<line number="96" hits="1"></line>
+							</lines>
+						</method>
+						<method name="validate" signature="" line-rate="0.89285713" branch-rate="0" complexity="0">
+							<lines>
+								<line number="103" hits="1"></line>
+								<line number="104" hits="1"></line>
+								<line number="105" hits="0"></line>
+								<line number="106" hits="0"></line>
+								<line number="107" hits="0"></line>
+								<line number="109" hits="1"></line>
+								<line number="110" hits="1"></line>
+								<line number="111" hits="1"></line>
+								<line number="112" hits="1"></line>
+								<line number="114" hits="1"></line>
+								<line number="115" hits="1"></line>
+								<line number="116" hits="1"></line>
+								<line number="117" hits="1"></line>
+								<line number="118" hits="1"></line>
+								<line number="119" hits="1"></line>
+								<line number="120" hits="1"></line>
+								<line number="121" hits="1"></line>
+								<line number="122" hits="1"></line>
+								<line number="123" hits="1"></line>
+								<line number="124" hits="1"></line>
+								<line number="125" hits="1"></line>
+								<line number="126" hits="1"></line>
+								<line number="127" hits="1"></line>
+								<line number="128" hits="1"></line>
+								<line number="131" hits="1"></line>
+								<line number="132" hits="1"></line>
+								<line number="133" hits="1"></line>
+								<line number="135" hits="1"></line>
+							</lines>
+						</method>
+						<method name="hashPassword" signature="" line-rate="0.5714286" branch-rate="0" complexity="0">
+							<lines>
+								<line number="138" hits="1"></line>
+								<line number="139" hits="1"></line>
+								<line number="140" hits="0"></line>
+								<line number="141" hits="0"></line>
+								<line number="142" hits="0"></line>
+								<line number="143" hits="1"></line>
+								<line number="144" hits="1"></line>
+							</lines>
+						</method>
+						<method name="ToString" signature="" line-rate="0" branch-rate="0" complexity="0">
+							<lines>
+								<line number="147" hits="0"></line>
+								<line number="148" hits="0"></line>
+								<line number="149" hits="0"></line>
+								<line number="150" hits="0"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="72" hits="1"></line>
+						<line number="73" hits="1"></line>
+						<line number="74" hits="1"></line>
+						<line number="75" hits="1"></line>
+						<line number="76" hits="1"></line>
+						<line number="77" hits="0"></line>
+						<line number="78" hits="0"></line>
+						<line number="79" hits="0"></line>
+						<line number="81" hits="1"></line>
+						<line number="82" hits="1"></line>
+						<line number="83" hits="1"></line>
+						<line number="84" hits="0"></line>
+						<line number="85" hits="0"></line>
+						<line number="86" hits="0"></line>
+						<line number="88" hits="1"></line>
+						<line number="89" hits="1"></line>
+						<line number="90" hits="1"></line>
+						<line number="91" hits="0"></line>
+						<line number="92" hits="0"></line>
+						<line number="93" hits="0"></line>
+						<line number="96" hits="1"></line>
+						<line number="103" hits="1"></line>
+						<line number="104" hits="1"></line>
+						<line number="105" hits="0"></line>
+						<line number="106" hits="0"></line>
+						<line number="107" hits="0"></line>
+						<line number="109" hits="1"></line>
+						<line number="110" hits="1"></line>
+						<line number="111" hits="1"></line>
+						<line number="112" hits="1"></line>
+						<line number="114" hits="1"></line>
+						<line number="115" hits="1"></line>
+						<line number="116" hits="1"></line>
+						<line number="117" hits="1"></line>
+						<line number="118" hits="1"></line>
+						<line number="119" hits="1"></line>
+						<line number="120" hits="1"></line>
+						<line number="121" hits="1"></line>
+						<line number="122" hits="1"></line>
+						<line number="123" hits="1"></line>
+						<line number="124" hits="1"></line>
+						<line number="125" hits="1"></line>
+						<line number="126" hits="1"></line>
+						<line number="127" hits="1"></line>
+						<line number="128" hits="1"></line>
+						<line number="131" hits="1"></line>
+						<line number="132" hits="1"></line>
+						<line number="133" hits="1"></line>
+						<line number="135" hits="1"></line>
+						<line number="138" hits="1"></line>
+						<line number="139" hits="1"></line>
+						<line number="140" hits="0"></line>
+						<line number="141" hits="0"></line>
+						<line number="142" hits="0"></line>
+						<line number="143" hits="1"></line>
+						<line number="144" hits="1"></line>
+						<line number="147" hits="0"></line>
+						<line number="148" hits="0"></line>
+						<line number="149" hits="0"></line>
+						<line number="150" hits="0"></line>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="server/routes/" line-rate="0.84" branch-rate="0" complexity="0">
+			<classes>
+				<class name="-" filename="server/routes/routes.go" line-rate="0.84" branch-rate="0" complexity="0">
+					<methods>
+						<method name="Init" signature="" line-rate="0.71428573" branch-rate="0" complexity="0">
+							<lines>
+								<line number="19" hits="1"></line>
+								<line number="20" hits="0"></line>
+								<line number="21" hits="0"></line>
+								<line number="22" hits="0"></line>
+								<line number="23" hits="1"></line>
+								<line number="24" hits="1"></line>
+								<line number="25" hits="1"></line>
+								<line number="26" hits="1"></line>
+								<line number="27" hits="1"></line>
+								<line number="28" hits="0"></line>
+								<line number="30" hits="1"></line>
+								<line number="31" hits="1"></line>
+								<line number="32" hits="1"></line>
+								<line number="33" hits="1"></line>
+							</lines>
+						</method>
+						<method name="authentication" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="36" hits="1"></line>
+								<line number="37" hits="1"></line>
+								<line number="38" hits="1"></line>
+								<line number="39" hits="1"></line>
+								<line number="40" hits="1"></line>
+								<line number="41" hits="1"></line>
+								<line number="42" hits="1"></line>
+							</lines>
+						</method>
+						<method name="user" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="44" hits="1"></line>
+								<line number="45" hits="1"></line>
+								<line number="46" hits="1"></line>
+								<line number="47" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="19" hits="1"></line>
+						<line number="20" hits="0"></line>
+						<line number="21" hits="0"></line>
+						<line number="22" hits="0"></line>
+						<line number="23" hits="1"></line>
+						<line number="24" hits="1"></line>
+						<line number="25" hits="1"></line>
+						<line number="26" hits="1"></line>
+						<line number="27" hits="1"></line>
+						<line number="28" hits="0"></line>
+						<line number="30" hits="1"></line>
+						<line number="31" hits="1"></line>
+						<line number="32" hits="1"></line>
+						<line number="33" hits="1"></line>
+						<line number="36" hits="1"></line>
+						<line number="37" hits="1"></line>
+						<line number="38" hits="1"></line>
+						<line number="39" hits="1"></line>
+						<line number="40" hits="1"></line>
+						<line number="41" hits="1"></line>
+						<line number="42" hits="1"></line>
+						<line number="44" hits="1"></line>
+						<line number="45" hits="1"></line>
+						<line number="46" hits="1"></line>
+						<line number="47" hits="1"></line>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="server/utils/" line-rate="0.6712329" branch-rate="0" complexity="0">
+			<classes>
+				<class name="-" filename="server/utils/error_util.go" line-rate="1" branch-rate="0" complexity="0">
+					<methods>
+						<method name="NewCerr" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="8" hits="1"></line>
+								<line number="9" hits="1"></line>
+								<line number="10" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="8" hits="1"></line>
+						<line number="9" hits="1"></line>
+						<line number="10" hits="1"></line>
+					</lines>
+				</class>
+				<class name="Cerr" filename="server/utils/error_util.go" line-rate="0.516129" branch-rate="0" complexity="0">
+					<methods>
+						<method name="Response" signature="" line-rate="0.6666667" branch-rate="0" complexity="0">
+							<lines>
+								<line number="13" hits="1"></line>
+								<line number="14" hits="1"></line>
+								<line number="15" hits="1"></line>
+								<line number="16" hits="1"></line>
+								<line number="17" hits="1"></line>
+								<line number="18" hits="1"></line>
+								<line number="19" hits="1"></line>
+								<line number="21" hits="1"></line>
+								<line number="22" hits="1"></line>
+								<line number="23" hits="1"></line>
+								<line number="24" hits="1"></line>
+								<line number="25" hits="1"></line>
+								<line number="26" hits="1"></line>
+								<line number="27" hits="1"></line>
+								<line number="28" hits="1"></line>
+								<line number="29" hits="0"></line>
+								<line number="30" hits="0"></line>
+								<line number="31" hits="0"></line>
+								<line number="32" hits="0"></line>
+								<line number="33" hits="0"></line>
+								<line number="34" hits="0"></line>
+								<line number="35" hits="0"></line>
+								<line number="36" hits="0"></line>
+								<line number="38" hits="1"></line>
+							</lines>
+						</method>
+						<method name="ToString" signature="" line-rate="0" branch-rate="0" complexity="0">
+							<lines>
+								<line number="41" hits="0"></line>
+								<line number="42" hits="0"></line>
+								<line number="43" hits="0"></line>
+								<line number="44" hits="0"></line>
+								<line number="45" hits="0"></line>
+								<line number="46" hits="0"></line>
+								<line number="47" hits="0"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="13" hits="1"></line>
+						<line number="14" hits="1"></line>
+						<line number="15" hits="1"></line>
+						<line number="16" hits="1"></line>
+						<line number="17" hits="1"></line>
+						<line number="18" hits="1"></line>
+						<line number="19" hits="1"></line>
+						<line number="21" hits="1"></line>
+						<line number="22" hits="1"></line>
+						<line number="23" hits="1"></line>
+						<line number="24" hits="1"></line>
+						<line number="25" hits="1"></line>
+						<line number="26" hits="1"></line>
+						<line number="27" hits="1"></line>
+						<line number="28" hits="1"></line>
+						<line number="29" hits="0"></line>
+						<line number="30" hits="0"></line>
+						<line number="31" hits="0"></line>
+						<line number="32" hits="0"></line>
+						<line number="33" hits="0"></line>
+						<line number="34" hits="0"></line>
+						<line number="35" hits="0"></line>
+						<line number="36" hits="0"></line>
+						<line number="38" hits="1"></line>
+						<line number="41" hits="0"></line>
+						<line number="42" hits="0"></line>
+						<line number="43" hits="0"></line>
+						<line number="44" hits="0"></line>
+						<line number="45" hits="0"></line>
+						<line number="46" hits="0"></line>
+						<line number="47" hits="0"></line>
+					</lines>
+				</class>
+				<class name="-" filename="server/utils/jwt_util.go" line-rate="0.72727275" branch-rate="0" complexity="0">
+					<methods>
+						<method name="GenerateTokens" signature="" line-rate="0.68421054" branch-rate="0" complexity="0">
+							<lines>
+								<line number="24" hits="1"></line>
+								<line number="25" hits="1"></line>
+								<line number="26" hits="1"></line>
+								<line number="27" hits="1"></line>
+								<line number="28" hits="1"></line>
+								<line number="29" hits="1"></line>
+								<line number="30" hits="1"></line>
+								<line number="31" hits="0"></line>
+								<line number="32" hits="0"></line>
+								<line number="33" hits="0"></line>
+								<line number="36" hits="1"></line>
+								<line number="37" hits="1"></line>
+								<line number="38" hits="1"></line>
+								<line number="39" hits="1"></line>
+								<line number="40" hits="1"></line>
+								<line number="41" hits="0"></line>
+								<line number="42" hits="0"></line>
+								<line number="43" hits="0"></line>
+								<line number="45" hits="1"></line>
+							</lines>
+						</method>
+						<method name="ParseToken" signature="" line-rate="0.78571427" branch-rate="0" complexity="0">
+							<lines>
+								<line number="49" hits="1"></line>
+								<line number="50" hits="1"></line>
+								<line number="51" hits="1"></line>
+								<line number="52" hits="1"></line>
+								<line number="53" hits="1"></line>
+								<line number="54" hits="1"></line>
+								<line number="55" hits="0"></line>
+								<line number="56" hits="0"></line>
+								<line number="57" hits="0"></line>
+								<line number="58" hits="1"></line>
+								<line number="59" hits="1"></line>
+								<line number="61" hits="1"></line>
+								<line number="62" hits="1"></line>
+								<line number="63" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="24" hits="1"></line>
+						<line number="25" hits="1"></line>
+						<line number="26" hits="1"></line>
+						<line number="27" hits="1"></line>
+						<line number="28" hits="1"></line>
+						<line number="29" hits="1"></line>
+						<line number="30" hits="1"></line>
+						<line number="31" hits="0"></line>
+						<line number="32" hits="0"></line>
+						<line number="33" hits="0"></line>
+						<line number="36" hits="1"></line>
+						<line number="37" hits="1"></line>
+						<line number="38" hits="1"></line>
+						<line number="39" hits="1"></line>
+						<line number="40" hits="1"></line>
+						<line number="41" hits="0"></line>
+						<line number="42" hits="0"></line>
+						<line number="43" hits="0"></line>
+						<line number="45" hits="1"></line>
+						<line number="49" hits="1"></line>
+						<line number="50" hits="1"></line>
+						<line number="51" hits="1"></line>
+						<line number="52" hits="1"></line>
+						<line number="53" hits="1"></line>
+						<line number="54" hits="1"></line>
+						<line number="55" hits="0"></line>
+						<line number="56" hits="0"></line>
+						<line number="57" hits="0"></line>
+						<line number="58" hits="1"></line>
+						<line number="59" hits="1"></line>
+						<line number="61" hits="1"></line>
+						<line number="62" hits="1"></line>
+						<line number="63" hits="1"></line>
+					</lines>
+				</class>
+				<class name="-" filename="server/utils/logger_util.go" line-rate="1" branch-rate="0" complexity="0">
+					<methods>
+						<method name="init" signature="" line-rate="1" branch-rate="0" complexity="0">
+							<lines>
+								<line number="15" hits="1"></line>
+								<line number="16" hits="1"></line>
+								<line number="17" hits="1"></line>
+								<line number="18" hits="1"></line>
+								<line number="19" hits="1"></line>
+								<line number="20" hits="1"></line>
+							</lines>
+						</method>
+					</methods>
+					<lines>
+						<line number="15" hits="1"></line>
+						<line number="16" hits="1"></line>
+						<line number="17" hits="1"></line>
+						<line number="18" hits="1"></line>
+						<line number="19" hits="1"></line>
+						<line number="20" hits="1"></line>
+					</lines>
+				</class>
+			</classes>
+		</package>
+	</packages>
+</coverage>
