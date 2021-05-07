@@ -37,7 +37,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      -name: AA
+      - name: AA
         run: go get github.com/t-yuki/gocover-cobertura
       
       - name: Test
