@@ -36,6 +36,9 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
+
+      -name: AA
+        run: go get github.com/t-yuki/gocover-cobertura
       
       - name: Test
         env:
@@ -44,7 +47,6 @@ jobs:
           REQUEST_LOGGER: false
           CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
         run: |
-          go get github.com/t-yuki/gocover-cobertura 
           go test ./tests -coverpkg "./..." -coverprofile cover.out
           gocover-cobertura < cover.out > coverage.xml
           curl -Ls https://coverage.codacy.com/get.sh report -r coverage.xml
@@ -86,7 +88,7 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-node-
 
-        - name: Install Dependencies
+        - name: Build 
           run: npm install
 
         - name: Build
