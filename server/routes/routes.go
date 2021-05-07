@@ -17,7 +17,7 @@ var (
 
 // Init defines the routes and their handlers
 func Init(e *echo.Echo) {
-	if os.Getenv("REQUEST_LOGGING") == "true" {
+	if os.Getenv("REQUEST_LOGGER") == "true" {
 		e.Use(middlewares.Logger)
 	}
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{

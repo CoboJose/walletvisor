@@ -39,8 +39,9 @@ jobs:
       
       - name: Test
         env:
-          JWT_SECRET: ${{secrets.JWT_SECRET}}
-          DATABASE_URL: ${{secrets.DATABASE_URL_GITHUB}}
+          JWT_SECRET: FAKESECRET
+          DATABASE_URL: postgres://postgres:postgre@localhost:5432/postgres?sslmode=disable
+          REQUEST_LOGGER: false
         run: go test ./tests
           
       - name: Production Deploy
