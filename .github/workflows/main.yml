@@ -48,7 +48,7 @@ jobs:
       - name: Run codacy-coverage-reporter
         uses: brpaz/godacov-action@v1.1.1
         with:
-          reportPath: ./cover.out
+          reportPath: cover.out
           codacyToken: ${{ secrets.CODACY_PROJECT_TOKEN }}
           commitId: ${{ github.sha }}
 
