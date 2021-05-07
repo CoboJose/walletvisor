@@ -43,7 +43,6 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
           REQUEST_LOGGER: false
         run: |
-          go get github.com/t-yuki/gocover-cobertura
           go test ./tests -coverpkg "./..." -coverprofile cover.out
           gocover-cobertura < cover.out > coverage.xml
 
