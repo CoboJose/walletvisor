@@ -32,7 +32,7 @@ jobs:
       - name: Install godacov
         run: |
         export PATH=${PATH}:`go env GOPATH`/bin
-        go get github.com/schrej/godacov
+        go get -u github.com/schrej/godacov
         
       - name: Go modules Caching
         uses: actions/cache@v2
