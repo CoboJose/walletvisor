@@ -39,7 +39,6 @@ const App = () => {
 
   return (
     <div className="app">
-      <h1>Working 6</h1>
       {userToken &&
         <div className='temporal'>
           <p>Welcome, &apos;{userId}&apos;</p>

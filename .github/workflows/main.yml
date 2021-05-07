@@ -42,7 +42,11 @@ jobs:
           JWT_SECRET: FAKESECRET
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
           REQUEST_LOGGER: false
-        run: go test ./tests
+          CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
+        run: |
+          go test -coverpkg "../..." -coverprofile cover.out
+          gocover-cobertura < cover.out > coverage.xml
+          curl -Ls https://coverage.codacy.com/get.sh report -r coverage.xml
 
       - name: Development Deploy
         if: github.ref == 'refs/heads/develop'
