@@ -46,7 +46,7 @@ jobs:
           export PATH=${PATH}:`go env GOPATH`/bin
           go get -u github.com/schrej/godacov
           go test ./tests -coverpkg "./..." -coverprofile cover.out
-          godacov -t 4993d6e6b495492099576b08364620eb -r ./cover.out -c ${{ github.sha }}
+          godacov -t ${{secrets.CODACY_PROJECT_TOKEN}} -r ./cover.out -c ${{ github.sha }}
 
       - name: Development Deploy
         if: github.ref == 'refs/heads/develop'
