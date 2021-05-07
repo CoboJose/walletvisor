@@ -40,9 +40,18 @@ jobs:
       - name: Test
         env:
           JWT_SECRET: FAKESECRET
-          DATABASE_URL: postgres://postgres:postgre@localhost:5432/postgres?sslmode=disable
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
           REQUEST_LOGGER: false
         run: go test ./tests
+
+      - name: Development Deploy
+        if: github.ref == 'refs/heads/develop'
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'walletvisor-dev'
+          heroku_email: 'cobogue@gmail.com'
+          appdir: "server"
           
       - name: Production Deploy
         if: github.ref == 'refs/heads/master'
@@ -52,8 +61,6 @@ jobs:
           heroku_app_name: 'walletvisor'
           heroku_email: 'cobogue@gmail.com'
           appdir: "server"
-        env:
-          HD_JWT_SECRET: ${{secrets.JWT_SECRET}}
 
 
   Client:
@@ -61,9 +68,6 @@ jobs:
       defaults:
         run:
           working-directory: client
-      env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_PROD_SITE: 63133934-caeb-44c0-a475-e155ecb5450d
 
       steps:
         - name: Checkout repository
@@ -83,18 +87,20 @@ jobs:
         - name: Build
           run: npm run-script build
 
-        - name: Production Env Variables
-          if: github.ref == 'refs/heads/master'
+        - name: Development Deploy
+          if: github.ref == 'refs/heads/develop'
           uses: netlify/actions/cli@master
           env:
-            NETLIFY_SITE_ID: ${{env.NETLIFY_PROD_SITE}}
+            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+            NETLIFY_SITE_ID: 33e44912-79c5-4daa-ad47-3894a2e6cd64
           with:
-            args: env:set SERVER_URL https://walletvisor.herokuapp.com;
+            args: deploy --dir=client/build --prod
         
         - name: Production Deploy
           if: github.ref == 'refs/heads/master'
           uses: netlify/actions/cli@master
           env:
-            NETLIFY_SITE_ID: ${{env.NETLIFY_PROD_SITE}}
+            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+            NETLIFY_SITE_ID: 63133934-caeb-44c0-a475-e155ecb5450d
           with:
             args: deploy --dir=client/build --prod
