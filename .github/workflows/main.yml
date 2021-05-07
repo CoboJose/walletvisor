@@ -28,6 +28,9 @@ jobs:
       
       - name: Install Go
         uses: actions/setup-go@v2
+      
+      - name: Install godacov
+        run: go get github.com/schrej/godacov
         
       - name: Go modules Caching
         uses: actions/cache@v2
@@ -43,7 +46,6 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
           REQUEST_LOGGER: false
         run: |
-          go get github.com/schrej/godacov
           go test ./tests -coverpkg "./..." -coverprofile cover.out
           godacov -t 4993d6e6b495492099576b08364620eb -r ./cover.out -c ${{ github.sha }}
 
