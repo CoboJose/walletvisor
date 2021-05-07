@@ -43,14 +43,9 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
           REQUEST_LOGGER: false
         run: |
+          go get github.com/schrej/godacov
           go test ./tests -coverpkg "./..." -coverprofile cover.out
-
-      - name: Run codacy-coverage-reporter
-        uses: brpaz/godacov-action@v1.1.1
-        with:
-          reportPath: cover.out
-          codacyToken: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          commitId: ${{ github.sha }}
+          godacov -t 4993d6e6b495492099576b08364620eb -r ./cover.out -c ${{ github.sha }}
 
       - name: Development Deploy
         if: github.ref == 'refs/heads/develop'
