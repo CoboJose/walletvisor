@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-go@v2
       
       - name: Install godacov
-        run: go get -u github.com/schrej/godacov
+        run: go get -v -u github.com/schrej/godacov
         
       - name: Go modules Caching
         uses: actions/cache@v2
