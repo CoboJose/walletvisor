@@ -8,7 +8,7 @@ const Intro = (props) => {
         <div className={props.className}>
             
             <div className='title'>
-                <span style={{color:'white'}}>Wallet</span><span style={{color:'var(--purple_1)'}}>Visor</span>
+                <span style={{color:'white'}}>Wallet</span><span style={{color:'var(--purple_1)'}}>Visorr</span>
             </div>
 
             <div className='image'>

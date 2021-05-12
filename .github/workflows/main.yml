@@ -85,10 +85,13 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-node-
 
-        - name: Install Pacckages and Build
+        - name: Install Packages and Build
           run: |
             npm install
             npm run-script build
+
+        - name: Test
+          run: npm test
 
         - name: Development Deploy
           if: github.ref == 'refs/heads/develop'
