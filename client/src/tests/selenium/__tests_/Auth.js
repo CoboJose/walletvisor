@@ -1,4 +1,5 @@
 const { Builder, By } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 import { getAsyncElementByCss, login, sleep } from "../helpers";
 
 const PAGE = "http://localhost:3000/";
@@ -15,7 +16,7 @@ describe('Auth/Auth', () => {
   let driver;
 
   beforeEach(async function() {
-    driver = await new Builder().forBrowser(BROWSER).build();
+    driver = await new Builder().forBrowser(BROWSER).setChromeOptions(new chrome.Options().headless().windowSize({width:1920, height:1080})).build();
     await driver.get(PAGE);
   })
   afterEach(async function() {
