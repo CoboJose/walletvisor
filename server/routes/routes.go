@@ -10,9 +10,10 @@ import (
 )
 
 var (
-	api         *echo.Group
-	authHandler = &handlers.AuthHandler{}
-	userHandler = &handlers.UserHandler{}
+	api                *echo.Group
+	authHandler        = &handlers.AuthHandler{}
+	userHandler        = &handlers.UserHandler{}
+	transactionHandler = &handlers.TransactionHandler{}
 )
 
 // Init defines the routes and their handlers
@@ -31,6 +32,7 @@ func Init(e *echo.Echo) {
 
 	authentication()
 	user()
+	transaction()
 }
 
 func authentication() {
@@ -44,4 +46,9 @@ func authentication() {
 func user() {
 	user := api.Group("/user", middlewares.ValidToken("user"))
 	user.GET("", userHandler.Get)
+}
+
+func transaction() {
+	transaction := api.Group("/transaction", middlewares.ValidToken("user"))
+	transaction.POST("", transactionHandler.CreateTransaction)
 }

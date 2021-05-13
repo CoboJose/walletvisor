@@ -70,4 +70,7 @@ var errorMessages = map[string]string{
 	// User
 	"US000": "There is no user with that id",
 	"US001": "There is no user with that email",
+
+	// Transactions
+	"TR000": "Invalid Transaction, check that, 1:(kind=income OR kind=expense,) 2:(If kind=income then category IN ['salary', 'business', 'gifts', 'other']. If kind=expense then category IN ['food','home', 'shopping', 'transport', 'bills', 'entertainment', 'other']), 3:(amount and date >=0)",
 }

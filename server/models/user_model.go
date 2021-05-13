@@ -11,7 +11,7 @@ import (
 )
 
 type User struct {
-	Id       int    `json:"id" db:"id"`
+	Id       int    `json:"id"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Name     string `json:"name"`
@@ -82,7 +82,7 @@ func (user *User) Save() *utils.Cerr {
 		query := `INSERT INTO users (email, password, name, role) VALUES($1, $2, $3, $4) RETURNING id`
 		err = db.QueryRow(query, user.Email, user.Password, user.Name, user.Role).Scan(&user.Id)
 	} else { //Update
-		_, err = db.NamedExec(`UPDATE user SET email=:email, password=:password, name=:name, role=:role WHERE id=:id`, &user)
+		_, err = db.NamedExec(`UPDATE users SET email=:email, password=:password, name=:name, role=:role WHERE id=:id`, &user)
 	}
 
 	if err != nil {
