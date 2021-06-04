@@ -17,15 +17,18 @@ type Transaction struct {
 	UserId   int     `json:"userId"  db:"user_id"`
 }
 
-var transactionTable = `CREATE TABLE IF NOT EXISTS transactions (
+var transactionsTable = `CREATE TABLE IF NOT EXISTS transactions (
 		id			SERIAL 			PRIMARY KEY,
 		name 		VARCHAR(100)	NOT NULL,
 		kind 		VARCHAR(100) 	NOT NULL	CHECK(kind IN('income', 'expense')),
 		category	VARCHAR(100) 	NOT NULL	CHECK((kind='income' AND category IN('salary', 'business', 'gifts', 'other')) OR (kind='expense' AND category IN('food','home', 'shopping', 'transport', 'bills', 'entertainment', 'other'))),
 		amount 		REAL 			NOT NULL	CHECK(amount>=0),
-		date 		INT				NOT NULL	CHECK(date>=0),
+		date 		BIGINT				NOT NULL	CHECK(date>=0),
 		user_id		INT				NOT NULL	REFERENCES users	ON DELETE CASCADE
 	)`
+
+var transactionsIndexes = `CREATE INDEX IF NOT EXISTS trn_date_index ON transactions (date);
+						  CREATE INDEX IF NOT EXISTS trn_user_id_index ON transactions (user_id);`
 
 /////////
 // NEW //
@@ -47,9 +50,10 @@ func GetTransactionById(transactionId string) (*Transaction, *utils.Cerr) {
 	return transaction, nil
 }
 
-func GetTransactions(userId int) ([]Transaction, *utils.Cerr) {
+func GetUserTransactions(userId, from, to int) ([]Transaction, *utils.Cerr) {
 	transactions := []Transaction{}
-	if err := db.Select(&transactions, `SELECT * FROM transactions WHERE user_id=$1`, userId); err != nil {
+	query := `SELECT * FROM transactions WHERE user_id=$1 AND date >= $2 AND date <= $3`
+	if err := db.Select(&transactions, query, userId, from, to); err != nil {
 		return nil, utils.NewCerr("TR001", err)
 	}
 	return transactions, nil

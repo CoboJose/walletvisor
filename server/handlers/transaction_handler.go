@@ -12,12 +12,21 @@ import (
 type TransactionHandler struct{}
 
 // GetAll get all the transactions
-func (h TransactionHandler) GetAll(c echo.Context) error {
+func (h TransactionHandler) GetUserTransactions(c echo.Context) error {
 	// Get the userId from the token
 	userId := c.Get("claims").(utils.JwtClaims).UserId
+	// Get date range from query
+	from, err := strconv.Atoi(c.QueryParam("from"))
+	if err != nil {
+		return c.JSON(400, utils.NewCerr("GE001", errors.New("could not parse the query params")).Response())
+	}
+	to, err := strconv.Atoi(c.QueryParam("to"))
+	if err != nil {
+		return c.JSON(400, utils.NewCerr("GE001", errors.New("could not parse the query params")).Response())
+	}
 
 	// Get the transactions from the database
-	transactions, cerr := models.GetTransactions(userId)
+	transactions, cerr := models.GetUserTransactions(userId, from, to)
 	if cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}

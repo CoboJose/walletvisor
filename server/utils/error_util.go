@@ -1,5 +1,11 @@
 package utils
 
+import (
+	"os"
+
+	_ "github.com/joho/godotenv/autoload"
+)
+
 type Cerr struct {
 	Code string
 	Err  error
@@ -18,7 +24,7 @@ func (cerr *Cerr) Response() map[string]interface{} {
 		errMsg = cerr.Err.Error()
 	}
 
-	if true {
+	if os.Getenv("DEBUG") == "true" {
 		response = map[string]interface{}{
 			"error": map[string]interface{}{
 				"code":  cerr.Code,

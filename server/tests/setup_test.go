@@ -26,7 +26,7 @@ func TestMain(m *testing.M) {
 	e = echo.New()
 	routes.Init(e)
 
-	host = "http://localhost:" + os.Getenv("HOST") + "/v1/"
+	host = "http://localhost:" + os.Getenv("PORT") + "/v1/"
 	//Setup DB
 	user1 = models.NewUser("user1@test.com", password, "user1", "user")
 	user1.Save()
@@ -34,7 +34,7 @@ func TestMain(m *testing.M) {
 	//Run Tests
 	code := m.Run()
 	//Teardown
-	database.Get().Exec(`TRUNCATE TABLE users RESTART IDENTITY CASCADE`)
+	database.Get().Exec(`TRUNCATE TABLE users, transactions RESTART IDENTITY CASCADE`)
 	database.Close()
 	//Exit Tests
 	os.Exit(code)

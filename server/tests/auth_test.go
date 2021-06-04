@@ -3,6 +3,7 @@ package tests
 import (
 	"fmt"
 	"net/http/httptest"
+	"server/models"
 	"server/utils"
 	"strings"
 	"testing"
@@ -116,6 +117,37 @@ func TestSignupAlreadyExists(t *testing.T) {
 
 	assert.Equal(t, 400, rec.Code)
 	assert.Contains(t, rec.Body.String(), "AU000")
+}
+
+////////////////////
+// DELETE ACCOUNT //
+////////////////////
+func TestDeleteAccountOk(t *testing.T) {
+	// Create user to delete
+	userDel := models.NewUser("userDel@test.com", password, "userDel", "user")
+	userDel.Save()
+	userDelToken, _, _ := utils.GenerateTokens(userDel.Id, userDel.Email, userDel.Role)
+
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest("DELETE", host+"auth/deleteAccount", nil)
+	req.Header.Set("token", userDelToken)
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, 201, rec.Code)
+	assert.Contains(t, rec.Body.String(), "Account deleted succesfully")
+}
+
+func TestDeleteAccountNotExistingId(t *testing.T) {
+	// Create user to delete
+	userDelToken, _, _ := utils.GenerateTokens(99, "email@test.com", "user")
+
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest("DELETE", host+"auth/deleteAccount", nil)
+	req.Header.Set("token", userDelToken)
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, 400, rec.Code)
+	assert.Contains(t, rec.Body.String(), "US000")
 }
 
 /////////

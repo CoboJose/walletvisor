@@ -54,7 +54,7 @@ func user() {
 func transaction() {
 	transaction := api.Group("/transactions", middlewares.ValidToken("user"))
 
-	transaction.GET("", transactionHandler.GetAll)
+	transaction.GET("", transactionHandler.GetUserTransactions)
 	transaction.POST("", transactionHandler.Create)
 	transaction.PUT("", transactionHandler.Update)
 	transaction.DELETE("", transactionHandler.Delete)
