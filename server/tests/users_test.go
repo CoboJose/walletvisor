@@ -53,3 +53,20 @@ func TestUpdateUserOk(t *testing.T) {
 	assert.Equal(t, 200, rec.Code)
 	assert.Contains(t, rec.Body.String(), "updatedEmail@email.com")
 }
+
+func TestUpdateUserBadOldPassword(t *testing.T) {
+	// Create user
+	userUpdate := models.NewUser("userUpdate@test.com", password, "userUpdate", "user")
+	userUpdate.Save()
+	userUpdateToken, _, _ := utils.GenerateTokens(userUpdate.Id, userUpdate.Email, userUpdate.Role)
+
+	body := strings.NewReader(fmt.Sprintf(`{"email":"%s", "oldPassword":"%s", "newPassword":"%s", "name":"%s"}`, "updatedEmail@email.com", "BadPass1$", "FakePass1$", "updatedName"))
+	rec := httptest.NewRecorder()
+	req := httptest.NewRequest("PUT", host+"user", body)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("token", userUpdateToken)
+	e.ServeHTTP(rec, req)
+
+	assert.Equal(t, 400, rec.Code)
+	assert.Contains(t, rec.Body.String(), "AU002")
+}

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"server/models"
 	"server/utils"
 
@@ -36,7 +35,6 @@ func (h UserHandler) Update(c echo.Context) error {
 	if err := c.Bind(&updatePayload); err != nil {
 		return c.JSON(400, utils.NewCerr("GE002", err).Response())
 	}
-	fmt.Println(updatePayload.NewPassword)
 
 	// Get Database user
 	dbUser, cerr := models.GetUserById(c.Get("claims").(utils.JwtClaims).UserId)
