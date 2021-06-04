@@ -110,6 +110,19 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 	return c.JSON(200, response)
 }
 
+// DeleteAccount deletes the acount indicated by the token userId
+func (h AuthHandler) DeleteAccount(c echo.Context) error {
+	// Get the userId from the token
+	userId := c.Get("claims").(utils.JwtClaims).UserId
+
+	user := models.User{Id: userId}
+	if cerr := user.Delete(); cerr != nil {
+		return c.JSON(400, cerr.Response())
+	}
+
+	return c.JSON(201, "Account deleted succesfully")
+}
+
 /////////////////
 //// HELPERS ////
 /////////////////

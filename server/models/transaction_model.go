@@ -1,8 +1,8 @@
 package models
 
 import (
+	"database/sql"
 	"errors"
-	"fmt"
 	"server/utils"
 	"strings"
 )
@@ -35,6 +35,26 @@ func NewTransaction(name string, kind string, category string, amount float64, d
 	return &Transaction{Id: -1, Kind: kind, Category: category, Amount: amount, Date: date, UserId: userId}
 }
 
+/////////
+// Get //
+/////////
+
+func GetTransactionById(transactionId string) (*Transaction, *utils.Cerr) {
+	transaction := new(Transaction)
+	if err := db.Get(transaction, `SELECT * FROM transactions WHERE id=$1`, transactionId); err != nil {
+		return nil, utils.NewCerr("TR002", err)
+	}
+	return transaction, nil
+}
+
+func GetTransactions(userId int) ([]Transaction, *utils.Cerr) {
+	transactions := []Transaction{}
+	if err := db.Select(&transactions, `SELECT * FROM transactions WHERE user_id=$1`, userId); err != nil {
+		return nil, utils.NewCerr("TR001", err)
+	}
+	return transactions, nil
+}
+
 //////////
 // Save //
 //////////
@@ -49,16 +69,43 @@ func (trn *Transaction) Save() *utils.Cerr {
 		query := `INSERT INTO transactions (name, kind, category, amount, date, user_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id`
 		err = db.QueryRow(query, trn.Name, trn.Kind, trn.Category, trn.Amount, trn.Date, trn.UserId).Scan(&trn.Id)
 	} else { //Update
-		_, err = db.NamedExec(`UPDATE transactions SET name=:name, kind=:kind, category=:category, amount=:amount, date=:date, user_id=:user_id WHERE id=:id`, &trn)
+		query := `UPDATE transactions SET name=:name, kind=:kind, category=:category, amount=:amount, date=:date WHERE id=:id AND user_id=:user_id`
+		var res sql.Result
+		res, err = db.NamedExec(query, &trn)
+		if err == nil {
+			if rowsAffected, _ := res.RowsAffected(); err == nil && rowsAffected < 1 {
+				err = errors.New("no rows affected")
+			}
+		}
 	}
 
 	if err != nil {
-		fmt.Println(err)
 		if strings.Contains(err.Error(), "check") {
 			return utils.NewCerr("TR000", errors.New("error saving the transaction to the database"))
+		} else if strings.Contains(err.Error(), "no rows affected") {
+			return utils.NewCerr("TR002", errors.New("error updating the transaction in the database"))
 		} else {
+			utils.ErrorLog.Println(err.Error())
 			return utils.NewCerr("GE000", err)
 		}
+	}
+
+	return nil
+}
+
+////////////
+// Delete //
+////////////
+
+func (trn *Transaction) Delete() *utils.Cerr {
+	query := `DELETE FROM transactions WHERE id=:id AND user_id=:user_id`
+	res, err := db.NamedExec(query, &trn)
+
+	if err != nil {
+		utils.ErrorLog.Println(err.Error())
+		return utils.NewCerr("GE000", err)
+	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected < 1 {
+		return utils.NewCerr("TR002", errors.New("no rows affected"))
 	}
 
 	return nil

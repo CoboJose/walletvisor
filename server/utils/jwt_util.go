@@ -29,6 +29,7 @@ func GenerateTokens(userId int, email string, role string) (token string, refres
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := t.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
+		ErrorLog.Println(err.Error())
 		return "", "", NewCerr("GE000", err)
 	}
 
@@ -39,6 +40,7 @@ func GenerateTokens(userId int, email string, role string) (token string, refres
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rClaims)
 	refreshToken, err = rt.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
+		ErrorLog.Println(err.Error())
 		return "", "", NewCerr("GE000", err)
 	}
 

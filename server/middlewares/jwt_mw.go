@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"server/models"
 	"server/utils"
 	"strings"
 
@@ -21,6 +22,11 @@ func ValidToken(roles string) echo.MiddlewareFunc {
 			claims, cerr := utils.ParseToken(token)
 			if cerr != nil {
 				return c.JSON(401, cerr.Response())
+			}
+
+			// Validate if the user exists
+			if _, cerr = models.GetUserById(claims.UserId); cerr != nil {
+				return c.JSON(400, utils.NewCerr("US000", nil).Response())
 			}
 
 			// Should be an access token

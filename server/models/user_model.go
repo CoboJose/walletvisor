@@ -1,6 +1,8 @@
 package models
 
 import (
+	"database/sql"
+	"errors"
 	"regexp"
 	"server/utils"
 	"strconv"
@@ -74,7 +76,7 @@ func (user *User) Save() *utils.Cerr {
 	if cerr := user.validate(); cerr != nil {
 		return cerr
 	}
-	if cerr := user.hashPassword(); cerr != nil {
+	if cerr := user.HashPassword(); cerr != nil {
 		return cerr
 	}
 
@@ -82,15 +84,41 @@ func (user *User) Save() *utils.Cerr {
 		query := `INSERT INTO users (email, password, name, role) VALUES($1, $2, $3, $4) RETURNING id`
 		err = db.QueryRow(query, user.Email, user.Password, user.Name, user.Role).Scan(&user.Id)
 	} else { //Update
-		_, err = db.NamedExec(`UPDATE users SET email=:email, password=:password, name=:name, role=:role WHERE id=:id`, &user)
+		query := `UPDATE users SET email=:email, password=:password, name=:name, role=:role WHERE id=:id`
+		var res sql.Result
+		res, err = db.NamedExec(query, &user)
+		if err == nil {
+			if rowsAffected, _ := res.RowsAffected(); err == nil && rowsAffected < 1 {
+				err = errors.New("no rows affected")
+			}
+		}
 	}
 
 	if err != nil {
 		if strings.Contains(err.Error(), "users_email_key") {
 			return utils.NewCerr("AU000", nil)
 		} else {
+			utils.ErrorLog.Println(err.Error())
 			return utils.NewCerr("GE000", err)
 		}
+	}
+
+	return nil
+}
+
+////////////
+// Delete //
+////////////
+
+func (user *User) Delete() *utils.Cerr {
+	query := `DELETE FROM users WHERE id=:id`
+	res, err := db.NamedExec(query, &user)
+
+	if err != nil {
+		utils.ErrorLog.Println(err.Error())
+		return utils.NewCerr("GE000", err)
+	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected < 1 {
+		return utils.NewCerr("US002", errors.New("no rows affected"))
 	}
 
 	return nil
@@ -135,9 +163,10 @@ func (user *User) validate() *utils.Cerr {
 	return nil
 }
 
-func (user *User) hashPassword() *utils.Cerr {
+func (user *User) HashPassword() *utils.Cerr {
 	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
+		utils.ErrorLog.Println(err.Error())
 		return utils.NewCerr("GE000", err)
 	}
 	user.Password = string(passwordBytes)

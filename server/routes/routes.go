@@ -41,14 +41,21 @@ func authentication() {
 	auth.POST("/signup", authHandler.Signup)
 	auth.POST("/login", authHandler.Login)
 	auth.GET("/refreshToken", authHandler.RefreshToken)
+	auth.DELETE("/deleteAccount", authHandler.DeleteAccount, middlewares.ValidToken("user"))
 }
 
 func user() {
 	user := api.Group("/user", middlewares.ValidToken("user"))
+
 	user.GET("", userHandler.Get)
+	user.PUT("", userHandler.Update)
 }
 
 func transaction() {
-	transaction := api.Group("/transaction", middlewares.ValidToken("user"))
-	transaction.POST("", transactionHandler.CreateTransaction)
+	transaction := api.Group("/transactions", middlewares.ValidToken("user"))
+
+	transaction.GET("", transactionHandler.GetAll)
+	transaction.POST("", transactionHandler.Create)
+	transaction.PUT("", transactionHandler.Update)
+	transaction.DELETE("", transactionHandler.Delete)
 }
