@@ -35,7 +35,7 @@ func (h TransactionHandler) GetUserTransactions(c echo.Context) error {
 		"transactions": transactions,
 	}
 
-	return c.JSON(201, response)
+	return c.JSON(200, response)
 }
 
 // Create creates a transaction

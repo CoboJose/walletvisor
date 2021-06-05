@@ -35,7 +35,7 @@ var transactionsIndexes = `CREATE INDEX IF NOT EXISTS trn_date_index ON transact
 /////////
 
 func NewTransaction(name string, kind string, category string, amount float64, date int, userId int) *Transaction {
-	return &Transaction{Id: -1, Kind: kind, Category: category, Amount: amount, Date: date, UserId: userId}
+	return &Transaction{Id: -1, Name: name, Kind: kind, Category: category, Amount: amount, Date: date, UserId: userId}
 }
 
 /////////

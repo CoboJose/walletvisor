@@ -60,7 +60,7 @@ func TestLoginBadPassword(t *testing.T) {
 // SIGNUP //
 ////////////
 func TestSignupOk(t *testing.T) {
-	body := strings.NewReader(fmt.Sprintf(`{"email":"%s","password":"%s"}`, "user2@test.com", password))
+	body := strings.NewReader(fmt.Sprintf(`{"email":"%s","password":"%s"}`, "user99@test.com", password))
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("POST", host+"auth/signup", body)
 	req.Header.Set("Content-Type", "application/json")
