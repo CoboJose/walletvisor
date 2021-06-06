@@ -20,7 +20,7 @@ func main() {
 	e.Start(":" + os.Getenv("PORT"))
 }
 
-var banner string = `
+var banner = `
  _       __      ____     __ _    __                
 | |     / /___ _/ / /__  / /| |  / ( )____ ___  ____
 | | /| / / __ '/ / / _ \/ __/ | / / / ___/ __ \/ __/

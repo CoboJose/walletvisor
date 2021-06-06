@@ -9,22 +9,26 @@ import (
 )
 
 const (
-	TOKEN_EXPIRES_MINUTES      = 15
-	REFRESH_TOKEN_EXPIRES_DAYS = 180
+	//TokenExpiresMinutes represents the minutes that the token will be valid
+	TokenExpiresMinutes = 15
+	//RefreshTokenExpiresDays represents the days that the refresh token will be valid
+	RefreshTokenExpiresDays = 180
 )
 
+// JwtClaims holds all the parameters stored in a jwt token
 type JwtClaims struct {
-	UserId int    `json:"userId"`
+	UserID int    `json:"userID"`
 	Email  string `json:"email"`
 	Role   string `json:"role"`
 	Type   string `json:"type"`
 	jwt.StandardClaims
 }
 
+// GenerateTokens creates a jwt token and refresh token, storing in the claims the given parameters
 func GenerateTokens(userId int, email string, role string) (token string, refreshToken string, cerr *Cerr) {
 	// TOKEN
-	claims := JwtClaims{UserId: userId, Email: email, Role: role, Type: "access", StandardClaims: jwt.StandardClaims{
-		ExpiresAt: time.Now().Add(time.Minute * time.Duration(TOKEN_EXPIRES_MINUTES)).Unix(), Issuer: "walletvisor"}}
+	claims := JwtClaims{UserID: userId, Email: email, Role: role, Type: "access", StandardClaims: jwt.StandardClaims{
+		ExpiresAt: time.Now().Add(time.Minute * time.Duration(TokenExpiresMinutes)).Unix(), Issuer: "walletvisor"}}
 
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := t.SignedString([]byte(os.Getenv("JWT_SECRET")))
@@ -34,8 +38,8 @@ func GenerateTokens(userId int, email string, role string) (token string, refres
 	}
 
 	//REFRESH TOKEN
-	rClaims := JwtClaims{UserId: userId, Email: email, Role: role, Type: "refresh", StandardClaims: jwt.StandardClaims{
-		ExpiresAt: time.Now().Add(time.Hour * time.Duration(REFRESH_TOKEN_EXPIRES_DAYS*24)).Unix(), Issuer: "walletvisor"}}
+	rClaims := JwtClaims{UserID: userId, Email: email, Role: role, Type: "refresh", StandardClaims: jwt.StandardClaims{
+		ExpiresAt: time.Now().Add(time.Hour * time.Duration(RefreshTokenExpiresDays*24)).Unix(), Issuer: "walletvisor"}}
 
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rClaims)
 	refreshToken, err = rt.SignedString([]byte(os.Getenv("JWT_SECRET")))

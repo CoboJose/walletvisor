@@ -3,14 +3,16 @@ package utils
 import (
 	"os"
 
-	_ "github.com/joho/godotenv/autoload"
+	_ "github.com/joho/godotenv/autoload" // Load environment variables
 )
 
+// Cerr (Custom error) holds the code of an error (Defined in utils/error_util), and the error itself
 type Cerr struct {
 	Code string
 	Err  error
 }
 
+// NewCerr creates a new Cerr
 func NewCerr(code string, err error) *Cerr {
 	return &Cerr{Code: code, Err: err}
 }
@@ -44,6 +46,7 @@ func (cerr *Cerr) Response() map[string]interface{} {
 	return response
 }
 
+// ToString converts the Cerr to string
 func (cerr *Cerr) ToString() string {
 	var errMsg string
 

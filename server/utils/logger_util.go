@@ -6,9 +6,13 @@ import (
 )
 
 var (
-	InfoLog    *log.Logger
+	// InfoLog logs with the Info level
+	InfoLog *log.Logger
+	// WarningLog logs with the Warning level
 	WarningLog *log.Logger
-	ErrorLog   *log.Logger
+	// ErrorLog logs with the Error level
+	ErrorLog *log.Logger
+	// RequestLog logs with the Request level
 	RequestLog *log.Logger
 )
 

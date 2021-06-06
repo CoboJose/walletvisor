@@ -8,13 +8,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// UserHandler holds all the user handlers
 type UserHandler struct{}
 
 // Get returns the the user of the provided token, hiding the password
 func (h UserHandler) Get(c echo.Context) error {
 	// Get user
-	userId := c.Get("claims").(utils.JwtClaims).UserId
-	user, cerr := models.GetUserById(userId)
+	userID := c.Get("claims").(utils.JwtClaims).UserID
+	user, cerr := models.GetUserByID(userID)
 	if cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
@@ -28,7 +29,7 @@ func (h UserHandler) Get(c echo.Context) error {
 	return c.JSON(200, response)
 }
 
-// Get returns the the user of the provided token, hiding the password
+// Update updates the user, returning it after the operation
 func (h UserHandler) Update(c echo.Context) error {
 	// Get the user payload from the body
 	updatePayload := &updatePayload{}
@@ -37,7 +38,7 @@ func (h UserHandler) Update(c echo.Context) error {
 	}
 
 	// Get Database user
-	dbUser, cerr := models.GetUserById(c.Get("claims").(utils.JwtClaims).UserId)
+	dbUser, cerr := models.GetUserByID(c.Get("claims").(utils.JwtClaims).UserID)
 	if cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}

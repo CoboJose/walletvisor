@@ -5,15 +5,15 @@ import (
 	"errors"
 	"regexp"
 	"server/utils"
-	"strconv"
 	"strings"
 	"unicode"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
+// User represents a user of the application
 type User struct {
-	Id       int    `json:"id"`
+	ID       int    `json:"id"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Name     string `json:"name"`
@@ -32,15 +32,17 @@ var usersTable = `CREATE TABLE IF NOT EXISTS users (
 // NEW //
 /////////
 
+// NewUser creates a new user, but does not store it in the database
 func NewUser(email, password, name, role string) *User {
-	return &User{Id: -1, Email: email, Password: password, Name: name, Role: role}
+	return &User{ID: -1, Email: email, Password: password, Name: name, Role: role}
 }
 
 /////////
 // GET //
 /////////
 
-func GetUserById(id int) (*User, *utils.Cerr) {
+// GetUserByID returns the user identified by the id
+func GetUserByID(id int) (*User, *utils.Cerr) {
 	user := new(User)
 	if err := db.Get(user, `SELECT * FROM users WHERE id=$1`, id); err != nil {
 		return nil, utils.NewCerr("US000", err)
@@ -48,6 +50,7 @@ func GetUserById(id int) (*User, *utils.Cerr) {
 	return user, nil
 }
 
+// GetUserByEmail returns the user identified by the email
 func GetUserByEmail(email string) (*User, *utils.Cerr) {
 	user := new(User)
 	if err := db.Get(user, `SELECT * FROM users WHERE email=$1`, email); err != nil {
@@ -56,6 +59,7 @@ func GetUserByEmail(email string) (*User, *utils.Cerr) {
 	return user, nil
 }
 
+// GetUserByAuthentication returns the user identified by the email, if the password is correct
 func GetUserByAuthentication(email, password string) (*User, *utils.Cerr) {
 	user, cerr := GetUserByEmail(email)
 	if cerr != nil {
@@ -71,6 +75,7 @@ func GetUserByAuthentication(email, password string) (*User, *utils.Cerr) {
 // Save //
 //////////
 
+// Save stores the user in the database, creating it if the ID <= 0, updating it in the other case
 func (user *User) Save() *utils.Cerr {
 	var err error
 	if cerr := user.validate(); cerr != nil {
@@ -80,9 +85,9 @@ func (user *User) Save() *utils.Cerr {
 		return cerr
 	}
 
-	if user.Id < 0 { // Create
+	if user.ID < 0 { // Create
 		query := `INSERT INTO users (email, password, name, role) VALUES($1, $2, $3, $4) RETURNING id`
-		err = db.QueryRow(query, user.Email, user.Password, user.Name, user.Role).Scan(&user.Id)
+		err = db.QueryRow(query, user.Email, user.Password, user.Name, user.Role).Scan(&user.ID)
 	} else { //Update
 		query := `UPDATE users SET email=:email, password=:password, name=:name, role=:role WHERE id=:id`
 		var res sql.Result
@@ -110,6 +115,7 @@ func (user *User) Save() *utils.Cerr {
 // Delete //
 ////////////
 
+// Delete deletes the user from the database
 func (user *User) Delete() *utils.Cerr {
 	query := `DELETE FROM users WHERE id=:id`
 	res, err := db.NamedExec(query, &user)
@@ -128,41 +134,7 @@ func (user *User) Delete() *utils.Cerr {
 // METHODS //
 /////////////
 
-func (user *User) validate() *utils.Cerr {
-	// Not null
-	if user.Id == 0 || user.Email == "" || user.Password == "" || user.Name == "" || user.Role == "" {
-		return utils.NewCerr("GE003", nil)
-	}
-	// Email
-	var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
-	if !emailRegex.MatchString(user.Email) {
-		return utils.NewCerr("AU003", nil)
-	}
-	// Password
-	has_digit := false
-	has_upper := false
-	has_lower := false
-	has_special := false
-	pass_length := len(user.Password)
-	for _, value := range user.Password {
-		switch {
-		case unicode.IsLower(value):
-			has_digit = true
-		case unicode.IsUpper(value):
-			has_upper = true
-		case unicode.IsNumber(value):
-			has_lower = true
-		case unicode.IsPunct(value) || unicode.IsSymbol(value):
-			has_special = true
-		}
-	}
-	if !(has_digit && has_upper && has_lower && has_special && pass_length >= 8) {
-		return utils.NewCerr("AU004", nil)
-	}
-
-	return nil
-}
-
+// HashPassword hashes the user password
 func (user *User) HashPassword() *utils.Cerr {
 	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -173,7 +145,37 @@ func (user *User) HashPassword() *utils.Cerr {
 	return nil
 }
 
-func (user *User) ToString() string {
-	return "User: [Id:" + strconv.Itoa(user.Id) + ", Email: " + user.Email +
-		", Password:" + user.Password + ", Name: " + user.Name + "Role: " + user.Role + "]"
+func (user *User) validate() *utils.Cerr {
+	// Not null
+	if user.ID == 0 || user.Email == "" || user.Password == "" || user.Name == "" || user.Role == "" {
+		return utils.NewCerr("GE003", nil)
+	}
+	// Email
+	var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+	if !emailRegex.MatchString(user.Email) {
+		return utils.NewCerr("AU003", nil)
+	}
+	// Password
+	hasDigit := false
+	hasUpper := false
+	hasLower := false
+	hasSpecial := false
+	passLength := len(user.Password)
+	for _, value := range user.Password {
+		switch {
+		case unicode.IsLower(value):
+			hasDigit = true
+		case unicode.IsUpper(value):
+			hasUpper = true
+		case unicode.IsNumber(value):
+			hasLower = true
+		case unicode.IsPunct(value) || unicode.IsSymbol(value):
+			hasSpecial = true
+		}
+	}
+	if !(hasDigit && hasUpper && hasLower && hasSpecial && passLength >= 8) {
+		return utils.NewCerr("AU004", nil)
+	}
+
+	return nil
 }

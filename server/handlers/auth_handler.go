@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo"
 )
 
+// AuthHandler holds all the auth handlers
 type AuthHandler struct{}
 
 //Signup creates the user and return a token to access
@@ -23,7 +24,7 @@ func (h AuthHandler) Signup(c echo.Context) error {
 	}
 
 	// Create the token
-	token, refreshToken, cerr := utils.GenerateTokens(user.Id, user.Email, user.Role)
+	token, refreshToken, cerr := utils.GenerateTokens(user.ID, user.Email, user.Role)
 	if cerr != nil {
 		return c.JSON(500, cerr.Response())
 	}
@@ -31,7 +32,7 @@ func (h AuthHandler) Signup(c echo.Context) error {
 	response := map[string]interface{}{
 		"token":        token,
 		"refreshToken": refreshToken,
-		"expiresIn":    utils.TOKEN_EXPIRES_MINUTES,
+		"expiresIn":    utils.TokenExpiresMinutes,
 		"name":         user.Name,
 		"role":         user.Role,
 		"msg":          "User created succesfully",
@@ -53,7 +54,7 @@ func (h AuthHandler) Login(c echo.Context) error {
 		return c.JSON(401, cerr.Response())
 	}
 
-	token, refreshToken, cerr := utils.GenerateTokens(user.Id, user.Email, user.Role)
+	token, refreshToken, cerr := utils.GenerateTokens(user.ID, user.Email, user.Role)
 	if cerr != nil {
 		return c.JSON(500, cerr.Response())
 	}
@@ -61,7 +62,7 @@ func (h AuthHandler) Login(c echo.Context) error {
 	response := map[string]interface{}{
 		"token":        token,
 		"refreshToken": refreshToken,
-		"expiresIn":    utils.TOKEN_EXPIRES_MINUTES,
+		"expiresIn":    utils.TokenExpiresMinutes,
 		"name":         user.Name,
 		"role":         user.Role,
 	}
@@ -89,12 +90,12 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 	}
 
 	//Generate new Tokens
-	user, cerr := models.GetUserById(claims.UserId)
+	user, cerr := models.GetUserByID(claims.UserID)
 	if cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
 
-	token, refreshToken, cerr := utils.GenerateTokens(user.Id, user.Email, user.Role)
+	token, refreshToken, cerr := utils.GenerateTokens(user.ID, user.Email, user.Role)
 	if cerr != nil {
 		return c.JSON(500, cerr.Response())
 	}
@@ -102,7 +103,7 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 	response := map[string]interface{}{
 		"token":        token,
 		"refreshToken": refreshToken,
-		"expiresIn":    utils.TOKEN_EXPIRES_MINUTES,
+		"expiresIn":    utils.TokenExpiresMinutes,
 		"name":         user.Name,
 		"role":         user.Role,
 	}
@@ -113,9 +114,9 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 // DeleteAccount deletes the acount indicated by the token userId
 func (h AuthHandler) DeleteAccount(c echo.Context) error {
 	// Get the userId from the token
-	userId := c.Get("claims").(utils.JwtClaims).UserId
+	userId := c.Get("claims").(utils.JwtClaims).UserID
 
-	user := models.User{Id: userId}
+	user := models.User{ID: userId}
 	if cerr := user.Delete(); cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}

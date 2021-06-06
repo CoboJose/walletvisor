@@ -121,10 +121,10 @@ func TestCreateTransactionNegativeAmount(t *testing.T) {
 ////////////
 func TestUpdateTransactionOk(t *testing.T) {
 	// Create the transaction
-	trnUpdate := models.NewTransaction("trnUpdate", "income", "salary", 100, 1800000000, user1.Id)
+	trnUpdate := models.NewTransaction("trnUpdate", "income", "salary", 100, 1800000000, user1.ID)
 	trnUpdate.Save()
 
-	body := strings.NewReader(fmt.Sprintf(`{"id":%d, "name":"%s", "kind":"%s", "category":"%s", "amount":%d, "date":%d, "userId":%d}`, trnUpdate.Id, "trnUpdated", "expense", "home", 16, 1625097600, user1.Id))
+	body := strings.NewReader(fmt.Sprintf(`{"id":%d, "name":"%s", "kind":"%s", "category":"%s", "amount":%d, "date":%d, "userId":%d}`, trnUpdate.ID, "trnUpdated", "expense", "home", 16, 1625097600, user1.ID))
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("PUT", host+"transactions", body)
 	req.Header.Set("token", user1Token)
@@ -136,10 +136,10 @@ func TestUpdateTransactionOk(t *testing.T) {
 }
 func TestUpdateTransactionBadId(t *testing.T) {
 	// Create the transaction
-	trnUpdate := models.NewTransaction("trnUpdate", "income", "salary", 100, 1800000000, user1.Id)
+	trnUpdate := models.NewTransaction("trnUpdate", "income", "salary", 100, 1800000000, user1.ID)
 	trnUpdate.Save()
 
-	body := strings.NewReader(fmt.Sprintf(`{"id":%d, "name":"%s", "kind":"%s", "category":"%s", "amount":%d, "date":%d, "userId":%d}`, 548265, "trnUpdated", "expense", "home", 16, 1625097600, user1.Id))
+	body := strings.NewReader(fmt.Sprintf(`{"id":%d, "name":"%s", "kind":"%s", "category":"%s", "amount":%d, "date":%d, "userId":%d}`, 548265, "trnUpdated", "expense", "home", 16, 1625097600, user1.ID))
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("PUT", host+"transactions", body)
 	req.Header.Set("token", user1Token)
@@ -151,10 +151,10 @@ func TestUpdateTransactionBadId(t *testing.T) {
 }
 func TestUpdateTransactionAnotherUser(t *testing.T) {
 	// Create the transaction
-	trnUpdate := models.NewTransaction("trnUpdate", "income", "salary", 100, 1800000000, user2.Id)
+	trnUpdate := models.NewTransaction("trnUpdate", "income", "salary", 100, 1800000000, user2.ID)
 	trnUpdate.Save()
 
-	body := strings.NewReader(fmt.Sprintf(`{"id":%d, "name":"%s", "kind":"%s", "category":"%s", "amount":%d, "date":%d, "userId":%d}`, trnUpdate.Id, "trnUpdated", "expense", "home", 16, 1625097600, user2.Id))
+	body := strings.NewReader(fmt.Sprintf(`{"id":%d, "name":"%s", "kind":"%s", "category":"%s", "amount":%d, "date":%d, "userId":%d}`, trnUpdate.ID, "trnUpdated", "expense", "home", 16, 1625097600, user2.ID))
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("PUT", host+"transactions", body)
 	req.Header.Set("token", user1Token)
@@ -170,11 +170,11 @@ func TestUpdateTransactionAnotherUser(t *testing.T) {
 ////////////
 func TestDeleteTransactionOk(t *testing.T) {
 	// Create the transaction
-	trnDelete := models.NewTransaction("trnDelete", "income", "salary", 100, 1800000000, user1.Id)
+	trnDelete := models.NewTransaction("trnDelete", "income", "salary", 100, 1800000000, user1.ID)
 	trnDelete.Save()
 
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("DELETE", host+"transactions?transactionId="+strconv.Itoa(trnDelete.Id), nil)
+	req := httptest.NewRequest("DELETE", host+"transactions?transactionId="+strconv.Itoa(trnDelete.ID), nil)
 	req.Header.Set("token", user1Token)
 	e.ServeHTTP(rec, req)
 
@@ -183,7 +183,7 @@ func TestDeleteTransactionOk(t *testing.T) {
 }
 func TestDeleteBadPayload(t *testing.T) {
 	// Create the transaction
-	trnDelete := models.NewTransaction("trnDelete", "income", "salary", 100, 1800000000, user1.Id)
+	trnDelete := models.NewTransaction("trnDelete", "income", "salary", 100, 1800000000, user1.ID)
 	trnDelete.Save()
 
 	rec := httptest.NewRecorder()
@@ -196,7 +196,7 @@ func TestDeleteBadPayload(t *testing.T) {
 }
 func TestDeleteTransactionNotExistingId(t *testing.T) {
 	// Create the transaction
-	trnDelete := models.NewTransaction("trnDelete", "income", "salary", 100, 1800000000, user1.Id)
+	trnDelete := models.NewTransaction("trnDelete", "income", "salary", 100, 1800000000, user1.ID)
 	trnDelete.Save()
 
 	rec := httptest.NewRecorder()
@@ -209,11 +209,11 @@ func TestDeleteTransactionNotExistingId(t *testing.T) {
 }
 func TestDeleteTransactionAnotherUser(t *testing.T) {
 	// Create the transaction
-	trnDelete := models.NewTransaction("trnDelete", "income", "salary", 100, 1800000000, user2.Id)
+	trnDelete := models.NewTransaction("trnDelete", "income", "salary", 100, 1800000000, user2.ID)
 	trnDelete.Save()
 
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("DELETE", host+"transactions?transactionId="+strconv.Itoa(trnDelete.Id), nil)
+	req := httptest.NewRequest("DELETE", host+"transactions?transactionId="+strconv.Itoa(trnDelete.ID), nil)
 	req.Header.Set("token", user1Token)
 	e.ServeHTTP(rec, req)
 

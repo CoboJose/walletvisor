@@ -9,12 +9,13 @@ import (
 	"github.com/labstack/echo"
 )
 
+// TransactionHandler holds all the transactions handlers
 type TransactionHandler struct{}
 
-// GetAll get all the transactions
+// GetUserTransactions returns all the transactions amde by the user defined in the token
 func (h TransactionHandler) GetUserTransactions(c echo.Context) error {
 	// Get the userId from the token
-	userId := c.Get("claims").(utils.JwtClaims).UserId
+	userID := c.Get("claims").(utils.JwtClaims).UserID
 	// Get date range from query
 	from, err := strconv.Atoi(c.QueryParam("from"))
 	if err != nil {
@@ -26,7 +27,7 @@ func (h TransactionHandler) GetUserTransactions(c echo.Context) error {
 	}
 
 	// Get the transactions from the database
-	transactions, cerr := models.GetUserTransactions(userId, from, to)
+	transactions, cerr := models.GetUserTransactions(userID, from, to)
 	if cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
@@ -48,7 +49,7 @@ func (h TransactionHandler) Create(c echo.Context) error {
 
 	// Set the userId from the token
 	claims := c.Get("claims").(utils.JwtClaims)
-	trn.UserId = claims.UserId
+	trn.UserID = claims.UserID
 
 	// Save the transaction to the database
 	if cerr := trn.Save(); cerr != nil {
@@ -71,7 +72,7 @@ func (h TransactionHandler) Update(c echo.Context) error {
 	}
 
 	// Set the user_id from token
-	trn.UserId = c.Get("claims").(utils.JwtClaims).UserId
+	trn.UserID = c.Get("claims").(utils.JwtClaims).UserID
 
 	// Update the transaction in the database
 	if cerr := trn.Save(); cerr != nil {
@@ -88,12 +89,12 @@ func (h TransactionHandler) Update(c echo.Context) error {
 //Delete deletes a transaction
 func (h TransactionHandler) Delete(c echo.Context) error {
 	// Get the transaction id from the query
-	trnId, err := strconv.Atoi(c.QueryParam("transactionId"))
+	trnID, err := strconv.Atoi(c.QueryParam("transactionId"))
 	if err != nil {
 		return c.JSON(400, utils.NewCerr("GE001", errors.New("could not get the transactionId from the request")).Response())
 	}
 
-	trn := models.Transaction{Id: trnId, UserId: c.Get("claims").(utils.JwtClaims).UserId}
+	trn := models.Transaction{ID: trnID, UserID: c.Get("claims").(utils.JwtClaims).UserID}
 
 	// Delete the transaction in the database
 	if cerr := trn.Delete(); cerr != nil {

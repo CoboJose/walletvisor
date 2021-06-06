@@ -126,7 +126,7 @@ func TestDeleteAccountOk(t *testing.T) {
 	// Create user to delete
 	userDel := models.NewUser("userDel@test.com", password, "userDel", "user")
 	userDel.Save()
-	userDelToken, _, _ := utils.GenerateTokens(userDel.Id, userDel.Email, userDel.Role)
+	userDelToken, _, _ := utils.GenerateTokens(userDel.ID, userDel.Email, userDel.Role)
 
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("DELETE", host+"auth/deleteAccount", nil)
@@ -180,7 +180,7 @@ func TestInvalidToken(t *testing.T) {
 	assert.Contains(t, rec.Body.String(), "AU009")
 }
 func TestTokenRefreshToken(t *testing.T) {
-	_, refreshToken, _ := utils.GenerateTokens(user1.Id, user1.Email, user1.Role)
+	_, refreshToken, _ := utils.GenerateTokens(user1.ID, user1.Email, user1.Role)
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("GET", host+"user", nil)
 	req.Header.Set("token", refreshToken)
@@ -190,7 +190,7 @@ func TestTokenRefreshToken(t *testing.T) {
 	assert.Contains(t, rec.Body.String(), "AU010")
 }
 func TestTokenInvalidRol(t *testing.T) {
-	token, _, _ := utils.GenerateTokens(user1.Id, user1.Email, "badRol")
+	token, _, _ := utils.GenerateTokens(user1.ID, user1.Email, "badRol")
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("GET", host+"user", nil)
 	req.Header.Set("token", token)
@@ -200,7 +200,7 @@ func TestTokenInvalidRol(t *testing.T) {
 	assert.Contains(t, rec.Body.String(), "AU007")
 }
 func TestTokenAdminRolOk(t *testing.T) {
-	token, _, _ := utils.GenerateTokens(user1.Id, user1.Email, "admin")
+	token, _, _ := utils.GenerateTokens(user1.ID, user1.Email, "admin")
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("GET", host+"user", nil)
 	req.Header.Set("token", token)
@@ -210,7 +210,7 @@ func TestTokenAdminRolOk(t *testing.T) {
 	assert.Contains(t, rec.Body.String(), "name")
 }
 func TestRefreshTokenOk(t *testing.T) {
-	_, refreshToken, _ := utils.GenerateTokens(user1.Id, user1.Email, user1.Role)
+	_, refreshToken, _ := utils.GenerateTokens(user1.ID, user1.Email, user1.Role)
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("GET", host+"auth/refreshToken", nil)
 	req.Header.Set("refreshToken", refreshToken)
@@ -228,7 +228,7 @@ func TestRefreshTokenNoRefreshToken(t *testing.T) {
 	assert.Contains(t, rec.Body.String(), "AU005")
 }
 func TestRefreshTokenAccessToken(t *testing.T) {
-	token, _, _ := utils.GenerateTokens(user1.Id, user1.Email, user1.Role)
+	token, _, _ := utils.GenerateTokens(user1.ID, user1.Email, user1.Role)
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("GET", host+"auth/refreshToken", nil)
 	req.Header.Set("refreshToken", token)

@@ -25,7 +25,7 @@ func ValidToken(roles string) echo.MiddlewareFunc {
 			}
 
 			// Validate if the user exists
-			if _, cerr = models.GetUserById(claims.UserId); cerr != nil {
+			if _, cerr = models.GetUserByID(claims.UserID); cerr != nil {
 				return c.JSON(400, utils.NewCerr("US000", nil).Response())
 			}
 

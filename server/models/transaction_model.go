@@ -7,14 +7,15 @@ import (
 	"strings"
 )
 
+// Transaction represents a transaction made by a user
 type Transaction struct {
-	Id       int     `json:"id"`
+	ID       int     `json:"id"`
 	Name     string  `json:"name"`
 	Kind     string  `json:"kind"`
 	Category string  `json:"category"`
 	Amount   float64 `json:"amount"`
 	Date     int     `json:"date"`
-	UserId   int     `json:"userId"  db:"user_id"`
+	UserID   int     `json:"userID"  db:"user_id"`
 }
 
 var transactionsTable = `CREATE TABLE IF NOT EXISTS transactions (
@@ -34,26 +35,29 @@ var transactionsIndexes = `CREATE INDEX IF NOT EXISTS trn_date_index ON transact
 // NEW //
 /////////
 
-func NewTransaction(name string, kind string, category string, amount float64, date int, userId int) *Transaction {
-	return &Transaction{Id: -1, Name: name, Kind: kind, Category: category, Amount: amount, Date: date, UserId: userId}
+// NewTransaction creates a transaction struct, but does not store it in the database
+func NewTransaction(name string, kind string, category string, amount float64, date int, userID int) *Transaction {
+	return &Transaction{ID: -1, Name: name, Kind: kind, Category: category, Amount: amount, Date: date, UserID: userID}
 }
 
 /////////
 // Get //
 /////////
 
-func GetTransactionById(transactionId string) (*Transaction, *utils.Cerr) {
+// GetTransactionByID returns the transaction matching the id and user id
+func GetTransactionByID(transactionID, userID int) (*Transaction, *utils.Cerr) {
 	transaction := new(Transaction)
-	if err := db.Get(transaction, `SELECT * FROM transactions WHERE id=$1`, transactionId); err != nil {
+	if err := db.Get(transaction, `SELECT * FROM transactions WHERE id=$1 AND user_id=$2`, transactionID, userID); err != nil {
 		return nil, utils.NewCerr("TR002", err)
 	}
 	return transaction, nil
 }
 
-func GetUserTransactions(userId, from, to int) ([]Transaction, *utils.Cerr) {
+// GetUserTransactions returns all the transactions made by a user between the given timestamps
+func GetUserTransactions(userID, from, to int) ([]Transaction, *utils.Cerr) {
 	transactions := []Transaction{}
 	query := `SELECT * FROM transactions WHERE user_id=$1 AND date >= $2 AND date <= $3`
-	if err := db.Select(&transactions, query, userId, from, to); err != nil {
+	if err := db.Select(&transactions, query, userID, from, to); err != nil {
 		return nil, utils.NewCerr("TR001", err)
 	}
 	return transactions, nil
@@ -63,15 +67,16 @@ func GetUserTransactions(userId, from, to int) ([]Transaction, *utils.Cerr) {
 // Save //
 //////////
 
+// Save stores the transaction in the database, creating it if the ID <= 0, updating it in the other case
 func (trn *Transaction) Save() *utils.Cerr {
 	var err error
 	if cerr := trn.validate(); cerr != nil {
 		return cerr
 	}
 
-	if trn.Id <= 0 { // Create
+	if trn.ID <= 0 { // Create
 		query := `INSERT INTO transactions (name, kind, category, amount, date, user_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id`
-		err = db.QueryRow(query, trn.Name, trn.Kind, trn.Category, trn.Amount, trn.Date, trn.UserId).Scan(&trn.Id)
+		err = db.QueryRow(query, trn.Name, trn.Kind, trn.Category, trn.Amount, trn.Date, trn.UserID).Scan(&trn.ID)
 	} else { //Update
 		query := `UPDATE transactions SET name=:name, kind=:kind, category=:category, amount=:amount, date=:date WHERE id=:id AND user_id=:user_id`
 		var res sql.Result
@@ -101,6 +106,7 @@ func (trn *Transaction) Save() *utils.Cerr {
 // Delete //
 ////////////
 
+// Delete deletes the transaction from the database
 func (trn *Transaction) Delete() *utils.Cerr {
 	query := `DELETE FROM transactions WHERE id=:id AND user_id=:user_id`
 	res, err := db.NamedExec(query, &trn)

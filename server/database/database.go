@@ -4,9 +4,9 @@ import (
 	"os"
 	"server/utils"
 
-	_ "github.com/jackc/pgx/stdlib"
-	"github.com/jmoiron/sqlx"
-	_ "github.com/joho/godotenv/autoload"
+	_ "github.com/jackc/pgx/stdlib"       // The driver for the postgres database
+	"github.com/jmoiron/sqlx"             // Automatic conversion from db to structs
+	_ "github.com/joho/godotenv/autoload" // Load environment variables
 )
 
 var db *sqlx.DB
@@ -25,7 +25,7 @@ func Close() {
 	db.Close()
 }
 
-// GetDB returns a handle to the database
+// Get returns a handle to the database
 func Get() *sqlx.DB {
 	return db
 }
