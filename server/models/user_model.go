@@ -102,10 +102,9 @@ func (user *User) Save() *utils.Cerr {
 	if err != nil {
 		if strings.Contains(err.Error(), "users_email_key") {
 			return utils.NewCerr("AU000", nil)
-		} else {
-			utils.ErrorLog.Println(err.Error())
-			return utils.NewCerr("GE000", err)
 		}
+		utils.ErrorLog.Println(err.Error())
+		return utils.NewCerr("GE000", err)
 	}
 
 	return nil

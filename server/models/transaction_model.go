@@ -93,10 +93,9 @@ func (trn *Transaction) Save() *utils.Cerr {
 			return utils.NewCerr("TR000", errors.New("error saving the transaction to the database"))
 		} else if strings.Contains(err.Error(), "no rows affected") {
 			return utils.NewCerr("TR002", errors.New("error updating the transaction in the database"))
-		} else {
-			utils.ErrorLog.Println(err.Error())
-			return utils.NewCerr("GE000", err)
 		}
+		utils.ErrorLog.Println(err.Error())
+		return utils.NewCerr("GE000", err)
 	}
 
 	return nil

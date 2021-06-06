@@ -111,12 +111,12 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 	return c.JSON(200, response)
 }
 
-// DeleteAccount deletes the acount indicated by the token userId
+// DeleteAccount deletes the acount indicated by the token userID
 func (h AuthHandler) DeleteAccount(c echo.Context) error {
-	// Get the userId from the token
-	userId := c.Get("claims").(utils.JwtClaims).UserID
+	// Get the userID from the token
+	userID := c.Get("claims").(utils.JwtClaims).UserID
 
-	user := models.User{ID: userId}
+	user := models.User{ID: userID}
 	if cerr := user.Delete(); cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}

@@ -13,7 +13,7 @@
 *.env
 
 # Database
-*postgres.bat
+*-postgres.bat
 
 # Fresh tmp folder
 tmp/

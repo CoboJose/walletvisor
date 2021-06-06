@@ -25,9 +25,9 @@ type JwtClaims struct {
 }
 
 // GenerateTokens creates a jwt token and refresh token, storing in the claims the given parameters
-func GenerateTokens(userId int, email string, role string) (token string, refreshToken string, cerr *Cerr) {
+func GenerateTokens(userID int, email string, role string) (token string, refreshToken string, cerr *Cerr) {
 	// TOKEN
-	claims := JwtClaims{UserID: userId, Email: email, Role: role, Type: "access", StandardClaims: jwt.StandardClaims{
+	claims := JwtClaims{UserID: userID, Email: email, Role: role, Type: "access", StandardClaims: jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Minute * time.Duration(TokenExpiresMinutes)).Unix(), Issuer: "walletvisor"}}
 
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -38,7 +38,7 @@ func GenerateTokens(userId int, email string, role string) (token string, refres
 	}
 
 	//REFRESH TOKEN
-	rClaims := JwtClaims{UserID: userId, Email: email, Role: role, Type: "refresh", StandardClaims: jwt.StandardClaims{
+	rClaims := JwtClaims{UserID: userID, Email: email, Role: role, Type: "refresh", StandardClaims: jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour * time.Duration(RefreshTokenExpiresDays*24)).Unix(), Issuer: "walletvisor"}}
 
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rClaims)
@@ -60,9 +60,9 @@ func ParseToken(token string) (JwtClaims, *Cerr) {
 	if err != nil {
 		if strings.Contains(err.Error(), "expired") {
 			return JwtClaims{}, NewCerr("AU008", err)
-		} else {
-			return JwtClaims{}, NewCerr("AU009", err)
 		}
+		ErrorLog.Println(err.Error())
+		return JwtClaims{}, NewCerr("AU009", err)
 	}
 	c, _ := parsedToken.Claims.(*JwtClaims)
 
