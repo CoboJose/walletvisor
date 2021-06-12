@@ -55,7 +55,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: 'walletvisor-dev'
           heroku_email: 'cobogue@gmail.com'
-          appdir: "server"
+          appdir: "wv-server"
           
       - name: Production Deploy
         if: github.ref == 'refs/heads/master'
@@ -64,7 +64,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: 'walletvisor'
           heroku_email: 'cobogue@gmail.com'
-          appdir: "server"
+          appdir: "wv-server"
 
 
   Client:
@@ -100,7 +100,7 @@ jobs:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
             NETLIFY_SITE_ID: 33e44912-79c5-4daa-ad47-3894a2e6cd64
           with:
-            args: deploy --dir=client/build --prod
+            args: deploy --dir=wv-client/build --prod
         
         - name: Production Deploy
           if: github.ref == 'refs/heads/master'
@@ -109,4 +109,4 @@ jobs:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
             NETLIFY_SITE_ID: 63133934-caeb-44c0-a475-e155ecb5450d
           with:
-            args: deploy --dir=client/build --prod
+            args: deploy --dir=wv-client/build --prod
