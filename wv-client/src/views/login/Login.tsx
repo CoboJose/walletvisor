@@ -1,14 +1,15 @@
 import React from 'react';
 
-import Routes from 'routes/Routes';
 import * as logger from 'utils/logger';
 
-const App: React.FC = () => {
+const Login: React.FC = () => {
   logger.rendering();
 
   return (
-    <Routes />
+    <div>
+      <p>Login</p>
+    </div>
   );
 };
 
-export default App;
+export default Login;

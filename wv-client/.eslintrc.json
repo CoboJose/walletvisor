@@ -44,6 +44,8 @@
         "linebreak-style": 0,
         "@typescript-eslint/no-use-before-define": 0,
         "no-console": "off",
-        "object-curly-newline": "off"
+        "object-curly-newline": "off",
+        "prefer-template": "off",
+        "no-useless-concat": "off"
     }
 }
