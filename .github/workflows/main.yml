@@ -90,8 +90,8 @@ jobs:
             npm install
             npm run-script build
 
-        - name: Test
-          run: npm test
+        #- name: Test
+        #  run: npm test
 
         - name: Development Deploy
           if: github.ref == 'refs/heads/develop'
