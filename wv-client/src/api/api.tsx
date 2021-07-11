@@ -41,7 +41,7 @@ export const ping = async (): Promise<unknown> => {
 // AUTH //
 //////////
 
-export const login = async (email: string, password: string): Promise<unknown> => {
+export const login = (email: string, password: string): Promise<unknown> => {
   const url = '/auth/login';
   const data = { email, password };
   
@@ -51,7 +51,8 @@ export const login = async (email: string, password: string): Promise<unknown> =
         data: res.data,
       }))
       .catch((err) => reject({
-        error: err,
+        code: err.response.data.error.code,
+        msg: err.response.data.error.msg,
       }));
   });
 };
