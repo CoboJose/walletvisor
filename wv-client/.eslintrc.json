@@ -51,6 +51,8 @@
         "spaced-comment": "off",
         "react/jsx-one-expression-per-line": "off",
         "no-trailing-spaces": "off",
-        "max-len": "off"
+        "max-len": "off",
+        "prefer-destructuring": "off",
+        "brace-style": "off"
     }
 }

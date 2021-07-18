@@ -30,12 +30,11 @@ func (h AuthHandler) Signup(c echo.Context) error {
 	}
 
 	response := map[string]interface{}{
-		"token":        token,
-		"refreshToken": refreshToken,
-		"expiresIn":    utils.TokenExpiresMinutes,
-		"name":         user.Name,
-		"role":         user.Role,
-		"msg":          "User created succesfully",
+		"token":                 token,
+		"refreshToken":          refreshToken,
+		"tokenExpiresInMinutes": utils.TokenExpiresMinutes,
+		"role":                  user.Role,
+		"msg":                   "User created succesfully",
 	}
 
 	return c.JSON(201, response)
@@ -60,11 +59,10 @@ func (h AuthHandler) Login(c echo.Context) error {
 	}
 
 	response := map[string]interface{}{
-		"token":        token,
-		"refreshToken": refreshToken,
-		"expiresIn":    utils.TokenExpiresMinutes,
-		"name":         user.Name,
-		"role":         user.Role,
+		"token":                 token,
+		"refreshToken":          refreshToken,
+		"tokenExpiresInMinutes": utils.TokenExpiresMinutes,
+		"role":                  user.Role,
 	}
 
 	return c.JSON(200, response)
@@ -101,11 +99,10 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 	}
 
 	response := map[string]interface{}{
-		"token":        token,
-		"refreshToken": refreshToken,
-		"expiresIn":    utils.TokenExpiresMinutes,
-		"name":         user.Name,
-		"role":         user.Role,
+		"token":                 token,
+		"refreshToken":          refreshToken,
+		"tokenExpiresInMinutes": utils.TokenExpiresMinutes,
+		"role":                  user.Role,
 	}
 
 	return c.JSON(200, response)

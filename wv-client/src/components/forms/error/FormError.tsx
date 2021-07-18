@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as logger from 'utils/logger';
+import logger from 'utils/logger';
 
 type FormErrorProps = {
   error: string

@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
+import { useHistory } from 'react-router-dom';
 
-import * as logger from 'utils/logger';
+import logger from 'utils/logger';
 import FormError from 'components/forms/error/FormError';
 import ServerError from 'components/forms/error/ServerError';
-import * as api from 'api/api';
+import api from 'api/api';
 
 import { login } from 'store/slices/auth';
+import { ApiError } from 'types/api';
 
 const LoginForm = (): JSX.Element => {
   logger.rendering();
   
+  const history = useHistory();
+  const dispatch = useAppDispatch();
+
   ///////////
   // STATE //
   ///////////
-
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string>('');
 
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>('user1@test.com');
+  const [password, setPassword] = useState<string>('c0mplexPa$$');
   const [rememberPassword, setRememberPassword] = useState<boolean>(false);
-
-  // REDUX //
-  const dispatch = useAppDispatch();
 
   ////////////////
   // USE EFFECT //
@@ -53,15 +54,21 @@ const LoginForm = (): JSX.Element => {
   // HANDLERS //
   //////////////
 
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     setServerError('');
-    
+
     if (validateForm()) {
-      api.login(email, password)
-        .then((res) => { console.log(res); dispatch(login('totototoottoken')); })
-        .catch((err) => { setServerError(err.code); });
+      try {
+        const loginResponse = await api.login(email, password);
+        dispatch(login({ loginResponse, keepLoggedIn: rememberPassword }));
+        history.push('/home');
+      }
+      catch (error) {
+        const err: ApiError = error;
+        setServerError(err.code);
+      }
     }
   };
 

@@ -1,6 +1,6 @@
-import * as dateUtil from 'utils/dates';
+import dateUtil from 'utils/dates';
 
-export const info = (message: string): void => {
+const info = (message: string): void => {
   const level = process.env.REACT_APP_LOGGER_LEVEL;
   if (level === 'info') {
     const template = `%cINFO%c %c${getCallerName()} ${dateUtil.getFullDate()}%c ${message}`;
@@ -12,7 +12,7 @@ export const info = (message: string): void => {
   }
 };
 
-export const warning = (message: string): void => {
+const warning = (message: string): void => {
   const level = process.env.REACT_APP_LOGGER_LEVEL;
   if (level === 'info' || level === 'warning') {
     const template = `%cWARNING%c %c${getCallerName()} ${dateUtil.getFullDate()}%c ${message}`;
@@ -24,7 +24,7 @@ export const warning = (message: string): void => {
   }
 };
 
-export const error = (message: string): void => {
+const error = (message: string): void => {
   const level = process.env.REACT_APP_LOGGER_LEVEL;
   if (level === 'info' || level === 'warning' || level === 'error') {
     const template = `%cERROR%c %c${getCallerName()} ${dateUtil.getFullDate()}%c ${message}`;
@@ -36,7 +36,7 @@ export const error = (message: string): void => {
   }
 };
 
-export const rendering = (): void => {
+const rendering = (): void => {
   if (process.env.REACT_APP_LOGGER_RENDERING === 'true') {
     const template = `%cRENDERING%c %c${dateUtil.getTime()}%c ${getCallerName().toUpperCase()}`;
 
@@ -46,5 +46,7 @@ export const rendering = (): void => {
     console.log(template, levelCss, null, dataCss, null);
   }
 };
+
+export default { info, warning, error, rendering };
 
 const getCallerName = (): string => (new Error()).stack?.split('\n')[3].trim().split(' ')[1] ?? 'No caller';

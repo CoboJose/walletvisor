@@ -1,4 +1,4 @@
-export const getFullDate = (): string => {
+const getFullDate = (): string => {
   const date = new Date();
   const day = addZero(date.getDate());
   const month = addZero(date.getMonth());
@@ -10,7 +10,7 @@ export const getFullDate = (): string => {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
-export const getTime = (): string => {
+const getTime = (): string => {
   const date = new Date();
   const hours = addZero(date.getHours());
   const minutes = addZero(date.getMinutes());
@@ -19,6 +19,8 @@ export const getTime = (): string => {
 
   return `${hours}:${minutes}:${seconds}:${miliseconds}`;
 };
+
+export default { getFullDate, getTime };
 
 const addZero = (element: number): string => {
   let res = element.toString();
