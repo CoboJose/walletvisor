@@ -17,6 +17,7 @@ const App: React.FC = () => {
 
   const removeLoadingHTML = () => {
     console.log('AA: ' + process.env.REACT_APP_API_URL);
+    console.log(process.env);
     api.ping()
       .then(() => {
         const loadingHTML = document.getElementById('app-loading-index');
