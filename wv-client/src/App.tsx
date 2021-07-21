@@ -57,10 +57,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <p>{ process.env.REACT_APP_API_URL }</p>
-      <Routes />
-    </>
+    <Routes />
   );
 };
 
