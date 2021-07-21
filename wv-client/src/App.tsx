@@ -16,6 +16,7 @@ const App: React.FC = () => {
   const history = useHistory();
 
   const removeLoadingHTML = () => {
+    console.log('AA: ' + process.env.REACT_APP_API_URL);
     api.ping()
       .then(() => {
         const loadingHTML = document.getElementById('app-loading-index');

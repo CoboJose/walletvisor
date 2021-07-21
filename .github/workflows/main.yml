@@ -104,6 +104,7 @@ jobs:
             REACT_APP_LOGGER_RENDERING: true
           with:
             args: deploy --dir=wv-client/build --prod
+            secrets: '["REACT_APP_API_URL"]'
         
         - name: Production Deploy
           if: github.ref == 'refs/heads/master'
