@@ -15,7 +15,28 @@ const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
+  const removeLoadingHTML = () => {
+    api.ping()
+      .then(() => {
+        const loadingHTML = document.getElementById('app-loading-index');
+        if (loadingHTML) {
+          loadingHTML.classList.add('ready'); // fade out
+          setTimeout(() => {
+            loadingHTML.outerHTML = ''; // remove from DOM
+          }, (0.5 * 1000));
+        }
+      })
+      .catch((error) => {
+        const err: ApiError = error;
+        logger.error('The server is down');
+        logger.error(apiErrors(err.code));
+      });
+  };
+
   useEffect(() => {
+    //Show the page once the server is up
+    removeLoadingHTML();
+    
     // Log In the user if a refresh token is present
     const refreshTkn = localStorage.getItem('refreshToken');
     if (refreshTkn != null) {
@@ -24,7 +45,6 @@ const App: React.FC = () => {
       api.refreshToken(refreshTkn)
         .then((refreshResponse: LoginResponse) => {
           // eslint-disable-next-line no-debugger
-          debugger;
           dispatch(refreshToken(refreshResponse));
           history.push('/home');
         })
