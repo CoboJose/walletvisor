@@ -1,6 +1,6 @@
 name: CI
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   Server:
@@ -84,8 +84,12 @@ jobs:
             key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
             restore-keys: |
               ${{ runner.os }}-node-
+        
+        #- name: Test
+        #  run: npm test
 
-        - name: Install Packages and Build
+        - name: Development Build
+          if: github.ref == 'refs/heads/develop'
           env:
             REACT_APP_API_URL: ${{ secrets.NETLIFY_SERVER_URL_DEV }}
             REACT_APP_LOGGER_LEVEL: info
@@ -94,8 +98,15 @@ jobs:
             npm install
             npm run-script build
 
-        #- name: Test
-        #  run: npm test
+        - name: Production Build
+          if: github.ref == 'refs/heads/master'
+          env:
+            REACT_APP_API_URL: ${{ secrets.NETLIFY_SERVER_URL_PROD }}
+            REACT_APP_LOGGER_LEVEL: error
+            REACT_APP_LOGGER_RENDERING: false
+          run: |
+            npm install
+            npm run-script build
 
         - name: Development Deploy
           if: github.ref == 'refs/heads/develop'
@@ -112,8 +123,5 @@ jobs:
           env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
             NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PROD }}
-            REACT_APP_API_URL: ${{ secrets.NETLIFY_SERVER_URL_PROD }}
-            REACT_APP_LOGGER_LEVEL: error
-            REACT_APP_LOGGER_RENDERING: false
           with:
             args: deploy --dir=wv-client/build --prod
