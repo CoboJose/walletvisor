@@ -103,8 +103,7 @@ jobs:
             REACT_APP_LOGGER_LEVEL: info
             REACT_APP_LOGGER_RENDERING: true
           with:
-            args: env:set REACT_APP_API_URL test
-            args: deploy --dir=wv-client/build --prod
+            args: env:set REACT_APP_API_URL test deploy --dir=wv-client/build --prod
         
         - name: Production Deploy
           if: github.ref == 'refs/heads/master'
