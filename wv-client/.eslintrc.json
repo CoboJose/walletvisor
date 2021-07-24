@@ -53,6 +53,7 @@
         "no-trailing-spaces": "off",
         "max-len": "off",
         "prefer-destructuring": "off",
-        "brace-style": "off"
+        "brace-style": "off",
+        "no-alert": "off"
     }
 }

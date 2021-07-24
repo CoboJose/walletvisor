@@ -1,7 +1,6 @@
 import React from 'react';
 
 import LoginForm from 'components/forms/auth/LoginForm';
-import ServerStatus from 'components/others/ServerStatus';
 
 import logger from 'utils/logger';
 import logo from 'assets/icons/others/logo.svg';
@@ -38,7 +37,6 @@ const Welcome: React.FC = () => {
       <span className={classes.subtitle}>Organizing your finances<br />Organizing your life</span>
 
       <LoginForm />
-      <ServerStatus />
     </div>
   );
 };

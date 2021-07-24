@@ -11,49 +11,51 @@ import { useAppDispatch } from 'store/hooks';
 
 const App: React.FC = () => {
   logger.rendering();
+  logger.info('aa');
 
+  ///////////
+  // HOOKS //
+  ///////////
   const dispatch = useAppDispatch();
   const history = useHistory();
 
   const removeLoadingHTML = () => {
-    console.log('AA: ' + process.env.REACT_APP_API_URL);
-    console.log(process.env);
-    api.ping()
-      .then(() => {
-        const loadingHTML = document.getElementById('app-loading-index');
-        if (loadingHTML) {
-          loadingHTML.classList.add('ready'); // fade out
-          setTimeout(() => {
-            loadingHTML.outerHTML = ''; // remove from DOM
-          }, (0.5 * 1000));
-        }
-      })
-      .catch((error) => {
-        const err: ApiError = error;
-        logger.error('The server is down');
-        logger.error(apiErrors(err.code));
-      });
+    const loadingHTML = document.getElementById('app-loading-index');
+    if (loadingHTML) {
+      loadingHTML.classList.add('ready'); // fade out
+      setTimeout(() => {
+        loadingHTML.outerHTML = ''; // remove from DOM
+      }, (0.5 * 1000));
+    }
   };
 
   useEffect(() => {
-    //Show the page once the server is up
-    removeLoadingHTML();
-    
-    // Log In the user if a refresh token is present
+    // If there is a refresh token stored, log in the user, and remove the loading screen once logged in
     const refreshTkn = localStorage.getItem('refreshToken');
     if (refreshTkn != null) {
-      logger.info('Refreshing Token');
-      
       api.refreshToken(refreshTkn)
         .then((refreshResponse: LoginResponse) => {
-          // eslint-disable-next-line no-debugger
           dispatch(refreshToken(refreshResponse));
           history.push('/home');
+          removeLoadingHTML();
         })
         .catch((error) => {
           const err: ApiError = error;
           logger.error(apiErrors(err.code));
           dispatch(logout());
+          window.location.reload();
+        });
+    }
+    // Else, test if there is connection with the server, and remove the loading screen
+    else {
+      api.ping()
+        .then(() => {
+          removeLoadingHTML();
+        })
+        .catch((error) => {
+          const err: ApiError = error;
+          logger.error(apiErrors(err.code));
+          window.alert('The server is not responding. Please contact with cobogue@gmail.com');
         });
     }
   }, []);
