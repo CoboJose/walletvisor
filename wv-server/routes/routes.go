@@ -22,7 +22,7 @@ func Init(e *echo.Echo) {
 		e.Use(middlewares.Logger)
 	}
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"https://walletvisor.netlify.app", "https://walletvisor.netlify.app/", "https://walletvisor-dev.netlify.app/", "https://walletvisor-dev.netlify.app", "http://localhost:3000", "http://192.168.1.2:3000", "http://localhost:5000", "http://192.168.1.2:5000"},
+		AllowOrigins: []string{"https://walletvisor.netlify.app", "https://walletvisor-dev.netlify.app", "http://localhost:3000", "http://192.168.1.2:3000", "http://localhost:5000", "http://192.168.1.2:5000"},
 		AllowHeaders: []string{"*"},
 	}))
 

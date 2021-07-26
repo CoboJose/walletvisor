@@ -1,7 +1,7 @@
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
 import { AuthResponse, ApiError } from 'types/types';
 
-const UNEXPECTED_ERROR: ApiError = { code: 'GE000', message: 'Unexpected Error, please contact with cobogue@gmail.com', debug: '' };
+const UNEXPECTED_ERROR: ApiError = { code: 'GE000', message: 'Unexpected Error, please contact with cobogue@gmail.com', debugMessage: '' };
 
 // Used to test the conection, and wake up the server
 const ping = async (): Promise<string> => {
@@ -25,7 +25,7 @@ const login = async (email: string, password: string): Promise<AuthResponse> => 
   return new Promise((resolve, reject) => {
     axios.post(url, data)
       .then((response) => { resolve(response.data); })
-      .catch((error) => { reject(error.response ? error.response.data.error : UNEXPECTED_ERROR); });
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
   });
 };
 

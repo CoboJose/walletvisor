@@ -1,6 +1,6 @@
 export type ApiError = {
   code: string,
-  debug: string
+  debugMessage: string
   message: string,
 }
 
