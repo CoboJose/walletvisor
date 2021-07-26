@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
-
+import { useHistory } from 'react-router-dom';
+import { useAppDispatch } from 'store/hooks';
+import { refreshToken, logout } from 'store/slices/auth';
 import Routes from 'routes/Routes';
 import logger from 'utils/logger';
 import api from 'api/api';
-import { refreshToken, logout } from 'store/slices/auth';
 import apiErrors from 'api/apiErrors';
-import { LoginResponse, ApiError } from 'types/api';
-import { useHistory } from 'react-router-dom';
-import { useAppDispatch } from 'store/hooks';
+import { AuthResponse, ApiError } from 'types/types';
 
 const App: React.FC = () => {
   logger.rendering();
-  logger.info('aa');
 
   ///////////
   // HOOKS //
@@ -19,23 +17,16 @@ const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
-  const removeLoadingHTML = () => {
-    const loadingHTML = document.getElementById('app-loading-index');
-    if (loadingHTML) {
-      loadingHTML.classList.add('ready'); // fade out
-      setTimeout(() => {
-        loadingHTML.outerHTML = ''; // remove from DOM
-      }, (0.5 * 1000));
-    }
-  };
-
+  ////////////////
+  // USE EFFECT //
+  ////////////////
   useEffect(() => {
     // If there is a refresh token stored, log in the user, and remove the loading screen once logged in
     const refreshTkn = localStorage.getItem('refreshToken');
     if (refreshTkn != null) {
       api.refreshToken(refreshTkn)
-        .then((refreshResponse: LoginResponse) => {
-          dispatch(refreshToken(refreshResponse));
+        .then((authResponse: AuthResponse) => {
+          dispatch(refreshToken(authResponse));
           history.push('/home');
           removeLoadingHTML();
         })
@@ -60,6 +51,22 @@ const App: React.FC = () => {
     }
   }, []);
 
+  //////////////////////
+  // HELPER FUNCTIONS //
+  //////////////////////
+  const removeLoadingHTML = () => {
+    const loadingHTML = document.getElementById('app-loading-index');
+    if (loadingHTML) {
+      loadingHTML.classList.add('ready'); // fade out
+      setTimeout(() => {
+        loadingHTML.outerHTML = ''; // remove from DOM
+      }, (0.5 * 1000));
+    }
+  };
+
+  /////////
+  // JSX //
+  /////////
   return (
     <Routes />
   );

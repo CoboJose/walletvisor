@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
+import { login } from 'store/slices/auth';
 import { useHistory } from 'react-router-dom';
-
-import logger from 'utils/logger';
 import FormError from 'components/forms/error/FormError';
 import ServerError from 'components/forms/error/ServerError';
+import logger from 'utils/logger';
 import api from 'api/api';
-
-import { login } from 'store/slices/auth';
-import { ApiError } from 'types/api';
+import { ApiError } from 'types/types';
 
 const LoginForm = (): JSX.Element => {
   logger.rendering();
   
+  ///////////
+  // HOOKS //
+  ///////////
   const history = useHistory();
   const dispatch = useAppDispatch();
 
@@ -32,8 +33,7 @@ const LoginForm = (): JSX.Element => {
 
   //////////////////////
   // HELPER FUNCTIONS //
-  //////////////////////
-
+  //////////////////////s
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
@@ -53,7 +53,6 @@ const LoginForm = (): JSX.Element => {
   //////////////
   // HANDLERS //
   //////////////
-
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -75,7 +74,6 @@ const LoginForm = (): JSX.Element => {
   /////////
   // JSX //
   /////////
-  
   return (
     <div>
 

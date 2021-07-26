@@ -32,11 +32,7 @@ func (h TransactionHandler) GetUserTransactions(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	response := map[string]interface{}{
-		"transactions": transactions,
-	}
-
-	return c.JSON(200, response)
+	return c.JSON(200, transactions)
 }
 
 // Create creates a transaction
@@ -56,11 +52,7 @@ func (h TransactionHandler) Create(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	response := map[string]interface{}{
-		"transaction": trn,
-	}
-
-	return c.JSON(201, response)
+	return c.JSON(201, trn)
 }
 
 //Update updates a transaction
@@ -79,11 +71,7 @@ func (h TransactionHandler) Update(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	response := map[string]interface{}{
-		"transaction": trn,
-	}
-
-	return c.JSON(201, response)
+	return c.JSON(201, trn)
 }
 
 //Delete deletes a transaction

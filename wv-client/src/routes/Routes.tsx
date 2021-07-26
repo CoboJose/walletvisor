@@ -4,9 +4,7 @@
 import React, { FC } from 'react';
 import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom';
 import { useAppSelector } from 'store/hooks';
-
 import logger from 'utils/logger';
-
 import Welcome from 'views/login/Welcome';
 import Logged from 'views/login/Logged';
 

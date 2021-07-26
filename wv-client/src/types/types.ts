@@ -4,7 +4,7 @@ export type ApiError = {
   message: string,
 }
 
-export type LoginResponse = {
+export type AuthResponse = {
   tokenExpiresInMinutes: number,
   refreshToken: string,
   role: string,

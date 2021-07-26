@@ -26,6 +26,9 @@ func Init(e *echo.Echo) {
 		AllowHeaders: []string{"*"},
 	}))
 
+	e.File("favicon.ico", "static/favicon.ico")
+	e.File("/", "static/apiDoc.html") // API Documentation
+
 	api = e.Group("/v1")
 
 	ping()

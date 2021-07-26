@@ -61,7 +61,6 @@ func ParseToken(token string) (JwtClaims, *Cerr) {
 		if strings.Contains(err.Error(), "expired") {
 			return JwtClaims{}, NewCerr("AU008", err)
 		}
-		ErrorLog.Println(err.Error())
 		return JwtClaims{}, NewCerr("AU009", err)
 	}
 	c, _ := parsedToken.Claims.(*JwtClaims)

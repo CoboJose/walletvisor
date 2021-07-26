@@ -1,8 +1,8 @@
-import { LoginResponse } from 'types/api';
+import { AuthResponse } from 'types/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type LoginAction = {
-  loginResponse: LoginResponse,
+  loginResponse: AuthResponse,
   keepLoggedIn: boolean,
 }
 
@@ -41,7 +41,7 @@ export const authSlice = createSlice({
       state.tokenExpirationDate = Date.now() + (loginResponse.tokenExpiresInMinutes * 60 * 1000);
     },
 
-    refreshToken: (state, action: PayloadAction<LoginResponse>) => {
+    refreshToken: (state, action: PayloadAction<AuthResponse>) => {
       const loginResponse = action.payload;
 
       if (state.keepLoggedIn) {

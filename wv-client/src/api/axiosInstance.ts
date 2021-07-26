@@ -5,7 +5,7 @@ import store from 'store/store';
 import logger from 'utils/logger';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
-import { ApiError, LoginResponse } from 'types/api';
+import { ApiError, AuthResponse } from 'types/types';
 import { refreshToken, logout } from 'store/slices/auth';
 
 // Axios Base Instance
@@ -38,7 +38,7 @@ const checkRefreshToken = () => {
     logger.info('Refreshing Token');
     
     api.refreshToken(authState.refreshToken)
-      .then((refreshResponse: LoginResponse) => {
+      .then((refreshResponse: AuthResponse) => {
         store.dispatch(refreshToken(refreshResponse));
       })
       .catch((error) => {

@@ -7,7 +7,6 @@ import (
 	"wv-server/utils"
 )
 
-// Transaction represents a transaction made by a user
 type Transaction struct {
 	ID       int     `json:"id"`
 	Name     string  `json:"name"`
@@ -24,7 +23,7 @@ var transactionsTable = `CREATE TABLE IF NOT EXISTS transactions (
 		kind 		VARCHAR(100) 	NOT NULL	CHECK(kind IN('income', 'expense')),
 		category	VARCHAR(100) 	NOT NULL	CHECK((kind='income' AND category IN('salary', 'business', 'gifts', 'other')) OR (kind='expense' AND category IN('food','home', 'shopping', 'transport', 'bills', 'entertainment', 'other'))),
 		amount 		REAL 			NOT NULL	CHECK(amount>=0),
-		date 		BIGINT				NOT NULL	CHECK(date>=0),
+		date 		BIGINT			NOT NULL	CHECK(date>=0),
 		user_id		INT				NOT NULL	REFERENCES users	ON DELETE CASCADE
 	)`
 

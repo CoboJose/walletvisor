@@ -22,11 +22,7 @@ func (h UserHandler) Get(c echo.Context) error {
 
 	user.Password = ""
 
-	response := map[string]interface{}{
-		"user": user,
-	}
-
-	return c.JSON(200, response)
+	return c.JSON(200, user)
 }
 
 // Update updates the user, returning it after the operation
@@ -61,11 +57,8 @@ func (h UserHandler) Update(c echo.Context) error {
 	}
 
 	dbUser.Password = ""
-	response := map[string]interface{}{
-		"user": dbUser,
-	}
 
-	return c.JSON(200, response)
+	return c.JSON(200, dbUser)
 }
 
 type updatePayload struct {

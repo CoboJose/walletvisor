@@ -8,18 +8,18 @@ import (
 )
 
 var db *sqlx.DB
-var tables = []string{usersTable, transactionsTable, transactionsIndexes}
+var dbOperations = []string{usersTable, transactionsTable, transactionsIndexes}
 
 func init() {
 	db = database.Get()
 
-	// Create the tables
+	// Init the database with the tables and indexes
 	tx, _ := db.Begin()
-	for _, t := range tables {
+	for _, t := range dbOperations {
 		_, err := tx.Exec(t)
 		if err != nil {
 			tx.Rollback()
-			utils.ErrorLog.Fatalln("Could not create the tables: " + err.Error())
+			utils.ErrorLog.Fatalln("Could not make the init database operation: " + err.Error())
 		}
 	}
 	tx.Commit()

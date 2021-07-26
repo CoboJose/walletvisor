@@ -12,35 +12,32 @@ type Cerr struct {
 	Err  error
 }
 
+// ErrorResponse is the response the server will emit
+type ErrorResponse struct {
+	Code         string `json:"code"`
+	DebugMessage string `json:"debugMessage"`
+	Message      string `json:"message"`
+}
+
 // NewCerr creates a new Cerr
 func NewCerr(code string, err error) *Cerr {
 	return &Cerr{Code: code, Err: err}
 }
 
 // Response returns the custom error in JSON format with the code messageto sent it to the client
-func (cerr *Cerr) Response() map[string]interface{} {
-	var errMsg string
-	var response map[string]interface{}
+func (cerr *Cerr) Response() ErrorResponse {
+	var debugMessage string
 
-	if cerr.Err != nil {
-		errMsg = cerr.Err.Error()
+	if (os.Getenv("DEBUG") == "true") && (cerr.Err != nil) {
+		debugMessage = cerr.Err.Error()
+	} else {
+		debugMessage = ""
 	}
 
-	if os.Getenv("DEBUG") == "true" {
-		response = map[string]interface{}{
-			"error": map[string]interface{}{
-				"code":  cerr.Code,
-				"msg":   errorMessages[cerr.Code],
-				"debug": errMsg,
-			},
-		}
-	} else {
-		response = map[string]interface{}{
-			"error": map[string]interface{}{
-				"code": cerr.Code,
-				"msg":  errorMessages[cerr.Code],
-			},
-		}
+	response := ErrorResponse{
+		Code:         cerr.Code,
+		DebugMessage: debugMessage,
+		Message:      errorMessages[cerr.Code], // errorMessages[cerr.Code],
 	}
 
 	return response

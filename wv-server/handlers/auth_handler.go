@@ -29,12 +29,11 @@ func (h AuthHandler) Signup(c echo.Context) error {
 		return c.JSON(500, cerr.Response())
 	}
 
-	response := map[string]interface{}{
-		"token":                 token,
-		"refreshToken":          refreshToken,
-		"tokenExpiresInMinutes": utils.TokenExpiresMinutes,
-		"role":                  user.Role,
-		"msg":                   "User created succesfully",
+	response := authResponse{
+		RefreshToken:          refreshToken,
+		Role:                  user.Role,
+		Token:                 token,
+		TokenExpiresInMinutes: utils.TokenExpiresMinutes,
 	}
 
 	return c.JSON(201, response)
@@ -58,11 +57,11 @@ func (h AuthHandler) Login(c echo.Context) error {
 		return c.JSON(500, cerr.Response())
 	}
 
-	response := map[string]interface{}{
-		"token":                 token,
-		"refreshToken":          refreshToken,
-		"tokenExpiresInMinutes": utils.TokenExpiresMinutes,
-		"role":                  user.Role,
+	response := authResponse{
+		RefreshToken:          refreshToken,
+		Role:                  user.Role,
+		Token:                 token,
+		TokenExpiresInMinutes: utils.TokenExpiresMinutes,
 	}
 
 	return c.JSON(200, response)
@@ -98,11 +97,11 @@ func (h AuthHandler) RefreshToken(c echo.Context) error {
 		return c.JSON(500, cerr.Response())
 	}
 
-	response := map[string]interface{}{
-		"token":                 token,
-		"refreshToken":          refreshToken,
-		"tokenExpiresInMinutes": utils.TokenExpiresMinutes,
-		"role":                  user.Role,
+	response := authResponse{
+		RefreshToken:          refreshToken,
+		Role:                  user.Role,
+		Token:                 token,
+		TokenExpiresInMinutes: utils.TokenExpiresMinutes,
 	}
 
 	return c.JSON(200, response)
@@ -140,4 +139,14 @@ func getAuthPayload(c echo.Context) (*authPayload, *utils.Cerr) {
 		return nil, utils.NewCerr("GE002", nil)
 	}
 	return authPayload, nil
+}
+
+////////////////////
+// Response Types //
+////////////////////
+type authResponse struct {
+	RefreshToken          string `json:"refreshToken"`
+	Role                  string `json:"role"`
+	Token                 string `json:"token"`
+	TokenExpiresInMinutes int    `json:"tokenExpiresInMinutes"`
 }

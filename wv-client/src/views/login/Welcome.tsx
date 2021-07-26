@@ -1,10 +1,7 @@
 import React from 'react';
-
 import LoginForm from 'components/forms/auth/LoginForm';
-
 import logger from 'utils/logger';
 import logo from 'assets/icons/others/logo.svg';
-
 import classes from './Login.module.scss';
 
 const Welcome: React.FC = () => {

@@ -1,5 +1,5 @@
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
-import { LoginResponse, ApiError } from 'types/api';
+import { AuthResponse, ApiError } from 'types/types';
 
 const UNEXPECTED_ERROR: ApiError = { code: 'GE000', message: 'Unexpected Error, please contact with cobogue@gmail.com', debug: '' };
 
@@ -18,7 +18,7 @@ const ping = async (): Promise<string> => {
 // AUTH //
 //////////
 
-const login = async (email: string, password: string): Promise<LoginResponse> => {
+const login = async (email: string, password: string): Promise<AuthResponse> => {
   const url = '/auth/login';
   const data = { email, password };
 
@@ -29,7 +29,7 @@ const login = async (email: string, password: string): Promise<LoginResponse> =>
   });
 };
 
-const refreshToken = async (refreshTkn: string): Promise<LoginResponse> => {
+const refreshToken = async (refreshTkn: string): Promise<AuthResponse> => {
   const url = '/auth/refreshToken';
   axsNoInterceptor.defaults.headers.common.refreshToken = refreshTkn;
   
