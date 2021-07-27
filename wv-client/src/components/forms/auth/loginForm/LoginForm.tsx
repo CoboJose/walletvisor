@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { login } from 'store/slices/auth';
 import { useHistory } from 'react-router-dom';
-import FormError from 'components/forms/error/FormError';
-import ServerError from 'components/forms/error/ServerError';
+import FormError from 'components/ui/forms/FormError';
+import MessageBox from 'components/ui/MessageBox/MessageBox';
 import logger from 'utils/logger';
 import api from 'api/api';
+import apiErrors from 'api/apiErrors';
 import { ApiError } from 'types/types';
+import style from './LoginForm.module.scss';
 
 const LoginForm = (): JSX.Element => {
   logger.rendering();
@@ -27,26 +29,20 @@ const LoginForm = (): JSX.Element => {
   const [password, setPassword] = useState<string>('c0mplexPa$$');
   const [rememberPassword, setRememberPassword] = useState<boolean>(false);
 
-  ////////////////
-  // USE EFFECT //
-  ////////////////
-
   //////////////////////
   // HELPER FUNCTIONS //
   //////////////////////s
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
-    if (email.length < 10) {
-      errors.email = 'email';
+    if (!email || !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)) {
+      errors.email = 'The email must follow this pattern: example@domain.com';
     }
-
-    if (password.length < 8) {
-      errors.password = 'password';
+    if (!password || !(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/).test(password)) {
+      errors.password = 'The password must have: lowercase, uppercase, special character, and more than 8 characters';
     }
 
     setFormErrors(errors);
-
     return Object.keys(errors).length === 0;
   };
 
@@ -55,7 +51,6 @@ const LoginForm = (): JSX.Element => {
   //////////////
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     setServerError('');
 
     if (validateForm()) {
@@ -66,7 +61,7 @@ const LoginForm = (): JSX.Element => {
       }
       catch (error) {
         const err: ApiError = error;
-        setServerError(err.code);
+        setServerError(apiErrors(err.code));
       }
     }
   };
@@ -75,9 +70,13 @@ const LoginForm = (): JSX.Element => {
   // JSX //
   /////////
   return (
-    <div>
+    <div className={style.form}>
 
-      { serverError.length > 0 && <ServerError errorCode={serverError} /> }
+      { serverError.length > 0 && (
+        <div className={style.serverError}>
+          <MessageBox type="error" message={serverError} /> 
+        </div>
+      ) }
       
       <form onSubmit={submitHandler}>
 
@@ -114,6 +113,7 @@ const LoginForm = (): JSX.Element => {
         </button>
 
       </form>
+
     </div>
   );
 };

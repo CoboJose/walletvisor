@@ -7,6 +7,7 @@ import logger from 'utils/logger';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
 import { AuthResponse, ApiError } from 'types/types';
+import LoadingTopBar from 'components/ui/loading/LoadingTopBar';
 
 const App: React.FC = () => {
   logger.rendering();
@@ -68,7 +69,10 @@ const App: React.FC = () => {
   // JSX //
   /////////
   return (
-    <Routes />
+    <>
+      <LoadingTopBar />
+      <Routes />
+    </>
   );
 };
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import LoginForm from 'components/forms/auth/LoginForm';
+import LoginForm from 'components/forms/auth/loginForm/LoginForm';
 import logger from 'utils/logger';
-import logo from 'assets/icons/others/logo.svg';
-import classes from './Login.module.scss';
+import { ReactComponent as Logo } from 'assets/icons/others/logo.svg';
+import style from './Welcome.module.scss';
 
 const Welcome: React.FC = () => {
   logger.rendering();
@@ -28,10 +28,11 @@ const Welcome: React.FC = () => {
   /////////
 
   return (
-    <div className={classes.login}>
-      <img src={logo} alt="logo" className={classes.logo} />
-      <h1 className={classes.title}>WalletVisor</h1>
-      <span className={classes.subtitle}>Organizing your finances<br />Organizing your life</span>
+    <div className={style.welcome}>
+      <Logo className={style.logo} />
+      
+      <h1 className={style.title}>WalletVisor</h1>
+      <span className={style.subtitle}>Organizing your finances<br />Organizing your life</span>
 
       <LoginForm />
     </div>

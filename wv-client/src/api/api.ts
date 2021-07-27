@@ -1,5 +1,7 @@
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
 import { AuthResponse, ApiError } from 'types/types';
+import store from 'store/store';
+import { addLoading, removeLoading } from 'store/slices/loading';
 
 const UNEXPECTED_ERROR: ApiError = { code: 'GE000', message: 'Unexpected Error, please contact with cobogue@gmail.com', debugMessage: '' };
 
@@ -22,10 +24,13 @@ const login = async (email: string, password: string): Promise<AuthResponse> => 
   const url = '/auth/login';
   const data = { email, password };
 
+  store.dispatch(addLoading());
+
   return new Promise((resolve, reject) => {
     axios.post(url, data)
       .then((response) => { resolve(response.data); })
-      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); })
+      .finally(() => { store.dispatch(removeLoading()); });
   });
 };
 
