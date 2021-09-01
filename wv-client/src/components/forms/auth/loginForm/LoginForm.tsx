@@ -4,6 +4,7 @@ import { login } from 'store/slices/auth';
 import { useHistory } from 'react-router-dom';
 import FormError from 'components/ui/forms/FormError';
 import MessageBox from 'components/ui/MessageBox/MessageBox';
+import Button from 'components/ui/button/Button';
 import logger from 'utils/logger';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
@@ -104,13 +105,8 @@ const LoginForm = (): JSX.Element => {
           <span>Remember Me</span>
           <input type="checkbox" onChange={(e) => setRememberPassword(e.target.checked)} checked={rememberPassword} />
         </div>
-        
-        <button 
-          type="submit"
-          disabled={email.length === 0 || password.length === 0}
-        >
-          Login
-        </button>
+
+        <Button text="Log In" color="green" disabled={email.length === 0 || password.length === 0} type="submit" />
 
       </form>
 
