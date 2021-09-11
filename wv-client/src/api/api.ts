@@ -34,6 +34,20 @@ const login = async (email: string, password: string): Promise<AuthResponse> => 
   });
 };
 
+const register = async (email: string, password: string): Promise<AuthResponse> => {
+  const url = '/auth/signup';
+  const data = { email, password };
+
+  store.dispatch(addLoading());
+
+  return new Promise((resolve, reject) => {
+    axios.post(url, data)
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); })
+      .finally(() => { store.dispatch(removeLoading()); });
+  });
+};
+
 const refreshToken = async (refreshTkn: string): Promise<AuthResponse> => {
   const url = '/auth/refreshToken';
   axsNoInterceptor.defaults.headers.common.refreshToken = refreshTkn;
@@ -45,4 +59,4 @@ const refreshToken = async (refreshTkn: string): Promise<AuthResponse> => {
   });
 };
 
-export default { ping, login, refreshToken };
+export default { ping, login, register, refreshToken };

@@ -6,6 +6,10 @@ type LoginAction = {
   keepLoggedIn: boolean,
 }
 
+type RegisterAction = {
+  registerResponse: AuthResponse
+}
+
 interface AuthState {
   token: string,
   refreshToken: string,
@@ -41,6 +45,15 @@ export const authSlice = createSlice({
       state.tokenExpirationDate = Date.now() + (loginResponse.tokenExpiresInMinutes * 60 * 1000);
     },
 
+    register: (state, action: PayloadAction<RegisterAction>) => {
+      const registerResponse = action.payload.registerResponse;
+
+      state.token = registerResponse.token;
+      state.refreshToken = registerResponse.refreshToken;
+      state.role = registerResponse.role;
+      state.tokenExpirationDate = Date.now() + (registerResponse.tokenExpiresInMinutes * 60 * 1000);
+    },
+
     refreshToken: (state, action: PayloadAction<AuthResponse>) => {
       const loginResponse = action.payload;
 
@@ -66,5 +79,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { login, logout, refreshToken } = authSlice.actions;
+export const { login, register, logout, refreshToken } = authSlice.actions;
 export default authSlice.reducer;
