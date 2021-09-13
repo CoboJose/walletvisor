@@ -1,5 +1,4 @@
 .welcome {
-    background-color: #3f3f3f;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -13,9 +12,10 @@
 }
 
 .title {
-    font-family: 'Courier New', Courier, monospace
-}
 
-.subtitle {
-    font-family: 'Courier New', Courier, monospace
+    text-transform: capitalize;
+
+    .visor{
+        color:purple;
+    }
 }

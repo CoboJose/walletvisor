@@ -1,0 +1,13 @@
+$theme-colors: (
+    'dark-primary': #673AB7,
+    'secondary': #ffd265,
+    'secondaryText': #7e621d,
+);
+
+
+
+@each $color, $value in $theme-colors {
+  :export{
+    $color: $value;
+  }
+}

@@ -2,14 +2,21 @@ import React, { useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { register } from 'store/slices/auth';
 import { useHistory } from 'react-router-dom';
-import FormError from 'components/ui/forms/FormError';
-import MessageBox from 'components/ui/MessageBox/MessageBox';
-import Button from 'components/ui/button/Button';
 import logger from 'utils/logger';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
 import { ApiError } from 'types/types';
 import regex from 'utils/regex';
+
+import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import Alert from '@material-ui/lab/Alert';
+import Box from '@material-ui/core/Box';
+
 import style from './RegisterForm.module.scss';
 
 const RegisterForm = (): JSX.Element => {
@@ -61,7 +68,7 @@ const RegisterForm = (): JSX.Element => {
         history.push('/home');
       }
       catch (error) {
-        const err: ApiError = error;
+        const err = error as ApiError;
         setServerError(apiErrors(err.code));
       }
     }
@@ -71,41 +78,71 @@ const RegisterForm = (): JSX.Element => {
   // JSX //
   /////////
   return (
-    <div className={style.form}>
+    <Grid container>
 
       { serverError.length > 0 && (
-        <div className={style.serverError}>
-          <MessageBox type="error" message={serverError} /> 
-        </div>
+        <Box>
+          <Alert severity="error">{serverError}</Alert>
+        </Box>
       ) }
-      
-      <form onSubmit={submitHandler}>
 
-        <div>
-          <input 
-            type="email" 
+      <Box className={style.paper}>
+        
+        <Avatar className={style.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+
+        <form onSubmit={submitHandler} className={style.form}>
+          
+          <TextField
+            type="email"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Email Address"
+            autoComplete="email"
+            autoFocus
             value={email} 
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email" 
+            error={formErrors.email != null}
+            helperText={formErrors.email}
+            
           />
-          { formErrors.email && <FormError error={formErrors.email} /> }
-        </div>
-
-        <div>
-          <input 
-            type="password" 
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
             value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            placeholder="Password" 
+            onChange={(e) => setPassword(e.target.value)}
+            error={formErrors.password != null}
+            helperText={formErrors.password}
           />
-          { formErrors.password && <FormError error={formErrors.password} /> }
-        </div>
 
-        <Button text="Sign Up" color="green" disabled={email.length === 0 || password.length === 0} type="submit" />
-
-      </form>
-
-    </div>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={style.submit}
+            disabled={email.length === 0 || password.length === 0}
+          >
+            Sign In
+          </Button>
+        </form>
+        
+      </Box>
+    </Grid>
   );
 };
 

@@ -1,12 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import '@fontsource/roboto';
 
-body {
-  font-family: 'Open Sans', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  margin: 0;
-
-  background-color: rgb(27, 27, 27);
-  color: white;
-}
+$test: rgb(201, 46, 46);

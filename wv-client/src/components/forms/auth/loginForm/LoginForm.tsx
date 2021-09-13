@@ -2,14 +2,23 @@ import React, { useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { login } from 'store/slices/auth';
 import { useHistory } from 'react-router-dom';
-import FormError from 'components/ui/forms/FormError';
-import MessageBox from 'components/ui/MessageBox/MessageBox';
-import Button from 'components/ui/button/Button';
 import logger from 'utils/logger';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
 import { ApiError } from 'types/types';
 import regex from 'utils/regex';
+
+import Container from '@material-ui/core/Container/Container';
+import Avatar from '@material-ui/core/Avatar/Avatar';
+import Button from '@material-ui/core/Button/Button';
+import TextField from '@material-ui/core/TextField/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox/Checkbox';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography/Typography';
+import Alert from '@material-ui/lab/Alert/Alert';
+import Box from '@material-ui/core/Box/Box';
+
 import style from './LoginForm.module.scss';
 
 const LoginForm = (): JSX.Element => {
@@ -62,7 +71,7 @@ const LoginForm = (): JSX.Element => {
         history.push('/home');
       }
       catch (error) {
-        const err: ApiError = error;
+        const err = error as ApiError;
         setServerError(apiErrors(err.code));
       }
     }
@@ -72,46 +81,76 @@ const LoginForm = (): JSX.Element => {
   // JSX //
   /////////
   return (
-    <div className={style.form}>
+    <Container component="main" maxWidth="xs">
 
       { serverError.length > 0 && (
-        <div className={style.serverError}>
-          <MessageBox type="error" message={serverError} /> 
-        </div>
+        <Box>
+          <Alert severity="error">{serverError}</Alert>
+        </Box>
       ) }
-      
-      <form onSubmit={submitHandler}>
 
-        <div>
-          <input 
-            type="email" 
+      <Box className={style.paper}>
+        
+        <Avatar className={style.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+
+        <Typography component="h1" variant="h5">
+          Log in
+        </Typography>
+
+        <form onSubmit={submitHandler} className={style.form}>
+          
+          <TextField
+            type="email"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Email Address"
+            autoComplete="email"
+            autoFocus
             value={email} 
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email" 
+            error={formErrors.email != null}
+            helperText={formErrors.email}
+            
           />
-          { formErrors.email && <FormError error={formErrors.email} /> }
-        </div>
-
-        <div>
-          <input 
-            type="password" 
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
             value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            placeholder="Password" 
+            onChange={(e) => setPassword(e.target.value)}
+            error={formErrors.password != null}
+            helperText={formErrors.password}
           />
-          { formErrors.password && <FormError error={formErrors.password} /> }
-        </div>
 
-        <div>
-          <span>Remember Me</span>
-          <input type="checkbox" onChange={(e) => setRememberPassword(e.target.checked)} checked={rememberPassword} />
-        </div>
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" onChange={(e) => setRememberPassword(e.target.checked)} />}
+            label="Remember me"
+          />
 
-        <Button text="Log In" color="green" disabled={email.length === 0 || password.length === 0} type="submit" />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={style.submit}
+            disabled={email.length === 0 || password.length === 0}
+          >
+            Log In
+          </Button>
+        </form>
 
-      </form>
-
-    </div>
+      </Box>
+    </Container>
   );
 };
 

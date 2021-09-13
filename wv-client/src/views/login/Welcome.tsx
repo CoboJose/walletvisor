@@ -3,6 +3,9 @@ import LoginForm from 'components/forms/auth/loginForm/LoginForm';
 import logger from 'utils/logger';
 import { ReactComponent as Logo } from 'assets/icons/others/logo.svg';
 import RegisterForm from 'components/forms/auth/registerForm/RegisterForm';
+
+import Link from '@material-ui/core/Link/Link';
+
 import style from './Welcome.module.scss';
 
 const Welcome: React.FC = () => {
@@ -13,36 +16,24 @@ const Welcome: React.FC = () => {
   ///////////
   const [isRegisterForm, setIsRegisterForm] = useState<boolean>(false);
 
-  ////////////////
-  // USE EFFECT //
-  ////////////////
-
-  //////////////////////
-  // HELPER FUNCTIONS //
-  //////////////////////
-
-  //////////////
-  // HANDLERS //
-  //////////////
-
-  /////////
-  // JSX //
-  /////////
-
   return (
     <div className={style.welcome}>
 
       <Logo className={style.logo} />
-      
-      <h1 className={style.title}>WalletVisor</h1>
-      <span className={style.subtitle}>Organizing your finances<br />Organizing your life</span>
+
+      <h1 className={style.title}>WALLET<span className={style.visor}>VISOR</span></h1>
 
       { isRegisterForm ? <RegisterForm /> : <LoginForm /> }
-      <div>
-        { isRegisterForm ? 'Already have an account?' : "Don't have an account?" }
-        <br /> 
-        <button type="button" onClick={() => setIsRegisterForm(!isRegisterForm)}>{ isRegisterForm ? 'Login' : 'Register' }</button> now!
-      </div>
+
+      <Link variant="body2" onClick={() => setIsRegisterForm(!isRegisterForm)}>
+        { isRegisterForm ? 'Already have an account? Log In' : "Don't have an account? Sign Up" }
+      </Link>
+        
+      {isRegisterForm && (
+        <Link variant="body2" onClick={() => console.log('UPS')}>
+          Forgot password?
+        </Link>
+      )}
 
     </div>
   );
