@@ -8,7 +8,7 @@ import apiErrors from 'api/apiErrors';
 import { ApiError } from 'types/types';
 import regex from 'utils/regex';
 
-import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -16,6 +16,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Alert from '@material-ui/lab/Alert';
 import Box from '@material-ui/core/Box';
+import useTheme from '@material-ui/core/styles/useTheme';
 
 import style from './RegisterForm.module.scss';
 
@@ -27,6 +28,7 @@ const RegisterForm = (): JSX.Element => {
   ///////////
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
 
   ///////////
   // STATE //
@@ -78,7 +80,7 @@ const RegisterForm = (): JSX.Element => {
   // JSX //
   /////////
   return (
-    <Grid container>
+    <Container component="main" maxWidth="xs">
 
       { serverError.length > 0 && (
         <Box>
@@ -88,12 +90,12 @@ const RegisterForm = (): JSX.Element => {
 
       <Box className={style.paper}>
         
-        <Avatar className={style.avatar}>
+        <Avatar className={style.avatar} style={{ backgroundColor: theme.palette.primary.main }}>
           <LockOutlinedIcon />
         </Avatar>
 
         <Typography component="h1" variant="h5">
-          Sign in
+          Log in
         </Typography>
 
         <form onSubmit={submitHandler} className={style.form}>
@@ -137,12 +139,12 @@ const RegisterForm = (): JSX.Element => {
             className={style.submit}
             disabled={email.length === 0 || password.length === 0}
           >
-            Sign In
+            Log In
           </Button>
         </form>
-        
+
       </Box>
-    </Grid>
+    </Container>
   );
 };
 

@@ -1,11 +1,19 @@
-.form {
+.paper {
+    margin: 8px 0 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 90%;
 }
 
-.serverError{
-    width: 100%;
-    margin: 15px 0 10px 0;
+
+.avatar {
+    margin: 2px;
+}
+
+.form {
+    margin: 1px;
+}
+
+.submit {
+    margin: 1px,
 }

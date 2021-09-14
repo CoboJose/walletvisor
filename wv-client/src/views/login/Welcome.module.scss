@@ -1,5 +1,4 @@
 .welcome {
-    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -17,5 +16,14 @@
 
     .visor{
         color:purple;
+    }
+}
+
+.smallLinks {
+    display: flex;
+    flex-direction: column;
+
+    :hover{
+        cursor: pointer;
     }
 }

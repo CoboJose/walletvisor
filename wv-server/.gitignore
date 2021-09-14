@@ -9,11 +9,5 @@
 *.test
 *.tmp
 
-# Environment
-*.env
-
-# Database
-*-postgres.bat
-
 # Fresh tmp folder
 tmp/

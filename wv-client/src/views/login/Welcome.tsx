@@ -23,18 +23,22 @@ const Welcome: React.FC = () => {
 
       <h1 className={style.title}>WALLET<span className={style.visor}>VISOR</span></h1>
 
-      { isRegisterForm ? <RegisterForm /> : <LoginForm /> }
+      <div className={style.form}>
+        { isRegisterForm ? <RegisterForm /> : <LoginForm /> }
+      </div>
 
-      <Link variant="body2" onClick={() => setIsRegisterForm(!isRegisterForm)}>
-        { isRegisterForm ? 'Already have an account? Log In' : "Don't have an account? Sign Up" }
-      </Link>
-        
-      {isRegisterForm && (
-        <Link variant="body2" onClick={() => console.log('UPS')}>
-          Forgot password?
+      <div className={style.smallLinks}>
+        <Link variant="body2" onClick={() => setIsRegisterForm(!isRegisterForm)}>
+          { isRegisterForm ? 'Already have an account? Log In' : "Don't have an account? Sign Up" }
         </Link>
-      )}
-
+        
+        {!isRegisterForm && (
+          <Link variant="body2" onClick={() => console.log('UPS')}>
+            Forgot password?
+          </Link>
+        )}
+      </div>
+      
     </div>
   );
 };

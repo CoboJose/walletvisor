@@ -18,6 +18,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography/Typography';
 import Alert from '@material-ui/lab/Alert/Alert';
 import Box from '@material-ui/core/Box/Box';
+import useTheme from '@material-ui/core/styles/useTheme';
 
 import style from './LoginForm.module.scss';
 
@@ -29,6 +30,7 @@ const LoginForm = (): JSX.Element => {
   ///////////
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
 
   ///////////
   // STATE //
@@ -91,7 +93,7 @@ const LoginForm = (): JSX.Element => {
 
       <Box className={style.paper}>
         
-        <Avatar className={style.avatar}>
+        <Avatar className={style.avatar} style={{ backgroundColor: theme.palette.primary.main }}>
           <LockOutlinedIcon />
         </Avatar>
 
