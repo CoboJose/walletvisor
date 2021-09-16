@@ -1,18 +1,18 @@
-.paper {
-    margin: 8px 0 0 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+@import "themes/variables";
+
+.loginForm {
+    @include flex-column-center;
+    padding: $basePadding;
+
 }
 
-
-.avatar {
-    margin: 2px;
-    background-color: red;
+.icon {
+    background-color: $darkPrimary;
+    border-radius: 45%;
+    padding: 10px;
 }
 
 .form {
-    margin: 1px;
 }
 
 .submit {

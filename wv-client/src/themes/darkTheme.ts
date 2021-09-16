@@ -1,7 +1,4 @@
 import { createTheme } from '@material-ui/core/styles';
-import colors from 'themes/themes.module.scss';
-
-console.log(colors);
 
 const darkTheme = createTheme({
   palette: {

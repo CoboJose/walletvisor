@@ -1,27 +1,35 @@
+@import "themes/variables";
+
 .welcome {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include flex-column-center;
+    padding: $basePadding;
 }
 
 .logo {
-    height: 150px; 
-    width: 150px; 
-    margin-top: 2em;
+    margin-top: 15px;
+    $logoSize: 115px;
+    height: $logoSize; 
+    width: $logoSize;
 }
 
 .title {
-
-    text-transform: capitalize;
-
     .visor{
-        color:purple;
+        color:$darkPrimary;
+        font-style: italic;
     }
+}
+
+.form{
+    max-width: 400px;
+    background-color: rgba(102, 51, 153, 0.205);
 }
 
 .smallLinks {
     display: flex;
     flex-direction: column;
+    padding: $basePadding;
+    width: fit-content;
+    margin-top: 5px;
 
     :hover{
         cursor: pointer;
