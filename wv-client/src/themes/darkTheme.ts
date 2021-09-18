@@ -1,13 +1,14 @@
 import { createTheme } from '@material-ui/core/styles';
+import theme from './theme.module.scss';
 
 const darkTheme = createTheme({
   palette: {
     type: 'dark',
     primary: {
-      main: '#673AB7',
+      main: theme.darkPrimary,
     },
     secondary: {
-      main: '#9E9E9E',
+      main: theme.darkSecondary,
     },
   },
 });

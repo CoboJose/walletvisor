@@ -12,9 +12,9 @@ import Button from '@material-ui/core/Button/Button';
 import TextField from '@material-ui/core/TextField/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox/Checkbox';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Alert from '@material-ui/lab/Alert/Alert';
-import useTheme from '@material-ui/core/styles/useTheme';
+
+import { ReactComponent as LockIcon } from 'assets/icons/others/lock.svg';
 
 import style from './LoginForm.module.scss';
 
@@ -26,7 +26,6 @@ const LoginForm = (): JSX.Element => {
   ///////////
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const theme = useTheme();
 
   ///////////
   // STATE //
@@ -81,11 +80,9 @@ const LoginForm = (): JSX.Element => {
   return (
     <div className={style.loginForm}>
 
-      <div className={style.icon}>
-        <LockOutlinedIcon />
-      </div>
+      <LockIcon className={style.lockIcon} />
 
-      <h1>Log in</h1>
+      <h1 className={style.title}>Log in</h1>
 
       { serverError.length > 0 && (
         <div>
@@ -93,7 +90,7 @@ const LoginForm = (): JSX.Element => {
         </div>
       ) }
 
-      <form onSubmit={submitHandler} className={style.form}>
+      <form onSubmit={submitHandler}>
         
         <TextField
           type="email"
@@ -136,7 +133,6 @@ const LoginForm = (): JSX.Element => {
           fullWidth
           variant="contained"
           color="primary"
-          className={style.submit}
           disabled={email.length === 0 || password.length === 0}
         >
           Log In

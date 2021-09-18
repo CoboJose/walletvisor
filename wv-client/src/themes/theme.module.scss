@@ -1,0 +1,46 @@
+//Colors
+
+//Dark Theme
+$darkPrimary: #673AB7;
+$darkSecondary: #9E9E9E;
+
+// Light Theme
+$lightPrimary: #556dd6;
+$lightSecondary: #19857b;
+
+// Color depending on the theme
+$colors: (
+  darkPrimary: $darkPrimary,
+  darkSecondary: $darkSecondary,
+  lightPrimary: $lightPrimary,
+  lightSecondary: $lightSecondary,
+);
+
+// loop over each name, color
+:root {
+  // each item in color map
+  @each $name, $color in $colors {
+    --#{$name}: #{$color};
+  }
+}
+$primary: var(--primaryColor);
+$secondary: var(--secondaryColor);
+
+//Export to access them in js
+:export {
+  darkPrimary: $darkPrimary;
+  darkSecondary: $darkSecondary;
+  lightPrimary: $lightPrimary;
+  lightSecondary: $lightSecondary;
+}
+
+//Other
+$basePadding: 5px 15px 5px 15px;
+
+
+//Mixins
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

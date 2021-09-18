@@ -1,12 +1,13 @@
 import { createTheme } from '@material-ui/core/styles';
+import theme from './theme.module.scss';
 
 const lightTheme = createTheme({
   palette: {
     primary: {
-      main: '#556cd6',
+      main: theme.lightPrimary,
     },
     secondary: {
-      main: '#19857b',
+      main: theme.lightSecondary,
     },
   },
 });

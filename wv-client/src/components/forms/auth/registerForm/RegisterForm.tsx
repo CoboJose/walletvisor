@@ -8,15 +8,10 @@ import apiErrors from 'api/apiErrors';
 import { ApiError } from 'types/types';
 import regex from 'utils/regex';
 
-import Container from '@material-ui/core/Container';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
+import { ReactComponent as LockIcon } from 'assets/icons/others/lock.svg';
 import Alert from '@material-ui/lab/Alert';
-import Box from '@material-ui/core/Box';
-import useTheme from '@material-ui/core/styles/useTheme';
 
 import style from './RegisterForm.module.scss';
 
@@ -28,7 +23,6 @@ const RegisterForm = (): JSX.Element => {
   ///////////
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const theme = useTheme();
 
   ///////////
   // STATE //
@@ -80,71 +74,63 @@ const RegisterForm = (): JSX.Element => {
   // JSX //
   /////////
   return (
-    <Container component="main" maxWidth="xs">
+    <div className={style.registerForm}>
+
+      <LockIcon className={style.lockIcon} />
+
+      <h1 className={style.title}>Sign in</h1>
 
       { serverError.length > 0 && (
-        <Box>
+        <div>
           <Alert severity="error">{serverError}</Alert>
-        </Box>
+        </div>
       ) }
 
-      <Box className={style.paper}>
+      <form onSubmit={submitHandler}>
         
-        <Avatar className={style.avatar} style={{ backgroundColor: theme.palette.primary.main }}>
-          <LockOutlinedIcon />
-        </Avatar>
-
-        <Typography component="h1" variant="h5">
-          Log in
-        </Typography>
-
-        <form onSubmit={submitHandler} className={style.form}>
+        <TextField
+          type="email"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Email Address"
+          autoComplete="email"
+          autoFocus
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)}
+          error={formErrors.email != null}
+          helperText={formErrors.email}
           
-          <TextField
-            type="email"
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            label="Email Address"
-            autoComplete="email"
-            autoFocus
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)}
-            error={formErrors.email != null}
-            helperText={formErrors.email}
-            
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)}
-            error={formErrors.password != null}
-            helperText={formErrors.password}
-          />
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete="current-password"
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)}
+          error={formErrors.password != null}
+          helperText={formErrors.password}
+        />
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={style.submit}
-            disabled={email.length === 0 || password.length === 0}
-          >
-            Log In
-          </Button>
-        </form>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          disabled={email.length === 0 || password.length === 0}
+        >
+          Sign In
+        </Button>
+      </form>
 
-      </Box>
-    </Container>
+    </div>
   );
 };
 

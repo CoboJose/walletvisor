@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAppDispatch } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { refreshToken, logout } from 'store/slices/auth';
+import { initTheme } from 'store/slices/config';
 import Routes from 'routes/Routes';
 import logger from 'utils/logger';
 import api from 'api/api';
@@ -9,8 +10,19 @@ import apiErrors from 'api/apiErrors';
 import { AuthResponse, ApiError } from 'types/types';
 import LoadingTopBar from 'components/ui/loading/LoadingTopBar';
 
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core/styles';
+import lightTheme from 'themes/lightTheme';
+import darkTheme from 'themes/darkTheme';
+
 const App: React.FC = () => {
   logger.rendering();
+
+  ///////////
+  // REDUX //
+  ///////////
+  const themeRedux = useAppSelector((state) => state.config.theme);
+  const theme = themeRedux === 'dark' ? { ...darkTheme } : { ...lightTheme }; //Material UI needs a shallow copy to rerender
 
   ///////////
   // HOOKS //
@@ -22,6 +34,9 @@ const App: React.FC = () => {
   // USE EFFECT //
   ////////////////
   useEffect(() => {
+    // Init the theme
+    dispatch(initTheme());
+    
     // If there is a refresh token stored, log in the user, and remove the loading screen once logged in
     const refreshTkn = localStorage.getItem('refreshToken');
     if (refreshTkn != null) {
@@ -45,8 +60,7 @@ const App: React.FC = () => {
           removeLoadingHTML();
         })
         .catch((error) => {
-          const err: ApiError = error;
-          logger.error(apiErrors(err.code));
+          logger.error(error);
           window.alert('The server is not responding. Please contact with cobogue@gmail.com');
         });
     }
@@ -69,10 +83,11 @@ const App: React.FC = () => {
   // JSX //
   /////////
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <LoadingTopBar />
       <Routes />
-    </>
+    </ThemeProvider>
   );
 };
 

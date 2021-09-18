@@ -1,19 +1,21 @@
-.paper {
-    margin: 8px 0 0 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+@import "themes/theme.module";
+
+.registerForm {
+    @include flex-column-center;
+    padding: $basePadding;
+
 }
 
-
-.avatar {
-    margin: 2px;
+.title {
+    margin: 7px;
 }
 
-.form {
-    margin: 1px;
-}
-
-.submit {
-    margin: 1px,
+.lockIcon {
+    $logoSize: 50px;
+    height: $logoSize; 
+    width: $logoSize;
+    fill: white;
+    background-color: $primary;
+    border-radius: 50%;
+    padding: 10px;
 }

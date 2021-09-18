@@ -1,4 +1,4 @@
-@import "themes/variables";
+@import "themes/theme.module";
 
 .loginForm {
     @include flex-column-center;
@@ -6,15 +6,16 @@
 
 }
 
-.icon {
-    background-color: $darkPrimary;
-    border-radius: 45%;
+.title {
+    margin: 7px;
+}
+
+.lockIcon {
+    $logoSize: 50px;
+    height: $logoSize; 
+    width: $logoSize;
+    fill: white;
+    background-color: $primary;
+    border-radius: 50%;
     padding: 10px;
-}
-
-.form {
-}
-
-.submit {
-    margin: 1px,
 }

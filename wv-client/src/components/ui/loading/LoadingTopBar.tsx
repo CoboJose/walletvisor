@@ -1,7 +1,8 @@
 import React from 'react';
 import { useAppSelector } from 'store/hooks';
 import logger from 'utils/logger';
-import style from './LoadingTopBar.module.scss';
+
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const LoadingTopBar = (): JSX.Element => {
   logger.rendering();
@@ -11,11 +12,7 @@ const LoadingTopBar = (): JSX.Element => {
   return (
     <>
       { isLoading ? (
-        <div className={style.slider}>
-          <div className={style.line} />
-          <div className={`${style.subline} ${style.inc}`} />
-          <div className={`${style.subline} ${style.dec}`} />
-        </div>
+        <LinearProgress color="primary" />
       ) : null }
     </>
   );

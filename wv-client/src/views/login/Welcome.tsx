@@ -4,6 +4,9 @@ import logger from 'utils/logger';
 import { ReactComponent as Logo } from 'assets/icons/others/logo.svg';
 import RegisterForm from 'components/forms/auth/registerForm/RegisterForm';
 
+import { useAppDispatch } from 'store/hooks';
+import { changeTheme } from 'store/slices/config';
+
 import Link from '@material-ui/core/Link/Link';
 
 import style from './Welcome.module.scss';
@@ -15,6 +18,8 @@ const Welcome: React.FC = () => {
   // STATE //
   ///////////
   const [isRegisterForm, setIsRegisterForm] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
 
   return (
     <div className={style.welcome}>
@@ -33,13 +38,15 @@ const Welcome: React.FC = () => {
           </Link>
           
           {!isRegisterForm && (
-            <Link variant="body2" onClick={() => console.log('UPS')}>
+            <Link variant="body2" onClick={() => window.alert('Please, contact with cobogue@gmail.com')}>
               Forgot password?
             </Link>
           )}
         </div>
 
       </div>
+
+      <button type="button" onClick={() => dispatch(changeTheme())}>Change theme</button>
       
     </div>
   );

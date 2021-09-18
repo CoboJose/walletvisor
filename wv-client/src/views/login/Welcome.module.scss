@@ -1,4 +1,4 @@
-@import "themes/variables";
+@import "themes/theme.module";
 
 .welcome {
     @include flex-column-center;
@@ -14,14 +14,13 @@
 
 .title {
     .visor{
-        color:$darkPrimary;
+        color: $primary;
         font-style: italic;
     }
 }
 
 .form{
     max-width: 400px;
-    background-color: rgba(102, 51, 153, 0.205);
 }
 
 .smallLinks {
