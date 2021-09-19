@@ -4,11 +4,11 @@ import logger from 'utils/logger';
 
 import { useAppDispatch } from 'store/hooks';
 import { logout } from 'store/slices/auth';
+import Balance from 'components/transactions/balance/Balance';
+import TransactionForm from 'components/forms/transactions/TransactionForm';
 
-const Logged: React.FC = () => {
+const Transactions: React.FC = () => {
   logger.rendering();
-
-  const dispatch = useAppDispatch();
 
   ///////////
   // STATE //
@@ -32,10 +32,10 @@ const Logged: React.FC = () => {
 
   return (
     <div>
-      <p>You are logged!</p>
-      <button type="button" onClick={() => dispatch(logout())}>Log out</button>
+      <Balance />
+      <TransactionForm />
     </div>
   );
 };
 
-export default Logged;
+export default Transactions;

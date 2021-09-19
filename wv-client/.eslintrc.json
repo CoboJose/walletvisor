@@ -55,6 +55,7 @@
         "prefer-destructuring": "off",
         "brace-style": "off",
         "no-alert": "off",
-        "jsx-a11y/anchor-is-valid": "off"
+        "jsx-a11y/anchor-is-valid": "off",
+        "arrow-body-style": "off"
     }
 }

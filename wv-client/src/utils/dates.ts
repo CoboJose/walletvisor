@@ -20,6 +20,33 @@ const getTime = (): string => {
   return `${hours}:${minutes}:${seconds}:${miliseconds}`;
 };
 
+/*
+const timestampToStringDate = (timestamp: number): string => {
+  return new Date(timestamp).toISOString().slice(0, 10);
+};*/
+
+/*
+const stringDateFormatted = (date: string): string => {
+  const dateArray = date.split('-');
+  return dateArray.reverse().join('/');
+};*/
+
+/*
+const stringDatetoTimeStamp = (date: string): number => {
+  return new Date(date).getTime();
+};*/
+
+/*
+const getCurrentStringDate = (): string => {
+  return timestampToStringDate(new Date().getTime());
+};*/
+
+//MATH
+/*
+const round = (number: number, decimals: number): number => {
+  return Number(Math.round(number + 'e+' + decimals) + 'e-' + decimals);
+}*/
+
 export default { getFullDate, getTime };
 
 const addZero = (element: number): string => {
