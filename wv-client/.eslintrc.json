@@ -56,6 +56,9 @@
         "brace-style": "off",
         "no-alert": "off",
         "jsx-a11y/anchor-is-valid": "off",
-        "arrow-body-style": "off"
+        "arrow-body-style": "off",
+        "implicit-arrow-linebreak": "off",
+        "function-paren-newline": "off",
+        "comma-dangle": "off"
     }
 }

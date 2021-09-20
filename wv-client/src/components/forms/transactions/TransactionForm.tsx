@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useAppDispatch } from 'store/hooks';
+//import { useAppDispatch } from 'store/hooks';
 import logger from 'utils/logger';
+import categories from 'utils/transactionCategories';
 import { Transaction, TransactionCategory, TransactionKind } from 'types/types';
 
 import Button from '@material-ui/core/Button/Button';
@@ -11,14 +12,20 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 import style from './TransactionForm.module.scss';
 
 const TransactionForm = (): JSX.Element => {
   logger.rendering();
+
+  ///////////
+  // HOOKS //
+  ///////////
+  //const dispatch = useAppDispatch();
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string>('');
@@ -27,7 +34,7 @@ const TransactionForm = (): JSX.Element => {
   const [kind, setKind] = useState<TransactionKind>(TransactionKind.Income);
   const [category, setCategory] = useState<TransactionCategory>(TransactionCategory.Salary);
   const [amount, setAmount] = useState<number>(0);
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<string>('2020-01-01');
     
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
@@ -101,7 +108,7 @@ const TransactionForm = (): JSX.Element => {
         
         <TextField
           type="text"
-          variant="standard"
+          variant="outlined"
           margin="normal"
           required
           fullWidth
@@ -122,14 +129,43 @@ const TransactionForm = (): JSX.Element => {
         </FormControl>
 
         <FormControl fullWidth>
-          <InputLabel htmlFor="standard-adornment-amount">Amount</InputLabel>
-          <Input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value as unknown as number)}
-            endAdornment={<InputAdornment position="start">€</InputAdornment>}
-          />
+          <InputLabel>Category</InputLabel>
+          <Select
+            variant="outlined"
+            value={category}
+            label="Category"
+            onChange={(e) => setCategory(e.target.value as TransactionCategory)}
+          >
+            {categories.filter((c) => c.type === kind).map((c) =>
+              <MenuItem value={c.key}>{c.name}</MenuItem>
+            )}
+          </Select>
         </FormControl>
+
+        <TextField
+          label="Amount"
+          type="number"
+          fullWidth
+          InputProps={{
+            inputProps: {
+              type: 'number',
+              min: 0,
+            },
+            endAdornment: <InputAdornment position="end">€</InputAdornment>,
+          }}
+          value={amount}
+          onChange={(e) => setAmount(e.target.value as unknown as number)}
+        />
+
+        <TextField
+          label="Date"
+          type="date"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={date}
+          onChange={(e) => setDate(e.target.value as unknown as string)}
+        />
 
         <Button
           type="submit"

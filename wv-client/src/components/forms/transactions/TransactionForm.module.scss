@@ -1,0 +1,7 @@
+@import "themes/theme.module";
+
+.transactionForm{
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 10px;
+}
