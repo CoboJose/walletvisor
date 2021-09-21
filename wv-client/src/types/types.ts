@@ -18,7 +18,7 @@ export type Transaction = {
   category: TransactionCategory,
   amount: number,
   date: number,
-  userId: number
+  userID: number
 
 }
 

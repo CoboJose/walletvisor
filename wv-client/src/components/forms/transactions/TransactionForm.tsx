@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-//import { useAppDispatch } from 'store/hooks';
+import React, { ChangeEvent, useState } from 'react';
+import { useAppDispatch } from 'store/hooks';
 import logger from 'utils/logger';
 import categories from 'utils/transactionCategories';
-import { Transaction, TransactionCategory, TransactionKind } from 'types/types';
+import { Transaction, TransactionCategory, TransactionKind, ApiError } from 'types/types';
+import api from 'api/api';
+import apiErrors from 'api/apiErrors';
+import { add } from 'store/slices/transactions';
 
 import Button from '@material-ui/core/Button/Button';
 import TextField from '@material-ui/core/TextField/TextField';
@@ -25,7 +28,7 @@ const TransactionForm = (): JSX.Element => {
   ///////////
   // HOOKS //
   ///////////
-  //const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string>('');
@@ -42,17 +45,9 @@ const TransactionForm = (): JSX.Element => {
     if (!name || name.length < 1) {
       errors.name = 'The name can not be empty';
     }
-    if (!amount || amount < 0) {
+    if (!amount || amount < -50) {
       errors.amount = 'The amount must be a positive number';
     }
-    /*if (!category || !categories.some((c) => c.key === category)) {
-      valid = false;
-      //errors.category = 'Must be a valid category';
-    }*/
-    /*if (!date || isNaN(new Date(date).getTime())) {
-      valid = false;
-      //errors.date = 'Must be a valid Date';
-    }*/
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -63,40 +58,40 @@ const TransactionForm = (): JSX.Element => {
     setServerError('');
 
     if (validateForm()) {
-      const transaction: Transaction = { id: -1, name, kind, category, amount, date: 1, userId: -1 };
+      const transaction: Transaction = { id: -1, name, kind, category, amount: 56, date: 1, userID: -1 };
       console.log(transaction);
+      transaction.date = Date.now();
 
       /*const timestamp = helpers.stringDatetoTimeStamp(date);
       const transaction = { title, amount: helpers.round(amount, 2), category, type, date: timestamp };
       onSubmit(transaction);
+      */
       try {
-        const loginResponse = await api.login(email, password);
-        dispatch(login({ loginResponse, keepLoggedIn: rememberPassword }));
-        history.push('/home');
+        const transactionResponse = await api.addTransaction(transaction);
+        console.log(transactionResponse);
+        dispatch(add({ transaction }));
       }
       catch (error) {
         const err = error as ApiError;
         setServerError(apiErrors(err.code));
-      }*/
+      }
     }
   };
 
-  //Managing the categories in case none is selected
-  /*const setTypeHandler = (newType) => {
-    setType(newType);
-    newType === 'expense' ? setCategory('food') : setCategory('salary');
-  };*/
+  //////////////
+  // HANDLERS //
+  //////////////
+  const setKindHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
 
-  /**const errorMSG = (field) => {
-    if (errors[field]) {
-      return (<div className="err-msg">{errors[field]}</div>);
-    }
-  };*/
-
-  console.log(kind);
+    const newKind = e.target.value as TransactionKind;
+    setKind(newKind);
+    const newCategory = newKind === TransactionKind.Expense ? TransactionCategory.Food : TransactionCategory.Salary;
+    setCategory(newCategory);
+  };
 
   return (
-    <div>
+    <div className={style.transactionForm}>
 
       { serverError.length > 0 && (
         <div>
@@ -104,7 +99,7 @@ const TransactionForm = (): JSX.Element => {
         </div>
       ) }
 
-      <form className={style.transactionForm} onSubmit={submitHandler}>
+      <form className={style.form} onSubmit={submitHandler}>
         
         <TextField
           type="text"
@@ -122,7 +117,7 @@ const TransactionForm = (): JSX.Element => {
 
         <FormControl component="fieldset">
           <FormLabel component="legend">Type</FormLabel>
-          <RadioGroup name="kind" value={kind} onChange={(e) => setKind(e.target.value as TransactionKind)}>
+          <RadioGroup value={kind} onChange={(e) => setKindHandler(e)} className={style.test}>
             <FormControlLabel value={TransactionKind.Income} control={<Radio />} label="Income" />
             <FormControlLabel value={TransactionKind.Expense} control={<Radio />} label="Expense" />
           </RadioGroup>
@@ -137,7 +132,7 @@ const TransactionForm = (): JSX.Element => {
             onChange={(e) => setCategory(e.target.value as TransactionCategory)}
           >
             {categories.filter((c) => c.type === kind).map((c) =>
-              <MenuItem value={c.key}>{c.name}</MenuItem>
+              <MenuItem key={c.key} value={c.key}>{c.name}</MenuItem>
             )}
           </Select>
         </FormControl>
@@ -147,14 +142,13 @@ const TransactionForm = (): JSX.Element => {
           type="number"
           fullWidth
           InputProps={{
-            inputProps: {
-              type: 'number',
-              min: 0,
-            },
+            
             endAdornment: <InputAdornment position="end">€</InputAdornment>,
           }}
           value={amount}
           onChange={(e) => setAmount(e.target.value as unknown as number)}
+          error={formErrors.amount != null}
+          helperText={formErrors.amount}
         />
 
         <TextField

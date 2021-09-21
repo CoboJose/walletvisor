@@ -1,0 +1,10 @@
+@import "themes/theme.module";
+
+.transactions {
+    @include flex-column-center;
+    padding: $basePadding;
+}
+
+.transactionForm {
+    max-width: 400px;
+}

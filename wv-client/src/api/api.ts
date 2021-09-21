@@ -1,5 +1,5 @@
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
-import { AuthResponse, ApiError } from 'types/types';
+import { AuthResponse, ApiError, Transaction } from 'types/types';
 import store from 'store/store';
 import { addLoading, removeLoading } from 'store/slices/loading';
 
@@ -59,4 +59,20 @@ const refreshToken = async (refreshTkn: string): Promise<AuthResponse> => {
   });
 };
 
-export default { ping, login, register, refreshToken };
+//////////////////
+// TRANSACTIONS //
+//////////////////
+
+const addTransaction = async (transaction: Transaction): Promise<AuthResponse> => {
+  const url = '/transactions';
+  const data = { Transaction: transaction };
+
+  return new Promise((resolve, reject) => {
+    axios.post(url, data)
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); })
+      .finally(() => { store.dispatch(removeLoading()); });
+  });
+};
+
+export default { ping, login, register, refreshToken, addTransaction };

@@ -1,7 +1,14 @@
 @import "themes/theme.module";
 
 .transactionForm{
-    display: grid;
-    grid-auto-flow: column;
-    grid-column-gap: 10px;
+    @include flex-column-center;
+    gap: 100px;
+}
+
+.form {
+    
+}
+
+.test {
+    flex-direction: row;
 }

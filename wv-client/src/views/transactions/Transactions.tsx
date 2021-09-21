@@ -5,6 +5,8 @@ import logger from 'utils/logger';
 import Balance from 'components/transactions/balance/Balance';
 import TransactionForm from 'components/forms/transactions/TransactionForm';
 
+import style from './Transactions.module.scss';
+
 const Transactions: React.FC = () => {
   logger.rendering();
 
@@ -29,9 +31,11 @@ const Transactions: React.FC = () => {
   /////////
 
   return (
-    <div>
+    <div className={style.transactions}>
       <Balance />
-      <TransactionForm />
+      <div className={style.transactionForm}>
+        <TransactionForm />
+      </div>
     </div>
   );
 };
