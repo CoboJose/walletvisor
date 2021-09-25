@@ -58,7 +58,7 @@ const TransactionForm = (): JSX.Element => {
     setServerError('');
 
     if (validateForm()) {
-      const transaction: Transaction = { id: -1, name, kind, category, amount: 56, date: 1, userID: -1 };
+      const transaction: Transaction = { id: -1, name, kind, category, amount: -58, date: 1, userID: -1 };
       console.log(transaction);
       transaction.date = Date.now();
 
@@ -123,23 +123,29 @@ const TransactionForm = (): JSX.Element => {
           </RadioGroup>
         </FormControl>
 
-        <FormControl fullWidth>
-          <InputLabel>Category</InputLabel>
-          <Select
-            variant="outlined"
-            value={category}
-            label="Category"
-            onChange={(e) => setCategory(e.target.value as TransactionCategory)}
-          >
-            {categories.filter((c) => c.type === kind).map((c) =>
-              <MenuItem key={c.key} value={c.key}>{c.name}</MenuItem>
-            )}
-          </Select>
-        </FormControl>
+        <TextField
+          select
+          label="Category"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          value={category}
+          onChange={(e) => setCategory(e.target.value as TransactionCategory)}
+        >
+          {categories.filter((c) => c.type === kind).map((option) => (
+            <MenuItem key={option.key} value={option.key}>
+              {option.name}
+            </MenuItem>
+          ))}
+        </TextField>
 
         <TextField
           label="Amount"
           type="number"
+          variant="outlined"
+          margin="normal"
+          required
           fullWidth
           InputProps={{
             
@@ -154,6 +160,10 @@ const TransactionForm = (): JSX.Element => {
         <TextField
           label="Date"
           type="date"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
           InputLabelProps={{
             shrink: true,
           }}
@@ -166,6 +176,7 @@ const TransactionForm = (): JSX.Element => {
           fullWidth
           variant="contained"
           color="primary"
+          style={{ marginTop: '10px' }}
           disabled={name.length < 1}
         >
           Add Transaction

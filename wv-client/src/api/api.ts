@@ -65,7 +65,9 @@ const refreshToken = async (refreshTkn: string): Promise<AuthResponse> => {
 
 const addTransaction = async (transaction: Transaction): Promise<AuthResponse> => {
   const url = '/transactions';
-  const data = { Transaction: transaction };
+  const data = transaction;
+
+  store.dispatch(addLoading());
 
   return new Promise((resolve, reject) => {
     axios.post(url, data)
