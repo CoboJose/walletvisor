@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'api/api';
 import { ApiError, Transaction } from 'types/types';
 import { RootState } from 'store/store';
+import { logout } from './auth';
 
 interface TransactionsState {
   transactions: Transaction[],
@@ -117,6 +118,10 @@ export const transactionsSlice = createSlice({
     });
     builder.addCase(changeTransactionsRangeAction.rejected, (state) => {
       state.isLoading = false;
+    });
+    //LOGOUT
+    builder.addCase(logout, () => {
+      return { ...initialState };
     });
   },
 });

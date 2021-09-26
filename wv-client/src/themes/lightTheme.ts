@@ -10,6 +10,18 @@ const lightTheme = unstable_createMuiStrictModeTheme({
     secondary: {
       main: theme.lightSecondary,
     },
+    error: {
+      main: theme.lightError,
+    },
+    warning: {
+      main: theme.lightWarning,
+    },
+    info: {
+      main: theme.lightInfo,
+    },
+    success: {
+      main: theme.lightSuccess,
+    },
   },
 
   overrides: {

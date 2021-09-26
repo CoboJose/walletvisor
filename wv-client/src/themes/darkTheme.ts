@@ -11,6 +11,18 @@ const darkTheme = unstable_createMuiStrictModeTheme({
     secondary: {
       main: theme.darkSecondary,
     },
+    error: {
+      main: theme.darkError,
+    },
+    warning: {
+      main: theme.darkWarning,
+    },
+    info: {
+      main: theme.darkInfo,
+    },
+    success: {
+      main: theme.darkSuccess,
+    },
   },
 
   overrides: {

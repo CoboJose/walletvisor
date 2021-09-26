@@ -3,13 +3,13 @@ import { useAppDispatch } from 'store/hooks';
 import logger from 'utils/logger';
 import dateUtils from 'utils/dates';
 import mathUtils from 'utils/math';
-import categories from 'utils/transactionCategories';
-import mapperUtils from 'utils/mappers';
+import { transactionCategoriesData } from 'utils/transactionCategories';
 import { Transaction, TransactionCategory, TransactionKind, ApiError } from 'types/types';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
 import { getTransactions } from 'store/slices/transactions';
 import { logout } from 'store/slices/auth';
+import { changeTheme } from 'store/slices/config';
 import SVG from 'components/ui/svg/SVG';
 
 import Button from '@material-ui/core/Button/Button';
@@ -99,8 +99,9 @@ const TransactionForm = (): JSX.Element => {
   /////////
   return (
     <div className={style.transactionForm}>
-
+      <br />
       <button type="button" onClick={() => dispatch(logout())}>Log Out</button>
+      <button type="button" onClick={() => dispatch(changeTheme())}>Change theme</button>
 
       { serverError.length > 0 && (
         <div>
@@ -116,7 +117,7 @@ const TransactionForm = (): JSX.Element => {
           margin="normal"
           required
           fullWidth
-          label="Transaction name"
+          label="Name"
           autoFocus
           value={name} 
           onChange={(e) => setName(e.target.value)}
@@ -146,9 +147,9 @@ const TransactionForm = (): JSX.Element => {
           value={category}
           onChange={(e) => setCategory(e.target.value as TransactionCategory)}
         >
-          {categories.filter((c) => c.type === kind).map((option) => (
+          {transactionCategoriesData.filter((c) => c.type === kind).map((option) => (
             <MenuItem key={option.key} value={option.key}>
-              <SVG name={mapperUtils.transactionLogos(option.key)} className={style.selectSVG} /> {option.name}
+              <SVG name={option.svg} className={`${style.selectSVG} categoryColor ${option.key}`} /> {option.name}
             </MenuItem>
           ))}
         </TextField>

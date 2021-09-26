@@ -21,12 +21,12 @@
     $size: 20px;
     height: $size;
     width: $size;
-    fill: currentColor;
+    fill: $info;
 }
 
 .deleteSVG {
     $size: 20px;
     height: $size;
     width: $size;
-    fill: red;
+    fill: $error;
 }

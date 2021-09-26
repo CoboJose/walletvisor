@@ -84,7 +84,7 @@ const RegisterForm = (): JSX.Element => {
         </div>
       ) }
 
-      <form onSubmit={submitHandler}>
+      <form onSubmit={(e) => submitHandler(e)}>
         
         <TextField
           type="email"

@@ -3,10 +3,18 @@
 //Dark Theme
 $darkPrimary: #673AB7;
 $darkSecondary: #9E9E9E;
+$darkError: #f44336;
+$darkWarning: #ff9800;
+$darkInfo: #2196f3;
+$darkSuccess: #4caf50;
 
 // Light Theme
 $lightPrimary: #556dd6;
 $lightSecondary: #19857b;
+$lightError: #f44336;
+$lightWarning: #ff9800;
+$lightInfo: #2196f3;
+$lightSuccess: #4caf50;
 
 // General
 
@@ -14,9 +22,42 @@ $lightSecondary: #19857b;
 $colors: (
   darkPrimary: $darkPrimary,
   darkSecondary: $darkSecondary,
+  darkError: $darkError,
+  darkWarning: $darkWarning,
+  darkInfo: $darkInfo,
+  darkSuccess: $darkSuccess,
+
   lightPrimary: $lightPrimary,
   lightSecondary: $lightSecondary,
+  lightError: $lightError,
+  lightWarning: $lightWarning,
+  lightInfo: $lightInfo,
+  lightSuccess: $lightSuccess,
 );
+
+//Export to access them in js
+:export {
+  darkPrimary: $darkPrimary;
+  darkSecondary: $darkSecondary;
+  darkError: $darkError;
+  darkWarning: $darkWarning;
+  darkInfo: $darkInfo;
+  darkSuccess: $darkSuccess;
+
+  lightPrimary: $lightPrimary;
+  lightSecondary: $lightSecondary;
+  lightError: $lightError;
+  lightWarning: $lightWarning;
+  lightInfo: $lightInfo;
+  lightSuccess: $lightSuccess;
+}
+
+$primary: var(--primaryColor);
+$secondary: var(--secondaryColor);
+$error: var(--errorColor);
+$warning: var(--warningColor);
+$info: var(--infoColor);
+$success: var(--successColor);
 
 // loop over each name, color
 :root {
@@ -25,24 +66,48 @@ $colors: (
     --#{$name}: #{$color};
   }
 }
-$primary: var(--primaryColor);
-$secondary: var(--secondaryColor);
 
-//Export to access them in js
-:export {
-  darkPrimary: $darkPrimary;
-  darkSecondary: $darkSecondary;
-  lightPrimary: $lightPrimary;
-  lightSecondary: $lightSecondary;
-}
 
 //Other
 $basePadding: 5px 15px 5px 15px;
-
 
 //Mixins
 @mixin flex-column-center {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+// Category Colors
+.categoryColor{
+  &.salary{
+    fill: #2CF295;
+  }
+  &.business{
+    fill: #4657db;
+  }
+  &.gifts{
+    fill: #FC5905;
+  }
+  &.food{
+    fill: #E63599;
+  }
+  &.home{
+    fill: #C00FE6;
+  }
+  &.shopping{
+    fill: #FCA22D;
+  }
+  &.transport{
+    fill: #18E8FF;
+  }
+  &.bills{
+    fill: #FF8B1D;
+  }
+  &.entertainment{
+    fill: #CDF558;
+  }
+  &.other{
+    fill: rgb(0, 0, 0);
+  }
 }

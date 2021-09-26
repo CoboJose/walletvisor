@@ -1,74 +1,86 @@
-import { TransactionCategory, TransactionKind } from 'types/types';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { TransactionCategory, TransactionKind, SvgIcons } from 'types/types';
 
-const categories = [
+export type TransactionCategoryData = {
+  key: TransactionCategory,
+  type: TransactionKind,
+  name: string,
+  svg: SvgIcons,
+}
+
+export const transactionCategoriesData: TransactionCategoryData[] = [
   {
     key: TransactionCategory.Food,
     type: TransactionKind.Expense,
     name: 'Food & Drink',
-    icon: '🥡',
+    svg: 'food',
   },
   {
     key: TransactionCategory.Shopping,
     type: TransactionKind.Expense,
     name: 'Shopping',
-    icon: '🛍️',
+    svg: 'shopping',
   },
   {
     key: TransactionCategory.Transport,
     type: TransactionKind.Expense,
     name: 'Transport',
-    icon: '🚊',
+    svg: 'transport',
   },
   {
     key: TransactionCategory.Bills,
     type: TransactionKind.Expense,
     name: 'Bills',
-    icon: '🧾',
+    svg: 'bills',
   },
   {
     key: TransactionCategory.Home,
     type: TransactionKind.Expense,
     name: 'Home',
-    icon: '🏠',
+    svg: 'home',
   },
   {
     key: TransactionCategory.Entertainment,
     type: TransactionKind.Expense,
     name: 'Entertainment',
-    icon: '🎮',
+    svg: 'entertainment',
   },
   {
     key: TransactionCategory.Other,
     type: TransactionKind.Expense,
     name: 'Other',
-    icon: '❓',
+    svg: 'questionMark',
   },
 
   {
     key: TransactionCategory.Salary,
     type: TransactionKind.Income,
     name: 'Salary',
-    icon: '💵',
+    svg: 'moneyBag',
   },
   {
     key: TransactionCategory.Business,
     type: TransactionKind.Income,
     name: 'Business',
-    icon: '💼',
+    svg: 'briefCase',
   },
   {
     key: TransactionCategory.Gifts,
     type: TransactionKind.Income,
     name: 'Gifts',
-    icon: '🎁',
+    svg: 'gift',
   },
   {
     key: TransactionCategory.Other,
     type: TransactionKind.Income,
     name: 'Other',
-    icon: '❓',
+    svg: 'questionMark',
   },
 
 ];
 
-export default categories;
+export const getTransactionCategoryData = (category: TransactionCategory): TransactionCategoryData => {
+  const res = transactionCategoriesData.find((c) => c.key === category);
+  const defaultCategory = transactionCategoriesData.find((c) => c.key === TransactionCategory.Other)!;
+  return res !== undefined ? res : defaultCategory;
+};

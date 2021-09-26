@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import api from 'api/api';
 import { ApiError, AuthResponse } from 'types/types';
 import { RootState } from 'store/store';
@@ -65,21 +65,12 @@ export const refreshToken = createAsyncThunk<AuthResponse, string | undefined, {
   }
 );
 
+export const logout = createAction<void>('logout');
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: (state) => {
-      localStorage.removeItem('refreshToken');
-
-      state.token = '';
-      state.refreshToken = '';
-      state.role = '';
-      state.keepLoggedIn = false;
-      state.tokenExpirationDate = 0;
-
-      window.location.reload();
-    },
   },
   extraReducers: (builder) => {
     //LOGIN
@@ -129,8 +120,13 @@ export const authSlice = createSlice({
       state.role = refreshTokenResponse.role;
       state.tokenExpirationDate = Date.now() + (refreshTokenResponse.tokenExpiresInMinutes * 60 * 1000);
     });
+    //LOGOUT
+    builder.addCase(logout, () => {
+      localStorage.removeItem('refreshToken');
+      return { ...initialState };
+    });
   },
 });
 
-export const { logout } = authSlice.actions;
+//export const {  } = authSlice.actions;
 export default authSlice.reducer;

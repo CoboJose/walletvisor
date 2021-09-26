@@ -3,8 +3,8 @@ import { useAppSelector, useAppDispatch } from 'store/hooks';
 import { Transaction } from 'types/types';
 import logger from 'utils/logger';
 import SVG from 'components/ui/svg/SVG';
-import mapperUtils from 'utils/mappers';
 import { deleteTransaction } from 'store/slices/transactions';
+import { getTransactionCategoryData } from 'utils/transactionCategories';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -29,7 +29,7 @@ const TransactionsList = (): JSX.Element => {
         {transactions.map((t) => (
           <ListItem key={t.id}>
             <ListItemIcon>
-              <SVG name={mapperUtils.transactionLogos(t.category)} className={style.categorySVG} />
+              <SVG name={getTransactionCategoryData(t.category).svg} className={`${style.categorySVG} categoryColor ${t.category}`} />
             </ListItemIcon>
             <ListItemText
               primary={t.name}

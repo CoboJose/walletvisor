@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { getTransactions } from 'store/slices/transactions';
 import logger from 'utils/logger';
@@ -12,7 +12,6 @@ const Transactions: React.FC = () => {
   logger.rendering();
 
   const dispatch = useAppDispatch();
-  dispatch(getTransactions());
   ///////////
   // STATE //
   ///////////
@@ -20,7 +19,10 @@ const Transactions: React.FC = () => {
   ////////////////
   // USE EFFECT //
   ////////////////
-
+  useEffect(() => {
+    dispatch(getTransactions());
+  }, []);
+  
   //////////////////////
   // HELPER FUNCTIONS //
   //////////////////////
