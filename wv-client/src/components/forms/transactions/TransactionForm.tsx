@@ -1,11 +1,16 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import logger from 'utils/logger';
+import dateUtils from 'utils/dates';
+import mathUtils from 'utils/math';
 import categories from 'utils/transactionCategories';
+import mapperUtils from 'utils/mappers';
 import { Transaction, TransactionCategory, TransactionKind, ApiError } from 'types/types';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
-import { add } from 'store/slices/transactions';
+import { getTransactions } from 'store/slices/transactions';
+import { logout } from 'store/slices/auth';
+import SVG from 'components/ui/svg/SVG';
 
 import Button from '@material-ui/core/Button/Button';
 import TextField from '@material-ui/core/TextField/TextField';
@@ -16,9 +21,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 
 import style from './TransactionForm.module.scss';
 
@@ -30,6 +33,9 @@ const TransactionForm = (): JSX.Element => {
   ///////////
   const dispatch = useAppDispatch();
 
+  ///////////
+  // STATE //
+  ///////////
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string>('');
 
@@ -37,15 +43,18 @@ const TransactionForm = (): JSX.Element => {
   const [kind, setKind] = useState<TransactionKind>(TransactionKind.Income);
   const [category, setCategory] = useState<TransactionCategory>(TransactionCategory.Salary);
   const [amount, setAmount] = useState<number>(0);
-  const [date, setDate] = useState<string>('2020-01-01');
-    
+  const [date, setDate] = useState<string>(dateUtils.getCurrentStringDate());
+  
+  //////////////////////
+  // HELPER FUNCTIONS //
+  //////////////////////
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
     
     if (!name || name.length < 1) {
       errors.name = 'The name can not be empty';
     }
-    if (!amount || amount < -50) {
+    if (!amount || amount <= 0) {
       errors.amount = 'The amount must be a positive number';
     }
 
@@ -53,23 +62,21 @@ const TransactionForm = (): JSX.Element => {
     return Object.keys(errors).length === 0;
   };
 
+  //////////////
+  // HANDLERS //
+  //////////////
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setServerError('');
 
     if (validateForm()) {
-      const transaction: Transaction = { id: -1, name, kind, category, amount: -58, date: 1, userID: -1 };
-      console.log(transaction);
-      transaction.date = Date.now();
+      const timestamp = dateUtils.stringDatetoTimeStamp(date);
+      const roundedAmount = mathUtils.round(amount, 2);
+      const transaction: Transaction = { id: -1, name, kind, category, amount: roundedAmount, date: timestamp, userID: -1 };
 
-      /*const timestamp = helpers.stringDatetoTimeStamp(date);
-      const transaction = { title, amount: helpers.round(amount, 2), category, type, date: timestamp };
-      onSubmit(transaction);
-      */
       try {
-        const transactionResponse = await api.addTransaction(transaction);
-        console.log(transactionResponse);
-        dispatch(add({ transaction }));
+        await api.addTransaction(transaction);
+        dispatch(getTransactions());
       }
       catch (error) {
         const err = error as ApiError;
@@ -78,9 +85,6 @@ const TransactionForm = (): JSX.Element => {
     }
   };
 
-  //////////////
-  // HANDLERS //
-  //////////////
   const setKindHandler = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
@@ -90,8 +94,13 @@ const TransactionForm = (): JSX.Element => {
     setCategory(newCategory);
   };
 
+  /////////
+  // JSX //
+  /////////
   return (
     <div className={style.transactionForm}>
+
+      <button type="button" onClick={() => dispatch(logout())}>Log Out</button>
 
       { serverError.length > 0 && (
         <div>
@@ -99,7 +108,7 @@ const TransactionForm = (): JSX.Element => {
         </div>
       ) }
 
-      <form className={style.form} onSubmit={submitHandler}>
+      <form onSubmit={submitHandler}>
         
         <TextField
           type="text"
@@ -117,7 +126,11 @@ const TransactionForm = (): JSX.Element => {
 
         <FormControl component="fieldset">
           <FormLabel component="legend">Type</FormLabel>
-          <RadioGroup value={kind} onChange={(e) => setKindHandler(e)} className={style.test}>
+          <RadioGroup 
+            row
+            value={kind} 
+            onChange={(e) => setKindHandler(e)}
+          >
             <FormControlLabel value={TransactionKind.Income} control={<Radio />} label="Income" />
             <FormControlLabel value={TransactionKind.Expense} control={<Radio />} label="Expense" />
           </RadioGroup>
@@ -135,7 +148,7 @@ const TransactionForm = (): JSX.Element => {
         >
           {categories.filter((c) => c.type === kind).map((option) => (
             <MenuItem key={option.key} value={option.key}>
-              {option.name}
+              <SVG name={mapperUtils.transactionLogos(option.key)} className={style.selectSVG} /> {option.name}
             </MenuItem>
           ))}
         </TextField>
@@ -148,7 +161,6 @@ const TransactionForm = (): JSX.Element => {
           required
           fullWidth
           InputProps={{
-            
             endAdornment: <InputAdornment position="end">€</InputAdornment>,
           }}
           value={amount}
@@ -164,9 +176,6 @@ const TransactionForm = (): JSX.Element => {
           margin="normal"
           required
           fullWidth
-          InputLabelProps={{
-            shrink: true,
-          }}
           value={date}
           onChange={(e) => setDate(e.target.value as unknown as string)}
         />
@@ -177,7 +186,7 @@ const TransactionForm = (): JSX.Element => {
           variant="contained"
           color="primary"
           style={{ marginTop: '10px' }}
-          disabled={name.length < 1}
+          disabled={!name || amount.toString() === ''}
         >
           Add Transaction
         </Button>

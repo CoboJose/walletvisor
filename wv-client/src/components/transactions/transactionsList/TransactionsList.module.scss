@@ -1,0 +1,32 @@
+@import "themes/theme.module";
+
+.transactionsList{
+    @include flex-column-center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.list{
+    width: 80%;
+}
+
+.categorySVG {
+    $size: 30px;
+    height: $size;
+    width: $size;
+    fill: currentColor;
+}
+
+.editSVG {
+    $size: 20px;
+    height: $size;
+    width: $size;
+    fill: currentColor;
+}
+
+.deleteSVG {
+    $size: 20px;
+    height: $size;
+    width: $size;
+    fill: red;
+}

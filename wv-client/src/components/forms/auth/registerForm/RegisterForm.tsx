@@ -3,14 +3,13 @@ import { useAppDispatch } from 'store/hooks';
 import { register } from 'store/slices/auth';
 import { useHistory } from 'react-router-dom';
 import logger from 'utils/logger';
-import api from 'api/api';
 import apiErrors from 'api/apiErrors';
 import { ApiError } from 'types/types';
 import regex from 'utils/regex';
+import SVG from 'components/ui/svg/SVG';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { ReactComponent as LockIcon } from 'assets/icons/others/lock.svg';
 import Alert from '@material-ui/lab/Alert';
 
 import style from './RegisterForm.module.scss';
@@ -59,11 +58,10 @@ const RegisterForm = (): JSX.Element => {
 
     if (validateForm()) {
       try {
-        const registerResponse = await api.register(email, password);
-        dispatch(register({ registerResponse }));
+        await dispatch(register({ email, password })).unwrap();
+        setServerError('');
         history.push('/home');
-      }
-      catch (error) {
+      } catch (error) {
         const err = error as ApiError;
         setServerError(apiErrors(err.code));
       }
@@ -76,7 +74,7 @@ const RegisterForm = (): JSX.Element => {
   return (
     <div className={style.registerForm}>
 
-      <LockIcon className={style.lockIcon} />
+      <SVG name="lock" className={style.lockIcon} />
 
       <h1 className={style.title}>Sign in</h1>
 

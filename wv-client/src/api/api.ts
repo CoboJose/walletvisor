@@ -1,7 +1,5 @@
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
 import { AuthResponse, ApiError, Transaction } from 'types/types';
-import store from 'store/store';
-import { addLoading, removeLoading } from 'store/slices/loading';
 
 const UNEXPECTED_ERROR: ApiError = { code: 'GE000', message: 'Unexpected Error, please contact with cobogue@gmail.com', debugMessage: '' };
 
@@ -22,29 +20,23 @@ const ping = async (): Promise<string> => {
 
 const login = async (email: string, password: string): Promise<AuthResponse> => {
   const url = '/auth/login';
-  const data = { email, password };
-
-  store.dispatch(addLoading());
+  const body = { email, password };
 
   return new Promise((resolve, reject) => {
-    axios.post(url, data)
+    axios.post(url, body)
       .then((response) => { resolve(response.data); })
-      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); })
-      .finally(() => { store.dispatch(removeLoading()); });
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
   });
 };
 
 const register = async (email: string, password: string): Promise<AuthResponse> => {
   const url = '/auth/signup';
-  const data = { email, password };
-
-  store.dispatch(addLoading());
+  const body = { email, password };
 
   return new Promise((resolve, reject) => {
-    axios.post(url, data)
+    axios.post(url, body)
       .then((response) => { resolve(response.data); })
-      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); })
-      .finally(() => { store.dispatch(removeLoading()); });
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
   });
 };
 
@@ -62,19 +54,37 @@ const refreshToken = async (refreshTkn: string): Promise<AuthResponse> => {
 //////////////////
 // TRANSACTIONS //
 //////////////////
-
-const addTransaction = async (transaction: Transaction): Promise<AuthResponse> => {
+const getTransactions = async (from: number, to: number): Promise<Transaction[]> => {
   const url = '/transactions';
-  const data = transaction;
-
-  store.dispatch(addLoading());
+  const params = { from, to };
 
   return new Promise((resolve, reject) => {
-    axios.post(url, data)
+    axios.get(url, { params })
       .then((response) => { resolve(response.data); })
-      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); })
-      .finally(() => { store.dispatch(removeLoading()); });
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
   });
 };
 
-export default { ping, login, register, refreshToken, addTransaction };
+const addTransaction = async (transaction: Transaction): Promise<Transaction> => {
+  const url = '/transactions';
+  const body = transaction;
+
+  return new Promise((resolve, reject) => {
+    axios.post(url, body)
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
+const deleteTransaction = async (transactionId: number): Promise<string> => {
+  const url = '/transactions';
+  const params = { transactionId };
+
+  return new Promise((resolve, reject) => {
+    axios.delete(url, { params })
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
+export default { ping, login, register, refreshToken, getTransactions, addTransaction, deleteTransaction };

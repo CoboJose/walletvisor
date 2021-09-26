@@ -1,11 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ConfigState {
   theme: string
+  isLoading: boolean;
 }
 
 const initialState: ConfigState = {
   theme: 'dark',
+  isLoading: false,
 };
 
 export const configSlice = createSlice({
@@ -44,6 +46,9 @@ export const configSlice = createSlice({
         document.documentElement.style.setProperty('--primaryColor', 'var(--lightPrimary)');
         document.documentElement.style.setProperty('--secondaryColor', 'var(--lightSecondary)');
       }
+    },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     },
   },
 });

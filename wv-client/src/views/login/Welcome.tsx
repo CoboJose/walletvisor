@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import LoginForm from 'components/forms/auth/loginForm/LoginForm';
 import logger from 'utils/logger';
-import { ReactComponent as Logo } from 'assets/icons/others/logo.svg';
 import RegisterForm from 'components/forms/auth/registerForm/RegisterForm';
-
+import SVG from 'components/ui/svg/SVG';
 import { useAppDispatch } from 'store/hooks';
 import { changeTheme } from 'store/slices/config';
 
@@ -24,7 +23,7 @@ const Welcome: React.FC = () => {
   return (
     <div className={style.welcome}>
 
-      <Logo className={style.logo} />
+      <SVG name="logo" className={style.logo} />
 
       <h1 className={style.title}>WALLET<span className={style.visor}>VISOR</span></h1>
 

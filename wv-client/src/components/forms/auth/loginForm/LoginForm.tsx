@@ -3,18 +3,16 @@ import { useAppDispatch } from 'store/hooks';
 import { login } from 'store/slices/auth';
 import { useHistory } from 'react-router-dom';
 import logger from 'utils/logger';
-import api from 'api/api';
 import apiErrors from 'api/apiErrors';
 import { ApiError } from 'types/types';
 import regex from 'utils/regex';
+import SVG from 'components/ui/svg/SVG';
 
 import Button from '@material-ui/core/Button/Button';
 import TextField from '@material-ui/core/TextField/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox/Checkbox';
 import Alert from '@material-ui/lab/Alert/Alert';
-
-import { ReactComponent as LockIcon } from 'assets/icons/others/lock.svg';
 
 import style from './LoginForm.module.scss';
 
@@ -59,15 +57,13 @@ const LoginForm = (): JSX.Element => {
   //////////////
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setServerError('');
 
     if (validateForm()) {
       try {
-        const loginResponse = await api.login(email, password);
-        dispatch(login({ loginResponse, keepLoggedIn: rememberPassword }));
+        await dispatch(login({ email, password, keepLoggedIn: rememberPassword })).unwrap();
+        setServerError('');
         history.push('/home');
-      }
-      catch (error) {
+      } catch (error) {
         const err = error as ApiError;
         setServerError(apiErrors(err.code));
       }
@@ -80,7 +76,7 @@ const LoginForm = (): JSX.Element => {
   return (
     <div className={style.loginForm}>
 
-      <LockIcon className={style.lockIcon} />
+      <SVG name="lock" className={style.lockIcon} />
 
       <h1 className={style.title}>Log in</h1>
 

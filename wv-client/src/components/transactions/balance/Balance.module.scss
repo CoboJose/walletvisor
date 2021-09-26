@@ -1,0 +1,25 @@
+@import "themes/theme.module";
+
+.balance{
+    @include flex-column-center;
+}
+
+.balanceTotal {
+    border: 2px solid black;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.title {
+    border-bottom: 2px solid black;
+    width: 100%;
+    padding: 7px 0 7px 0;
+
+    font-size: 18px;
+}
+
+.amount {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 1.3em;
+}

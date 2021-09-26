@@ -5,10 +5,10 @@
     gap: 100px;
 }
 
-.form {
-    
-}
-
-.test {
-    flex-direction: row;
+.selectSVG{
+    $size: 15px;
+    height: $size;
+    width: $size;
+    fill: currentColor;
+    margin-right: 5px;
 }

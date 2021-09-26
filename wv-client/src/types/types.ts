@@ -39,3 +39,5 @@ export enum TransactionCategory {
   Entertainment = 'entertainment', 
   Other = 'other'
 }
+
+export type SvgIcons = 'logo' | 'lock' | 'moneyBag' | 'briefCase' | 'gift' | 'questionMark' | 'food' | 'home' | 'shopping' | 'transport' | 'bills' | 'entertainment' | 'other' | 'edit' | 'delete';

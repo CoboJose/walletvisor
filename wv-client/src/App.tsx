@@ -7,7 +7,7 @@ import Routes from 'routes/Routes';
 import logger from 'utils/logger';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
-import { AuthResponse, ApiError } from 'types/types';
+import { ApiError } from 'types/types';
 import LoadingTopBar from 'components/ui/loading/LoadingTopBar';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -40,14 +40,13 @@ const App: React.FC = () => {
     // If there is a refresh token stored, log in the user, and remove the loading screen once logged in
     const refreshTkn = localStorage.getItem('refreshToken');
     if (refreshTkn != null) {
-      api.refreshToken(refreshTkn)
-        .then((authResponse: AuthResponse) => {
-          dispatch(refreshToken(authResponse));
+      dispatch(refreshToken(refreshTkn)).unwrap()
+        .then(() => {
           history.push('/home');
           removeLoadingHTML();
         })
         .catch((error) => {
-          const err: ApiError = error;
+          const err = error as ApiError;
           logger.error(apiErrors(err.code));
           dispatch(logout());
           window.location.reload();
