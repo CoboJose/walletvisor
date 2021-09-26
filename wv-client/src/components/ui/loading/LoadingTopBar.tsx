@@ -9,7 +9,9 @@ const LoadingTopBar = (): JSX.Element => {
   logger.rendering();
 
   const isLoadingAuth = useAppSelector((state) => state.auth.isLoading);
-  const isLoading = isLoadingAuth;
+  const isLoadingTransactions = useAppSelector((state) => state.transactions.isLoading);
+  const isLoadingConfig = useAppSelector((state) => state.config.isLoading);
+  const isLoading = isLoadingAuth || isLoadingTransactions || isLoadingConfig;
 
   return (
     <>
