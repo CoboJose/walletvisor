@@ -16,6 +16,7 @@ import { ReactComponent as Bills } from 'assets/icons/invoice.svg';
 import { ReactComponent as Entertainment } from 'assets/icons/popcorn.svg';
 import { ReactComponent as Edit } from 'assets/icons/edit.svg';
 import { ReactComponent as Delete } from 'assets/icons/trash.svg';
+import { ReactComponent as Add } from 'assets/icons/add.svg';
 
 type SVGProps = {
   name: SvgIcons,
@@ -66,6 +67,9 @@ const SVG = ({ name, className }: SVGProps): JSX.Element => {
 
       case 'delete':
         return <Delete className={className} />;
+
+      case 'add':
+        return <Add className={className} />;
         
       default:
         return <Logo className={className} />;

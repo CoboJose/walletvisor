@@ -12,6 +12,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
+import Fab from '@material-ui/core/Fab';
 
 import style from './TransactionsList.module.scss';
 
@@ -26,8 +27,8 @@ const TransactionsList = (): JSX.Element => {
     <div className={style.transactionsList}>
 
       <List dense={false} className={style.list}>
-        {transactions.map((t) => (
-          <ListItem key={t.id}>
+        {transactions.map((t, i, arr) => (
+          <ListItem key={t.id} divider={i !== arr.length - 1}>
             <ListItemIcon>
               <SVG name={getTransactionCategoryData(t.category).svg} className={`${style.categorySVG} categoryColor ${t.category}`} />
             </ListItemIcon>
@@ -46,7 +47,9 @@ const TransactionsList = (): JSX.Element => {
           </ListItem>
         ))}
       </List>
-
+      <Fab color="primary" className={style.addTransactionButton}>
+        <SVG name="add" className={style.lockIcon} />
+      </Fab>
     </div>
   );
 };

@@ -1,0 +1,9 @@
+@import "themes/theme.module";
+
+.cancelButton{
+    color: $error !important;
+}
+
+.okButton{
+    color: $success !important;
+}

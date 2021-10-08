@@ -4,6 +4,7 @@
     @include flex-column-center;
     width: 100%;
     max-width: 600px;
+    position: relative;
 }
 
 .list{
@@ -29,4 +30,11 @@
     height: $size;
     width: $size;
     fill: $error;
+}
+
+.addTransactionButton{
+    position: absolute;
+    bottom: 5%;
+    right: 2%;
+    z-index: 10;
 }

@@ -40,4 +40,4 @@ export enum TransactionCategory {
   Other = 'other'
 }
 
-export type SvgIcons = 'logo' | 'lock' | 'moneyBag' | 'briefCase' | 'gift' | 'questionMark' | 'food' | 'home' | 'shopping' | 'transport' | 'bills' | 'entertainment' | 'other' | 'edit' | 'delete';
+export type SvgIcons = 'logo' | 'lock' | 'moneyBag' | 'briefCase' | 'gift' | 'questionMark' | 'food' | 'home' | 'shopping' | 'transport' | 'bills' | 'entertainment' | 'other' | 'edit' | 'delete' | 'add';

@@ -8,8 +8,6 @@ import { Transaction, TransactionCategory, TransactionKind, ApiError } from 'typ
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
 import { getTransactions } from 'store/slices/transactions';
-import { logout } from 'store/slices/auth';
-import { changeTheme } from 'store/slices/config';
 import SVG from 'components/ui/svg/SVG';
 
 import Button from '@material-ui/core/Button/Button';
@@ -54,7 +52,7 @@ const TransactionForm = (): JSX.Element => {
     if (!name || name.length < 1) {
       errors.name = 'The name can not be empty';
     }
-    if (!amount || amount <= 0) {
+    if (!amount || amount <= -50) {
       errors.amount = 'The amount must be a positive number';
     }
 
@@ -99,14 +97,9 @@ const TransactionForm = (): JSX.Element => {
   /////////
   return (
     <div className={style.transactionForm}>
-      <br />
-      <button type="button" onClick={() => dispatch(logout())}>Log Out</button>
-      <button type="button" onClick={() => dispatch(changeTheme())}>Change theme</button>
 
       { serverError.length > 0 && (
-        <div>
-          <Alert severity="error">{serverError}</Alert>
-        </div>
+        <Alert severity="error">{serverError}</Alert>
       ) }
 
       <form onSubmit={submitHandler}>
