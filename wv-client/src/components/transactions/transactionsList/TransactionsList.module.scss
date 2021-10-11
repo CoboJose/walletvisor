@@ -1,0 +1,57 @@
+@import "themes/theme.module";
+
+.transactionsList{
+    @include flex-column-center;
+    @include max-100-width;
+    position: relative;
+}
+
+.list{
+    @include max-100-width;
+}
+
+.categorySVG {
+    $size: 30px;
+    height: $size;
+    width: $size;
+    fill: currentColor;
+}
+
+.addTransactionButton {
+    position: absolute !important;
+    bottom: 5% !important;
+    right: 2% !important;
+    z-index: 10 !important;
+}
+
+.addIcon {
+    $size: 30px;
+    height: $size;
+    width: $size;
+}
+
+.amount {
+    font-size: large;
+
+    &.income {
+        color: $success;
+    }
+    &.expense {
+        color: $error;
+    }
+
+    $iconSize: 12px;
+    $iconMarginRight: 3px;
+    .plusIcon {
+        height: $iconSize;
+        width: $iconSize;
+        fill: $success;
+        margin-right: $iconMarginRight;
+    }
+    .lessIcon {
+        height: $iconSize;
+        width: $iconSize;
+        fill: $error;
+        margin-right: $iconMarginRight;
+    }
+}

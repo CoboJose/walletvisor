@@ -1,0 +1,13 @@
+1. Install PostgreSQL, installing pgAdmin in the process (Automatically)
+
+2. Open pgAdmin
+
+3. Put the password used when installing postgres
+
+4. click on Servers
+
+5. Right click on Databases -> Create
+
+6. Create one with: walletvisor, and one with:  walletvisor_test
+
+7. FRESH!

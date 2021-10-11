@@ -1,13 +1,13 @@
 name: CI
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   Server:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: server
+        working-directory: wv-server
 
     services:
       postgres:
@@ -55,7 +55,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: 'walletvisor-dev'
           heroku_email: 'cobogue@gmail.com'
-          appdir: "server"
+          appdir: "wv-server"
           
       - name: Production Deploy
         if: github.ref == 'refs/heads/master'
@@ -64,14 +64,14 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: 'walletvisor'
           heroku_email: 'cobogue@gmail.com'
-          appdir: "server"
+          appdir: "wv-server"
 
 
   Client:
       runs-on: ubuntu-latest
       defaults:
         run:
-          working-directory: client
+          working-directory: wv-client
 
       steps:
         - name: Checkout repository
@@ -84,29 +84,44 @@ jobs:
             key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
             restore-keys: |
               ${{ runner.os }}-node-
+        
+        #- name: Test
+        #  run: npm test
 
-        - name: Install Packages and Build
+        - name: Development Build
+          if: github.ref == 'refs/heads/develop'
+          env:
+            REACT_APP_API_URL: ${{ secrets.NETLIFY_SERVER_URL_DEV }}
+            REACT_APP_LOGGER_LEVEL: info
+            REACT_APP_LOGGER_RENDERING: true
           run: |
             npm install
             npm run-script build
 
-        - name: Test
-          run: npm test
+        - name: Production Build
+          if: github.ref == 'refs/heads/master'
+          env:
+            REACT_APP_API_URL: ${{ secrets.NETLIFY_SERVER_URL_PROD }}
+            REACT_APP_LOGGER_LEVEL: error
+            REACT_APP_LOGGER_RENDERING: false
+          run: |
+            npm install
+            npm run-script build
 
         - name: Development Deploy
           if: github.ref == 'refs/heads/develop'
           uses: netlify/actions/cli@master
           env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-            NETLIFY_SITE_ID: 33e44912-79c5-4daa-ad47-3894a2e6cd64
+            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_DEV }}
           with:
-            args: deploy --dir=client/build --prod
+            args: deploy --dir=wv-client/build --prod
         
         - name: Production Deploy
           if: github.ref == 'refs/heads/master'
           uses: netlify/actions/cli@master
           env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-            NETLIFY_SITE_ID: 63133934-caeb-44c0-a475-e155ecb5450d
+            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PROD }}
           with:
-            args: deploy --dir=client/build --prod
+            args: deploy --dir=wv-client/build --prod

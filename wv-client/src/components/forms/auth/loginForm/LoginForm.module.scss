@@ -1,0 +1,21 @@
+@import "themes/theme.module";
+
+.loginForm {
+    @include flex-column-center;
+    padding: $basePadding;
+
+}
+
+.title {
+    margin: 7px;
+}
+
+.lockIcon {
+    $logoSize: 50px;
+    height: $logoSize; 
+    width: $logoSize;
+    fill: white;
+    background-color: $primary;
+    border-radius: 50%;
+    padding: 10px;
+}

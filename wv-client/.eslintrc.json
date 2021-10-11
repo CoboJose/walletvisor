@@ -1,0 +1,65 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "react-hooks",
+        "@typescript-eslint"
+    ],
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        }
+    },
+    "rules": {
+        "no-use-before-define": "off",
+        "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ],
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "ts": "never",
+                "tsx": "never"
+            }
+        ],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "off",
+        "linebreak-style": 0,
+        "@typescript-eslint/no-use-before-define": 0,
+        "no-console": "off",
+        "object-curly-newline": "off",
+        "prefer-template": "off",
+        "no-useless-concat": "off",
+        "no-param-reassign": "off",
+        "spaced-comment": "off",
+        "react/jsx-one-expression-per-line": "off",
+        "no-trailing-spaces": "off",
+        "max-len": "off",
+        "prefer-destructuring": "off",
+        "brace-style": "off",
+        "no-alert": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "arrow-body-style": "off",
+        "implicit-arrow-linebreak": "off",
+        "function-paren-newline": "off",
+        "comma-dangle": "off",
+        "no-restricted-syntax": "off"
+    }
+}

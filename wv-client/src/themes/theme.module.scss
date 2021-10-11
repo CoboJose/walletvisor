@@ -1,0 +1,126 @@
+//Colors
+
+//Dark Theme
+$darkPrimary: #9968f0;
+$darkSecondary: #9E9E9E;
+$darkError: #f44336;
+$darkWarning: #ff9800;
+$darkInfo: #2196f3;
+$darkSuccess: #4caf50;
+$darkDisabled: #8d8d8d;
+
+// Light Theme
+$lightPrimary: #556dd6;
+$lightSecondary: #19857b;
+$lightError: #f44336;
+$lightWarning: #ff9800;
+$lightInfo: #2196f3;
+$lightSuccess: #4caf50;
+$lightDisabled: #b9b9b9;
+
+// General
+
+// Color depending on the theme
+$colors: (
+  darkPrimary: $darkPrimary,
+  darkSecondary: $darkSecondary,
+  darkError: $darkError,
+  darkWarning: $darkWarning,
+  darkInfo: $darkInfo,
+  darkSuccess: $darkSuccess,
+  darkDisabled: $darkDisabled,
+
+  lightPrimary: $lightPrimary,
+  lightSecondary: $lightSecondary,
+  lightError: $lightError,
+  lightWarning: $lightWarning,
+  lightInfo: $lightInfo,
+  lightSuccess: $lightSuccess,
+  lightDisabled: $lightDisabled,
+);
+
+//Export to access them in js
+:export {
+  darkPrimary: $darkPrimary;
+  darkSecondary: $darkSecondary;
+  darkError: $darkError;
+  darkWarning: $darkWarning;
+  darkInfo: $darkInfo;
+  darkSuccess: $darkSuccess;
+  darkDisabled: $darkDisabled;
+
+  lightPrimary: $lightPrimary;
+  lightSecondary: $lightSecondary;
+  lightError: $lightError;
+  lightWarning: $lightWarning;
+  lightInfo: $lightInfo;
+  lightSuccess: $lightSuccess;
+  lightDisabled: $lightDisabled;
+}
+
+$primary: var(--primaryColor);
+$secondary: var(--secondaryColor);
+$error: var(--errorColor);
+$warning: var(--warningColor);
+$info: var(--infoColor);
+$success: var(--successColor);
+$disabled: var(--disabledColor);
+
+// loop over each name, color
+:root {
+  // each item in color map
+  @each $name, $color in $colors {
+    --#{$name}: #{$color};
+  }
+}
+
+
+//Other
+$basePadding: 5px 15px 5px 15px;
+$maxWidth: 600px;
+
+//Mixins
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@mixin max-100-width {
+  max-width: $maxWidth;
+  width: 100%;
+}
+
+// Category Colors
+.categoryColor{
+  &.salary{
+    fill: #2CF295;
+  }
+  &.business{
+    fill: #4657db;
+  }
+  &.gifts{
+    fill: #FC5905;
+  }
+  &.food{
+    fill: #E63599;
+  }
+  &.home{
+    fill: #C00FE6;
+  }
+  &.shopping{
+    fill: #FCA22D;
+  }
+  &.transport{
+    fill: #18E8FF;
+  }
+  &.bills{
+    fill: #FF8B1D;
+  }
+  &.entertainment{
+    fill: #CDF558;
+  }
+  &.other{
+    fill: rgb(0, 0, 0);
+  }
+}

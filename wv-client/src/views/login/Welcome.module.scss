@@ -1,0 +1,36 @@
+@import "themes/theme.module";
+
+.welcome {
+    @include flex-column-center;
+    padding: $basePadding;
+}
+
+.logo {
+    margin-top: 15px;
+    $logoSize: 115px;
+    height: $logoSize; 
+    width: $logoSize;
+}
+
+.title {
+    .visor{
+        color: $primary;
+        font-style: italic;
+    }
+}
+
+.form{
+    max-width: $maxWidth;
+}
+
+.smallLinks {
+    display: flex;
+    flex-direction: column;
+    padding: $basePadding;
+    width: fit-content;
+    margin-top: 5px;
+
+    :hover{
+        cursor: pointer;
+    }
+}
