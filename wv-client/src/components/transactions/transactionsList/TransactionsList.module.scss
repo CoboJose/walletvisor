@@ -2,13 +2,12 @@
 
 .transactionsList{
     @include flex-column-center;
-    width: 100%;
-    max-width: 600px;
+    @include max-100-width;
     position: relative;
 }
 
 .list{
-    width: 80%;
+    @include max-100-width;
 }
 
 .categorySVG {
@@ -18,23 +17,41 @@
     fill: currentColor;
 }
 
-.editSVG {
-    $size: 20px;
-    height: $size;
-    width: $size;
-    fill: $info;
+.addTransactionButton {
+    position: absolute !important;
+    bottom: 5% !important;
+    right: 2% !important;
+    z-index: 10 !important;
 }
 
-.deleteSVG {
-    $size: 20px;
+.addIcon {
+    $size: 30px;
     height: $size;
     width: $size;
-    fill: $error;
 }
 
-.addTransactionButton{
-    position: absolute;
-    bottom: 5%;
-    right: 2%;
-    z-index: 10;
+.amount {
+    font-size: large;
+
+    &.income {
+        color: $success;
+    }
+    &.expense {
+        color: $error;
+    }
+
+    $iconSize: 12px;
+    $iconMarginRight: 3px;
+    .plusIcon {
+        height: $iconSize;
+        width: $iconSize;
+        fill: $success;
+        margin-right: $iconMarginRight;
+    }
+    .lessIcon {
+        height: $iconSize;
+        width: $iconSize;
+        fill: $error;
+        margin-right: $iconMarginRight;
+    }
 }

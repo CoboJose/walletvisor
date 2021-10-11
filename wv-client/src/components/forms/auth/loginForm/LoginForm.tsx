@@ -69,7 +69,7 @@ const LoginForm = (): JSX.Element => {
       }
     }
   };
-
+  
   /////////
   // JSX //
   /////////
@@ -78,7 +78,7 @@ const LoginForm = (): JSX.Element => {
 
       <SVG name="lock" className={style.lockIcon} />
 
-      <h1 className={style.title}>Log in</h1>
+      <h1 className={style.title}>Log In</h1>
 
       { serverError.length > 0 && (
         <div>

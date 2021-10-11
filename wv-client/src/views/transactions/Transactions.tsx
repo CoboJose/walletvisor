@@ -5,11 +5,7 @@ import { logout } from 'store/slices/auth';
 import { changeTheme } from 'store/slices/config';
 import logger from 'utils/logger';
 import Balance from 'components/transactions/balance/Balance';
-import TransactionForm from 'components/transactions/transactionForm/TransactionForm';
-import TransactionFormModal from 'components/transactions/transactionForm/TransactionFormModal';
 import TransactionsList from 'components/transactions/transactionsList/TransactionsList';
-
-import Button from '@material-ui/core/Button';
 
 import style from './Transactions.module.scss';
 
@@ -42,16 +38,7 @@ const Transactions: React.FC = () => {
 
   return (
     <div className={style.transactions}>
-      {/* <Balance /> */}
-
-      <Button
-        variant="contained"
-        color="primary"
-      >
-        Add Transaction
-      </Button>
-
-      <TransactionFormModal transactionToUpdate={null} />
+      <Balance />
       
       <TransactionsList />
 

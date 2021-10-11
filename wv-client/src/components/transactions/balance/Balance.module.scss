@@ -1,25 +1,74 @@
 @import "themes/theme.module";
 
-.balance{
-    @include flex-column-center;
+.balance {
+    width: 100%;
+    max-width: $maxWidth;
+    padding: $basePadding;
+
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows:  1fr 1fr 1fr;
+    gap: 1px 3px;
+    grid-template-areas:
+        "balanceText balanceTotal"
+        "income balanceTotal"
+        "expense balanceTotal";
+}
+
+.balanceText {
+    grid-area: balanceText;
+    font-size: large;
+    font-weight: bold;
+}
+
+.income {
+    grid-area: income;
+    color: $success;
+
+    .plusIcon {
+        $size: 10px;
+        height: $size;
+        width: $size;
+        fill: $success;
+    }
+}
+
+.expense {
+    grid-area: expense;
+    color: $error;
+
+    .lessIcon {
+        $size: 10px;
+        height: $size;
+        width: $size;
+        fill: $error;
+    }
 }
 
 .balanceTotal {
-    border: 2px solid black;
-    border-radius: 7px;
-    overflow: hidden;
-}
+    grid-area: balanceTotal;
+    font-size: large;
 
-.title {
-    border-bottom: 2px solid black;
-    width: 100%;
-    padding: 7px 0 7px 0;
+    text-align: center;
 
-    font-size: 18px;
-}
+    &.positive {
+        color: $success;
+    }
+    &.negative {
+        color: $error;
+    }
 
-.amount {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    font-size: 1.3em;
+    .plusIcon {
+        $size: 10px;
+        height: $size;
+        width: $size;
+        fill: $success;
+    }
+    .lessIcon {
+        $size: 10px;
+        height: $size;
+        width: $size;
+        fill: $error;
+    }
 }

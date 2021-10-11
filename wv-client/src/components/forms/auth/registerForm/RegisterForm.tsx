@@ -76,7 +76,7 @@ const RegisterForm = (): JSX.Element => {
 
       <SVG name="lock" className={style.lockIcon} />
 
-      <h1 className={style.title}>Sign in</h1>
+      <h1 className={style.title}>Sign Up</h1>
 
       { serverError.length > 0 && (
         <div>
@@ -124,7 +124,7 @@ const RegisterForm = (): JSX.Element => {
           color="primary"
           disabled={email.length === 0 || password.length === 0}
         >
-          Sign In
+          Sign Up
         </Button>
       </form>
 

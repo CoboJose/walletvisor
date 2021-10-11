@@ -60,6 +60,7 @@ const setLightColors = (): void => {
   document.documentElement.style.setProperty('--warningColor', 'var(--lightWarning)');
   document.documentElement.style.setProperty('--infoColor', 'var(--lightInfo)');
   document.documentElement.style.setProperty('--successColor', 'var(--lightSuccess)');
+  document.documentElement.style.setProperty('--disabledColor', 'var(--lightDisabled)');
 };
 
 const setDarkColors = (): void => {
@@ -70,6 +71,7 @@ const setDarkColors = (): void => {
   document.documentElement.style.setProperty('--warningColor', 'var(--darkWarning)');
   document.documentElement.style.setProperty('--infoColor', 'var(--darkInfo)');
   document.documentElement.style.setProperty('--successColor', 'var(--darkSuccess)');
+  document.documentElement.style.setProperty('--disabledColor', 'var(--darkDisabled)');
 };
 
 export const { initTheme, changeTheme } = configSlice.actions;

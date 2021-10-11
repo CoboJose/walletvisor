@@ -78,7 +78,7 @@ export const transactionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getTransactions.fulfilled, (state, action) => {
-      state.transactions = action.payload;
+      state.transactions = action.payload.sort((t1, t2) => t2.date - t1.date);
       state.isLoading = false;
     });
     builder.addCase(getTransactions.rejected, (state) => {

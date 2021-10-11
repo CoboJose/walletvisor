@@ -38,13 +38,7 @@ const stringDateFormatted = (date: string): string => {
   return dateArray.reverse().join('/');
 };*/
 
-//MATH
-/*
-const round = (number: number, decimals: number): number => {
-  return Number(Math.round(number + 'e+' + decimals) + 'e-' + decimals);
-}*/
-
-export default { getFullDate, getTime, getCurrentStringDate, stringDatetoTimeStamp };
+export default { getFullDate, getTime, getCurrentStringDate, timestampToStringDate, stringDatetoTimeStamp };
 
 const addZero = (element: number): string => {
   let res = element.toString();

@@ -7,6 +7,7 @@ $darkError: #f44336;
 $darkWarning: #ff9800;
 $darkInfo: #2196f3;
 $darkSuccess: #4caf50;
+$darkDisabled: #8d8d8d;
 
 // Light Theme
 $lightPrimary: #556dd6;
@@ -15,6 +16,7 @@ $lightError: #f44336;
 $lightWarning: #ff9800;
 $lightInfo: #2196f3;
 $lightSuccess: #4caf50;
+$lightDisabled: #b9b9b9;
 
 // General
 
@@ -26,6 +28,7 @@ $colors: (
   darkWarning: $darkWarning,
   darkInfo: $darkInfo,
   darkSuccess: $darkSuccess,
+  darkDisabled: $darkDisabled,
 
   lightPrimary: $lightPrimary,
   lightSecondary: $lightSecondary,
@@ -33,6 +36,7 @@ $colors: (
   lightWarning: $lightWarning,
   lightInfo: $lightInfo,
   lightSuccess: $lightSuccess,
+  lightDisabled: $lightDisabled,
 );
 
 //Export to access them in js
@@ -43,6 +47,7 @@ $colors: (
   darkWarning: $darkWarning;
   darkInfo: $darkInfo;
   darkSuccess: $darkSuccess;
+  darkDisabled: $darkDisabled;
 
   lightPrimary: $lightPrimary;
   lightSecondary: $lightSecondary;
@@ -50,6 +55,7 @@ $colors: (
   lightWarning: $lightWarning;
   lightInfo: $lightInfo;
   lightSuccess: $lightSuccess;
+  lightDisabled: $lightDisabled;
 }
 
 $primary: var(--primaryColor);
@@ -58,6 +64,7 @@ $error: var(--errorColor);
 $warning: var(--warningColor);
 $info: var(--infoColor);
 $success: var(--successColor);
+$disabled: var(--disabledColor);
 
 // loop over each name, color
 :root {
@@ -70,12 +77,18 @@ $success: var(--successColor);
 
 //Other
 $basePadding: 5px 15px 5px 15px;
+$maxWidth: 600px;
 
 //Mixins
 @mixin flex-column-center {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@mixin max-100-width {
+  max-width: $maxWidth;
+  width: 100%;
 }
 
 // Category Colors

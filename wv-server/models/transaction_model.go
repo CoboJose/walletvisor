@@ -36,7 +36,7 @@ var transactionsIndexes = `CREATE INDEX IF NOT EXISTS trn_date_index ON transact
 
 // NewTransaction creates a transaction struct, but does not store it in the database
 func NewTransaction(name string, kind string, category string, amount float64, date int, userID int) *Transaction {
-	return &Transaction{ID: -1, Name: name, Kind: kind, Category: category, Amount: amount, Date: date, UserID: userID}
+	return &Transaction{ID: -1, Name: name, Kind: kind, Category: category, Amount: utils.Round(amount, 2), Date: date, UserID: userID}
 }
 
 /////////
@@ -49,6 +49,9 @@ func GetTransactionByID(transactionID, userID int) (*Transaction, *utils.Cerr) {
 	if err := db.Get(transaction, `SELECT * FROM transactions WHERE id=$1 AND user_id=$2`, transactionID, userID); err != nil {
 		return nil, utils.NewCerr("TR002", err)
 	}
+
+	transaction.Amount = utils.Round(transaction.Amount, 2)
+
 	return transaction, nil
 }
 
@@ -59,6 +62,11 @@ func GetUserTransactions(userID, from, to int) ([]Transaction, *utils.Cerr) {
 	if err := db.Select(&transactions, query, userID, from, to); err != nil {
 		return nil, utils.NewCerr("TR001", err)
 	}
+
+	for i := 0; i < len(transactions); i++ {
+		transactions[i].Amount = utils.Round(transactions[i].Amount, 2)
+	}
+
 	return transactions, nil
 }
 
@@ -72,6 +80,8 @@ func (trn *Transaction) Save() *utils.Cerr {
 	if cerr := trn.validate(); cerr != nil {
 		return cerr
 	}
+
+	trn.Amount = utils.Round(trn.Amount, 2)
 
 	if trn.ID <= 0 { // Create
 		query := `INSERT INTO transactions (name, kind, category, amount, date, user_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id`

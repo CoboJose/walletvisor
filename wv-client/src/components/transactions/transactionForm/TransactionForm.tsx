@@ -1,16 +1,11 @@
-import React, { ChangeEvent, useState } from 'react';
-import { useAppDispatch } from 'store/hooks';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import logger from 'utils/logger';
 import dateUtils from 'utils/dates';
-import mathUtils from 'utils/math';
 import { transactionCategoriesData } from 'utils/transactionCategories';
-import { Transaction, TransactionCategory, TransactionKind, ApiError } from 'types/types';
-import api from 'api/api';
-import apiErrors from 'api/apiErrors';
-import { getTransactions } from 'store/slices/transactions';
+import { Transaction, TransactionCategory, TransactionKind } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
+import mathUtils from 'utils/math';
 
-import Button from '@material-ui/core/Button/Button';
 import TextField from '@material-ui/core/TextField/TextField';
 import Alert from '@material-ui/lab/Alert/Alert';
 import Radio from '@material-ui/core/Radio';
@@ -23,66 +18,38 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import style from './TransactionForm.module.scss';
 
-const TransactionForm = (): JSX.Element => {
-  logger.rendering();
+type TransactionFormProps = {
+  transaction: Transaction,
+  setTransaction : (arg0: Transaction) => void,
+  formErrors: Record<string, string>,
+  serverError: string
+}
 
-  ///////////
-  // HOOKS //
-  ///////////
-  const dispatch = useAppDispatch();
+const TransactionForm = ({ transaction, setTransaction, formErrors, serverError }: TransactionFormProps): JSX.Element => {
+  logger.rendering();
 
   ///////////
   // STATE //
   ///////////
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [serverError, setServerError] = useState<string>('');
+  const [name, setName] = useState<string>(transaction.name);
+  const [kind, setKind] = useState<TransactionKind>(transaction.kind);
+  const [category, setCategory] = useState<TransactionCategory>(transaction.category);
+  const [amount, setAmount] = useState<number>(transaction.amount);
+  const [date, setDate] = useState<string>(dateUtils.timestampToStringDate(transaction.date));
 
-  const [name, setName] = useState<string>('');
-  const [kind, setKind] = useState<TransactionKind>(TransactionKind.Income);
-  const [category, setCategory] = useState<TransactionCategory>(TransactionCategory.Salary);
-  const [amount, setAmount] = useState<number>(0);
-  const [date, setDate] = useState<string>(dateUtils.getCurrentStringDate());
-  
-  //////////////////////
-  // HELPER FUNCTIONS //
-  //////////////////////
-  const validateForm = (): boolean => {
-    const errors: Record<string, string> = {};
-    
-    if (!name || name.length < 1) {
-      errors.name = 'The name can not be empty';
-    }
-    if (!amount || amount <= -50) {
-      errors.amount = 'The amount must be a positive number';
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
+  ////////////////
+  // USE EFFECT //
+  ////////////////
+  useEffect(() => {
+    //Update the transaction when some input is updated
+    const timestamp = dateUtils.stringDatetoTimeStamp(date);
+    const roundedAmount = mathUtils.round(amount, 2);
+    setTransaction({ ...transaction, name, kind, category, amount: roundedAmount, date: timestamp });
+  }, [name, kind, category, amount, date]);
 
   //////////////
   // HANDLERS //
   //////////////
-  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setServerError('');
-
-    if (validateForm()) {
-      const timestamp = dateUtils.stringDatetoTimeStamp(date);
-      const roundedAmount = mathUtils.round(amount, 2);
-      const transaction: Transaction = { id: -1, name, kind, category, amount: roundedAmount, date: timestamp, userID: -1 };
-
-      try {
-        await api.addTransaction(transaction);
-        dispatch(getTransactions());
-      }
-      catch (error) {
-        const err = error as ApiError;
-        setServerError(apiErrors(err.code));
-      }
-    }
-  };
-
   const setKindHandler = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
@@ -102,7 +69,7 @@ const TransactionForm = (): JSX.Element => {
         <Alert severity="error">{serverError}</Alert>
       ) }
 
-      <form onSubmit={submitHandler}>
+      <form>
         
         <TextField
           type="text"
@@ -111,7 +78,7 @@ const TransactionForm = (): JSX.Element => {
           required
           fullWidth
           label="Name"
-          autoFocus
+          autoFocus={name === ''}
           value={name} 
           onChange={(e) => setName(e.target.value)}
           error={formErrors.name != null}
@@ -173,17 +140,6 @@ const TransactionForm = (): JSX.Element => {
           value={date}
           onChange={(e) => setDate(e.target.value as unknown as string)}
         />
-
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          style={{ marginTop: '10px' }}
-          disabled={!name || amount.toString() === ''}
-        >
-          Add Transaction
-        </Button>
 
       </form>
 

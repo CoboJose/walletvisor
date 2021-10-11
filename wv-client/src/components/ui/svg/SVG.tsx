@@ -17,6 +17,9 @@ import { ReactComponent as Entertainment } from 'assets/icons/popcorn.svg';
 import { ReactComponent as Edit } from 'assets/icons/edit.svg';
 import { ReactComponent as Delete } from 'assets/icons/trash.svg';
 import { ReactComponent as Add } from 'assets/icons/add.svg';
+import { ReactComponent as Line } from 'assets/icons/line.svg';
+import { ReactComponent as Back } from 'assets/icons/back.svg';
+import { ReactComponent as Close } from 'assets/icons/close.svg';
 
 type SVGProps = {
   name: SvgIcons,
@@ -70,6 +73,15 @@ const SVG = ({ name, className }: SVGProps): JSX.Element => {
 
       case 'add':
         return <Add className={className} />;
+
+      case 'line':
+        return <Line className={className} />;
+
+      case 'back':
+        return <Back className={className} />;
+
+      case 'close':
+        return <Close className={className} />;
         
       default:
         return <Logo className={className} />;

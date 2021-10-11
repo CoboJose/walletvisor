@@ -1,6 +1,9 @@
 package utils
 
-import "reflect"
+import (
+	"math"
+	"reflect"
+)
 
 // Contains return true if the list contais the element.
 func Contains(list interface{}, elem interface{}) bool {
@@ -17,4 +20,8 @@ func Contains(list interface{}, elem interface{}) bool {
 		}
 	}
 	return false
+}
+
+func Round(number float64, precision int) float64 {
+	return math.Round(number*(math.Pow10(precision))) / math.Pow10(precision)
 }

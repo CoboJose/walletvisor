@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { refreshToken, logout } from 'store/slices/auth';
@@ -14,6 +14,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import lightTheme from 'themes/lightTheme';
 import darkTheme from 'themes/darkTheme';
+import Confirmation from 'components/ui/confirmation/Confirmation';
+import screenSizes from 'utils/screenSizes';
 
 const App: React.FC = () => {
   logger.rendering();
@@ -29,6 +31,11 @@ const App: React.FC = () => {
   ///////////
   const dispatch = useAppDispatch();
   const history = useHistory();
+
+  ///////////
+  // STATE //
+  ///////////
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   ////////////////
   // USE EFFECT //
@@ -63,6 +70,12 @@ const App: React.FC = () => {
           window.alert('The server is not responding. Please contact with cobogue@gmail.com');
         });
     }
+
+    //Show mobile use alert if it is the first time using this device
+    if (!screenSizes.isPhone() && localStorage.getItem('MobileUseAlerted') === null) {
+      localStorage.setItem('MobileUseAlerted', 'true');
+      setShowAlert(true);
+    }
   }, []);
 
   //////////////////////
@@ -86,6 +99,13 @@ const App: React.FC = () => {
       <CssBaseline />
       <LoadingTopBar />
       <Routes />
+      <Confirmation 
+        title="Advice for computer users"
+        text="This application has been designed for mobile devices. Its use on computers is possible, but the experience will be inferior."
+        buttonOk="OK"
+        open={showAlert}
+        onOk={() => setShowAlert(false)}       
+      />
     </ThemeProvider>
   );
 };

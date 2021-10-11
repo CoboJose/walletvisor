@@ -3,6 +3,9 @@ import { useAppSelector } from 'store/hooks';
 import { Transaction, TransactionKind } from 'types/types';
 import logger from 'utils/logger';
 import math from 'utils/math';
+import SVG from 'components/ui/svg/SVG';
+
+import Paper from '@material-ui/core/Paper';
 
 import style from './Balance.module.scss';
 
@@ -29,24 +32,28 @@ const Balance = (): JSX.Element => {
   [balance, income, expense].map((e) => math.round(e, 2));
   
   return (
-    <div className={style.balance}>
-
-      <div className={style.balanceTotal}>
-        <span className={style.title}>Balance</span>
-        <span className={style.amount}>{balance} €</span>
-      </div>
+    <Paper className={style.balance}>
       
+      <div className={style.balanceText}>
+        Balance
+      </div>
+
       <div className={style.income}>
-        <span className={style.title}>Income</span> 
-        <span className={style.amount}>{income} €</span>
+        <SVG name="add" className={style.plusIcon} />
+        <span> {math.round(Math.abs(income), 2)} € </span>
       </div>
 
       <div className={style.expense}>
-        <span className={style.title}>Expense</span> 
-        <span className={style.amount}>{expense} €</span>
+        <SVG name="line" className={style.lessIcon} />
+        <span> {math.round(Math.abs(expense), 2)} € </span>
       </div>
 
-    </div>
+      <div className={`${style.balanceTotal} ${balance >= 0 ? style.positive : style.negative}`}>
+        {balance >= 0 ? <SVG name="add" className={style.plusIcon} /> : <SVG name="line" className={style.lessIcon} />}
+        <span> {math.round(Math.abs(balance), 2)} € </span>
+      </div>
+
+    </Paper>
   );
 };
 
