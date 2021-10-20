@@ -11,3 +11,6 @@
 
 # Fresh tmp folder
 tmp/
+
+start wv.command
+wv-server
