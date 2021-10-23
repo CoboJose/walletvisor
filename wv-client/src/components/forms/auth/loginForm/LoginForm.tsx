@@ -62,7 +62,7 @@ const LoginForm = (): JSX.Element => {
       try {
         await dispatch(login({ email, password, keepLoggedIn: rememberPassword })).unwrap();
         setServerError('');
-        history.push('/home');
+        history.push('/transactions');
       } catch (error) {
         const err = error as ApiError;
         setServerError(apiErrors(err.code));

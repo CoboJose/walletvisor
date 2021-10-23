@@ -49,7 +49,7 @@ const App: React.FC = () => {
     if (refreshTkn != null) {
       dispatch(refreshToken(refreshTkn)).unwrap()
         .then(() => {
-          history.push('/home');
+          history.push('/transactions');
           removeLoadingHTML();
         })
         .catch((error) => {

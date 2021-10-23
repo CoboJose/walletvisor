@@ -60,7 +60,7 @@ const RegisterForm = (): JSX.Element => {
       try {
         await dispatch(register({ email, password })).unwrap();
         setServerError('');
-        history.push('/home');
+        history.push('/transactions');
       } catch (error) {
         const err = error as ApiError;
         setServerError(apiErrors(err.code));
