@@ -1,28 +1,72 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import logger from 'utils/logger';
-import SVG from 'components/ui/svg/SVG';
+import { SvgIcons } from 'types/types';
 
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
+import useTheme from '@material-ui/core/styles/useTheme';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import style from './Navbar.module.scss';
+import DesktopNavbar from './desktopNavbar/DesktopNavbar';
+import MobileNavbar from './mobileNavbar/MobileNavbar';
+
+export type NavbarListItems = {
+  text: string,
+  path: string,
+  svg: SvgIcons,
+}
+
+export type NavbarProps = {
+  onClickHandler: (arg0: string) => void,
+  principalRoutesList: NavbarListItems[],
+  selected: string,
+};
+
+const principalRoutesList: NavbarListItems[] = [
+  {
+    text: 'Transactions',
+    path: 'transactions',
+    svg: SvgIcons.Home,
+  },
+  {
+    text: 'Favourites',
+    path: 'favourites',
+    svg: SvgIcons.Food,
+  },
+  {
+    text: 'Nearby',
+    path: 'nearby',
+    svg: SvgIcons.Lock,
+  },
+  {
+    text: 'Menu',
+    path: 'menu',
+    svg: SvgIcons.Edit,
+  },
+];
 
 const Navbar = (): JSX.Element => {
   logger.rendering();
 
   const history = useHistory();
   const location = useLocation();
+  const theme = useTheme();
+  const isPhone = useMediaQuery(theme.breakpoints.only('xs'));
+
+  const selected = location.pathname.replace('/', '');
+
+  //////////////
+  // HANDLERS //
+  //////////////
+  const onClickHandler = (newPath: string) => {
+    history.push(newPath);
+  };
 
   return (
-    <div className={style.navbar}>
-      <BottomNavigation value={location.pathname.replace('/', '')} showLabels onChange={(_, newValue) => history.push(newValue)} className={style.root}>
-        <BottomNavigationAction label="Transactions" value="transactions" icon={<SVG name="home" className={style.icon} />} />
-        <BottomNavigationAction label="Favorites" value="favorites" icon={<SVG name="food" className={style.icon} />} />
-        <BottomNavigationAction label="Nearby" value="nearby" icon={<SVG name="lock" className={style.icon} />} />
-        <BottomNavigationAction label="Menu" value="menu" icon={<SVG name="edit" className={style.icon} />} />
-      </BottomNavigation>
-    </div>
+    <>
+      { isPhone 
+        ? <MobileNavbar onClickHandler={onClickHandler} principalRoutesList={principalRoutesList} selected={selected} />
+        : <DesktopNavbar onClickHandler={onClickHandler} principalRoutesList={principalRoutesList} selected={selected} />}
+    </>
   );
 };
 

@@ -33,13 +33,6 @@ const darkTheme = unstable_createMuiStrictModeTheme({
         },
       },
     },
-    MuiButton: {
-      root: {
-        '&test': {
-          color: theme.darkInfo
-        },
-      },
-    },
   },
 
 });

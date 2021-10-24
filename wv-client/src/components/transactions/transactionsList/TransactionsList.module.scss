@@ -3,7 +3,6 @@
 .transactionsList{
     @include flex-column-center;
     @include max-100-width;
-    position: relative;
 }
 
 .list{
@@ -19,8 +18,8 @@
 
 .addTransactionButton {
     position: absolute !important;
-    bottom: 5% !important;
-    right: 2% !important;
+    bottom: 70px !important;
+    right: 10px !important;
     z-index: 10 !important;
 }
 
@@ -28,6 +27,9 @@
     $size: 30px;
     height: $size;
     width: $size;
+    fill: white;
+    stroke: white;
+    stroke-width: 15px;
 }
 
 .amount {

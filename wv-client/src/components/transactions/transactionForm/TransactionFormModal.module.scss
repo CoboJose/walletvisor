@@ -1,5 +1,9 @@
 @import "themes/theme.module";
 
+.cancelButton{
+    color: $secondary !important;
+}
+
 .deleteButton{
     color: $error !important;
 }

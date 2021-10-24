@@ -4,25 +4,15 @@ import Routes from 'routes/Routes';
 import logger from 'utils/logger';
 import Navbar from 'components/navigation/navbar/Navbar';
 
+import style from './Content.module.scss';
+
 const Content: React.FC = () => {
   logger.rendering();
-
-  ///////////
-  // REDUX //
-  ///////////
 
   ///////////
   // HOOKS //
   ///////////
   const location = useLocation();
-
-  ///////////
-  // STATE //
-  ///////////
-
-  ////////////////
-  // USE EFFECT //
-  ////////////////
 
   //////////////////////
   // HELPER FUNCTIONS //
@@ -36,15 +26,15 @@ const Content: React.FC = () => {
   // JSX //
   /////////
   return (
-    <>
-      <Routes />
-      {showNavbar() && (
-        <>
-          <div style={{ marginBottom: '65px' }} />
-          <Navbar />
-        </>
-      )}
-    </>
+    <div className={style.content}>
+
+      { showNavbar() && <Navbar /> }
+
+      <div className={style.routes}>
+        <Routes />
+      </div>
+      
+    </div>
   );
 };
 

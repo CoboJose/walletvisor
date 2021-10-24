@@ -1,0 +1,65 @@
+@import "themes/theme.module";
+
+$desktopNavbarWidth: 250px;
+
+:export {
+  desktopNavbarWidth: $desktopNavbarWidth;
+}
+
+.desktopNavbar {
+  width: $desktopNavbarWidth;
+}
+
+.desktopNavbarTop {
+  padding: 9px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .logoIcon {
+    $size: 50px;
+    width: $size;
+    height: $size;
+  }
+
+  .title {
+    font-size: large;
+    margin-left: 25px;
+    .visor{
+      color: $primary;
+      font-style: italic;
+  }
+  }
+}
+
+.desktopNavbarBottom {
+  margin-top: auto;
+}
+
+.themeSwitcher {
+  margin-left: 14px;
+  display: flex;
+  align-items: center;
+
+  .label {
+    font-weight: bold;
+    margin-right: 20px;
+  }
+
+  .option {
+    font-size: small;
+  }
+}
+
+.icon{
+  $size: 25px;
+  height: $size;
+  width: $size;
+  fill: currentColor;
+  margin-bottom: 3px;
+}
+
+.logoutButton {
+  margin-left: 5px;
+  color: $primary;
+}

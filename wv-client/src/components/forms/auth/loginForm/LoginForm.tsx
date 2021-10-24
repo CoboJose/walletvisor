@@ -4,7 +4,7 @@ import { login } from 'store/slices/auth';
 import { useHistory } from 'react-router-dom';
 import logger from 'utils/logger';
 import apiErrors from 'api/apiErrors';
-import { ApiError } from 'types/types';
+import { ApiError, SvgIcons } from 'types/types';
 import regex from 'utils/regex';
 import SVG from 'components/ui/svg/SVG';
 
@@ -76,7 +76,7 @@ const LoginForm = (): JSX.Element => {
   return (
     <div className={style.loginForm}>
 
-      <SVG name="lock" className={style.lockIcon} />
+      <SVG name={SvgIcons.Lock} className={style.lockIcon} />
 
       <h1 className={style.title}>Log In</h1>
 

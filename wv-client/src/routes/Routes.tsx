@@ -18,7 +18,7 @@ const Routes: React.FC = () => {
       <Route path="/" component={Welcome} exact />
       <PrivateRoute path="/transactions" component={Transactions} />
       <PrivateRoute path="/menu" component={Menu} />
-      <Route path="*" component={NotFound} />
+      <PrivateRoute path="*" component={NotFound} />
     </Switch>
   );
 };

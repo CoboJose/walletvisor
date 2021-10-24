@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { getTransactions } from 'store/slices/transactions';
-import { logout } from 'store/slices/auth';
-import { changeTheme } from 'store/slices/config';
 import logger from 'utils/logger';
 import Balance from 'components/transactions/balance/Balance';
 import TransactionsList from 'components/transactions/transactionsList/TransactionsList';
@@ -41,9 +39,6 @@ const Transactions: React.FC = () => {
       <Balance />
       
       <TransactionsList />
-
-      <button type="button" onClick={() => dispatch(logout())}>Log Out</button>
-      <button type="button" onClick={() => dispatch(changeTheme())}>Change theme</button>
     </div>
   );
 };

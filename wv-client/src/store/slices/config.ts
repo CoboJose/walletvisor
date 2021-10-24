@@ -19,12 +19,12 @@ export const configSlice = createSlice({
       const previusTheme = state.theme;
 
       if (previusTheme === 'dark') {
-        state.theme = 'light';
         setLightColors();
+        state.theme = 'light';
       }
       else {
-        state.theme = 'dark';
         setDarkColors();
+        state.theme = 'dark';
       }
     },
     initTheme: (state) => {
@@ -32,12 +32,12 @@ export const configSlice = createSlice({
       const initialTheme = localStorageTheme != null ? localStorageTheme : 'dark';
 
       if (initialTheme === 'dark') {
-        state.theme = 'dark';
         setDarkColors();
+        state.theme = 'dark';
       }
       else {
-        state.theme = 'light';
         setLightColors();
+        state.theme = 'light';
       }
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
@@ -46,8 +46,8 @@ export const configSlice = createSlice({
   },
   extraReducers: (builder) => {
     //LOGOUT
-    builder.addCase(logout, () => {
-      return { ...initialState };
+    builder.addCase(logout, (state) => {
+      return { theme: state.theme, isLoading: false };
     });
   },
 });
