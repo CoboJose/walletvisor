@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppSelector } from 'store/hooks';
-import { Transaction, TransactionKind } from 'types/types';
+import { SvgIcons, Transaction, TransactionKind } from 'types/types';
 import logger from 'utils/logger';
 import SVG from 'components/ui/svg/SVG';
 import { getTransactionCategoryData } from 'utils/transactionCategories';
@@ -78,7 +78,7 @@ const TransactionsList = (): JSX.Element => {
 
                 <ListItemSecondaryAction>
                   <div className={`${style.amount} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}>
-                    {t.kind === TransactionKind.Income ? <SVG name="add" className={style.plusIcon} /> : <SVG name="line" className={style.lessIcon} />}
+                    {t.kind === TransactionKind.Income ? <SVG name={SvgIcons.Add} className={style.plusIcon} /> : <SVG name={SvgIcons.Line} className={style.lessIcon} />}
                     {t.amount} €
                   </div>
                 </ListItemSecondaryAction>
@@ -98,7 +98,7 @@ const TransactionsList = (): JSX.Element => {
         )}
       
       <Fab color="primary" className={style.addTransactionButton} onClick={() => setIsModalOpen(true)}>
-        <SVG name="add" className={style.addIcon} />
+        <SVG name={SvgIcons.Add} className={style.addIcon} />
       </Fab>
 
       {isModalOpen && <TransactionFormModal transactionToUpdate={transactionToUpdate} onClose={onCloseModal} setSnackbarText={setSnackbarText} />}

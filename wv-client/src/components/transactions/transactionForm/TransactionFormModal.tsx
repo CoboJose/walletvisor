@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import logger from 'utils/logger';
-import { Transaction, TransactionCategory, TransactionKind, ApiError } from 'types/types';
+import { Transaction, TransactionCategory, TransactionKind, ApiError, SvgIcons } from 'types/types';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
 import { getTransactions } from 'store/slices/transactions';
@@ -120,8 +120,8 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
 
           <Button 
             onClick={onClose}
-            color="secondary"
-            startIcon={<SVG name="close" className={style.buttonIcon} />}
+            className={style.cancelButton}
+            startIcon={<SVG name={SvgIcons.Close} className={style.buttonIcon} />}
           >
             Cancel
           </Button>
@@ -130,7 +130,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
             <Button 
               onClick={() => setDeleteConfirmationOpened(true)} 
               className={style.deleteButton}
-              startIcon={<SVG name="delete" className={style.buttonIcon} />}
+              startIcon={<SVG name={SvgIcons.Delete} className={style.buttonIcon} />}
             >
               Delete
             </Button>
@@ -140,7 +140,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
             onClick={submitHandler} 
             className={style.okButton}
             disabled={!transaction.name || transaction.amount.toString() === ''}
-            startIcon={<SVG name="edit" className={style.buttonIcon} />}
+            startIcon={<SVG name={SvgIcons.Edit} className={style.buttonIcon} />}
           >
             {isEdit ? 'Save' : 'Add'}
           </Button>

@@ -5,6 +5,8 @@ import RegisterForm from 'components/forms/auth/registerForm/RegisterForm';
 import SVG from 'components/ui/svg/SVG';
 import { useAppDispatch } from 'store/hooks';
 import { changeTheme } from 'store/slices/config';
+import { SvgIcons } from 'types/types';
+import Switch from '@material-ui/core/Switch';
 
 import Link from '@material-ui/core/Link/Link';
 
@@ -23,7 +25,7 @@ const Welcome: React.FC = () => {
   return (
     <div className={style.welcome}>
 
-      <SVG name="logo" className={style.logo} />
+      <SVG name={SvgIcons.Logo} className={style.logo} />
 
       <h1 className={style.title}>WALLET<span className={style.visor}>VISOR</span></h1>
 
@@ -46,6 +48,11 @@ const Welcome: React.FC = () => {
       </div>
 
       <button type="button" onClick={() => dispatch(changeTheme())}>Change theme</button>
+      <Switch
+        color="primary"
+        checked
+        onChange={() => dispatch(changeTheme())}
+      />
       
     </div>
   );

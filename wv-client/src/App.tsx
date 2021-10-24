@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { refreshToken, logout } from 'store/slices/auth';
 import { initTheme } from 'store/slices/config';
-import Routes from 'routes/Routes';
 import logger from 'utils/logger';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
@@ -16,6 +15,7 @@ import lightTheme from 'themes/lightTheme';
 import darkTheme from 'themes/darkTheme';
 import Confirmation from 'components/ui/confirmation/Confirmation';
 import screenSizes from 'utils/screenSizes';
+import Content from 'components/content/Content';
 
 const App: React.FC = () => {
   logger.rendering();
@@ -49,7 +49,7 @@ const App: React.FC = () => {
     if (refreshTkn != null) {
       dispatch(refreshToken(refreshTkn)).unwrap()
         .then(() => {
-          history.push('/home');
+          history.push('/transactions');
           removeLoadingHTML();
         })
         .catch((error) => {
@@ -91,6 +91,19 @@ const App: React.FC = () => {
     }
   };
 
+  const computerUsersAdvice = (): JSX.Element | null => {
+    return (showAlert ? (
+      <Confirmation 
+        title="Advice for computer users"
+        text="This application has been designed for mobile devices. Its use on computers is possible, but the experience will be inferior."
+        buttonOk="OK"
+        open
+        onOk={() => setShowAlert(false)}       
+      />
+    ) : null 
+    );
+  };
+  
   /////////
   // JSX //
   /////////
@@ -98,14 +111,8 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <LoadingTopBar />
-      <Routes />
-      <Confirmation 
-        title="Advice for computer users"
-        text="This application has been designed for mobile devices. Its use on computers is possible, but the experience will be inferior."
-        buttonOk="OK"
-        open={showAlert}
-        onOk={() => setShowAlert(false)}       
-      />
+      {computerUsersAdvice()}
+      <Content />
     </ThemeProvider>
   );
 };
