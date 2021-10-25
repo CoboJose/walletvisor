@@ -8,15 +8,17 @@ import { SvgIcons } from 'types/types';
 import { SidePanelListItems } from 'components/view/sidePanel/SidePanel';
 import logger from 'utils/logger';
 
-import { Divider, List, ListItem, ListItemIcon, ListItemText, Button, Switch } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Button, Switch, SwipeableDrawer } from '@material-ui/core';
 
 import style from './PhoneSidePanel.module.scss';
 
 type PhoneSidePanelProps = {
   principalRoutesList: SidePanelListItems[],
+  open: boolean,
+  openHandler: (arg0: boolean) => void,
 }
 
-const PhoneSidePanel = ({ principalRoutesList }: PhoneSidePanelProps): JSX.Element => {
+const PhoneSidePanel = ({ principalRoutesList, open, openHandler }: PhoneSidePanelProps): JSX.Element => {
   logger.rendering();
   
   const dispatch = useAppDispatch();
@@ -24,9 +26,21 @@ const PhoneSidePanel = ({ principalRoutesList }: PhoneSidePanelProps): JSX.Eleme
   const location = useLocation();
   const theme = useAppSelector((state) => state.config.theme);
 
+  const iOS = new RegExp(/iPad|iPhone|iPod/).test(navigator.userAgent);
+
   return (
-    <div className={style.phoneSidePanel}>
-      
+    <SwipeableDrawer
+      variant="temporary"
+      anchor="left"
+      className={style.phoneSidePanel}
+      classes={{ paper: style.phoneSidePanelPaper }}
+      ModalProps={{ keepMounted: true }}
+      open={open}
+      onClose={() => openHandler(false)}
+      onOpen={() => openHandler(true)}
+      disableBackdropTransition
+      disableDiscovery
+    >
       {/* SIDEPANEL TOP */}
       <div className={style.top}>
         <div className={style.topContent}>
@@ -70,7 +84,7 @@ const PhoneSidePanel = ({ principalRoutesList }: PhoneSidePanelProps): JSX.Eleme
         <Button onClick={() => dispatch(logout())} className={style.logoutButton}>Log out</Button>
         
       </div>
-    </div>
+    </SwipeableDrawer>
   );
 };
 

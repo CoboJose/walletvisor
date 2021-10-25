@@ -4,13 +4,18 @@
 @import "components/view/View.module";
 
 .phoneSidePanel {
+    width: $phoneSidePanelWidth;
     display: flex;
     flex-direction: column;
     height: 100%;
+
+    .phoneSidePanelPaper {
+      width: $phoneSidePanelWidth;
+    }
 }
 
 .top {
-    height: $desktopTopBarHeight;
+    height: $phoneTopBarHeight;
 
     .topContent {
         height: 99%;

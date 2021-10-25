@@ -8,7 +8,7 @@ import { SvgIcons } from 'types/types';
 import { SidePanelListItems } from 'components/view/sidePanel/SidePanel';
 import logger from 'utils/logger';
 
-import { Divider, List, ListItem, ListItemIcon, ListItemText, Button, Switch } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Button, Switch, Drawer } from '@material-ui/core';
 
 import style from './DesktopSidePanel.module.scss';
 
@@ -25,8 +25,12 @@ const DesktopSidePanel = ({ principalRoutesList }: DesktopSidePanelProps): JSX.E
   const theme = useAppSelector((state) => state.config.theme);
 
   return (
-    <div className={style.desktopSidePanel}>
-      
+    <Drawer
+      variant="permanent"
+      anchor="left"
+      className={style.desktopSidePanel}
+      classes={{ paper: style.desktopSidePanelPaper }}
+    >
       {/* SIDEPANEL TOP */}
       <div className={style.top}>
         <div className={style.topContent}>
@@ -70,7 +74,7 @@ const DesktopSidePanel = ({ principalRoutesList }: DesktopSidePanelProps): JSX.E
         <Button onClick={() => dispatch(logout())} className={style.logoutButton}>Log out</Button>
         
       </div>
-    </div>
+    </Drawer>
   );
 };
 

@@ -11,15 +11,36 @@ const View = (): JSX.Element => {
   logger.rendering();
 
   const [phoneSidePanelOpen, setPhoneSidePanelOpen] = useState<boolean>(false);
-
-  const phoneSidePanelOpenHandler = (): void => {
+  
+  const handlephoneSidePanelOpen = (): void => {
     setPhoneSidePanelOpen(!phoneSidePanelOpen);
   };
+
+  const phoneSidePanelOpenHandler = (open: boolean) => (
+    event: React.KeyboardEvent | React.MouseEvent,
+  ) => {
+    if (
+      event 
+      && event.type === 'keydown' 
+      && ((event as React.KeyboardEvent).key === 'Tab' 
+      || (event as React.KeyboardEvent).key === 'Shift')
+    ) {
+      return;
+    }
+
+    setPhoneSidePanelOpen(open);
+  };
+
+  const phoneSidePanelOpenHandlerNoParams = (): void => {
+    setPhoneSidePanelOpen(!phoneSidePanelOpen);
+  };
+
+  console.log(phoneSidePanelOpen);
 
   return (
     <div className={style.view}>
 
-      <TopBar phoneSidePanelOpenHandler={phoneSidePanelOpenHandler} />
+      <TopBar phoneSidePanelOpenHandler={phoneSidePanelOpenHandlerNoParams} />
 
       <SidePanel phoneSidePanelOpen={phoneSidePanelOpen} phoneSidePanelOpenHandler={phoneSidePanelOpenHandler} />
       
