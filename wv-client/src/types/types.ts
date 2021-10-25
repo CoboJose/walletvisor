@@ -60,4 +60,5 @@ export enum SvgIcons {
   Line = 'line', 
   Back = 'back', 
   Close = 'close',
+  ThreeLines = 'threeLines',
 }

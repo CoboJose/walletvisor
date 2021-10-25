@@ -77,6 +77,7 @@ $disabled: var(--disabledColor);
 
 //Other
 $basePadding: 5px 15px 5px 15px;
+$phoneMaxWidth: 600px;
 $maxWidth: 600px;
 
 //Mixins
@@ -87,7 +88,7 @@ $maxWidth: 600px;
 }
 
 @mixin max-100-width {
-  max-width: $maxWidth;
+  max-width: $phoneMaxWidth;
   width: 100%;
 }
 

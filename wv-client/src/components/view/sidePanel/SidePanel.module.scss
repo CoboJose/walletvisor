@@ -1,0 +1,19 @@
+@import "themes/theme.module";
+@import "components/view/View.module";
+
+
+.desktopSidePanel {
+  width: $desktopSidePanelWidth;
+
+  .desktopSidePanelPaper {
+    width: $desktopSidePanelWidth;
+  }
+}
+
+.phoneSidePanel {
+  width: $phoneSidePanelWidth;
+
+  .phoneSidePanelPaper {
+    width: $phoneSidePanelWidth;
+  }
+}
