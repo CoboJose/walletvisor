@@ -1,10 +1,9 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import logger from 'utils/logger';
 import { SvgIcons } from 'types/types';
 
-import { Hidden } from '@material-ui/core';
+import { useMediaQuery, useTheme } from '@material-ui/core';
 
-import style from './SidePanel.module.scss';
 import DesktopSidePanel from './desktopSidePanel/DesktopSidePanel';
 import PhoneSidePanel from './phoneSidePanel/PhoneSidePanel';
 
@@ -34,23 +33,28 @@ const principalRoutesList: SidePanelListItems[] = [
 
 type SidePanelProps = {
   phoneSidePanelOpen: boolean,
-  phoneSidePanelOpenHandler: (arg0: boolean) => void,
+  handlePhoneSidePanelOpen: () => void,
+  handlePhoneSidePanelClose: () => void,
 }
 
-const SidePanel = ({ phoneSidePanelOpen, phoneSidePanelOpenHandler }: SidePanelProps): JSX.Element => {
+const SidePanel = ({ phoneSidePanelOpen, handlePhoneSidePanelOpen, handlePhoneSidePanelClose }: SidePanelProps): JSX.Element => {
   logger.rendering();
 
+  const theme = useTheme();
+  const isPhone = useMediaQuery(theme.breakpoints.only('xs'));
+  
   return (
     <div>
-      {/* Desktop Drawer */}
-      <Hidden xsDown implementation="css">
+      {isPhone ? (
+        <PhoneSidePanel 
+          principalRoutesList={principalRoutesList} 
+          phoneSidePanelOpen={phoneSidePanelOpen} 
+          handlePhoneSidePanelOpen={handlePhoneSidePanelOpen} 
+          handlePhoneSidePanelClose={handlePhoneSidePanelClose} 
+        />
+      ) : (
         <DesktopSidePanel principalRoutesList={principalRoutesList} />
-      </Hidden>
-
-      {/* Phone Drawer */}
-      <Hidden xsUp implementation="css">
-        <PhoneSidePanel principalRoutesList={principalRoutesList} open={phoneSidePanelOpen} openHandler={phoneSidePanelOpenHandler} />
-      </Hidden>
+      )}
     </div>
   );
 };

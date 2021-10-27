@@ -14,11 +14,12 @@ import style from './PhoneSidePanel.module.scss';
 
 type PhoneSidePanelProps = {
   principalRoutesList: SidePanelListItems[],
-  open: boolean,
-  openHandler: (arg0: boolean) => void,
+  phoneSidePanelOpen: boolean,
+  handlePhoneSidePanelOpen: () => void,
+  handlePhoneSidePanelClose: () => void,
 }
 
-const PhoneSidePanel = ({ principalRoutesList, open, openHandler }: PhoneSidePanelProps): JSX.Element => {
+const PhoneSidePanel = ({ principalRoutesList, phoneSidePanelOpen, handlePhoneSidePanelOpen, handlePhoneSidePanelClose }: PhoneSidePanelProps): JSX.Element => {
   logger.rendering();
   
   const dispatch = useAppDispatch();
@@ -30,19 +31,19 @@ const PhoneSidePanel = ({ principalRoutesList, open, openHandler }: PhoneSidePan
 
   return (
     <SwipeableDrawer
-      variant="temporary"
-      anchor="left"
       className={style.phoneSidePanel}
       classes={{ paper: style.phoneSidePanelPaper }}
-      ModalProps={{ keepMounted: true }}
-      open={open}
-      onClose={() => openHandler(false)}
-      onOpen={() => openHandler(true)}
-      disableBackdropTransition
-      disableDiscovery
+      open={phoneSidePanelOpen}
+      onClose={handlePhoneSidePanelClose}
+      onOpen={handlePhoneSidePanelOpen}
+      disableBackdropTransition={!iOS}
+      disableDiscovery={!iOS}
     >
       {/* SIDEPANEL TOP */}
-      <div className={style.top}>
+      <div 
+        className={style.top}
+        role="presentation"
+      >
         <div className={style.topContent}>
           <SVG name={SvgIcons.Logo} className={style.logoIcon} />
           <div className={style.title}>WALLET<span className={style.visor}>VISOR</span></div>
@@ -57,7 +58,7 @@ const PhoneSidePanel = ({ principalRoutesList, open, openHandler }: PhoneSidePan
             key={listItem.path} 
             button 
             selected={listItem.path === location.pathname.replace('/', '')} 
-            onClick={() => history.push(listItem.path)}
+            onClick={() => [history.push(listItem.path), handlePhoneSidePanelClose()]}
           >
             <ListItemIcon> <SVG name={listItem.svg} className={style.icon} /> </ListItemIcon>
             <ListItemText primary={listItem.text} />
@@ -76,7 +77,7 @@ const PhoneSidePanel = ({ principalRoutesList, open, openHandler }: PhoneSidePan
           <Switch
             color="primary"
             checked={theme === 'dark'}
-            onChange={() => dispatch(changeTheme())}
+            onChange={() => [dispatch(changeTheme()), handlePhoneSidePanelClose()]}
           />
           <div className={style.option}>Dark</div>
         </div>

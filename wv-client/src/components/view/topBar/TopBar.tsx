@@ -12,10 +12,10 @@ import SVG from 'components/ui/svg/SVG';
 import style from './TopBar.module.scss';
 
 type TopBarProps = {
-  phoneSidePanelOpenHandler: () => void,
+  handlePhoneSidePanelOpen: () => void,
 }
 
-const TopBar = ({ phoneSidePanelOpenHandler }: TopBarProps): JSX.Element => {
+const TopBar = ({ handlePhoneSidePanelOpen }: TopBarProps): JSX.Element => {
   logger.rendering();
 
   const location = useLocation();
@@ -30,7 +30,7 @@ const TopBar = ({ phoneSidePanelOpenHandler }: TopBarProps): JSX.Element => {
         
         <IconButton
           edge="start"
-          onClick={phoneSidePanelOpenHandler}
+          onClick={handlePhoneSidePanelOpen}
         >
           <SVG name={SvgIcons.ThreeLines} className={style.icon} />
         </IconButton>

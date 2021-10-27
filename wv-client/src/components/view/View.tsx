@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import logger from 'utils/logger';
 import Routes from 'routes/Routes';
 
@@ -10,40 +11,42 @@ import style from './View.module.scss';
 const View = (): JSX.Element => {
   logger.rendering();
 
+  ///////////
+  // HOOKS //
+  ///////////
+  const location = useLocation();
+
   const [phoneSidePanelOpen, setPhoneSidePanelOpen] = useState<boolean>(false);
-  
-  const handlephoneSidePanelOpen = (): void => {
-    setPhoneSidePanelOpen(!phoneSidePanelOpen);
+
+  //////////////////////
+  // HELPER FUNCTIONS //
+  //////////////////////
+  const showNavigation = (): boolean => {
+    const excludedLocations = ['/'];
+    return !excludedLocations.includes(location.pathname);
   };
 
-  const phoneSidePanelOpenHandler = (open: boolean) => (
-    event: React.KeyboardEvent | React.MouseEvent,
-  ) => {
-    if (
-      event 
-      && event.type === 'keydown' 
-      && ((event as React.KeyboardEvent).key === 'Tab' 
-      || (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
-
-    setPhoneSidePanelOpen(open);
+  const handlePhoneSidePanelOpen = (): void => {
+    setPhoneSidePanelOpen(true);
   };
-
-  const phoneSidePanelOpenHandlerNoParams = (): void => {
-    setPhoneSidePanelOpen(!phoneSidePanelOpen);
+  const handlePhoneSidePanelClose = (): void => {
+    setPhoneSidePanelOpen(false);
   };
-
-  console.log(phoneSidePanelOpen);
 
   return (
     <div className={style.view}>
 
-      <TopBar phoneSidePanelOpenHandler={phoneSidePanelOpenHandlerNoParams} />
+      { showNavigation() && (
+        <>
+          <TopBar handlePhoneSidePanelOpen={handlePhoneSidePanelOpen} />
+          <SidePanel 
+            phoneSidePanelOpen={phoneSidePanelOpen} 
+            handlePhoneSidePanelOpen={handlePhoneSidePanelOpen} 
+            handlePhoneSidePanelClose={handlePhoneSidePanelClose}
+          />
+        </>
+      )}
 
-      <SidePanel phoneSidePanelOpen={phoneSidePanelOpen} phoneSidePanelOpenHandler={phoneSidePanelOpenHandler} />
-      
       <div className={style.content}>
         <Routes />
       </div>
