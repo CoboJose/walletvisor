@@ -36,8 +36,8 @@ const PhoneSidePanel = ({ principalRoutesList, phoneSidePanelOpen, handlePhoneSi
       open={phoneSidePanelOpen}
       onClose={handlePhoneSidePanelClose}
       onOpen={handlePhoneSidePanelOpen}
-      disableBackdropTransition={!iOS}
-      disableDiscovery={!iOS}
+      disableBackdropTransition
+      disableDiscovery={iOS}
     >
       {/* SIDEPANEL TOP */}
       <div 
