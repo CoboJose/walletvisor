@@ -46,14 +46,7 @@ const Welcome: React.FC = () => {
         </div>
 
       </div>
-
-      <button type="button" onClick={() => dispatch(changeTheme())}>Change theme</button>
-      <Switch
-        color="primary"
-        checked
-        onChange={() => dispatch(changeTheme())}
-      />
-      
+    
     </div>
   );
 };
