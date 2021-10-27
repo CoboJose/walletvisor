@@ -3,10 +3,7 @@ import LoginForm from 'components/forms/auth/loginForm/LoginForm';
 import logger from 'utils/logger';
 import RegisterForm from 'components/forms/auth/registerForm/RegisterForm';
 import SVG from 'components/ui/svg/SVG';
-import { useAppDispatch } from 'store/hooks';
-import { changeTheme } from 'store/slices/config';
 import { SvgIcons } from 'types/types';
-import Switch from '@material-ui/core/Switch';
 
 import Link from '@material-ui/core/Link/Link';
 
@@ -19,8 +16,6 @@ const Welcome: React.FC = () => {
   // STATE //
   ///////////
   const [isRegisterForm, setIsRegisterForm] = useState<boolean>(false);
-
-  const dispatch = useAppDispatch();
 
   return (
     <div className={style.welcome}>
@@ -46,14 +41,7 @@ const Welcome: React.FC = () => {
         </div>
 
       </div>
-
-      <button type="button" onClick={() => dispatch(changeTheme())}>Change theme</button>
-      <Switch
-        color="primary"
-        checked
-        onChange={() => dispatch(changeTheme())}
-      />
-      
+    
     </div>
   );
 };
