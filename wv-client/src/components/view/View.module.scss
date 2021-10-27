@@ -1,0 +1,20 @@
+@import "themes/theme.module";
+
+$desktopSidePanelWidth: 250px;
+$phoneSidePanelWidth: 300px;
+
+$desktopTopBarHeight: 60px;
+$phoneTopBarHeight: 60px;
+
+.view {
+    display: flex;
+}
+
+.content {
+    margin-top: $phoneTopBarHeight;
+    width: 100%;
+
+    @media (min-width: $phoneMaxWidth) {
+        margin-top: $desktopTopBarHeight;
+    }
+}

@@ -1,0 +1,31 @@
+@import "themes/theme.module";
+@import "components/view/View.module";
+
+.topBar {
+    height: $phoneTopBarHeight !important;
+    min-height: $desktopTopBarHeight !important;
+
+    @media (min-width: $phoneMaxWidth) {
+        width: calc(100% - #{$desktopSidePanelWidth}) !important;
+        height: $desktopTopBarHeight !important;
+        min-height: $desktopTopBarHeight !important;
+    }
+}
+
+.text {
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.icon {
+    $size: 25px;
+    width: $size;
+    height: $size;
+    fill: white;
+
+    @media (min-width: $phoneMaxWidth) {
+        display: none;
+    }
+
+}

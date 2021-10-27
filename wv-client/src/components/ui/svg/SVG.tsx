@@ -20,6 +20,7 @@ import { ReactComponent as Add } from 'assets/icons/add.svg';
 import { ReactComponent as Line } from 'assets/icons/line.svg';
 import { ReactComponent as Back } from 'assets/icons/back.svg';
 import { ReactComponent as Close } from 'assets/icons/close.svg';
+import { ReactComponent as ThreeLines } from 'assets/icons/three_lines.svg';
 
 type SVGProps = {
   name: SvgIcons,
@@ -82,6 +83,9 @@ const SVG = ({ name, className }: SVGProps): JSX.Element => {
 
       case 'close':
         return <Close className={className} />;
+
+      case 'threeLines':
+        return <ThreeLines className={className} />;
         
       default:
         return <Logo className={className} />;

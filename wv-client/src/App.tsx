@@ -15,7 +15,7 @@ import lightTheme from 'themes/lightTheme';
 import darkTheme from 'themes/darkTheme';
 import Confirmation from 'components/ui/confirmation/Confirmation';
 import screenSizes from 'utils/screenSizes';
-import Content from 'components/content/Content';
+import View from 'components/view/View';
 
 const App: React.FC = () => {
   logger.rendering();
@@ -112,7 +112,7 @@ const App: React.FC = () => {
       <CssBaseline />
       <LoadingTopBar />
       {computerUsersAdvice()}
-      <Content />
+      <View />
     </ThemeProvider>
   );
 };
