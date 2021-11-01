@@ -22,9 +22,10 @@
       align-items: center;
 
       .logoIcon {
-          $size: 35px;
+          $size: 40px;
           width: $size;
           height: $size;
+          margin-left: 12px;
         }
       
         .title {
@@ -51,24 +52,21 @@
 
 .bottom {
   margin-top: auto;
-
-  .themeSwitcher {
-      margin-left: 14px;
-      display: flex;
-      align-items: center;
-    
-      .label {
-        font-weight: bold;
-        margin-right: 20px;
-      }
-    
-      .option {
-        font-size: small;
-      }
+  
+  .bottomContent {
+    padding: 7px;
+    display: flex;
+    flex-direction: column;
   }
-    
-  .logoutButton {
-      margin-left: 5px;
-      color: $primary !important;
+
+  .links {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .legal {
+    margin-top: 8px;
+    font-style: italic;
+    text-align: center;
   }
 }

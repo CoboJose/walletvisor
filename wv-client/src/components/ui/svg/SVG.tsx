@@ -1,5 +1,5 @@
 /* eslint-disable quote-props */
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { SvgIcons } from 'types/types';
 
 import { ReactComponent as Logo } from 'assets/icons/logo.svg';
@@ -21,74 +21,99 @@ import { ReactComponent as Line } from 'assets/icons/line.svg';
 import { ReactComponent as Back } from 'assets/icons/back.svg';
 import { ReactComponent as Close } from 'assets/icons/close.svg';
 import { ReactComponent as ThreeLines } from 'assets/icons/three_lines.svg';
+import { ReactComponent as Sun } from 'assets/icons/sun.svg';
+import { ReactComponent as Moon } from 'assets/icons/moon.svg';
+import { ReactComponent as User } from 'assets/icons/user.svg';
+import { ReactComponent as Chart } from 'assets/icons/chart.svg';
+import { ReactComponent as Info } from 'assets/icons/info.svg';
+import { ReactComponent as Exchange } from 'assets/icons/exchange.svg';
 
 type SVGProps = {
   name: SvgIcons,
   className: string,
+  style?: CSSProperties | undefined,
 }
 
-const SVG = ({ name, className }: SVGProps): JSX.Element => {
+const SVG = ({ name, className, style }: SVGProps): JSX.Element => {
   const returnedSVG = () => {
     switch (name) {
       case 'logo':
-        return <Logo className={className} />;
+        return <Logo className={className} style={style} />;
 
       case 'lock':
-        return <Lock className={className} />;
+        return <Lock className={className} style={style} />;
       
       case 'moneyBag':
-        return <MoneyBag className={className} />;
+        return <MoneyBag className={className} style={style} />;
 
       case 'briefCase':
-        return <BriefCase className={className} />;
+        return <BriefCase className={className} style={style} />;
       
       case 'gift':
-        return <Gift className={className} />;
+        return <Gift className={className} style={style} />;
 
       case 'questionMark':
-        return <QuestionMark className={className} />;
+        return <QuestionMark className={className} style={style} />;
 
       case 'food':
-        return <FoodAndDrink className={className} />; 
+        return <FoodAndDrink className={className} style={style} />; 
 
       case 'home':
-        return <Home className={className} />;
+        return <Home className={className} style={style} />;
 
       case 'shopping':
-        return <Shopping className={className} />;
+        return <Shopping className={className} style={style} />;
 
       case 'transport':
-        return <Transport className={className} />;
+        return <Transport className={className} style={style} />;
 
       case 'bills':
-        return <Bills className={className} />;
+        return <Bills className={className} style={style} />;
 
       case 'entertainment':
-        return <Entertainment className={className} />;
+        return <Entertainment className={className} style={style} />;
 
       case 'edit':
-        return <Edit className={className} />;
+        return <Edit className={className} style={style} />;
 
       case 'delete':
-        return <Delete className={className} />;
+        return <Delete className={className} style={style} />;
 
       case 'add':
-        return <Add className={className} />;
+        return <Add className={className} style={style} />;
 
       case 'line':
-        return <Line className={className} />;
+        return <Line className={className} style={style} />;
 
       case 'back':
-        return <Back className={className} />;
+        return <Back className={className} style={style} />;
 
       case 'close':
-        return <Close className={className} />;
+        return <Close className={className} style={style} />;
 
       case 'threeLines':
-        return <ThreeLines className={className} />;
-        
+        return <ThreeLines className={className} style={style} />;
+
+      case 'sun':
+        return <Sun className={className} style={style} />;  
+
+      case 'moon':
+        return <Moon className={className} style={style} />;  
+
+      case 'user':
+        return <User className={className} style={style} />;  
+
+      case 'chart':
+        return <Chart className={className} style={style} />;  
+
+      case 'info':
+        return <Info className={className} style={style} />;  
+
+      case 'exchange':
+        return <Exchange className={className} style={style} />;  
+      
       default:
-        return <Logo className={className} />;
+        return <Logo className={className} style={style} />;
     }
   };
 

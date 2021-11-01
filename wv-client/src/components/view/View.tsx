@@ -3,8 +3,8 @@ import { useLocation } from 'react-router-dom';
 import logger from 'utils/logger';
 import Routes from 'routes/Routes';
 
-import TopBar from './topBar/TopBar';
-import SidePanel from './sidePanel/SidePanel';
+import TopBar from '../navigation/topBar/TopBar';
+import SidePanel from '../navigation/sidePanel/SidePanel';
 
 import style from './View.module.scss';
 

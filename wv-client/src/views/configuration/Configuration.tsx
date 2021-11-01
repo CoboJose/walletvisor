@@ -1,9 +1,9 @@
 import React from 'react';
 import logger from 'utils/logger';
 
-import style from './Menu.module.scss';
+import style from './Configuration.module.scss';
 
-const Menu: React.FC = () => {
+const Configuration: React.FC = () => {
   logger.rendering();
 
   ///////////
@@ -28,9 +28,9 @@ const Menu: React.FC = () => {
 
   return (
     <div className={style.transactions}>
-      <p>Menu</p>
+      <p>Configuration</p>
     </div>
   );
 };
 
-export default Menu;
+export default Configuration;

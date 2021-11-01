@@ -2,13 +2,13 @@ import React from 'react';
 import SVG from 'components/ui/svg/SVG';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { logout } from 'store/slices/auth';
 import { changeTheme } from 'store/slices/config';
-import { SvgIcons } from 'types/types';
-import { SidePanelListItems } from 'components/view/sidePanel/SidePanel';
+import { SidePanelListItems } from 'components/navigation/sidePanel/SidePanel';
 import logger from 'utils/logger';
+import UserIcon from 'components/navigation/userIcon/UserIcon';
+import { SvgIcons } from 'types/types';
 
-import { Divider, List, ListItem, ListItemIcon, ListItemText, Button, Switch, SwipeableDrawer } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, IconButton } from '@material-ui/core';
 
 import style from './PhoneSidePanel.module.scss';
 
@@ -38,16 +38,17 @@ const PhoneSidePanel = ({ principalRoutesList, phoneSidePanelOpen, handlePhoneSi
       onOpen={handlePhoneSidePanelOpen}
       disableBackdropTransition
       disableDiscovery={iOS}
+      swipeAreaWidth={27}
     >
       {/* SIDEPANEL TOP */}
       <div 
         className={style.top}
         role="presentation"
       >
-        <div className={style.topContent}>
-          <SVG name={SvgIcons.Logo} className={style.logoIcon} />
-          <div className={style.title}>WALLET<span className={style.visor}>VISOR</span></div>
+        <div className={style.userIcon}>
+          <UserIcon size="50px" />
         </div>
+        
         <Divider />
       </div>
 
@@ -71,18 +72,9 @@ const PhoneSidePanel = ({ principalRoutesList, phoneSidePanelOpen, handlePhoneSi
 
         <Divider />
 
-        <div className={style.themeSwitcher}>
-          <div className={style.label}>Theme</div>
-          <div className={style.option}>Light</div>
-          <Switch
-            color="primary"
-            checked={theme === 'dark'}
-            onChange={() => [dispatch(changeTheme()), handlePhoneSidePanelClose()]}
-          />
-          <div className={style.option}>Dark</div>
-        </div>
-
-        <Button onClick={() => dispatch(logout())} className={style.logoutButton}>Log out</Button>
+        <IconButton className={style.themeButton} onClick={() => dispatch(changeTheme())}>
+          <SVG name={theme === 'dark' ? SvgIcons.Sun : SvgIcons.Moon} className={style.themeIcon} />
+        </IconButton>
         
       </div>
     </SwipeableDrawer>

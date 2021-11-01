@@ -61,4 +61,10 @@ export enum SvgIcons {
   Back = 'back', 
   Close = 'close',
   ThreeLines = 'threeLines',
+  Sun = 'sun',
+  Moon = 'moon',
+  User = 'user',
+  Chart = 'chart',
+  Info = 'info',
+  Exchange = 'exchange',
 }

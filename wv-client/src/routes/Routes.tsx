@@ -6,7 +6,7 @@ import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-
 import { useAppSelector } from 'store/hooks';
 import logger from 'utils/logger';
 import Welcome from 'views/login/Welcome';
-import Menu from 'views/menu/Menu';
+import Configuration from 'views/configuration/Configuration';
 import NotFound from 'views/notFound/NotFound';
 import Transactions from 'views/transactions/Transactions';
 
@@ -17,7 +17,7 @@ const Routes: React.FC = () => {
     <Switch>
       <Route path="/" component={Welcome} exact />
       <PrivateRoute path="/transactions" component={Transactions} />
-      <PrivateRoute path="/menu" component={Menu} />
+      <PrivateRoute path="/configuration" component={Configuration} />
       <PrivateRoute path="*" component={NotFound} />
     </Switch>
   );
