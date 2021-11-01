@@ -1,0 +1,46 @@
+@import "themes/theme.module";
+
+@import "themes/theme.module";
+@import "components/view/View.module";
+
+.phoneSidePanel {
+    width: $phoneSidePanelWidth;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .phoneSidePanelPaper {
+      width: $phoneSidePanelWidth;
+    }
+}
+
+.top {
+  .userIcon{
+    margin-bottom: 5px;
+  }
+}
+
+.principalRoutesList {
+    .icon{
+        $size: 25px;
+        height: $size;
+        width: $size;
+        fill: currentColor;
+        margin-bottom: 3px;
+    }
+}
+
+.bottom {
+    margin-top: auto;
+
+    .themeButton {
+      margin-right: 15px !important;
+  
+      .themeIcon {
+          $size: 40px;
+          height: $size;
+          width: $size;
+          fill: currentColor;
+      }
+  }
+}

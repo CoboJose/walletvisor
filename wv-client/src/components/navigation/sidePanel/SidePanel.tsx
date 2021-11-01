@@ -12,22 +12,22 @@ const principalRoutesList: SidePanelListItems[] = [
   {
     text: 'Transactions',
     path: 'transactions',
-    svg: SvgIcons.Home,
+    svg: SvgIcons.Exchange,
   },
   {
-    text: 'Favourites',
-    path: 'favourites',
-    svg: SvgIcons.Food,
+    text: 'Statistics',
+    path: 'statistics',
+    svg: SvgIcons.Chart,
   },
   {
-    text: 'Nearby',
-    path: 'nearby',
-    svg: SvgIcons.Lock,
-  },
-  {
-    text: 'Menu',
-    path: 'menu',
+    text: 'Configuration',
+    path: 'configuration',
     svg: SvgIcons.Edit,
+  },
+  {
+    text: 'About',
+    path: 'about',
+    svg: SvgIcons.Info,
   },
 ];
 

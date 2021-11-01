@@ -1,14 +1,11 @@
 import React from 'react';
 import SVG from 'components/ui/svg/SVG';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { logout } from 'store/slices/auth';
-import { changeTheme } from 'store/slices/config';
 import { SvgIcons } from 'types/types';
-import { SidePanelListItems } from 'components/view/sidePanel/SidePanel';
+import { SidePanelListItems } from 'components/navigation/sidePanel/SidePanel';
 import logger from 'utils/logger';
 
-import { Divider, List, ListItem, ListItemIcon, ListItemText, Button, Switch, Drawer } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Drawer, Link } from '@material-ui/core';
 
 import style from './DesktopSidePanel.module.scss';
 
@@ -19,10 +16,8 @@ type DesktopSidePanelProps = {
 const DesktopSidePanel = ({ principalRoutesList }: DesktopSidePanelProps): JSX.Element => {
   logger.rendering();
   
-  const dispatch = useAppDispatch();
   const history = useHistory();
   const location = useLocation();
-  const theme = useAppSelector((state) => state.config.theme);
 
   return (
     <Drawer
@@ -57,22 +52,18 @@ const DesktopSidePanel = ({ principalRoutesList }: DesktopSidePanelProps): JSX.E
 
       {/* SIDEPANEL BOTTOM */}
       <div className={style.bottom}>
-
         <Divider />
+        <div className={style.bottomContent}>
 
-        <div className={style.themeSwitcher}>
-          <div className={style.label}>Theme</div>
-          <div className={style.option}>Light</div>
-          <Switch
-            color="primary"
-            checked={theme === 'dark'}
-            onChange={() => dispatch(changeTheme())}
-          />
-          <div className={style.option}>Dark</div>
+          <div className={style.links}>
+            <Link href="https://github.com/CoboJose/walletvisor"> GitHub </Link>
+            <Link href="https://www.linkedin.com/in/jose-cobo/"> LinkedIn </Link>
+            <Link href="mailto: cobogue@gmail.com"> Email Me </Link>
+          </div>
+
+          <span className={style.legal}> WalletVisor© 2021 </span>
+
         </div>
-
-        <Button onClick={() => dispatch(logout())} className={style.logoutButton}>Log out</Button>
-        
       </div>
     </Drawer>
   );

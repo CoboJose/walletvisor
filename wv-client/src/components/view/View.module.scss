@@ -12,6 +12,7 @@ $phoneTopBarHeight: 60px;
 
 .content {
     margin-top: $phoneTopBarHeight;
+    padding: 7px;
     width: 100%;
 
     @media (min-width: $phoneMaxWidth) {

@@ -18,14 +18,26 @@
     text-transform: capitalize;
 }
 
-.icon {
+.sidePanelIcon {
     $size: 25px;
     width: $size;
     height: $size;
     fill: white;
+}
 
-    @media (min-width: $phoneMaxWidth) {
-        display: none;
+.rightSide {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.themeButton {
+    margin-right: 15px !important;
+
+    .themeIcon {
+        $size: 25px;
+        height: $size;
+        width: $size;
+        fill: white;
     }
-
 }
