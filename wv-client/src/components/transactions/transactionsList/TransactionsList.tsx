@@ -30,6 +30,7 @@ const TransactionsList = (): JSX.Element => {
   // STATE //
   ///////////
   const transactions: Transaction[] = useAppSelector((state) => state.transactions.transactions);
+  const totalBalance: number = useAppSelector((state) => state.transactions.totalBalance);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [transactionToUpdate, setTransactionToUpdate] = useState<Transaction | null>(null);
@@ -48,6 +49,9 @@ const TransactionsList = (): JSX.Element => {
     setIsModalOpen(true);
   };
 
+  /////////////////////
+  // HELPER FUNCTIONS//
+  /////////////////////
   const month = (i: number, arr: Array<Transaction>): JSX.Element => {
     let res = null;
 
@@ -73,6 +77,19 @@ const TransactionsList = (): JSX.Element => {
     return <Divider />;
   };
 
+  const getTransactionsBalance = (): Array<number> => {
+    const res = new Array<number>();
+
+    res[0] = totalBalance;
+    for (let i = 0; i < transactions.length; i++) {
+      const t = transactions[i];
+      res[i + 1] = res[i] - (t.kind === TransactionKind.Income ? t.amount : -t.amount);
+    }
+
+    return res;
+  };
+  const transactionsBalance: Array<number> = getTransactionsBalance();
+
   /////////
   // JSX //
   /////////
@@ -84,12 +101,11 @@ const TransactionsList = (): JSX.Element => {
           <List className={style.list}>
            
             {transactions.map((t, i, arr) => (
-              <>
+              <div key={t.id}>
 
                 {month(i, arr)}
 
                 <ListItem
-                  key={t.id}
                   button
                   onClick={() => updateTransactionHandler(t)}
                   className={`${style.listItem} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}
@@ -108,12 +124,14 @@ const TransactionsList = (): JSX.Element => {
                     <div className={`${style.amount} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}>
                       {t.kind === TransactionKind.Income ? <SVG name={SvgIcons.Add} className={style.plusIcon} /> : <SVG name={SvgIcons.Line} className={style.lessIcon} />}
                       {t.amount} €
+                      <br />
+                      {transactionsBalance[i]} €
                     </div>
                   </ListItemSecondaryAction>
 
                 </ListItem>
 
-              </>
+              </div>
             ))}
           </List>
         )

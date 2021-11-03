@@ -13,6 +13,7 @@ const Balance = (): JSX.Element => {
   logger.rendering();
 
   const transactions: Transaction[] = useAppSelector((state) => state.transactions.transactions);
+  const totalBalance: number = useAppSelector((state) => state.transactions.totalBalance);
 
   let balance = 0;
   let income = 0;
@@ -51,6 +52,10 @@ const Balance = (): JSX.Element => {
       <div className={`${style.balanceTotal} ${balance >= 0 ? style.positive : style.negative}`}>
         {balance >= 0 ? <SVG name={SvgIcons.Add} className={style.plusIcon} /> : <SVG name={SvgIcons.Line} className={style.lessIcon} />}
         <span> {math.round(Math.abs(balance), 2)} € </span>
+      </div>
+
+      <div>
+        <span> {math.round(Math.abs(totalBalance), 2)} € </span>
       </div>
 
     </Paper>

@@ -6,6 +6,7 @@ import { logout } from './auth';
 
 interface TransactionsState {
   transactions: Transaction[],
+  totalBalance: number,
   startDate: number,
   endDate: number,
   isLoading: boolean,
@@ -13,6 +14,7 @@ interface TransactionsState {
 
 const initialState: TransactionsState = {
   transactions: [],
+  totalBalance: 1000,
   startDate: 0,
   endDate: 999999999999999,
   isLoading: false,
