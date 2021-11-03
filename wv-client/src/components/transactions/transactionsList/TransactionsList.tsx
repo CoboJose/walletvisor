@@ -15,6 +15,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Fab from '@material-ui/core/Fab';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import { Divider } from '@material-ui/core';
 
 import style from './TransactionsList.module.scss';
 
@@ -47,6 +48,31 @@ const TransactionsList = (): JSX.Element => {
     setIsModalOpen(true);
   };
 
+  const month = (i: number, arr: Array<Transaction>): JSX.Element => {
+    let res = null;
+
+    const current = new Date(arr[i].date);
+    const prev = (i > 0) ? new Date(arr[i - 1].date) : null;
+    
+    if (i === 0) {
+      res = current;
+    }
+
+    if (prev !== null && current.getMonth() !== prev.getMonth()) {
+      res = current;
+    }
+
+    if (res !== null) {
+      return (
+        <div className={style.listMonth}>
+          {res.toLocaleString('en-us', { month: 'long', year: 'numeric' })}
+        </div>
+      );
+    }
+
+    return <Divider />;
+  };
+
   /////////
   // JSX //
   /////////
@@ -58,32 +84,36 @@ const TransactionsList = (): JSX.Element => {
           <List className={style.list}>
            
             {transactions.map((t, i, arr) => (
-              
-              <ListItem
-                key={t.id}
-                button
-                onClick={() => updateTransactionHandler(t)}
-                divider={i !== arr.length - 1}
-                className={`${style.listItem} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}
-              >
-          
-                <ListItemIcon>
-                  <SVG name={getTransactionCategoryData(t.category).svg} className={`${style.categorySVG} categoryColor ${t.category}`} />
-                </ListItemIcon>
+              <>
 
-                <ListItemText
-                  primary={t.name}
-                  secondary={dates.timestampToStringDate(t.date)}
-                />
+                {month(i, arr)}
 
-                <ListItemSecondaryAction>
-                  <div className={`${style.amount} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}>
-                    {t.kind === TransactionKind.Income ? <SVG name={SvgIcons.Add} className={style.plusIcon} /> : <SVG name={SvgIcons.Line} className={style.lessIcon} />}
-                    {t.amount} €
-                  </div>
-                </ListItemSecondaryAction>
+                <ListItem
+                  key={t.id}
+                  button
+                  onClick={() => updateTransactionHandler(t)}
+                  className={`${style.listItem} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}
+                >
+            
+                  <ListItemIcon>
+                    <SVG name={getTransactionCategoryData(t.category).svg} className={`${style.categorySVG} categoryColor ${t.category}`} />
+                  </ListItemIcon>
 
-              </ListItem>
+                  <ListItemText
+                    primary={t.name}
+                    secondary={dates.stringDateFormatted(dates.timestampToStringDate(t.date))}
+                  />
+
+                  <ListItemSecondaryAction>
+                    <div className={`${style.amount} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}>
+                      {t.kind === TransactionKind.Income ? <SVG name={SvgIcons.Add} className={style.plusIcon} /> : <SVG name={SvgIcons.Line} className={style.lessIcon} />}
+                      {t.amount} €
+                    </div>
+                  </ListItemSecondaryAction>
+
+                </ListItem>
+
+              </>
             ))}
           </List>
         )

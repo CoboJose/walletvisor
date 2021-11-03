@@ -2,11 +2,20 @@
 
 .transactionsList{
     @include flex-column-center;
-    @include max-100-width;
+    display: flex;
+    width: 100%;
+    margin-top: 15px;
 }
 
 .list{
-    @include max-100-width;
+    width: 100%;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+
+    .listMonth {
+        padding: 7px;
+        color: $primary;
+    }
 }
 
 .categorySVG {

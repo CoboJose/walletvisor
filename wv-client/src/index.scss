@@ -1,2 +1,13 @@
 @import '@fontsource/roboto';
 @import "themes/theme.module";
+
+::-webkit-scrollbar {
+    width: 3px;
+}
+::-webkit-scrollbar-thumb {
+    background: $primary;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: $primary;
+}

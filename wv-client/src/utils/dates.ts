@@ -32,13 +32,12 @@ const stringDatetoTimeStamp = (date: string): number => {
   return new Date(date).getTime();
 };
 
-/*
 const stringDateFormatted = (date: string): string => {
   const dateArray = date.split('-');
   return dateArray.reverse().join('/');
-};*/
+};
 
-export default { getFullDate, getTime, getCurrentStringDate, timestampToStringDate, stringDatetoTimeStamp };
+export default { getFullDate, getTime, getCurrentStringDate, timestampToStringDate, stringDatetoTimeStamp, stringDateFormatted };
 
 const addZero = (element: number): string => {
   let res = element.toString();

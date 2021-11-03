@@ -2,9 +2,9 @@
 
 .transactions {
     @include flex-column-center;
-    padding: $basePadding;
-}
+    width: 100%;
 
-.transactionForm {
-    max-width: $maxWidth;
+    @media (min-width: $phoneMaxWidth) {
+        max-width: 95%;
+    }
 }

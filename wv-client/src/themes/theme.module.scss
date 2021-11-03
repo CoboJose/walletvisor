@@ -87,11 +87,6 @@ $maxWidth: 600px;
   align-items: center;
 }
 
-@mixin max-100-width {
-  max-width: $phoneMaxWidth;
-  width: 100%;
-}
-
 // Category Colors
 .categoryColor{
   &.salary{
