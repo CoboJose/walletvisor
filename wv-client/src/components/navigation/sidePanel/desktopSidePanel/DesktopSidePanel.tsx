@@ -5,7 +5,7 @@ import { SvgIcons } from 'types/types';
 import { SidePanelListItems } from 'components/navigation/sidePanel/SidePanel';
 import logger from 'utils/logger';
 
-import { Divider, List, ListItem, ListItemIcon, ListItemText, Drawer, Link } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Drawer, Link } from '@mui/material';
 
 import style from './DesktopSidePanel.module.scss';
 

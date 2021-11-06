@@ -8,9 +8,9 @@ import { ApiError, SvgIcons } from 'types/types';
 import regex from 'utils/regex';
 import SVG from 'components/ui/svg/SVG';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Alert from '@material-ui/lab/Alert';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Alert from '@mui/material/Alert';
 
 import style from './RegisterForm.module.scss';
 

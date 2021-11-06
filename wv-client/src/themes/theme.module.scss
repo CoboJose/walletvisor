@@ -1,6 +1,8 @@
 //Colors
 
 //Dark Theme
+$darkBackground: #262626;
+$darkPaper: #3a3a3a;
 $darkPrimary: #9968f0;
 $darkSecondary: #9E9E9E;
 $darkError: #f44336;
@@ -10,6 +12,8 @@ $darkSuccess: #4caf50;
 $darkDisabled: #8d8d8d;
 
 // Light Theme
+$lightBackground: #ededed;
+$lightPaper: #f9f9f9;
 $lightPrimary: #556dd6;
 $lightSecondary: #19857b;
 $lightError: #f44336;
@@ -22,6 +26,8 @@ $lightDisabled: #b9b9b9;
 
 // Color depending on the theme
 $colors: (
+  darkBackground: $darkBackground,
+  darkPaper: $darkPaper,
   darkPrimary: $darkPrimary,
   darkSecondary: $darkSecondary,
   darkError: $darkError,
@@ -30,6 +36,8 @@ $colors: (
   darkSuccess: $darkSuccess,
   darkDisabled: $darkDisabled,
 
+  lightBackground: $lightBackground,
+  lightPaper: $lightPaper,
   lightPrimary: $lightPrimary,
   lightSecondary: $lightSecondary,
   lightError: $lightError,
@@ -41,6 +49,8 @@ $colors: (
 
 //Export to access them in js
 :export {
+  darkBackground: $darkBackground;
+  darkPaper: $darkPaper;
   darkPrimary: $darkPrimary;
   darkSecondary: $darkSecondary;
   darkError: $darkError;
@@ -49,6 +59,8 @@ $colors: (
   darkSuccess: $darkSuccess;
   darkDisabled: $darkDisabled;
 
+  lightBackground: $lightBackground;
+  lightPaper: $lightPaper;
   lightPrimary: $lightPrimary;
   lightSecondary: $lightSecondary;
   lightError: $lightError;
@@ -58,6 +70,8 @@ $colors: (
   lightDisabled: $lightDisabled;
 }
 
+$background: var(--backgroundColor);
+$paper: var(--paperColor);
 $primary: var(--primaryColor);
 $secondary: var(--secondaryColor);
 $error: var(--errorColor);

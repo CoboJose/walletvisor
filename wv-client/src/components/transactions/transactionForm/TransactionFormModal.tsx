@@ -8,14 +8,14 @@ import { getTransactions } from 'store/slices/transactions';
 import SVG from 'components/ui/svg/SVG';
 import TransactionForm from 'components/transactions/transactionForm/TransactionForm';
 
-import { useMediaQuery, useTheme } from '@material-ui/core';
+import { useMediaQuery, useTheme } from '@mui/material';
 import Confirmation from 'components/ui/confirmation/Confirmation';
 
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import style from './TransactionFormModal.module.scss';
 

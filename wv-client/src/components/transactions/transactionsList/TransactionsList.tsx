@@ -7,15 +7,15 @@ import { getTransactionCategoryData } from 'utils/transactionCategories';
 import TransactionFormModal from 'components/transactions/transactionForm/TransactionFormModal';
 import dates from 'utils/dates';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Fab from '@material-ui/core/Fab';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
-import { Divider } from '@material-ui/core';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import Fab from '@mui/material/Fab';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { Divider } from '@mui/material';
 
 import style from './TransactionsList.module.scss';
 

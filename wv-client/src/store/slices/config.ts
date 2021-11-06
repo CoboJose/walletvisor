@@ -54,6 +54,8 @@ export const configSlice = createSlice({
 
 const setLightColors = (): void => {
   localStorage.setItem('theme', 'light');
+  document.documentElement.style.setProperty('--backgroundColor', 'var(--lightBackground)');
+  document.documentElement.style.setProperty('--paperColor', 'var(--lightPaper)');
   document.documentElement.style.setProperty('--primaryColor', 'var(--lightPrimary)');
   document.documentElement.style.setProperty('--secondaryColor', 'var(--lightSecondary)');
   document.documentElement.style.setProperty('--errorColor', 'var(--lightError)');
@@ -65,6 +67,8 @@ const setLightColors = (): void => {
 
 const setDarkColors = (): void => {
   localStorage.setItem('theme', 'dark');
+  document.documentElement.style.setProperty('--backgroundColor', 'var(--darkBackground)');
+  document.documentElement.style.setProperty('--paperColor', 'var(--darkPaper)');
   document.documentElement.style.setProperty('--primaryColor', 'var(--darkPrimary)');
   document.documentElement.style.setProperty('--secondaryColor', 'var(--darkSecondary)');
   document.documentElement.style.setProperty('--errorColor', 'var(--darkError)');

@@ -8,7 +8,7 @@ import logger from 'utils/logger';
 import UserIcon from 'components/navigation/userIcon/UserIcon';
 import { SvgIcons } from 'types/types';
 
-import { Divider, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, IconButton } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, IconButton } from '@mui/material';
 
 import style from './PhoneSidePanel.module.scss';
 
@@ -72,7 +72,11 @@ const PhoneSidePanel = ({ principalRoutesList, phoneSidePanelOpen, handlePhoneSi
 
         <Divider />
 
-        <IconButton className={style.themeButton} onClick={() => dispatch(changeTheme())}>
+        <IconButton
+          className={style.themeButton}
+          onClick={() => dispatch(changeTheme())}
+          size="large"
+        >
           <SVG name={theme === 'dark' ? SvgIcons.Sun : SvgIcons.Moon} className={style.themeIcon} />
         </IconButton>
         

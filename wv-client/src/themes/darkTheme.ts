@@ -1,10 +1,13 @@
-/* eslint-disable camelcase */
-import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material';
 import theme from './theme.module.scss';
 
-const darkTheme = unstable_createMuiStrictModeTheme({
+const darkTheme = createTheme({
   palette: {
-    type: 'dark',
+    mode: 'dark',
+    background: {
+      default: theme.darkBackground,
+      paper: theme.darkPaper,
+    },
     primary: {
       main: theme.darkPrimary,
     },
@@ -22,16 +25,6 @@ const darkTheme = unstable_createMuiStrictModeTheme({
     },
     success: {
       main: theme.darkSuccess,
-    },
-  },
-
-  overrides: {
-    MuiRadio: {
-      colorSecondary: {
-        '&$checked': {
-          color: theme.darkPrimary
-        },
-      },
     },
   },
 

@@ -61,6 +61,7 @@
         "function-paren-newline": "off",
         "comma-dangle": "off",
         "no-restricted-syntax": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "react/jsx-props-no-spreading": "off"
     }
 }

@@ -5,7 +5,7 @@ import logger from 'utils/logger';
 import math from 'utils/math';
 import SVG from 'components/ui/svg/SVG';
 
-import Paper from '@material-ui/core/Paper';
+import Paper from '@mui/material/Paper';
 
 import style from './Balance.module.scss';
 

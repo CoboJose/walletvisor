@@ -2,7 +2,7 @@ import React from 'react';
 import logger from 'utils/logger';
 import { SvgIcons } from 'types/types';
 
-import { useMediaQuery, useTheme } from '@material-ui/core';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 import DesktopSidePanel from './desktopSidePanel/DesktopSidePanel';
 import PhoneSidePanel from './phoneSidePanel/PhoneSidePanel';
