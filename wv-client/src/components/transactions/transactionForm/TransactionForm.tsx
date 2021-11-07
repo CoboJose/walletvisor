@@ -131,17 +131,6 @@ const TransactionForm = ({ transaction, setTransaction, formErrors, serverError 
           helperText={formErrors.amount}
         />
 
-        {/*<TextField
-          label="Date"
-          type="date"
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          value={date}
-          onChange={(e) => setDate(e.target.value as unknown as string)}
-        />*/}
-
         <DatePicker
           label="Date"
           value={date}

@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import logger from 'utils/logger';
 import { Transaction, TransactionCategory, TransactionKind, ApiError, SvgIcons } from 'types/types';
-import api from 'api/api';
 import apiErrors from 'api/apiErrors';
-import { getTransactions } from 'store/slices/transactions';
+import { createTransaction, updateTransaction, deleteTransaction } from 'store/slices/transactions';
 import SVG from 'components/ui/svg/SVG';
 import TransactionForm from 'components/transactions/transactionForm/TransactionForm';
 
@@ -63,10 +62,9 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
     return Object.keys(errors).length === 0;
   };
 
-  const deleteTransaction = async () => {
+  const removeTransaction = async () => {
     try {
-      await api.deleteTransaction(transaction.id);
-      dispatch(getTransactions());
+      await dispatch(deleteTransaction({ transactionId: transaction.id }));
       onClose();
       setSnackbarText('Transaction deleted successfully');
     }
@@ -84,8 +82,12 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
 
     if (validateForm()) {
       try {
-        await api.addTransaction(transaction);
-        dispatch(getTransactions());
+        if (transaction.id < 0) {
+          await dispatch(createTransaction(transaction)).unwrap();
+        } else {
+          await dispatch(updateTransaction(transaction)).unwrap();
+        }
+        
         onClose();
         setSnackbarText('Transaction saved successfully');
       }
@@ -98,7 +100,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
 
   const confirmDeleteHandler = () => {
     setDeleteConfirmationOpened(false);
-    deleteTransaction();
+    removeTransaction();
   };
 
   /////////

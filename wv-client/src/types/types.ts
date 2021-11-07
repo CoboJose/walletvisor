@@ -11,6 +11,11 @@ export type AuthResponse = {
   token: string
 }
 
+export type GetTransactionsResponse = {
+  transactions: Transaction[],
+  totalBalance: number,
+}
+
 export type Transaction = {
   id: number,
   name: string,

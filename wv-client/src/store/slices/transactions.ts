@@ -1,69 +1,97 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'api/api';
-import { ApiError, Transaction } from 'types/types';
+import { ApiError, GetTransactionsResponse, Transaction } from 'types/types';
 import { RootState } from 'store/store';
 import { logout } from './auth';
 
 interface TransactionsState {
   transactions: Transaction[],
   totalBalance: number,
-  startDate: number,
-  endDate: number,
+  fromDate: number | null,
+  toDate: number | null,
   isLoading: boolean,
 }
 
 const initialState: TransactionsState = {
   transactions: [],
   totalBalance: 1000,
-  startDate: 0,
-  endDate: 999999999999999,
+  fromDate: null,
+  toDate: null,
   isLoading: false,
 };
 
-export const getTransactions = createAsyncThunk<Transaction[], void, {state: RootState, rejectValue: ApiError }>(
+export const getTransactions = createAsyncThunk<GetTransactionsResponse, void, {state: RootState, rejectValue: ApiError }>(
   'transactions/getTransactions',
   async (_, { getState, rejectWithValue }) => {
     const transactionState = getState().transactions;
-    try { return await api.getTransactions(transactionState.startDate, transactionState.endDate); }
+    const from = transactionState.fromDate !== null ? transactionState.fromDate : 0;
+    const to = transactionState.toDate !== null ? transactionState.toDate : 999999999999999;
+
+    try { return await api.getTransactions(from, to); }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
 );
 
-export const createTransaction = createAsyncThunk<Transaction[], Transaction, {state: RootState, rejectValue: ApiError }>(
+export const createTransaction = createAsyncThunk<GetTransactionsResponse, Transaction, {state: RootState, rejectValue: ApiError }>(
   'transactions/createTransaction',
   async (transaction, { getState, rejectWithValue }) => {
     const transactionState = getState().transactions;
+    const startDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
+    const endDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 999999999999999;
+
     try { 
       await api.addTransaction(transaction);
-      return await api.getTransactions(transactionState.startDate, transactionState.endDate); 
+      return await api.getTransactions(startDate, endDate);
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
 );
 
-export const deleteTransaction = createAsyncThunk<Transaction[], {transactionId: number}, {state: RootState, rejectValue: ApiError }>(
+export const updateTransaction = createAsyncThunk<GetTransactionsResponse, Transaction, {state: RootState, rejectValue: ApiError }>(
+  'transactions/cupdateTransaction',
+  async (transaction, { getState, rejectWithValue }) => {
+    const transactionState = getState().transactions;
+    const startDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
+    const endDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 999999999999999;
+
+    try { 
+      await api.updateTransaction(transaction);
+      return await api.getTransactions(startDate, endDate);
+    }
+    catch (error) { return rejectWithValue(error as ApiError); }
+  }
+);
+
+export const deleteTransaction = createAsyncThunk<GetTransactionsResponse, {transactionId: number}, {state: RootState, rejectValue: ApiError }>(
   'transactions/deleteTransaction',
   async ({ transactionId }, { getState, rejectWithValue }) => {
     const transactionState = getState().transactions;
+    const startDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
+    const endDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 999999999999999;
+    
     try { 
       await api.deleteTransaction(transactionId);
-      return await api.getTransactions(transactionState.startDate, transactionState.endDate); 
+      return await api.getTransactions(startDate, endDate);
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
 );
 
 type ChangeTransactionsRangeAction = {
-  from: number,
-  to: number,
+  fromDate: number | null,
+  toDate: number | null,
   transactions: Transaction[],
+  totalBalance: number,
 }
-export const changeTransactionsRangeAction = createAsyncThunk<ChangeTransactionsRangeAction, {from: number, to: number}, {rejectValue: ApiError }>(
+export const changeTransactionsRangeAction = createAsyncThunk<ChangeTransactionsRangeAction, {fromDate: number|null, toDate: number|null}, {rejectValue: ApiError }>(
   'transactions/changeTransactionsRange',
-  async ({ from, to }, { rejectWithValue }) => {
+  async ({ fromDate, toDate }, { rejectWithValue }) => {
+    const from = fromDate !== null ? fromDate : 0;
+    const to = toDate !== null ? toDate : 999999999999999;
+
     try {
-      const transactions = await api.getTransactions(from, to);
-      return { from, to, transactions }; 
+      const getTransactionsResponse = await api.getTransactions(from, to);
+      return { fromDate, toDate, transactions: getTransactionsResponse.transactions, totalBalance: getTransactionsResponse.totalBalance }; 
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
@@ -80,7 +108,8 @@ export const transactionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getTransactions.fulfilled, (state, action) => {
-      state.transactions = action.payload.sort((t1, t2) => t2.date - t1.date);
+      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
+      state.totalBalance = action.payload.totalBalance;
       state.isLoading = false;
     });
     builder.addCase(getTransactions.rejected, (state) => {
@@ -91,10 +120,23 @@ export const transactionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(createTransaction.fulfilled, (state, action) => {
-      state.transactions = action.payload;
+      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
+      state.totalBalance = action.payload.totalBalance;
       state.isLoading = false;
     });
     builder.addCase(createTransaction.rejected, (state) => {
+      state.isLoading = false;
+    });
+    //UPDATE
+    builder.addCase(updateTransaction.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateTransaction.fulfilled, (state, action) => {
+      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
+      state.totalBalance = action.payload.totalBalance;
+      state.isLoading = false;
+    });
+    builder.addCase(updateTransaction.rejected, (state) => {
       state.isLoading = false;
     });
     //DELETE
@@ -102,7 +144,8 @@ export const transactionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(deleteTransaction.fulfilled, (state, action) => {
-      state.transactions = action.payload;
+      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
+      state.totalBalance = action.payload.totalBalance;
       state.isLoading = false;
     });
     builder.addCase(deleteTransaction.rejected, (state) => {
@@ -113,9 +156,9 @@ export const transactionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(changeTransactionsRangeAction.fulfilled, (state, action) => {
-      state.transactions = action.payload.transactions;
-      state.startDate = action.payload.from;
-      state.endDate = action.payload.to;
+      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
+      state.fromDate = action.payload.fromDate;
+      state.toDate = action.payload.toDate;
       state.isLoading = false;
     });
     builder.addCase(changeTransactionsRangeAction.rejected, (state) => {

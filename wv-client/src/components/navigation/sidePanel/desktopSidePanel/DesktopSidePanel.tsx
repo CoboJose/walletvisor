@@ -56,9 +56,9 @@ const DesktopSidePanel = ({ principalRoutesList }: DesktopSidePanelProps): JSX.E
         <div className={style.bottomContent}>
 
           <div className={style.links}>
-            <Link href="https://github.com/CoboJose/walletvisor"> GitHub </Link>
-            <Link href="https://www.linkedin.com/in/jose-cobo/"> LinkedIn </Link>
-            <Link href="mailto: cobogue@gmail.com"> Email Me </Link>
+            <Link href="https://github.com/CoboJose/walletvisor" underline="hover"> GitHub </Link>
+            <Link href="https://www.linkedin.com/in/jose-cobo/" underline="hover"> LinkedIn </Link>
+            <Link href="mailto: cobogue@gmail.com" underline="hover"> Email Me </Link>
           </div>
 
           <span className={style.legal}> WalletVisor© 2021 </span>

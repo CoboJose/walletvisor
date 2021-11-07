@@ -1,5 +1,5 @@
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
-import { AuthResponse, ApiError, Transaction } from 'types/types';
+import { AuthResponse, ApiError, Transaction, GetTransactionsResponse } from 'types/types';
 
 const UNEXPECTED_ERROR: ApiError = { code: 'GE000', message: 'Unexpected Error, please contact with cobogue@gmail.com', debugMessage: '' };
 
@@ -54,7 +54,7 @@ const refreshToken = async (refreshTkn: string): Promise<AuthResponse> => {
 //////////////////
 // TRANSACTIONS //
 //////////////////
-const getTransactions = async (from: number, to: number): Promise<Transaction[]> => {
+const getTransactions = async (from: number, to: number): Promise<GetTransactionsResponse> => {
   const url = '/transactions';
   const params = { from, to };
 
@@ -76,6 +76,17 @@ const addTransaction = async (transaction: Transaction): Promise<Transaction> =>
   });
 };
 
+const updateTransaction = async (transaction: Transaction): Promise<Transaction> => {
+  const url = '/transactions';
+  const body = transaction;
+
+  return new Promise((resolve, reject) => {
+    axios.put(url, body)
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
 const deleteTransaction = async (transactionId: number): Promise<string> => {
   const url = '/transactions';
   const params = { transactionId };
@@ -87,4 +98,4 @@ const deleteTransaction = async (transactionId: number): Promise<string> => {
   });
 };
 
-export default { ping, login, register, refreshToken, getTransactions, addTransaction, deleteTransaction };
+export default { ping, login, register, refreshToken, getTransactions, addTransaction, updateTransaction, deleteTransaction };

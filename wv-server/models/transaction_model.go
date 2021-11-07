@@ -70,6 +70,27 @@ func GetUserTransactions(userID, from, to int) ([]Transaction, *utils.Cerr) {
 	return transactions, nil
 }
 
+// GetUserTotalBalance returns the current total Balance, not filtering by date
+func GetUserTotalBalance(userID int) (float64, *utils.Cerr) {
+	transactions := []Transaction{}
+	query := `SELECT * FROM transactions WHERE user_id=$1`
+	if err := db.Select(&transactions, query, userID); err != nil {
+		return 0, utils.NewCerr("TR001", err)
+	}
+
+	totalBalance := 0.
+	for _, trn := range transactions {
+		if trn.Kind == "income" {
+			totalBalance += trn.Amount
+		} else {
+			totalBalance -= trn.Amount
+		}
+	}
+	totalBalance = utils.Round(totalBalance, 2)
+
+	return totalBalance, nil
+}
+
 //////////
 // Save //
 //////////
