@@ -29,6 +29,7 @@ const DateRange = ({ fromDate, setFromDate, toDate, setToDate }: DateRangeProps)
           <TextField
             {...params}
             margin="normal"
+            variant="standard"
           />
         )}
       />
@@ -45,6 +46,7 @@ const DateRange = ({ fromDate, setFromDate, toDate, setToDate }: DateRangeProps)
           <TextField
             {...params}
             margin="normal"
+            variant="standard"
           />
         )}
       />

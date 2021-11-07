@@ -2,54 +2,45 @@
 
 .balance {
     width: 100%;
+    max-width: 600px;
     padding: $basePadding;
 
     display: grid;
     align-items: center;
+
     grid-template-columns: 1fr 1fr;
     grid-template-rows:  1fr 1fr 1fr;
     gap: 1px 3px;
     grid-template-areas:
-        "balanceText balanceTotal"
-        "income balanceTotal"
-        "expense balanceTotal";
+        "balanceText rangeBalance"
+        "income rangeBalance"
+        "expense totalBalance";
 }
 
 .balanceText {
     grid-area: balanceText;
-    font-size: large;
+    font-size: 1.3rem;
     font-weight: bold;
+
+    .dateRange {
+        font-size: 0.7rem;
+        font-style: italic;
+    }
 }
 
 .income {
     grid-area: income;
     color: $success;
-
-    .plusIcon {
-        $size: 10px;
-        height: $size;
-        width: $size;
-        fill: $success;
-    }
 }
 
 .expense {
     grid-area: expense;
     color: $error;
-
-    .lessIcon {
-        $size: 10px;
-        height: $size;
-        width: $size;
-        fill: $error;
-    }
 }
 
-.balanceTotal {
-    grid-area: balanceTotal;
-    font-size: large;
-
-    text-align: center;
+.rangeBalance {
+    grid-area: rangeBalance;
+    font-size: 2.3rem;
 
     &.positive {
         color: $success;
@@ -57,17 +48,23 @@
     &.negative {
         color: $error;
     }
+}
 
-    .plusIcon {
-        $size: 10px;
-        height: $size;
-        width: $size;
-        fill: $success;
+.totalBalance {
+    grid-area: totalBalance;
+
+    &.positive {
+        .amount {
+            color: $success;
+        }  
     }
-    .lessIcon {
-        $size: 10px;
-        height: $size;
-        width: $size;
-        fill: $error;
+    &.negative {
+        .amount {
+            color: $error;
+        }
+    }
+
+    .text {
+        font-size: 0.8rem;
     }
 }

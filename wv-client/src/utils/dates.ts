@@ -25,7 +25,7 @@ const getCurrentStringDate = (): string => {
 };
 
 const timestampToStringDate = (timestamp: number): string => {
-  return new Date(timestamp).toISOString().slice(0, 10);
+  return stringDateFormatted(new Date(timestamp).toISOString().slice(0, 10));
 };
 
 const stringDatetoTimeStamp = (date: string): number => {
@@ -37,7 +37,7 @@ const stringDateFormatted = (date: string): string => {
   return dateArray.reverse().join('/');
 };
 
-export default { getFullDate, getTime, getCurrentStringDate, timestampToStringDate, stringDatetoTimeStamp, stringDateFormatted };
+export default { getFullDate, getTime, getCurrentStringDate, timestampToStringDate, stringDatetoTimeStamp };
 
 const addZero = (element: number): string => {
   let res = element.toString();

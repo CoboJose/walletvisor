@@ -117,15 +117,15 @@ const TransactionsList = (): JSX.Element => {
 
                   <ListItemText
                     primary={t.name}
-                    secondary={dates.stringDateFormatted(dates.timestampToStringDate(t.date))}
+                    secondary={dates.timestampToStringDate(t.date)}
                   />
 
                   <ListItemSecondaryAction>
-                    <div className={`${style.amount} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}>
-                      {t.kind === TransactionKind.Income ? <SVG name={SvgIcons.Add} className={style.plusIcon} /> : <SVG name={SvgIcons.Line} className={style.lessIcon} />}
-                      {t.amount} €
-                      <br />
-                      {transactionsBalance[i]} €
+                    <div>
+                      <div className={`${style.amount} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}>
+                        {t.kind === TransactionKind.Income ? '+' : '-'} {t.amount}€
+                      </div>
+                      <div className={style.trnBalance}>{transactionsBalance[i]}€</div>
                     </div>
                   </ListItemSecondaryAction>
 

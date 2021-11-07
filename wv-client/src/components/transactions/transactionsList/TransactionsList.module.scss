@@ -43,6 +43,7 @@
 
 .amount {
     font-size: large;
+    text-align: center;
 
     &.income {
         color: $success;
@@ -50,19 +51,9 @@
     &.expense {
         color: $error;
     }
+}
 
-    $iconSize: 12px;
-    $iconMarginRight: 3px;
-    .plusIcon {
-        height: $iconSize;
-        width: $iconSize;
-        fill: $success;
-        margin-right: $iconMarginRight;
-    }
-    .lessIcon {
-        height: $iconSize;
-        width: $iconSize;
-        fill: $error;
-        margin-right: $iconMarginRight;
-    }
+.trnBalance {
+    text-align: center;
+    font-size: small;
 }
