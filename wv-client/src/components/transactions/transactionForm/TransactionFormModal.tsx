@@ -141,7 +141,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
           <Button 
             onClick={submitHandler} 
             className={style.okButton}
-            disabled={!transaction.name || transaction.amount.toString() === ''}
+            disabled={!transaction.name || transaction.amount.toString() === '' || transaction.amount === 0}
             startIcon={<SVG name={SvgIcons.Edit} className={style.buttonIcon} />}
           >
             {isEdit ? 'Save' : 'Add'}

@@ -14,7 +14,7 @@ interface TransactionsState {
 
 const initialState: TransactionsState = {
   transactions: [],
-  totalBalance: 1000,
+  totalBalance: 0,
   fromDate: null,
   toDate: null,
   isLoading: false,
@@ -36,12 +36,12 @@ export const createTransaction = createAsyncThunk<GetTransactionsResponse, Trans
   'transactions/createTransaction',
   async (transaction, { getState, rejectWithValue }) => {
     const transactionState = getState().transactions;
-    const startDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
-    const endDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 999999999999999;
+    const from = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
+    const to = transactionState.toDate ? transactionState.toDate.valueOf() : 999999999999999;
 
     try { 
       await api.addTransaction(transaction);
-      return await api.getTransactions(startDate, endDate);
+      return await api.getTransactions(from, to);
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
@@ -51,12 +51,12 @@ export const updateTransaction = createAsyncThunk<GetTransactionsResponse, Trans
   'transactions/cupdateTransaction',
   async (transaction, { getState, rejectWithValue }) => {
     const transactionState = getState().transactions;
-    const startDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
-    const endDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 999999999999999;
+    const from = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
+    const to = transactionState.toDate ? transactionState.toDate.valueOf() : 999999999999999;
 
     try { 
       await api.updateTransaction(transaction);
-      return await api.getTransactions(startDate, endDate);
+      return await api.getTransactions(from, to);
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
@@ -66,12 +66,12 @@ export const deleteTransaction = createAsyncThunk<GetTransactionsResponse, {tran
   'transactions/deleteTransaction',
   async ({ transactionId }, { getState, rejectWithValue }) => {
     const transactionState = getState().transactions;
-    const startDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
-    const endDate = transactionState.fromDate ? transactionState.fromDate.valueOf() : 999999999999999;
+    const from = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
+    const to = transactionState.toDate ? transactionState.toDate.valueOf() : 999999999999999;
     
     try { 
       await api.deleteTransaction(transactionId);
-      return await api.getTransactions(startDate, endDate);
+      return await api.getTransactions(from, to);
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }

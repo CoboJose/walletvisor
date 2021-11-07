@@ -35,7 +35,7 @@ const TransactionForm = ({ transaction, setTransaction, formErrors, serverError 
   const [name, setName] = useState<string>(transaction.name);
   const [kind, setKind] = useState<TransactionKind>(transaction.kind);
   const [category, setCategory] = useState<TransactionCategory>(transaction.category);
-  const [amount, setAmount] = useState<number>(transaction.amount);
+  const [amount, setAmount] = useState<number|null>(transaction.amount === 0 ? null : transaction.amount);
   const [date, setDate] = useState<string>(dateUtils.timestampToStringDate(transaction.date));
 
   ////////////////
@@ -44,7 +44,7 @@ const TransactionForm = ({ transaction, setTransaction, formErrors, serverError 
   useEffect(() => {
     //Update the transaction when some input is updated
     const timestamp = dateUtils.stringDatetoTimeStamp(date);
-    const roundedAmount = mathUtils.round(amount, 2);
+    const roundedAmount = amount ? mathUtils.round(amount, 2) : 0;
     setTransaction({ ...transaction, name, kind, category, amount: roundedAmount, date: timestamp });
   }, [name, kind, category, amount, date]);
 
