@@ -27,6 +27,7 @@ import { ReactComponent as User } from 'assets/icons/user.svg';
 import { ReactComponent as Chart } from 'assets/icons/chart.svg';
 import { ReactComponent as Info } from 'assets/icons/info.svg';
 import { ReactComponent as Exchange } from 'assets/icons/exchange.svg';
+import { ReactComponent as Calendar } from 'assets/icons/calendar.svg';
 
 type SVGProps = {
   name: SvgIcons,
@@ -110,7 +111,10 @@ const SVG = ({ name, className, style }: SVGProps): JSX.Element => {
         return <Info className={className} style={style} />;  
 
       case 'exchange':
-        return <Exchange className={className} style={style} />;  
+        return <Exchange className={className} style={style} />; 
+        
+      case 'calendar':
+        return <Calendar className={className} style={style} />; 
       
       default:
         return <Logo className={className} style={style} />;

@@ -3,7 +3,6 @@ import React from 'react';
 import logger from 'utils/logger';
 
 import DatePicker from '@mui/lab/DatePicker';
-
 import { TextField } from '@mui/material';
 
 type DateRangeProps = {
@@ -11,14 +10,14 @@ type DateRangeProps = {
     setFromDate: (arg0: Date|null) => void,
     toDate : Date | null,
     setToDate: (arg0: Date|null) => void,
+    variant: 'standard' | 'filled' | 'outlined' | undefined,
   }
 
-const DateRange = ({ fromDate, setFromDate, toDate, setToDate }: DateRangeProps): JSX.Element => {
+const DateRange = ({ fromDate, setFromDate, toDate, setToDate, variant }: DateRangeProps): JSX.Element => {
   logger.rendering();
     
   return (
     <div>
-
       <DatePicker
         label="From"
         value={fromDate}
@@ -28,13 +27,12 @@ const DateRange = ({ fromDate, setFromDate, toDate, setToDate }: DateRangeProps)
         renderInput={(params) => (
           <TextField
             {...params}
-            margin="normal"
-            variant="standard"
+            margin="none"
+            variant={variant}
+            fullWidth
           />
         )}
       />
-
-      <span> To </span>
 
       <DatePicker
         label="To"
@@ -45,8 +43,10 @@ const DateRange = ({ fromDate, setFromDate, toDate, setToDate }: DateRangeProps)
         renderInput={(params) => (
           <TextField
             {...params}
-            margin="normal"
-            variant="standard"
+            margin="none"
+            variant={variant}
+            fullWidth
+            style={{ marginTop: '10px' }}
           />
         )}
       />

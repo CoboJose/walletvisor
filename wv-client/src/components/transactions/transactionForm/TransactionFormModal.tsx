@@ -37,7 +37,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
   ///////////
   // STATE //
   ///////////
-  const emptyTransaction: Transaction = { id: -1, name: '', kind: TransactionKind.Income, category: TransactionCategory.Salary, amount: 0, date: new Date().getTime(), userID: -1 };
+  const emptyTransaction: Transaction = { id: -1, name: '', kind: TransactionKind.Income, category: TransactionCategory.Salary, amount: -1, date: new Date().getTime(), userID: -1 };
   const isEdit: boolean = transactionToUpdate != null;
 
   const [transaction, setTransaction] = useState<Transaction>(transactionToUpdate !== null ? transactionToUpdate : emptyTransaction);

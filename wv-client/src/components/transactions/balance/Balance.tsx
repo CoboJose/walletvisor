@@ -1,25 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppSelector } from 'store/hooks';
-import { Transaction, TransactionKind } from 'types/types';
+import { SvgIcons, Transaction, TransactionKind } from 'types/types';
 import logger from 'utils/logger';
 import math from 'utils/math';
 import dates from 'utils/dates';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, useMediaQuery, useTheme } from '@mui/material';
+import TransactionsDateRange from 'components/transactions/transactionsDateRange/TransactionsDateRange';
+import SVG from 'components/ui/svg/SVG';
 
 import Paper from '@mui/material/Paper';
 
 import style from './Balance.module.scss';
 
-const Balance = (): JSX.Element => {
-  logger.rendering();
-
-  const transactions: Transaction[] = useAppSelector((state) => state.transactions.transactions);
-  const totalBalance: number = useAppSelector((state) => state.transactions.totalBalance);
-  const fromDate = useAppSelector((state) => state.transactions.fromDate);
-  const toDate = useAppSelector((state) => state.transactions.toDate);
-
-  let balance = 0;
-  let income = 0;
-  let expense = 0;
+//////////////////////
+// HELPER FUNCTIONS //
+//////////////////////
+const getAmounts = (transactions: Transaction[]): number[] => {
+  let [balance, income, expense] = [0, 0, 0];
 
   for (const t of transactions) {
     if (t.kind === TransactionKind.Expense) {
@@ -32,46 +29,98 @@ const Balance = (): JSX.Element => {
     }
   }
 
-  [balance, income, expense].map((e) => math.round(e, 2));
+  return [balance, income, expense].map((e) => math.round(e, 2));
+};
 
-  const dateRange = (): string => {
-    let res = '';
-    if (fromDate !== null && toDate === null) {
-      res = 'from ' + dates.timestampToStringDate(fromDate);
-    }
-    else if (fromDate === null && toDate !== null) {
-      res = 'to ' + dates.timestampToStringDate(toDate);
-    }
-    else if (fromDate !== null && toDate !== null) {
-      res = dates.timestampToStringDate(fromDate) + ' - ' + dates.timestampToStringDate(toDate);
-    }
+const formatNumber = (n: number): string => {
+  return Number(math.round(Math.abs(n), 2)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+};
 
-    return res;
-  };
+const getDateRange = (fromDate: number|null, toDate: number|null): string => {
+  let res = 'All time transactions';
+  if (fromDate !== null && toDate === null) {
+    res = 'from ' + dates.timestampToStringDate(fromDate);
+  }
+  else if (fromDate === null && toDate !== null) {
+    res = 'to ' + dates.timestampToStringDate(toDate);
+  }
+  else if (fromDate !== null && toDate !== null) {
+    res = dates.timestampToStringDate(fromDate) + ' - ' + dates.timestampToStringDate(toDate);
+  }
+
+  return res;
+};
+
+const Balance = (): JSX.Element => {
+  logger.rendering();
+
+  ///////////
+  // HOOKS //
+  ///////////
+  const theme = useTheme();
+  const isPhone = useMediaQuery(theme.breakpoints.only('xs'));
+
+  ///////////
+  // STATE //
+  ///////////
+  const transactions: Transaction[] = useAppSelector((state) => state.transactions.transactions);
+  const totalBalance: number = useAppSelector((state) => state.transactions.totalBalance);
+  const fromDate = useAppSelector((state) => state.transactions.fromDate);
+  const toDate = useAppSelector((state) => state.transactions.toDate);
+  const [datesDialogOpen, setDatesDialogOpen] = useState<boolean>(false);
+
+  const [balance, income, expense] = getAmounts(transactions);
+  const dateRange = getDateRange(fromDate, toDate);
   
+  /////////
+  // JSX //
+  /////////
   return (
     <Paper className={style.balance}>
       
-      <div className={style.balanceText}>
-        Balance
-        <div className={style.dateRange}>{dateRange()}</div>
+      <div className={style.dateRange}>
+        <div className={style.text}>{dateRange}</div>
+        <div className={style.income}>+ {formatNumber(income)}</div>
+        <div className={style.expense}>- {formatNumber(expense)}</div>
       </div>
 
-      <div className={style.income}>
-        + {math.round(Math.abs(income), 2)}€
+      <div className={style.dateRangeSelector}>
+        {isPhone ? (
+          <div>
+            <Button
+              variant="outlined"
+              className={style.themeButton}
+              onClick={() => setDatesDialogOpen(true)}
+              size="small"
+              startIcon={<SVG name={SvgIcons.Calendar} className={style.calendarIcon} />}
+            >
+              Range
+            </Button>
+
+            <Dialog open={datesDialogOpen} onClose={() => setDatesDialogOpen(false)}>
+              <DialogTitle>Transactions Dates</DialogTitle>
+              <DialogContent className={style.dateRangeInputs}> 
+                <TransactionsDateRange variant="outlined" />
+              </DialogContent>
+              <DialogActions> <Button onClick={() => setDatesDialogOpen(false)} autoFocus> OK </Button> </DialogActions>
+            </Dialog>
+          </div>
+        ) : (
+          <div className={style.dateRangeInputs}>
+            <TransactionsDateRange variant="standard" />
+          </div>
+        )}
       </div>
 
-      <div className={style.expense}>
-        - {math.round(Math.abs(expense), 2)}€
-      </div>
+      <div className={style.balances}>
+        <div className={`${style.rangeBalance} ${balance >= 0 ? style.positive : style.negative}`}>
+          {balance >= 0 ? '+' : '-'} {formatNumber(balance)}
+        </div>
 
-      <div className={`${style.rangeBalance} ${balance >= 0 ? style.positive : style.negative}`}>
-        {balance >= 0 ? '+' : '-'} {math.round(Math.abs(balance), 2)}€
-      </div>
-
-      <div className={`${style.totalBalance} ${balance >= 0 ? style.positive : style.negative}`}>
-        <span className={style.text}>Total Balance:</span> 
-        <span className={style.amount}> {balance >= 0 ? '+' : '-'} {math.round(Math.abs(totalBalance), 2)}€ </span>
+        <div className={`${style.totalBalance} ${balance >= 0 ? style.positive : style.negative}`}>
+          <span className={style.text}>Total: </span> 
+          <span className={style.amount}> {balance >= 0 ? '+' : '-'} {formatNumber(totalBalance)} </span>
+        </div>
       </div>
 
     </Paper>

@@ -7,9 +7,37 @@
     margin-top: 15px;
 }
 
+.addTransactionFab {
+    position: absolute !important;
+    bottom: 23px !important;
+    right: 15px !important;
+    z-index: 10 !important;
+
+    .addIcon {
+        $size: 30px;
+        height: $size;
+        width: $size;
+        fill: white;
+        stroke: white;
+        stroke-width: 15px;
+    }
+}
+
+.addTransactionButton {
+
+    .addIcon {
+        $size: 12px;
+        height: $size;
+        width: $size;
+        fill: $primary;
+        stroke: $primary;
+        stroke-width: 5px;
+    }
+}
+
 .list {
     width: 100%;
-    max-height: calc(100vh - 220px);
+    max-height: calc(100vh - 280px);
     overflow-y: auto;
 
     .listMonth {
@@ -23,22 +51,6 @@
     height: $size;
     width: $size;
     fill: currentColor;
-}
-
-.addTransactionButton {
-    position: absolute !important;
-    bottom: 70px !important;
-    right: 10px !important;
-    z-index: 10 !important;
-}
-
-.addIcon {
-    $size: 30px;
-    height: $size;
-    width: $size;
-    fill: white;
-    stroke: white;
-    stroke-width: 15px;
 }
 
 .amount {

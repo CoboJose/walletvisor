@@ -6,7 +6,11 @@ import DateRange from 'components/ui/dateRange/DateRange';
 
 import style from './TransactionsDateRange.module.scss';
 
-const TransactionsDateRange = (): JSX.Element => {
+type TransactionsDateRangeProps = {
+  variant: 'standard' | 'filled' | 'outlined' | undefined,
+}
+
+const TransactionsDateRange = ({ variant }: TransactionsDateRangeProps): JSX.Element => {
   logger.rendering();
   
   ///////////
@@ -44,11 +48,18 @@ const TransactionsDateRange = (): JSX.Element => {
   // HELPER FUNCTIONS//
   /////////////////////
   const submitDates = (from: number | null, to: number | null) => {
-    if (!(from !== null && to !== null && from > to)) {
+    let submit = true;
+
+    submit = submit && (from === null || !Number.isNaN(from));
+    submit = submit && (to === null || !Number.isNaN(to));
+    submit = submit && !(from !== null && to !== null && from > to);
+
+    if (submit) {
       dispatch(changeTransactionsRangeAction({ fromDate: from, toDate: to }));
-      setFormFromDate(from !== null ? new Date(from) : null);
-      setFormToDate(to !== null ? new Date(to) : null);
     }
+
+    setFormFromDate(from !== null ? new Date(from) : null);
+    setFormToDate(to !== null ? new Date(to) : null);
   };
 
   /////////
@@ -61,6 +72,7 @@ const TransactionsDateRange = (): JSX.Element => {
         setFromDate={setFromDateHandler} 
         toDate={formToDate} 
         setToDate={setToDateHandler}
+        variant={variant}
       />
     </div>
   );

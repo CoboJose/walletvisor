@@ -72,4 +72,5 @@ export enum SvgIcons {
   Chart = 'chart',
   Info = 'info',
   Exchange = 'exchange',
+  Calendar = 'calendar'
 }

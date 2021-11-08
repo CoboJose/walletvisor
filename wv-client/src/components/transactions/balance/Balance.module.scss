@@ -1,70 +1,120 @@
 @import "themes/theme.module";
 
 .balance {
-    width: 100%;
-    max-width: 600px;
+    width: 95%;
+    max-width: 700px;
     padding: $basePadding;
 
     display: grid;
-    align-items: center;
 
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows:  1fr 1fr 1fr;
-    gap: 1px 3px;
-    grid-template-areas:
-        "balanceText rangeBalance"
-        "income rangeBalance"
-        "expense totalBalance";
-}
+    // Phone
+    @media (max-width: $phoneMaxWidth) {
+        grid-template-columns: 1.1fr 0.9fr;
+        grid-template-rows:  1.3fr 0.7fr;
+        gap: 3px 3px;
+        grid-template-areas:
+            "dateRange          balances"
+            "dateRangeSelector  balances";
+    }
 
-.balanceText {
-    grid-area: balanceText;
-    font-size: 1.3rem;
-    font-weight: bold;
+    $intermediateWidth: 750px;
 
-    .dateRange {
-        font-size: 0.7rem;
-        font-style: italic;
+    // Desktop Small
+    @media (min-width: $phoneMaxWidth) and (max-width: $intermediateWidth) {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows:  1fr 1fr;
+        gap: 3px 3px;
+        grid-template-areas:
+            "dateRange balances"
+            "dateRangeSelector balances";
+    }
+    
+    // Desktop Wide
+    @media (min-width: $intermediateWidth) {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows:  1fr;
+        gap: 3px 3px;
+        grid-template-areas:
+            "dateRange balances dateRangeSelector";
     }
 }
 
-.income {
-    grid-area: income;
-    color: $success;
-}
+.dateRange {
+    grid-area: dateRange;
 
-.expense {
-    grid-area: expense;
-    color: $error;
-}
+    .text {
+        font-size: 0.8rem;
+        color: $primary;
+        margin-bottom: 5px;
+    }
 
-.rangeBalance {
-    grid-area: rangeBalance;
-    font-size: 2.3rem;
-
-    &.positive {
+    .income {
+        grid-area: income;
         color: $success;
     }
-    &.negative {
+    
+    .expense {
+        grid-area: expense;
         color: $error;
     }
 }
 
-.totalBalance {
-    grid-area: totalBalance;
-
-    &.positive {
-        .amount {
-            color: $success;
-        }  
+.dateRangeSelector {
+    grid-area: dateRangeSelector;
+    
+    .calendarIcon {
+        fill: currentColor;
+        $size: 20px;
+        width: $size;
+        height: $size;
     }
-    &.negative {
-        .amount {
+
+    // Phone wide
+    @media (max-width: $phoneMaxWidth) {
+        margin: 10px 0 5px 0;
+        //.dateRangeInputs {}
+    }
+
+    // Desktop wide
+    @media (min-width: $phoneMaxWidth) {
+        margin: 0 0 10px 0;
+        justify-self: end;
+        .dateRangeInputs {
+            max-width: 200px;
+        }
+    }
+}
+
+.balances {
+    grid-area: balances;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .rangeBalance {
+        margin-top: 20px;
+        font-size: 1.4rem;
+    
+        &.positive {
+            color: $success;
+        }
+        &.negative {
             color: $error;
         }
     }
-
-    .text {
+    
+    .totalBalance {
+        margin-top: 10px;
         font-size: 0.8rem;
+        &.positive {
+            .amount {
+                color: $success;
+            }  
+        }
+        &.negative {
+            .amount {
+                color: $error;
+            }
+        }
     }
 }

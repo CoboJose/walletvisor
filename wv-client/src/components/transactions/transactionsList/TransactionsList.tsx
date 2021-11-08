@@ -15,7 +15,7 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Fab from '@mui/material/Fab';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { Divider } from '@mui/material';
+import { Button, Divider, useMediaQuery, useTheme } from '@mui/material';
 
 import style from './TransactionsList.module.scss';
 
@@ -25,6 +25,8 @@ const TransactionsList = (): JSX.Element => {
   ///////////
   // HOOKS //
   ///////////
+  const theme = useTheme();
+  const isPhone = useMediaQuery(theme.breakpoints.only('xs'));
 
   ///////////
   // STATE //
@@ -96,6 +98,22 @@ const TransactionsList = (): JSX.Element => {
   return (
     <div className={style.transactionsList}>
 
+      {isPhone ? (
+        <Fab color="primary" className={style.addTransactionFab} onClick={() => setIsModalOpen(true)}>
+          <SVG name={SvgIcons.Add} className={style.addIcon} />
+        </Fab>
+      ) : (
+        <Button
+          variant="text"
+          className={style.addTransactionButton}
+          onClick={() => setIsModalOpen(true)}
+          size="medium"
+          startIcon={<SVG name={SvgIcons.Add} className={style.addIcon} />}
+        >
+          Add Transaction
+        </Button>
+      )}
+
       {transactions.length > 0 
         ? (
           <List className={style.list}>
@@ -144,10 +162,6 @@ const TransactionsList = (): JSX.Element => {
             <br />
           </div>
         )}
-      
-      <Fab color="primary" className={style.addTransactionButton} onClick={() => setIsModalOpen(true)}>
-        <SVG name={SvgIcons.Add} className={style.addIcon} />
-      </Fab>
 
       {isModalOpen && <TransactionFormModal transactionToUpdate={transactionToUpdate} onClose={onCloseModal} setSnackbarText={setSnackbarText} />}
 

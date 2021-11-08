@@ -35,7 +35,7 @@ const TransactionForm = ({ transaction, setTransaction, formErrors, serverError 
   const [name, setName] = useState<string>(transaction.name);
   const [kind, setKind] = useState<TransactionKind>(transaction.kind);
   const [category, setCategory] = useState<TransactionCategory>(transaction.category);
-  const [amount, setAmount] = useState<number|null>(transaction.amount === 0 ? null : transaction.amount);
+  const [amount, setAmount] = useState<number>(transaction.amount);
   const [date, setDate] = useState<string>(dateUtils.timestampToStringDate(transaction.date));
 
   ////////////////
@@ -124,8 +124,9 @@ const TransactionForm = ({ transaction, setTransaction, formErrors, serverError 
           fullWidth
           InputProps={{
             endAdornment: <InputAdornment position="end">€</InputAdornment>,
+            inputProps: { min: -10 }
           }}
-          value={amount}
+          value={amount >= 0 ? amount : ''}
           onChange={(e) => setAmount(e.target.value as unknown as number)}
           error={formErrors.amount != null}
           helperText={formErrors.amount}
