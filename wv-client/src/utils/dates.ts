@@ -25,18 +25,17 @@ const getCurrentStringDate = (): string => {
 };
 
 const timestampToStringDate = (timestamp: number): string => {
-  return new Date(timestamp).toISOString().slice(0, 10);
+  return stringDateFormatted(new Date(timestamp).toISOString().slice(0, 10));
 };
 
 const stringDatetoTimeStamp = (date: string): number => {
   return new Date(date).getTime();
 };
 
-/*
 const stringDateFormatted = (date: string): string => {
   const dateArray = date.split('-');
   return dateArray.reverse().join('/');
-};*/
+};
 
 export default { getFullDate, getTime, getCurrentStringDate, timestampToStringDate, stringDatetoTimeStamp };
 

@@ -8,11 +8,11 @@ import { ApiError, SvgIcons } from 'types/types';
 import regex from 'utils/regex';
 import SVG from 'components/ui/svg/SVG';
 
-import Button from '@material-ui/core/Button/Button';
-import TextField from '@material-ui/core/TextField/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox/Checkbox';
-import Alert from '@material-ui/lab/Alert/Alert';
+import Button from '@mui/material/Button/Button';
+import TextField from '@mui/material/TextField/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox/Checkbox';
+import { Alert } from '@mui/material';
 
 import style from './LoginForm.module.scss';
 

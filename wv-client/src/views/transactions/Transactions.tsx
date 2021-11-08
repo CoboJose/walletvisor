@@ -37,7 +37,6 @@ const Transactions: React.FC = () => {
   return (
     <div className={style.transactions}>
       <Balance />
-      
       <TransactionsList />
     </div>
   );

@@ -5,7 +5,7 @@ import RegisterForm from 'components/forms/auth/registerForm/RegisterForm';
 import SVG from 'components/ui/svg/SVG';
 import { SvgIcons } from 'types/types';
 
-import Link from '@material-ui/core/Link/Link';
+import Link from '@mui/material/Link/Link';
 
 import style from './Welcome.module.scss';
 

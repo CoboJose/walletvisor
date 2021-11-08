@@ -2,20 +2,19 @@ import React, { useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import logger from 'utils/logger';
 import { Transaction, TransactionCategory, TransactionKind, ApiError, SvgIcons } from 'types/types';
-import api from 'api/api';
 import apiErrors from 'api/apiErrors';
-import { getTransactions } from 'store/slices/transactions';
+import { createTransaction, updateTransaction, deleteTransaction } from 'store/slices/transactions';
 import SVG from 'components/ui/svg/SVG';
 import TransactionForm from 'components/transactions/transactionForm/TransactionForm';
 
-import { useMediaQuery, useTheme } from '@material-ui/core';
+import { useMediaQuery, useTheme } from '@mui/material';
 import Confirmation from 'components/ui/confirmation/Confirmation';
 
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import style from './TransactionFormModal.module.scss';
 
@@ -38,7 +37,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
   ///////////
   // STATE //
   ///////////
-  const emptyTransaction: Transaction = { id: -1, name: '', kind: TransactionKind.Income, category: TransactionCategory.Salary, amount: 0, date: new Date().getTime(), userID: -1 };
+  const emptyTransaction: Transaction = { id: -1, name: '', kind: TransactionKind.Income, category: TransactionCategory.Salary, amount: -1, date: new Date().getTime(), userID: -1 };
   const isEdit: boolean = transactionToUpdate != null;
 
   const [transaction, setTransaction] = useState<Transaction>(transactionToUpdate !== null ? transactionToUpdate : emptyTransaction);
@@ -63,10 +62,9 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
     return Object.keys(errors).length === 0;
   };
 
-  const deleteTransaction = async () => {
+  const removeTransaction = async () => {
     try {
-      await api.deleteTransaction(transaction.id);
-      dispatch(getTransactions());
+      await dispatch(deleteTransaction({ transactionId: transaction.id }));
       onClose();
       setSnackbarText('Transaction deleted successfully');
     }
@@ -84,8 +82,12 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
 
     if (validateForm()) {
       try {
-        await api.addTransaction(transaction);
-        dispatch(getTransactions());
+        if (transaction.id < 0) {
+          await dispatch(createTransaction(transaction)).unwrap();
+        } else {
+          await dispatch(updateTransaction(transaction)).unwrap();
+        }
+        
         onClose();
         setSnackbarText('Transaction saved successfully');
       }
@@ -98,7 +100,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
 
   const confirmDeleteHandler = () => {
     setDeleteConfirmationOpened(false);
-    deleteTransaction();
+    removeTransaction();
   };
 
   /////////
@@ -139,7 +141,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
           <Button 
             onClick={submitHandler} 
             className={style.okButton}
-            disabled={!transaction.name || transaction.amount.toString() === ''}
+            disabled={!transaction.name || transaction.amount.toString() === '' || transaction.amount === 0}
             startIcon={<SVG name={SvgIcons.Edit} className={style.buttonIcon} />}
           >
             {isEdit ? 'Save' : 'Add'}

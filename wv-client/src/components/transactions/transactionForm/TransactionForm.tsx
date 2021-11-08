@@ -6,15 +6,16 @@ import { Transaction, TransactionCategory, TransactionKind } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
 import mathUtils from 'utils/math';
 
-import TextField from '@material-ui/core/TextField/TextField';
-import Alert from '@material-ui/lab/Alert/Alert';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@mui/material/TextField/TextField';
+import { Alert } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
+import DatePicker from '@mui/lab/DatePicker';
 
 import style from './TransactionForm.module.scss';
 
@@ -43,7 +44,7 @@ const TransactionForm = ({ transaction, setTransaction, formErrors, serverError 
   useEffect(() => {
     //Update the transaction when some input is updated
     const timestamp = dateUtils.stringDatetoTimeStamp(date);
-    const roundedAmount = mathUtils.round(amount, 2);
+    const roundedAmount = amount ? mathUtils.round(amount, 2) : 0;
     setTransaction({ ...transaction, name, kind, category, amount: roundedAmount, date: timestamp });
   }, [name, kind, category, amount, date]);
 
@@ -123,22 +124,26 @@ const TransactionForm = ({ transaction, setTransaction, formErrors, serverError 
           fullWidth
           InputProps={{
             endAdornment: <InputAdornment position="end">€</InputAdornment>,
+            inputProps: { min: -10 }
           }}
-          value={amount}
+          value={amount >= 0 ? amount : ''}
           onChange={(e) => setAmount(e.target.value as unknown as number)}
           error={formErrors.amount != null}
           helperText={formErrors.amount}
         />
 
-        <TextField
+        <DatePicker
           label="Date"
-          type="date"
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
           value={date}
-          onChange={(e) => setDate(e.target.value as unknown as string)}
+          onChange={(e) => setDate(e as string)}
+          renderInput={(params) => (
+            <TextField 
+              fullWidth
+              margin="normal"
+              required
+              {...params} 
+            />
+          )}
         />
 
       </form>

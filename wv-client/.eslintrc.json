@@ -60,6 +60,8 @@
         "implicit-arrow-linebreak": "off",
         "function-paren-newline": "off",
         "comma-dangle": "off",
-        "no-restricted-syntax": "off"
+        "no-restricted-syntax": "off",
+        "no-plusplus": "off",
+        "react/jsx-props-no-spreading": "off"
     }
 }

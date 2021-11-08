@@ -8,12 +8,16 @@ $phoneTopBarHeight: 60px;
 
 .view {
     display: flex;
+    justify-content: center;
 }
 
 .content {
     margin-top: $phoneTopBarHeight;
     padding: 7px;
     width: 100%;
+    display: flex;
+    justify-content: center;
+
 
     @media (min-width: $phoneMaxWidth) {
         margin-top: $desktopTopBarHeight;

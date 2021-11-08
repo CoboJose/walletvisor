@@ -5,9 +5,9 @@ import { SvgIcons } from 'types/types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { changeTheme } from 'store/slices/config';
 
-import useTheme from '@material-ui/core/styles/useTheme';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { AppBar, Toolbar, IconButton } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { AppBar, Toolbar, IconButton } from '@mui/material';
 
 import SVG from 'components/ui/svg/SVG';
 
@@ -35,10 +35,7 @@ const TopBar = ({ handlePhoneSidePanelOpen }: TopBarProps): JSX.Element => {
       <Toolbar className={style.toolbar}>
         
         {isPhone && (
-          <IconButton
-            edge="start"
-            onClick={handlePhoneSidePanelOpen}
-          >
+          <IconButton edge="start" onClick={handlePhoneSidePanelOpen} size="large">
             <SVG name={SvgIcons.ThreeLines} className={style.sidePanelIcon} />
           </IconButton>
         )}
@@ -50,7 +47,11 @@ const TopBar = ({ handlePhoneSidePanelOpen }: TopBarProps): JSX.Element => {
         {!isPhone && (
           <div className={style.rightSide}>
 
-            <IconButton className={style.themeButton} onClick={() => dispatch(changeTheme())}>
+            <IconButton
+              className={style.themeButton}
+              onClick={() => dispatch(changeTheme())}
+              size="large"
+            >
               <SVG name={theme === 'dark' ? SvgIcons.Sun : SvgIcons.Moon} className={style.themeIcon} />
             </IconButton>
             

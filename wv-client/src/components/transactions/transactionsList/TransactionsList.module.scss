@@ -2,11 +2,48 @@
 
 .transactionsList{
     @include flex-column-center;
-    @include max-100-width;
+    display: flex;
+    width: 100%;
+    margin-top: 15px;
 }
 
-.list{
-    @include max-100-width;
+.addTransactionFab {
+    position: absolute !important;
+    bottom: 23px !important;
+    right: 15px !important;
+    z-index: 10 !important;
+
+    .addIcon {
+        $size: 30px;
+        height: $size;
+        width: $size;
+        fill: white;
+        stroke: white;
+        stroke-width: 15px;
+    }
+}
+
+.addTransactionButton {
+
+    .addIcon {
+        $size: 12px;
+        height: $size;
+        width: $size;
+        fill: $primary;
+        stroke: $primary;
+        stroke-width: 5px;
+    }
+}
+
+.list {
+    width: 100%;
+    max-height: calc(100vh - 280px);
+    overflow-y: auto;
+
+    .listMonth {
+        padding: 7px;
+        color: $primary;
+    }
 }
 
 .categorySVG {
@@ -16,24 +53,9 @@
     fill: currentColor;
 }
 
-.addTransactionButton {
-    position: absolute !important;
-    bottom: 70px !important;
-    right: 10px !important;
-    z-index: 10 !important;
-}
-
-.addIcon {
-    $size: 30px;
-    height: $size;
-    width: $size;
-    fill: white;
-    stroke: white;
-    stroke-width: 15px;
-}
-
 .amount {
     font-size: large;
+    text-align: center;
 
     &.income {
         color: $success;
@@ -41,19 +63,9 @@
     &.expense {
         color: $error;
     }
+}
 
-    $iconSize: 12px;
-    $iconMarginRight: 3px;
-    .plusIcon {
-        height: $iconSize;
-        width: $iconSize;
-        fill: $success;
-        margin-right: $iconMarginRight;
-    }
-    .lessIcon {
-        height: $iconSize;
-        width: $iconSize;
-        fill: $error;
-        margin-right: $iconMarginRight;
-    }
+.trnBalance {
+    text-align: center;
+    font-size: small;
 }

@@ -5,26 +5,13 @@ import { logout } from 'store/slices/auth';
 import logger from 'utils/logger';
 import { SvgIcons } from 'types/types';
 
-import { IconButton, Menu, MenuItem, MenuProps, withStyles } from '@material-ui/core';
+import { IconButton, Menu, MenuItem } from '@mui/material';
+
+//import withStyles from '@mui/styles/withStyles';
 
 import SVG from 'components/ui/svg/SVG';
 
 import style from './UserIcon.module.scss';
-
-const StyledMenu = withStyles({})((props: MenuProps) => (
-  <Menu
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
-    }}
-    {...props}
-  />
-));
 
 type UserIconProps = {
   size: string
@@ -39,18 +26,18 @@ const UserIcon = ({ size }: UserIconProps): JSX.Element => {
 
   return (
     <div>
-      <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+      <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} size="large">
         <SVG name={SvgIcons.User} className={style.userSvg} style={{ height: size, width: size }} />
       </IconButton>
       
-      <StyledMenu
+      <Menu
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
         <MenuItem onClick={() => [dispatch(logout()), setAnchorEl(null)]}>Logout</MenuItem>
-      </StyledMenu>
+      </Menu>
     </div>
   );
 };

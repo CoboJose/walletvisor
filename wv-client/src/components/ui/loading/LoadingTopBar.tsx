@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppSelector } from 'store/hooks';
 import logger from 'utils/logger';
 
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 import style from './LoadingTopBar.module.scss';
 
 const LoadingTopBar = (): JSX.Element => {

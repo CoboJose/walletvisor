@@ -32,7 +32,18 @@ func (h TransactionHandler) GetUserTransactions(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	return c.JSON(200, transactions)
+	// Get the total balance from the database
+	balance, cerr := models.GetUserTotalBalance(userID)
+	if cerr != nil {
+		return c.JSON(400, cerr.Response())
+	}
+
+	response := getTransactionsResponse{
+		Transactions: transactions,
+		TotalBalance: balance,
+	}
+
+	return c.JSON(200, response)
 }
 
 // Create creates a transaction
@@ -90,4 +101,12 @@ func (h TransactionHandler) Delete(c echo.Context) error {
 	}
 
 	return c.JSON(201, "Transaction deleted succesfully")
+}
+
+////////////////////
+// Response Types //
+////////////////////
+type getTransactionsResponse struct {
+	Transactions []models.Transaction `json:"transactions"`
+	TotalBalance float64              `json:"totalBalance"`
 }

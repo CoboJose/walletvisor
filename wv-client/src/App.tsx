@@ -9,8 +9,11 @@ import apiErrors from 'api/apiErrors';
 import { ApiError } from 'types/types';
 import LoadingTopBar from 'components/ui/loading/LoadingTopBar';
 
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import DateAdapter from '@mui/lab/AdapterDateFns';
+import es from 'date-fns/locale/es';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import lightTheme from 'themes/lightTheme';
 import darkTheme from 'themes/darkTheme';
 import Confirmation from 'components/ui/confirmation/Confirmation';
@@ -24,7 +27,7 @@ const App: React.FC = () => {
   // REDUX //
   ///////////
   const themeRedux = useAppSelector((state) => state.config.theme);
-  const theme = themeRedux === 'dark' ? { ...darkTheme } : { ...lightTheme }; //Material UI needs a shallow copy to rerender
+  const theme = themeRedux === 'dark' ? darkTheme : lightTheme;
 
   ///////////
   // HOOKS //
@@ -108,12 +111,14 @@ const App: React.FC = () => {
   // JSX //
   /////////
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <LoadingTopBar />
-      {computerUsersAdvice()}
-      <View />
-    </ThemeProvider>
+    <LocalizationProvider dateAdapter={DateAdapter} locale={es}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <LoadingTopBar />
+        {computerUsersAdvice()}
+        <View />
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 };
 

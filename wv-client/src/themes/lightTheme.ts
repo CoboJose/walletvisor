@@ -1,9 +1,13 @@
 /* eslint-disable camelcase */
-import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material';
 import theme from './theme.module.scss';
 
-const lightTheme = unstable_createMuiStrictModeTheme({
+const lightTheme = createTheme({
   palette: {
+    background: {
+      default: theme.lightBackground,
+      paper: theme.lightPaper,
+    },
     primary: {
       main: theme.lightPrimary,
     },
@@ -21,16 +25,6 @@ const lightTheme = unstable_createMuiStrictModeTheme({
     },
     success: {
       main: theme.lightSuccess,
-    },
-  },
-
-  overrides: {
-    MuiRadio: {
-      colorSecondary: {
-        '&$checked': {
-          color: theme.lightPrimary
-        },
-      },
     },
   },
 
