@@ -18,6 +18,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import style from './TransactionFormModal.module.scss';
 
+const buttonDisabled = (trn: Transaction): boolean => {
+  let res = false;
+  res = res || !trn.name;
+  res = res || trn.amount.toString() === '';
+  res = res || trn.amount <= 0;
+  res = res || trn.date < (new Date(1970, 0, 2).getTime());
+  res = res || Number.isNaN(trn.date);
+  return res;
+};
+
 type TransactionFormModalProps = {
   transactionToUpdate: Transaction | null,
   onClose: () => void
@@ -141,7 +151,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
           <Button 
             onClick={submitHandler} 
             className={style.okButton}
-            disabled={!transaction.name || transaction.amount.toString() === '' || transaction.amount === 0}
+            disabled={buttonDisabled(transaction)}
             startIcon={<SVG name={SvgIcons.Edit} className={style.buttonIcon} />}
           >
             {isEdit ? 'Save' : 'Add'}
@@ -152,7 +162,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
       </Dialog>
 
       <Confirmation 
-        text="Are you sure you want to delete the transaction?" 
+        text="Are you sure you want to delete the transaction?"
         buttonCancel="Cancel" 
         buttonOk="Delete" 
         open={deleteConfirmationOpened} 

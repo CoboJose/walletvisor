@@ -1,4 +1,29 @@
 @import "themes/theme.module";
 
-.transactionsDateRange{
+.transactionsDateRange {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    // Phone wide
+    @media (max-width: $phoneMaxWidth) {
+        margin-top: 5px;
+    }
 }
+
+.dateRangeSelector {
+    width: 100%;
+}
+
+.clearButton {
+    margin-top: 5px;
+
+    .clearIcon {
+        fill: $primary;
+        $size: 10px;
+        height: $size;
+        width: $size;
+    }
+}
+

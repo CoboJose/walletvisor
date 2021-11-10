@@ -47,7 +47,7 @@ const View = (): JSX.Element => {
         </>
       )}
 
-      <div className={style.content}>
+      <div className={`${style.content} ${showNavigation() ? style.navigation : style.noNavigation}`}>
         <Routes />
       </div>
 

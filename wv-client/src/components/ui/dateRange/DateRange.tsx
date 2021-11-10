@@ -21,6 +21,7 @@ const DateRange = ({ fromDate, setFromDate, toDate, setToDate, variant }: DateRa
       <DatePicker
         label="From"
         value={fromDate}
+        minDate={new Date(1970, 0, 2)}
         maxDate={toDate}
         onChange={(e) => setFromDate(e)}
         clearable
@@ -37,7 +38,7 @@ const DateRange = ({ fromDate, setFromDate, toDate, setToDate, variant }: DateRa
       <DatePicker
         label="To"
         value={toDate}
-        minDate={fromDate}
+        minDate={fromDate !== null ? fromDate : new Date(1970, 0, 2)}
         onChange={(e) => setToDate(e)}
         clearable
         renderInput={(params) => (

@@ -1,10 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import logger from 'utils/logger';
-import dateUtils from 'utils/dates';
 import { transactionCategoriesData } from 'utils/transactionCategories';
 import { Transaction, TransactionCategory, TransactionKind } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
 import mathUtils from 'utils/math';
+import dates from 'utils/dates';
 
 import TextField from '@mui/material/TextField/TextField';
 import { Alert } from '@mui/material';
@@ -36,14 +36,14 @@ const TransactionForm = ({ transaction, setTransaction, formErrors, serverError 
   const [kind, setKind] = useState<TransactionKind>(transaction.kind);
   const [category, setCategory] = useState<TransactionCategory>(transaction.category);
   const [amount, setAmount] = useState<number>(transaction.amount);
-  const [date, setDate] = useState<string>(dateUtils.timestampToStringDate(transaction.date));
+  const [date, setDate] = useState<Date>(new Date(transaction.date));
 
   ////////////////
   // USE EFFECT //
   ////////////////
   useEffect(() => {
     //Update the transaction when some input is updated
-    const timestamp = dateUtils.stringDatetoTimeStamp(date);
+    const timestamp = date !== null ? dates.getTimestampWithoutDate(date) : 0;
     const roundedAmount = amount ? mathUtils.round(amount, 2) : 0;
     setTransaction({ ...transaction, name, kind, category, amount: roundedAmount, date: timestamp });
   }, [name, kind, category, amount, date]);
@@ -135,7 +135,8 @@ const TransactionForm = ({ transaction, setTransaction, formErrors, serverError 
         <DatePicker
           label="Date"
           value={date}
-          onChange={(e) => setDate(e as string)}
+          minDate={new Date(1970, 0, 2)}
+          onChange={(e) => setDate(e as Date)}
           renderInput={(params) => (
             <TextField 
               fullWidth

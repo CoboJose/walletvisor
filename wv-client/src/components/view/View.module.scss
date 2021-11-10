@@ -12,14 +12,21 @@ $phoneTopBarHeight: 60px;
 }
 
 .content {
-    margin-top: $phoneTopBarHeight;
-    padding: 7px;
     width: 100%;
     display: flex;
     justify-content: center;
 
+    &.navigation {
+        padding: 7px;
+        margin-top: $phoneTopBarHeight;
 
-    @media (min-width: $phoneMaxWidth) {
-        margin-top: $desktopTopBarHeight;
+        //Desktop
+        @media (min-width: $phoneMaxWidth) {
+            margin-top: $desktopTopBarHeight;
+        }
+    }
+
+    &.noNavigation {
+        padding: 3px;
     }
 }

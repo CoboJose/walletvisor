@@ -72,12 +72,11 @@
     // Phone wide
     @media (max-width: $phoneMaxWidth) {
         margin: 10px 0 5px 0;
-        //.dateRangeInputs {}
     }
 
     // Desktop wide
     @media (min-width: $phoneMaxWidth) {
-        margin: 0 0 10px 0;
+        margin: 0 0 5px 0;
         justify-self: end;
         .dateRangeInputs {
             max-width: 200px;
