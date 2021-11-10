@@ -1,4 +1,12 @@
-const getFullDate = (): string => {
+const timestampToStringDate = (timestamp: number): string => {
+  return stringDateFormatted(new Date(timestamp).toISOString().slice(0, 10));
+};
+
+const getTimestampWithoutTime = (date: Date): number => {
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).getTime();
+};
+
+const getCurrentDateTimeString = (): string => {
   const date = new Date();
   const day = addZero(date.getDate());
   const month = addZero(date.getMonth());
@@ -10,7 +18,7 @@ const getFullDate = (): string => {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
-const getTime = (): string => {
+const getCurrentTime = (): string => {
   const date = new Date();
   const hours = addZero(date.getHours());
   const minutes = addZero(date.getMinutes());
@@ -20,24 +28,7 @@ const getTime = (): string => {
   return `${hours}:${minutes}:${seconds}:${miliseconds}`;
 };
 
-const getCurrentStringDate = (): string => {
-  return timestampToStringDate(new Date().getTime());
-};
-
-const timestampToStringDate = (timestamp: number): string => {
-  return stringDateFormatted(new Date(timestamp).toISOString().slice(0, 10));
-};
-
-const stringDatetoTimeStamp = (date: string): number => {
-  return new Date(date).getTime();
-};
-
-const stringDateFormatted = (date: string): string => {
-  const dateArray = date.split('-');
-  return dateArray.reverse().join('/');
-};
-
-export default { getFullDate, getTime, getCurrentStringDate, timestampToStringDate, stringDatetoTimeStamp };
+export default { timestampToStringDate, getTimestampWithoutDate: getTimestampWithoutTime, getCurrentDateTimeString, getCurrentTime };
 
 const addZero = (element: number): string => {
   let res = element.toString();
@@ -47,4 +38,9 @@ const addZero = (element: number): string => {
   }
 
   return res;
+};
+
+const stringDateFormatted = (date: string): string => {
+  const dateArray = date.split('-');
+  return dateArray.reverse().join('/');
 };

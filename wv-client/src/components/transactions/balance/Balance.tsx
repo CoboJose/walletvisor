@@ -99,7 +99,7 @@ const Balance = (): JSX.Element => {
 
             <Dialog open={datesDialogOpen} onClose={() => setDatesDialogOpen(false)}>
               <DialogTitle>Transactions Dates</DialogTitle>
-              <DialogContent className={style.dateRangeInputs}> 
+              <DialogContent> 
                 <TransactionsDateRange variant="outlined" />
               </DialogContent>
               <DialogActions> <Button onClick={() => setDatesDialogOpen(false)} autoFocus> OK </Button> </DialogActions>
