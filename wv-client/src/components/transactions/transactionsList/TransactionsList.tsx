@@ -209,7 +209,10 @@ const TransactionsList = (): JSX.Element => {
         anchorReference="anchorPosition"
         anchorPosition={contextMenu !== null ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined}
       >
-        <MenuItem onClick={() => setDeleteConfirmationOpened(true)}>Delete</MenuItem>
+        <MenuItem onClick={() => setDeleteConfirmationOpened(true)}>
+          <SVG name={SvgIcons.Delete} className={style.menuDeleteButtonIcon} />
+          Delete
+        </MenuItem>
       </Menu>
 
       <Confirmation 
