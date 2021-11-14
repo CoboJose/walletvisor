@@ -27,6 +27,12 @@ export type Transaction = {
 
 }
 
+export type User = {
+  id: number,
+  email: string,
+  name: string,
+}
+
 export enum TransactionKind {
   Income = 'income',
   Expense = 'expense'

@@ -5,7 +5,7 @@ import logger from 'utils/logger';
 import DateRange from 'components/ui/dateRange/DateRange';
 import dates from 'utils/dates';
 import style from './TransactionsDateRange.module.scss';
-import { Button } from '@mui/material';
+import { Button, IconButton, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import SVG from 'components/ui/svg/SVG';
 import { SvgIcons } from 'types/types';
 
@@ -20,6 +20,8 @@ const TransactionsDateRange = ({ variant }: TransactionsDateRangeProps): JSX.Ele
   // HOOKS //
   ///////////
   const dispatch = useAppDispatch();
+  const muiTheme = useTheme();
+  const isPhone = useMediaQuery(muiTheme.breakpoints.only('xs'));
 
   ///////////
   // STATE //
@@ -47,10 +49,18 @@ const TransactionsDateRange = ({ variant }: TransactionsDateRangeProps): JSX.Ele
     submitDates(from, to);
   };
 
-  const resetDates = () => {
+  const nullDates = () => {
     setFormFromDate(null);
     setFormToDate(null);
     submitDates(null, null);
+  };
+
+  const currentMonthDates = () => {
+    const fromDate = dates.getFirstDayTimestampOfCurrentMonth();
+    const toDate = dates.getLastDayTimestampOfCurrentMonth();
+    setFormFromDate(fromDate);
+    setFormToDate(toDate);
+    submitDates(fromDate.getTime(), toDate.getTime());
   };
 
   /////////////////////
@@ -87,14 +97,40 @@ const TransactionsDateRange = ({ variant }: TransactionsDateRangeProps): JSX.Ele
         />
       </div>
 
-      <div className={style.clearButton}>
-        <Button 
-          startIcon={<SVG name={SvgIcons.Close} className={style.clearIcon} />} 
-          onClick={resetDates}
-        >
-          Clear
-        </Button>
-      </div>
+      {isPhone ? (
+        <div className={style.phoneButtons}>
+          <div className={style.clearButton}>
+            <Button 
+              startIcon={<SVG name={SvgIcons.Close} className={style.clearIcon} />} 
+              onClick={nullDates}
+            >
+              Clear
+            </Button>
+          </div>
+          <div className={style.currentMonthButton}>
+            <Button 
+              startIcon={<SVG name={SvgIcons.Calendar} className={style.currentMonthButtonIcon} />} 
+              onClick={currentMonthDates}
+            >
+              Current Month
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className={style.desktopButtons}>
+          <Tooltip title="Clear Dates" className={style.clearButton}>
+            <IconButton onClick={nullDates}>
+              <SVG name={SvgIcons.Close} className={style.clearIcon} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Current Month" className={style.currentMonthButton}>
+            <IconButton onClick={currentMonthDates}>
+              <SVG name={SvgIcons.Calendar} className={style.currentMonthButtonIcon} />
+            </IconButton>
+          </Tooltip>
+        </div>
+      )}
+
     </div>
   );
 };

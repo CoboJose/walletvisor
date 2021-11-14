@@ -3,6 +3,7 @@ import api from 'api/api';
 import { ApiError, GetTransactionsResponse, Transaction } from 'types/types';
 import { RootState } from 'store/store';
 import { logout } from './auth';
+import dates from 'utils/dates';
 
 interface TransactionsState {
   transactions: Transaction[],
@@ -15,8 +16,8 @@ interface TransactionsState {
 const initialState: TransactionsState = {
   transactions: [],
   totalBalance: 0,
-  fromDate: null,
-  toDate: null,
+  fromDate: dates.getFirstDayTimestampOfCurrentMonth().getTime(),
+  toDate: dates.getLastDayTimestampOfCurrentMonth().getTime(),
   isLoading: false,
 };
 

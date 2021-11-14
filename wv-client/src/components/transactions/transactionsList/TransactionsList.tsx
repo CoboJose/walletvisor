@@ -79,6 +79,11 @@ const TransactionsList = (): JSX.Element => {
     removeTransaction();
   };
 
+  const cancelDeleteHandler = () => {
+    handleContextMenuClose();
+    setDeleteConfirmationOpened(false);
+  };
+
   const removeTransaction = async () => {
     try {
       await dispatch(deleteTransaction({ transactionId: contextMenu ? contextMenu.trnId : -1 }));
@@ -220,7 +225,7 @@ const TransactionsList = (): JSX.Element => {
         buttonCancel="Cancel" 
         buttonOk="Delete" 
         open={deleteConfirmationOpened} 
-        onCancel={() => setDeleteConfirmationOpened(false)} 
+        onCancel={cancelDeleteHandler} 
         onOk={confirmDeleteHandler} 
       />
 

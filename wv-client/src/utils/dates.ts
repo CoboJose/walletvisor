@@ -28,7 +28,17 @@ const getCurrentTime = (): string => {
   return `${hours}:${minutes}:${seconds}:${miliseconds}`;
 };
 
-export default { timestampToStringDate, getTimestampWithoutDate: getTimestampWithoutTime, getCurrentDateTimeString, getCurrentTime };
+const getFirstDayOfCurrentMonth = (): Date => {
+  const date = new Date();
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1));
+};
+
+const getLastDayOfCurrentMonth = (): Date => {
+  const date = new Date();
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth() + 1, 0));
+};
+
+export default { timestampToStringDate, getTimestampWithoutDate: getTimestampWithoutTime, getCurrentDateTimeString, getCurrentTime, getFirstDayTimestampOfCurrentMonth: getFirstDayOfCurrentMonth, getLastDayTimestampOfCurrentMonth: getLastDayOfCurrentMonth };
 
 const addZero = (element: number): string => {
   let res = element.toString();

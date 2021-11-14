@@ -19,6 +19,7 @@ import darkTheme from 'themes/darkTheme';
 import Confirmation from 'components/ui/confirmation/Confirmation';
 import screenSizes from 'utils/screenSizes';
 import View from 'components/view/View';
+import { getUser } from 'store/slices/user';
 
 const App: React.FC = () => {
   logger.rendering();
@@ -52,8 +53,15 @@ const App: React.FC = () => {
     if (refreshTkn != null) {
       dispatch(refreshToken(refreshTkn)).unwrap()
         .then(() => {
-          history.push('/transactions');
-          removeLoadingHTML();
+          dispatch(getUser()).unwrap().then(() => {
+            history.push('/transactions');
+            removeLoadingHTML();
+          }).catch((error) => {
+            const err = error as ApiError;
+            logger.error(apiErrors(err.code));
+            dispatch(logout());
+            window.location.reload();
+          });
         })
         .catch((error) => {
           const err = error as ApiError;

@@ -1,3 +1,4 @@
+import UserConfiguration from 'components/configuration/UserConfiguration';
 import React from 'react';
 import logger from 'utils/logger';
 
@@ -28,7 +29,7 @@ const Configuration: React.FC = () => {
 
   return (
     <div className={style.transactions}>
-      <p>Configuration</p>
+      <UserConfiguration />
     </div>
   );
 };

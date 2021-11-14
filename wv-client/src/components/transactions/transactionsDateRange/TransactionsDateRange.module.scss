@@ -16,14 +16,53 @@
     width: 100%;
 }
 
-.clearButton {
-    margin-top: 5px;
+.phoneButtons {
+    margin-top: 9px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    .clearButton {
+        .clearIcon {
+            fill: $primary;
+            $size: 15px;
+            height: $size;
+            width: $size;
+        }
+    }
 
-    .clearIcon {
-        fill: $primary;
-        $size: 10px;
-        height: $size;
-        width: $size;
+    .currentMonthButton {
+        .currentMonthButtonIcon {
+            fill: $primary;
+            $size: 18px;
+            height: $size;
+            width: $size;
+        }
+    }
+}
+
+.desktopButtons {
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    
+    .clearButton {
+        .clearIcon {
+            fill: $primary;
+            $size: 15px;
+            height: $size;
+            width: $size;
+        }
+    }
+
+    .currentMonthButton {
+        .currentMonthButtonIcon {
+            fill: $primary;
+            $size: 18px;
+            height: $size;
+            width: $size;
+        }
     }
 }
 
