@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import logger from 'utils/logger';
 import style from './UserConfiguration.module.scss';
-import { TextField, Button, Alert } from '@mui/material';
+import { TextField, Button, Alert, Snackbar } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getUser } from 'store/slices/user';
-import { ApiError } from 'types/types';
+import { updateUser } from 'store/slices/user';
+import { ApiError, UpdateUserPayload } from 'types/types';
 import apiErrors from 'api/apiErrors';
 import regex from 'utils/regex';
 
@@ -20,7 +20,6 @@ const UserConfiguration = (): JSX.Element => {
   ///////////
   const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
-  console.log(user);
 
   ///////////
   // STATE //
@@ -33,6 +32,8 @@ const UserConfiguration = (): JSX.Element => {
   const [newPassword, setNewPassword] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+
   //////////////////////
   // HELPER FUNCTIONS //
   //////////////////////s
@@ -42,8 +43,8 @@ const UserConfiguration = (): JSX.Element => {
     if (!email || !regex.email.test(email)) {
       errors.email = 'The email must follow this pattern: example@domain.com';
     }
-    if (!password || !regex.password.test(newPassword)) {
-      errors.password = 'The password must have: lowercase, uppercase, special character, and more than 8 characters';
+    if (newPassword && !regex.password.test(newPassword)) {
+      errors.newPassword = 'The password must have: lowercase, uppercase, special character, and more than 8 characters';
     }
 
     setFormErrors(errors);
@@ -56,10 +57,15 @@ const UserConfiguration = (): JSX.Element => {
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const updateUserPayload: UpdateUserPayload = { name, email, newPassword, oldPassword: password };
+
     if (validateForm()) {
       try {
-        await dispatch(getUser()).unwrap();
+        await dispatch(updateUser(updateUserPayload)).unwrap();
         setServerError('');
+        setNewPassword('');
+        setPassword('');
+        setSnackbarOpen(true);
       } catch (error) {
         const err = error as ApiError;
         setServerError(apiErrors(err.code));
@@ -71,9 +77,9 @@ const UserConfiguration = (): JSX.Element => {
   // JSX //
   /////////
   return (
-    <div className={style.UserConfiguration}>
+    <div className={style.userConfiguration}>
       
-      <div className={style.loginForm}>
+      <div className={style.userConfigurationForm}>
         <h1 className={style.title}>User Configuration</h1>
 
         {serverError.length > 0 && (
@@ -120,6 +126,12 @@ const UserConfiguration = (): JSX.Element => {
             onChange={(e) => setNewPassword(e.target.value)}
             error={formErrors.newPassword != null}
             helperText={formErrors.newPassword}
+            inputProps={{
+              autoComplete: 'new-password',
+              form: {
+                autoComplete: 'off',
+              },
+            }}
           />
 
           <TextField
@@ -129,14 +141,21 @@ const UserConfiguration = (): JSX.Element => {
             fullWidth
             label="Password"
             type="password"
-            autoComplete="current-password"
+            autoComplete="off"
             value={password} 
             onChange={(e) => setPassword(e.target.value)}
             error={formErrors.password != null}
             helperText={formErrors.password}
+            inputProps={{
+              autoComplete: 'new-password',
+              form: {
+                autoComplete: 'off',
+              },
+            }}
           />
 
           <Button
+            className={style.saveButton}
             type="submit"
             fullWidth
             variant="contained"
@@ -148,6 +167,21 @@ const UserConfiguration = (): JSX.Element => {
         </form>
 
       </div>
+
+      <Snackbar 
+        open={snackbarOpen} 
+        autoHideDuration={2500} 
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity="success">
+          User modified successfully
+        </Alert>
+      </Snackbar>
+      
     </div>
   );
 };

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"wv-server/models"
 	"wv-server/utils"
 
@@ -32,6 +33,10 @@ func (h UserHandler) Update(c echo.Context) error {
 	if err := c.Bind(&updatePayload); err != nil {
 		return c.JSON(400, utils.NewCerr("GE002", err).Response())
 	}
+	fmt.Println("Email: " + updatePayload.Email)
+	fmt.Println("Name: " + updatePayload.Name)
+	fmt.Println("New Pass: " + updatePayload.NewPassword)
+	fmt.Println("Pass: " + updatePayload.OldPassword)
 
 	// Get Database user
 	dbUser, cerr := models.GetUserByID(c.Get("claims").(utils.JwtClaims).UserID)

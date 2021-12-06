@@ -28,7 +28,7 @@ const Configuration: React.FC = () => {
   /////////
 
   return (
-    <div className={style.transactions}>
+    <div className={style.userConfiguration}>
       <UserConfiguration />
     </div>
   );

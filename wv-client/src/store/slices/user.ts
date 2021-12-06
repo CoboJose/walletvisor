@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'api/api';
-import { ApiError, User } from 'types/types';
+import { ApiError, UpdateUserPayload, User } from 'types/types';
 
 interface UserState {
   user: User | null,
@@ -22,6 +22,16 @@ export const getUser = createAsyncThunk<User, void, { rejectValue: ApiError }>(
   }
 );
 
+export const updateUser = createAsyncThunk<User, UpdateUserPayload, { rejectValue: ApiError }>(
+  'user/updateUser',
+  async (updateUserPayload, { rejectWithValue }) => {
+    try { 
+      return await api.updateUser(updateUserPayload); 
+    }
+    catch (error) { return rejectWithValue(error as ApiError); }
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -37,6 +47,17 @@ export const userSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getUser.rejected, (state) => {
+      state.isLoading = false;
+    });
+    // UPDATE USER
+    builder.addCase(updateUser.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(updateUser.rejected, (state) => {
       state.isLoading = false;
     });
   },

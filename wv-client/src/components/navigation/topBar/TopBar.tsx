@@ -7,7 +7,7 @@ import { changeTheme } from 'store/slices/config';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AppBar, Toolbar, IconButton } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Tooltip } from '@mui/material';
 
 import SVG from 'components/ui/svg/SVG';
 
@@ -47,13 +47,15 @@ const TopBar = ({ handlePhoneSidePanelOpen }: TopBarProps): JSX.Element => {
         {!isPhone && (
           <div className={style.rightSide}>
 
-            <IconButton
-              className={style.themeButton}
-              onClick={() => dispatch(changeTheme())}
-              size="large"
-            >
-              <SVG name={theme === 'dark' ? SvgIcons.Sun : SvgIcons.Moon} className={style.themeIcon} />
-            </IconButton>
+            <Tooltip title="Change Theme">
+              <IconButton
+                className={style.themeButton}
+                onClick={() => dispatch(changeTheme())}
+                size="large"
+              >
+                <SVG name={theme === 'dark' ? SvgIcons.Sun : SvgIcons.Moon} className={style.themeIcon} />
+              </IconButton>
+            </Tooltip>
             
             <UserIcon size="25px" />
 

@@ -1,5 +1,5 @@
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
-import { AuthResponse, ApiError, Transaction, GetTransactionsResponse, User } from 'types/types';
+import { AuthResponse, ApiError, Transaction, GetTransactionsResponse, User, UpdateUserPayload } from 'types/types';
 
 const UNEXPECTED_ERROR: ApiError = { code: 'GE000', message: 'Unexpected Error, please contact with cobogue@gmail.com', debugMessage: '' };
 
@@ -117,4 +117,21 @@ const getUser = async (): Promise<User> => {
   });
 };
 
-export default { ping, login, register, refreshToken, getTransactions, addTransaction, updateTransaction, deleteTransaction, getUser };
+const updateUser = async (updateUserPayload: UpdateUserPayload): Promise<User> => {
+  const url = '/user';
+  const body = updateUserPayload;
+
+  return new Promise((resolve, reject) => {
+    axios.put(url, body)
+      .then((response) => {
+        const user = <User>{};
+        user.id = response.data.id;
+        user.email = response.data.email;
+        user.name = response.data.name;
+        resolve(user); 
+      })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
+export default { ping, login, register, refreshToken, getTransactions, addTransaction, updateTransaction, deleteTransaction, getUser, updateUser };
