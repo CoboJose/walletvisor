@@ -20,12 +20,12 @@
     "@types/react-redux": "^7.1.18",
     "axios": "^0.21.1",
     "date-fns": "^2.25.0",
-    "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "sass": "^1.44.0",
     "typescript": "^4.3.2",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.4",
@@ -44,7 +44,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "(export SET NODE_OPTIONS=--openssl-legacy-provider) && cypress run",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -63,6 +63,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
+    "cypress": "^9.1.1",
     "eslint": "^7.28.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-import-resolver-typescript": "^2.4.0",

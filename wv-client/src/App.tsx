@@ -73,7 +73,8 @@ const App: React.FC = () => {
     // Else, test if there is connection with the server, and remove the loading screen
     else {
       api.ping()
-        .then(() => {
+        .then((res) => {
+          console.log(res);
           removeLoadingHTML();
         })
         .catch((error) => {
