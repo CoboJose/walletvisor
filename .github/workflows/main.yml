@@ -91,6 +91,7 @@ jobs:
         - name: Test Cypress
           uses: cypress-io/github-action@v2
           with:
+            install: false
             build: npm run build
             start: npm start
 
