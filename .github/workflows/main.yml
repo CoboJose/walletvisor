@@ -85,15 +85,17 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-node-
 
-        - name: Hmm
-          run: npm install
+        #- name: Hmm
+        #  run: npm install
         
         - name: Test Cypress
           uses: cypress-io/github-action@v2
           with:
-            install: false
+            #install: false
+            project: ./wv-client
             build: npm run build
             start: npm start
+          run: ls
 
         - name: Development Build
           if: github.ref == 'refs/heads/develop'
