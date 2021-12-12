@@ -117,8 +117,8 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
   // JSX //
   /////////
   return (
-    <div>
-      <Dialog open fullScreen={isPhone}>
+    <Dialog open fullScreen={isPhone}>
+      <div className={style.transactionFormModal}>
 
         <DialogTitle>
           {isEdit ? 'Edit' : 'Add'} Transaction
@@ -158,19 +158,18 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
           </Button>
 
         </DialogActions>
-
-      </Dialog>
-
-      <Confirmation 
-        text="Are you sure you want to delete the transaction?"
-        buttonCancel="Cancel" 
-        buttonOk="Delete" 
-        open={deleteConfirmationOpened} 
-        onCancel={() => setDeleteConfirmationOpened(false)} 
-        onOk={confirmDeleteHandler} 
-      />
-
-    </div>
+        
+        <Confirmation 
+          text="Are you sure you want to delete the transaction?"
+          buttonCancel="Cancel" 
+          buttonOk="Delete" 
+          open={deleteConfirmationOpened} 
+          onCancel={() => setDeleteConfirmationOpened(false)} 
+          onOk={confirmDeleteHandler} 
+        />
+      
+      </div>
+    </Dialog>
   );
 };
 

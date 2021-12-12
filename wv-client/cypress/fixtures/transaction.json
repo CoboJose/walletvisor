@@ -1,0 +1,9 @@
+{
+  "amount": 10,
+  "category": "salary",
+  "date": 1639267200000,
+  "id": 1,
+  "kind": "income",
+  "name": "transactionName",
+  "userID": 1
+}

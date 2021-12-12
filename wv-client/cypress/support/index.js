@@ -16,12 +16,63 @@
 import './commands';
 
 beforeEach(() => {
-    // API RESPONSES
+    ///////////////////////////
+    // DEFAULT API RESPONSES //
+    ///////////////////////////
+    _stubDefaultApiResponses();
+
+    ///////////////////
+    // LOCAL STORAGE //
+    ///////////////////
+    localStorage.clear();
+    localStorage.setItem("MobileUseAlerted", "true");
+
+    ///////////////
+    // LOAD PAGE //
+    ///////////////
+    cy.visit('/')
+});
+
+function _stubDefaultApiResponses(){
+    // PING
     cy.intercept('GET', Cypress.env("API_URL") + '/ping', {
         statusCode: 200,
         body: "pong",
     })
 
-    // LOCAL STORAGE
-    window.localStorage.setItem("MobileUseAlerted", "true");
-});
+    // LOGIN
+    cy.intercept('POST', Cypress.env("API_URL") + '/auth/login', {
+        statusCode: 200,
+        fixture: 'auth.json'
+    })
+
+    // SIGNUP
+    cy.intercept('POST', Cypress.env("API_URL") + '/auth/signup', {
+        statusCode: 200,
+        fixture: 'auth.json'
+    })
+
+    // REFRESH TOKEN
+    cy.intercept('GET', Cypress.env("API_URL") + '/auth/refreshToken', {
+        statusCode: 200,
+        fixture: 'auth.json'
+    })
+
+    // GET USER
+    cy.intercept('GET', Cypress.env("API_URL") + '/user', {
+        statusCode: 200,
+        fixture: 'user.json'
+    })
+
+    // GET TRANSACTIONS
+    cy.intercept('GET', Cypress.env("API_URL") + '/transactions?from=*&to=*', {
+        statusCode: 200,
+        fixture: 'emptyTransactions.json'
+    })
+
+    // ADD TRANSACTION
+    cy.intercept('POST', Cypress.env("API_URL") + '/transactions', {
+        statusCode: 200,
+        fixture: 'transaction.json'
+    })
+}
