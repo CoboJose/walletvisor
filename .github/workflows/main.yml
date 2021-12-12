@@ -86,7 +86,7 @@ jobs:
               ${{ runner.os }}-node-
 
         -name: Hmm
-         run: npm install
+          run: npm install
         
         - name: Test Cypress
           uses: cypress-io/github-action@v2
