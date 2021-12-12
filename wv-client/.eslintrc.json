@@ -26,6 +26,7 @@
             "typescript": {}
         }
     },
+    "ignorePatterns": ["cypress/"],
     "rules": {
         "no-use-before-define": "off",
         "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ],

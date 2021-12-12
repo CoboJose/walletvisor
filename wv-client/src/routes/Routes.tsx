@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom';
 import { useAppSelector } from 'store/hooks';
 import logger from 'utils/logger';
-import Welcome from 'views/login/Welcome';
+import Welcome from 'views/welcome/Welcome';
 import Configuration from 'views/configuration/Configuration';
 import NotFound from 'views/notFound/NotFound';
 import Transactions from 'views/transactions/Transactions';

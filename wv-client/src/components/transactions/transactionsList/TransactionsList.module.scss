@@ -69,3 +69,11 @@
     text-align: center;
     font-size: small;
 }
+
+.menuDeleteButtonIcon {
+    fill: $error;
+    $size: 14px;
+    height: $size;
+    width: $size;
+    margin-right: 5px;
+}

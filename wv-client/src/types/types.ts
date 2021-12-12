@@ -1,3 +1,26 @@
+////////////
+// MODELS //
+////////////
+export type Transaction = {
+  id: number,
+  name: string,
+  kind: TransactionKind,
+  category: TransactionCategory,
+  amount: number,
+  date: number,
+  userID: number
+
+}
+
+export type User = {
+  id: number,
+  email: string,
+  name: string,
+}
+
+/////////////////
+// API HELPERS //
+/////////////////
 export type ApiError = {
   code: string,
   debugMessage: string
@@ -16,17 +39,16 @@ export type GetTransactionsResponse = {
   totalBalance: number,
 }
 
-export type Transaction = {
-  id: number,
+export type UpdateUserPayload = {
   name: string,
-  kind: TransactionKind,
-  category: TransactionCategory,
-  amount: number,
-  date: number,
-  userID: number
-
+  email: string,
+  newPassword: string|null,
+  oldPassword: string,
 }
 
+///////////
+// OTHER //
+///////////
 export enum TransactionKind {
   Income = 'income',
   Expense = 'expense'
@@ -72,5 +94,7 @@ export enum SvgIcons {
   Chart = 'chart',
   Info = 'info',
   Exchange = 'exchange',
-  Calendar = 'calendar'
+  Calendar = 'calendar',
+  Settings = 'settings',
+  Logout = 'logout',
 }

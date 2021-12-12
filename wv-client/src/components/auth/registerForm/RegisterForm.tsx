@@ -13,6 +13,7 @@ import TextField from '@mui/material/TextField';
 import Alert from '@mui/material/Alert';
 
 import style from './RegisterForm.module.scss';
+import { getUser } from 'store/slices/user';
 
 const RegisterForm = (): JSX.Element => {
   logger.rendering();
@@ -59,6 +60,7 @@ const RegisterForm = (): JSX.Element => {
     if (validateForm()) {
       try {
         await dispatch(register({ email, password })).unwrap();
+        await dispatch(getUser()).unwrap();
         setServerError('');
         history.push('/transactions');
       } catch (error) {

@@ -1,1 +1,7 @@
 @import "themes/theme.module";
+
+.userConfiguration {
+    @include flex-column-center;
+    padding: $basePadding;
+    max-width: 600px;
+}

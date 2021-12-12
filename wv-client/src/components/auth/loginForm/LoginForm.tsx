@@ -15,6 +15,7 @@ import Checkbox from '@mui/material/Checkbox/Checkbox';
 import { Alert } from '@mui/material';
 
 import style from './LoginForm.module.scss';
+import { getUser } from 'store/slices/user';
 
 const LoginForm = (): JSX.Element => {
   logger.rendering();
@@ -61,6 +62,7 @@ const LoginForm = (): JSX.Element => {
     if (validateForm()) {
       try {
         await dispatch(login({ email, password, keepLoggedIn: rememberPassword })).unwrap();
+        await dispatch(getUser()).unwrap();
         setServerError('');
         history.push('/transactions');
       } catch (error) {

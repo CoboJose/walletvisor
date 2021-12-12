@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import LoginForm from 'components/forms/auth/loginForm/LoginForm';
+import LoginForm from 'components/auth/loginForm/LoginForm';
 import logger from 'utils/logger';
-import RegisterForm from 'components/forms/auth/registerForm/RegisterForm';
+import RegisterForm from 'components/auth/registerForm/RegisterForm';
 import SVG from 'components/ui/svg/SVG';
 import { SvgIcons } from 'types/types';
 
