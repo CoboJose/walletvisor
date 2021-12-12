@@ -84,11 +84,14 @@ jobs:
             key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
             restore-keys: |
               ${{ runner.os }}-node-
+
+        -name: Hmm
+         run: |
+          npm install
         
         - name: Test Cypress
           uses: cypress-io/github-action@v2
           with:
-            project: wv-client
             build: npm run build
             start: npm start
 
