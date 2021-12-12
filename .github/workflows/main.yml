@@ -90,12 +90,10 @@ jobs:
         
         - name: Test Cypress
           uses: cypress-io/github-action@v2
-          #with:
-            #install: false
-            #project: ./wv-client
-            #build: npm run build
-            #start: npm start
-          run: ls
+          with:
+            working-directory: ./wv-client
+            build: npm run build
+            start: npm start
 
         - name: Development Build
           if: github.ref == 'refs/heads/develop'
