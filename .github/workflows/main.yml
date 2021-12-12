@@ -90,11 +90,11 @@ jobs:
         
         - name: Test Cypress
           uses: cypress-io/github-action@v2
-          with:
+          #with:
             #install: false
-            project: ./wv-client
-            build: npm run build
-            start: npm start
+            #project: ./wv-client
+            #build: npm run build
+            #start: npm start
           run: ls
 
         - name: Development Build
