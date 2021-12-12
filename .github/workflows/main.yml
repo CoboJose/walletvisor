@@ -85,7 +85,7 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-node-
 
-        -name: Hmm
+        - name: Hmm
           run: npm install
         
         - name: Test Cypress
