@@ -14,7 +14,7 @@ describe('Create Transaction Test', () => {
 
   it('Add button should be disabled', () => {
     _getRoot().within(() => {
-      _getAddButton().should('be.enabled')
+      _getAddButton().should('be.disabled')
     })
   })
 
