@@ -64,6 +64,12 @@ function _stubDefaultApiResponses(){
         fixture: 'user.json'
     })
 
+    // UPDATE USER
+    cy.intercept('PUT', Cypress.env("API_URL") + '/user', {
+        statusCode: 200,
+        body: 'user.json'
+    })
+
     // GET TRANSACTIONS
     cy.intercept('GET', Cypress.env("API_URL") + '/transactions?from=*&to=*', {
         statusCode: 200,
@@ -74,5 +80,17 @@ function _stubDefaultApiResponses(){
     cy.intercept('POST', Cypress.env("API_URL") + '/transactions', {
         statusCode: 200,
         fixture: 'transaction.json'
+    })
+
+    // UPDATE TRANSACTION
+    cy.intercept('PUT', Cypress.env("API_URL") + '/transactions', {
+        statusCode: 200,
+        fixture: 'transaction.json'
+    })
+
+    // DELETE TRANSACTION
+    cy.intercept('DELETE', Cypress.env("API_URL") + '/transactions?transactionId=*', {
+        statusCode: 200,
+        body: 'Transaction deleted succesfully'
     })
 }

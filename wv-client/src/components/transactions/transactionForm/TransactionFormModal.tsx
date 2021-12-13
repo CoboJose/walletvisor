@@ -159,7 +159,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
 
         </DialogActions>
         
-        <Confirmation 
+        <Confirmation
           text="Are you sure you want to delete the transaction?"
           buttonCancel="Cancel" 
           buttonOk="Delete" 
