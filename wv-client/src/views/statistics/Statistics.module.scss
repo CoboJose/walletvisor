@@ -1,0 +1,10 @@
+@import "themes/theme.module";
+
+.statistics {
+    @include flex-column-center;
+    width: 100%;
+
+    @media (min-width: $phoneMaxWidth) {
+        max-width: 95%;
+    }
+}
