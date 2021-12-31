@@ -1,25 +1,18 @@
-import React, { useEffect } from 'react';
-import { useAppDispatch } from 'store/hooks';
-import { getTransactions } from 'store/slices/transactions';
+import React from 'react';
 import logger from 'utils/logger';
 
 import style from './Statistics.module.scss';
-import IncomesAndExpenses from 'components/statistics/IncomesAndExpenses';
+import SelectedBalance from 'components/statistics/selectedBalance/SelectedBalance';
+import TransactionsDateRange from 'components/transactions/transactionsDateRange/TransactionsDateRange';
+import { Card } from '@mui/material';
+import MonthlyBalance from 'components/statistics/monthlyBalance/MonthlyBalance';
 
 const Statistics: React.FC = () => {
   logger.rendering();
 
-  const dispatch = useAppDispatch();
   ///////////
   // STATE //
   ///////////
-
-  ////////////////
-  // USE EFFECT //
-  ////////////////
-  useEffect(() => {
-    dispatch(getTransactions());
-  }, []);
   
   //////////////////////
   // HELPER FUNCTIONS //
@@ -35,7 +28,23 @@ const Statistics: React.FC = () => {
 
   return (
     <div className={style.statistics}>
-      <IncomesAndExpenses />
+
+      <Card className={style.dateRange} variant="outlined">
+        <TransactionsDateRange variant="standard" />
+      </Card>
+
+      <div className={style.charts}>
+
+        <Card className={style.selectedBalance} variant="outlined">
+          <SelectedBalance />
+        </Card>
+
+        <Card className={style.monthlyBalance} variant="outlined">
+          <MonthlyBalance />
+        </Card>
+
+      </div>
+
     </div>
   );
 };

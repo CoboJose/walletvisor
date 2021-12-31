@@ -68,6 +68,16 @@ $colors: (
   lightInfo: $lightInfo;
   lightSuccess: $lightSuccess;
   lightDisabled: $lightDisabled;
+
+  background: var(--backgroundColor);
+  paper: var(--paperColor);
+  primary: var(--primaryColor);
+  secondary: var(--secondaryColor);
+  error: var(--errorColor);
+  warning: var(--warningColor);
+  info: var(--infoColor);
+  success: var(--successColor);
+  disabled: var(--disabledColor);
 }
 
 $background: var(--backgroundColor);
