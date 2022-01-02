@@ -47,7 +47,7 @@ const App: React.FC = () => {
   useEffect(() => {
     // Init the theme
     dispatch(initTheme());
-    
+
     // If there is a refresh token stored, log in the user, and remove the loading screen once logged in
     const refreshTkn = localStorage.getItem('refreshToken');
     if (refreshTkn != null) {
@@ -73,8 +73,7 @@ const App: React.FC = () => {
     // Else, test if there is connection with the server, and remove the loading screen
     else {
       api.ping()
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           removeLoadingHTML();
         })
         .catch((error) => {

@@ -43,7 +43,7 @@ const TransactionForm = ({ transaction, setTransaction, formErrors, serverError 
   ////////////////
   useEffect(() => {
     //Update the transaction when some input is updated
-    const timestamp = date !== null ? dates.getTimestampWithoutDate(date) : 0;
+    const timestamp = date !== null ? dates.getTimestampWithoutTime(date) : 0;
     const roundedAmount = amount ? mathUtils.round(amount, 2) : 0;
     setTransaction({ ...transaction, name, kind, category, amount: roundedAmount, date: timestamp });
   }, [name, kind, category, amount, date]);

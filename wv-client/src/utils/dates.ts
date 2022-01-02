@@ -38,7 +38,16 @@ const getLastDayOfCurrentMonth = (): Date => {
   return new Date(Date.UTC(date.getFullYear(), date.getMonth() + 1, 0));
 };
 
-export default { timestampToStringDate, getTimestampWithoutDate: getTimestampWithoutTime, getCurrentDateTimeString, getCurrentTime, getFirstDayTimestampOfCurrentMonth: getFirstDayOfCurrentMonth, getLastDayTimestampOfCurrentMonth: getLastDayOfCurrentMonth };
+const getFirstDayOfNMonthAgo = (nMonth: number): Date => {
+  const date = new Date();
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth() - nMonth, 1));
+};
+
+const getMonthString = (date: Date): string => {
+  return date.toLocaleString('en-us', { month: 'long' });
+};
+
+export default { timestampToStringDate, getTimestampWithoutTime, getCurrentDateTimeString, getCurrentTime, getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth, getMonthString, getFirstDayOfNMonthAgo };
 
 const addZero = (element: number): string => {
   let res = element.toString();

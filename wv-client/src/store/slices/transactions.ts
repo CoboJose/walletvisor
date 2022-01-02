@@ -16,8 +16,8 @@ interface TransactionsState {
 const initialState: TransactionsState = {
   transactions: [],
   totalBalance: 0,
-  fromDate: dates.getFirstDayTimestampOfCurrentMonth().getTime(),
-  toDate: dates.getLastDayTimestampOfCurrentMonth().getTime(),
+  fromDate: dates.getFirstDayOfCurrentMonth().getTime(),
+  toDate: dates.getLastDayOfCurrentMonth().getTime(),
   isLoading: false,
 };
 

@@ -64,6 +64,9 @@
         "no-restricted-syntax": "off",
         "no-plusplus": "off",
         "react/jsx-props-no-spreading": "off",
-        "import/order": "off"
+        "import/order": "off",
+        "dot-notation": "off",
+        "no-unused-expressions": "off",
+        "react/no-array-index-key": "off"
     }
 }

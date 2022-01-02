@@ -36,15 +36,15 @@ const TransactionsDateRange = ({ variant }: TransactionsDateRangeProps): JSX.Ele
   // HANDLERS //
   //////////////
   const setFromDateHandler = (e: Date | null) => {
-    const from = e !== null ? dates.getTimestampWithoutDate(e) : null;
-    const to = formToDate !== null ? dates.getTimestampWithoutDate(formToDate) : null;
+    const from = e !== null ? dates.getTimestampWithoutTime(e) : null;
+    const to = formToDate !== null ? dates.getTimestampWithoutTime(formToDate) : null;
 
     submitDates(from, to);
   };
 
   const setToDateHandler = (e: Date | null) => {
-    const from = formFromDate !== null ? dates.getTimestampWithoutDate(formFromDate) : null;
-    const to = e !== null ? dates.getTimestampWithoutDate(e) : null;
+    const from = formFromDate !== null ? dates.getTimestampWithoutTime(formFromDate) : null;
+    const to = e !== null ? dates.getTimestampWithoutTime(e) : null;
 
     submitDates(from, to);
   };
@@ -56,8 +56,8 @@ const TransactionsDateRange = ({ variant }: TransactionsDateRangeProps): JSX.Ele
   };
 
   const currentMonthDates = () => {
-    const fromDate = dates.getFirstDayTimestampOfCurrentMonth();
-    const toDate = dates.getLastDayTimestampOfCurrentMonth();
+    const fromDate = dates.getFirstDayOfCurrentMonth();
+    const toDate = dates.getLastDayOfCurrentMonth();
     setFormFromDate(fromDate);
     setFormToDate(toDate);
     submitDates(fromDate.getTime(), toDate.getTime());

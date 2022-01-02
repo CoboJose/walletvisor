@@ -22,7 +22,17 @@ $lightInfo: #2196f3;
 $lightSuccess: #4caf50;
 $lightDisabled: #b9b9b9;
 
-// General
+// Category Colors
+$salaryColor: #2CF295;
+$businessColor: #4657db;
+$giftsColor: #FC5905;
+$foodColor: #E63599;
+$homeColor: #C00FE6;
+$shoppingColor: #FCA22D;
+$transportColor: #18E8FF;
+$billsColor: #ff1d3b;
+$entertainmentColor: #84df1b;
+$otherColor: rgb(0, 0, 0);
 
 // Color depending on the theme
 $colors: (
@@ -45,6 +55,17 @@ $colors: (
   lightInfo: $lightInfo,
   lightSuccess: $lightSuccess,
   lightDisabled: $lightDisabled,
+
+  salaryColor: $salaryColor,
+  businessColor: $businessColor,
+  giftsColor: $giftsColor,
+  foodColor: $foodColor,
+  homeColor: $homeColor,
+  shoppingColor: $shoppingColor,
+  transportColor: $transportColor,
+  billsColor: $billsColor,
+  entertainmentColor: $entertainmentColor,
+  otherColor: $otherColor,
 );
 
 //Export to access them in js
@@ -68,6 +89,27 @@ $colors: (
   lightInfo: $lightInfo;
   lightSuccess: $lightSuccess;
   lightDisabled: $lightDisabled;
+
+  background: var(--backgroundColor);
+  paper: var(--paperColor);
+  primary: var(--primaryColor);
+  secondary: var(--secondaryColor);
+  error: var(--errorColor);
+  warning: var(--warningColor);
+  info: var(--infoColor);
+  success: var(--successColor);
+  disabled: var(--disabledColor);
+
+  salaryColor: var(--salaryColor);
+  businessColor: var(--businessColor);
+  giftsColor: var(--giftsColor);
+  foodColor: var(--foodColor);
+  homeColor: var(--homeColor);
+  shoppingColor: var(--shoppingColor);
+  transportColor: var(--transportColor);
+  billsColor: var(--billsColor);
+  entertainmentColor: var(--entertainmentColor);
+  otherColor: var(--otherColor);
 }
 
 $background: var(--backgroundColor);
@@ -101,36 +143,36 @@ $maxWidth: 600px;
   align-items: center;
 }
 
-// Category Colors
+//Auto Category Colors
 .categoryColor{
   &.salary{
-    fill: #2CF295;
+    fill: $salaryColor;
   }
   &.business{
-    fill: #4657db;
+    fill: $businessColor;
   }
   &.gifts{
-    fill: #FC5905;
+    fill: $giftsColor;
   }
   &.food{
-    fill: #E63599;
+    fill: $foodColor;
   }
   &.home{
-    fill: #C00FE6;
+    fill: $homeColor;
   }
   &.shopping{
-    fill: #FCA22D;
+    fill: $shoppingColor;
   }
   &.transport{
-    fill: #18E8FF;
+    fill: $transportColor;
   }
   &.bills{
-    fill: #FF8B1D;
+    fill: $billsColor;
   }
   &.entertainment{
-    fill: #CDF558;
+    fill: $entertainmentColor;
   }
   &.other{
-    fill: rgb(0, 0, 0);
+    fill: $otherColor;
   }
 }

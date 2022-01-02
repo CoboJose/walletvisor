@@ -29,3 +29,11 @@ Cypress.Commands.add('login', () => {
     cy.get('input').eq(1).clear().type('C0mplexpass!')
     cy.get('button').click()
 })
+
+Cypress.Commands.add('clearTransactionDatesSelector', () => {
+    cy.get('[class*="TransactionsDateRange_clearIcon"]').click()
+})
+
+Cypress.Commands.add('navigateToConfiguration', () => {
+    cy.get('[class*="DesktopSidePanel_principalRoutesList"]').contains('Configuration').click()
+})

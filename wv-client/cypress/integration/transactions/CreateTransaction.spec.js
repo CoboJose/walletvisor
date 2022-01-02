@@ -1,9 +1,9 @@
-
-const TRANSACTION_NAME = "Test transaction"
+const TRN_NAME = "trn 1"
 
 beforeEach(() => {
   //Navigate
   cy.login()
+  cy.clearTransactionDatesSelector()
   cy.contains("Add Transaction").click()
 })
 
@@ -47,10 +47,18 @@ describe('Create Transaction Test', () => {
   })
 
   it('Should create transaction', () => {
+    // ADD TRANSACTION REQUEST
+    cy.intercept('POST', Cypress.env("API_URL") + '/transactions', (req) => {
+      let trn = req.body;
+      trn.id = 1;
+      expect(trn.name).to.eq(TRN_NAME)
+      req.reply({statusCode: 200, body: trn})
+    });
+    // GET TRANSACTIONS REQUEST
     cy.intercept('GET', Cypress.env("API_URL") + '/transactions?from=*&to=*', {
       statusCode: 200,
-      body: _getTransactionsBody()
-  })
+      body:  _getTransactionsBody()
+    })
 
     _getRoot().within(() => {
       _fillInputsValid()
@@ -61,7 +69,7 @@ describe('Create Transaction Test', () => {
     _getRoot().should('not.exist')
 
     // Transaction Created
-    cy.contains(TRANSACTION_NAME)
+    cy.contains(TRN_NAME)
   })
 })
 
@@ -82,23 +90,24 @@ function _clickAddButton() {
 }
 
 function _fillInputsValid() {
-  _getInput(0).clear().type(TRANSACTION_NAME) // Name
+  _getInput(0).clear().type(TRN_NAME) // Name
   _getInput(4).clear().type('10') // Amount
 }
 
 function _getTransactionsBody() {
+  console.log('now!')
   return {
-    "transactions":[
-      {
-      "amount": 10,
-      "category": "salary",
-      "date": 1639267200000,
-      "id": 1,
-      "kind": "income",
-      "name": TRANSACTION_NAME,
-      "userID": 1
-      }
-    ], 
-    "totalBalance": 10
-  }
+      transactions:[ 
+        {
+        "amount": 10,
+        "category": "salary",
+        "date": 1639267200000,
+        "id": 1,
+        "kind": "income",
+        "name": TRN_NAME,
+        "userID": 1
+        }
+      ], 
+      totalBalance: 10
+    }
 }
