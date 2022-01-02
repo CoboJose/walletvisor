@@ -40,8 +40,6 @@ const getLastDayOfCurrentMonth = (): Date => {
 
 const getFirstDayOfNMonthAgo = (nMonth: number): Date => {
   const date = new Date();
-  //date.setMonth(date.getMonth() - nMonth);
-  console.log(new Date(Date.UTC(date.getFullYear(), date.getMonth() - nMonth, 1)));
   return new Date(Date.UTC(date.getFullYear(), date.getMonth() - nMonth, 1));
 };
 

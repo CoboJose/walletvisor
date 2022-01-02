@@ -47,7 +47,7 @@ const App: React.FC = () => {
   useEffect(() => {
     // Init the theme
     dispatch(initTheme());
-    
+
     // If there is a refresh token stored, log in the user, and remove the loading screen once logged in
     const refreshTkn = localStorage.getItem('refreshToken');
     if (refreshTkn != null) {

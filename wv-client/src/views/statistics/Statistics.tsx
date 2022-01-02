@@ -6,6 +6,8 @@ import SelectedBalance from 'components/statistics/selectedBalance/SelectedBalan
 import TransactionsDateRange from 'components/transactions/transactionsDateRange/TransactionsDateRange';
 import { Card } from '@mui/material';
 import MonthlyBalance from 'components/statistics/monthlyBalance/MonthlyBalance';
+import SelectedCategories from 'components/statistics/selectedCategories/SelectedCategories';
+import { TransactionKind } from 'types/types';
 
 const Statistics: React.FC = () => {
   logger.rendering();
@@ -41,6 +43,14 @@ const Statistics: React.FC = () => {
 
         <Card className={style.monthlyBalance} variant="outlined">
           <MonthlyBalance />
+        </Card>
+
+        <Card className={style.selectedCategories} variant="outlined">
+          <SelectedCategories transactionKind={TransactionKind.Income} />
+        </Card>
+
+        <Card className={style.selectedCategories} variant="outlined">
+          <SelectedCategories transactionKind={TransactionKind.Expense} />
         </Card>
 
       </div>
