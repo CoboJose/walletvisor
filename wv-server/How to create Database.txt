@@ -1,5 +1,16 @@
 1. Install PostgreSQL, installing pgAdmin in the process (Automatically)
 
+
+In Mac/Linux or Postgres not working (Installed with brew):
+1. Init the service (Mac -> brew services start postgresql if installed with brew.
+2. <brew cellar folder>>(opt/homebrew for example) /postgresql/<version>/bin/createuser -s postgres
+3. Servers -> Right Click -> Create Server
+4. Name -> PostgreSQL
+5. Connection -> Host -> localhost
+
+Recommended auto installer
+
+
 2. Open pgAdmin
 
 3. Put the password used when installing postgres
