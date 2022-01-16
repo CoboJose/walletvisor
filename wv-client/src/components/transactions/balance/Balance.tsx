@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAppSelector } from 'store/hooks';
-import { SvgIcons, Transaction, TransactionKind } from 'types/types';
+import { Transaction, TransactionKind } from 'types/types';
 import logger from 'utils/logger';
 import math from 'utils/math';
 import dates from 'utils/dates';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import TransactionsDateRange from 'components/transactions/transactionsDateRange/TransactionsDateRange';
-import SVG from 'components/ui/svg/SVG';
 
 import Paper from '@mui/material/Paper';
 
 import style from './Balance.module.scss';
+import ButtonDateRange from 'components/ui/dateRange/ButtonDateRange';
 
 //////////////////////
 // HELPER FUNCTIONS //
@@ -67,7 +67,6 @@ const Balance = (): JSX.Element => {
   const totalBalance: number = useAppSelector((state) => state.transactions.totalBalance);
   const fromDate = useAppSelector((state) => state.transactions.fromDate);
   const toDate = useAppSelector((state) => state.transactions.toDate);
-  const [datesDialogOpen, setDatesDialogOpen] = useState<boolean>(false);
 
   const [balance, income, expense] = getAmounts(transactions);
   const dateRange = getDateRange(fromDate, toDate);
@@ -86,25 +85,7 @@ const Balance = (): JSX.Element => {
 
       <div className={style.dateRangeSelector}>
         {isPhone ? (
-          <div>
-            <Button
-              variant="outlined"
-              className={style.themeButton}
-              onClick={() => setDatesDialogOpen(true)}
-              size="small"
-              startIcon={<SVG name={SvgIcons.Calendar} className={style.calendarIcon} />}
-            >
-              Range
-            </Button>
-
-            <Dialog open={datesDialogOpen} onClose={() => setDatesDialogOpen(false)}>
-              <DialogTitle>Transactions Dates</DialogTitle>
-              <DialogContent> 
-                <TransactionsDateRange variant="outlined" />
-              </DialogContent>
-              <DialogActions> <Button onClick={() => setDatesDialogOpen(false)} autoFocus> OK </Button> </DialogActions>
-            </Dialog>
-          </div>
+          <ButtonDateRange />
         ) : (
           <div className={style.dateRangeInputs}>
             <TransactionsDateRange variant="standard" />

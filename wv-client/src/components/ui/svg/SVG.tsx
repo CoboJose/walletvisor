@@ -33,7 +33,7 @@ import { ReactComponent as Logout } from 'assets/icons/logout.svg';
 
 type SVGProps = {
   name: SvgIcons,
-  className: string,
+  className?: string,
   style?: CSSProperties | undefined,
 }
 
