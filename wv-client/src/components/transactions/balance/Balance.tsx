@@ -36,21 +36,6 @@ const formatNumber = (n: number): string => {
   return Number(math.round(Math.abs(n), 2)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
 };
 
-const getDateRange = (fromDate: number|null, toDate: number|null): string => {
-  let res = 'All time transactions';
-  if (fromDate !== null && toDate === null) {
-    res = 'from ' + dates.timestampToStringDate(fromDate);
-  }
-  else if (fromDate === null && toDate !== null) {
-    res = 'to ' + dates.timestampToStringDate(toDate);
-  }
-  else if (fromDate !== null && toDate !== null) {
-    res = dates.timestampToStringDate(fromDate) + ' - ' + dates.timestampToStringDate(toDate);
-  }
-
-  return res;
-};
-
 const Balance = (): JSX.Element => {
   logger.rendering();
 
@@ -69,7 +54,7 @@ const Balance = (): JSX.Element => {
   const toDate = useAppSelector((state) => state.transactions.toDate);
 
   const [balance, income, expense] = getAmounts(transactions);
-  const dateRange = getDateRange(fromDate, toDate);
+  const dateRange = dates.getDateRangeString(fromDate, toDate);
   
   /////////
   // JSX //

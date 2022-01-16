@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import logger from 'utils/logger';
 import style from './SelectedCategories.module.scss';
@@ -56,7 +57,6 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
   };
   const data = getData();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderCustomLabel = (pieData: any) => {
     return (
       <g>
@@ -70,7 +70,6 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
     );
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderCustomLegend = (value: string) => {
     const text = value.charAt(0).toUpperCase() + value.slice(1);
     const category = transactionCategoriesData.find((c) => c.key === value);
