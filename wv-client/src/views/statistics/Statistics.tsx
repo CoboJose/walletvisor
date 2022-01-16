@@ -4,10 +4,11 @@ import logger from 'utils/logger';
 import style from './Statistics.module.scss';
 import SelectedBalance from 'components/statistics/selectedBalance/SelectedBalance';
 import TransactionsDateRange from 'components/transactions/transactionsDateRange/TransactionsDateRange';
-import { Card } from '@mui/material';
+import { Card, useMediaQuery } from '@mui/material';
 import MonthlyBalance from 'components/statistics/monthlyBalance/MonthlyBalance';
 import SelectedCategories from 'components/statistics/selectedCategories/SelectedCategories';
 import { TransactionKind } from 'types/types';
+import ButtonDateRange from 'components/ui/dateRange/ButtonDateRange';
 
 const Statistics: React.FC = () => {
   logger.rendering();
@@ -15,6 +16,7 @@ const Statistics: React.FC = () => {
   ///////////
   // STATE //
   ///////////
+  const isPhone = useMediaQuery('(max-width:' + style.maxWidth + ')');
   
   //////////////////////
   // HELPER FUNCTIONS //
@@ -27,15 +29,19 @@ const Statistics: React.FC = () => {
   /////////
   // JSX //
   /////////
-
   return (
     <div className={style.statistics}>
+      <div className={style.cards}>
 
-      <Card className={style.dateRange} variant="outlined">
-        <TransactionsDateRange variant="standard" />
-      </Card>
-
-      <div className={style.charts}>
+        {isPhone ? (
+          <div className={style.dateRange}>
+            <ButtonDateRange />
+          </div>
+        ) : (
+          <Card className={style.dateRange} variant="outlined">
+            <TransactionsDateRange variant="standard" />
+          </Card>
+        )}
 
         <Card className={style.selectedBalance} variant="outlined">
           <SelectedBalance />
@@ -45,16 +51,15 @@ const Statistics: React.FC = () => {
           <MonthlyBalance />
         </Card>
 
-        <Card className={style.selectedCategories} variant="outlined">
+        <Card className={style.selectedCategoriesIncome} variant="outlined">
           <SelectedCategories transactionKind={TransactionKind.Income} />
         </Card>
 
-        <Card className={style.selectedCategories} variant="outlined">
+        <Card className={style.selectedCategoriesExpense} variant="outlined">
           <SelectedCategories transactionKind={TransactionKind.Expense} />
         </Card>
 
       </div>
-
     </div>
   );
 };

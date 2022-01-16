@@ -1,7 +1,7 @@
 import React from 'react';
 import logger from 'utils/logger';
 import style from './SelectedCategories.module.scss';
-import { Legend, PieChart, Pie, Cell } from 'recharts';
+import { Legend, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { useAppSelector } from 'store/hooks';
 import { SvgIcons, TransactionKind } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
@@ -58,8 +58,6 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderCustomLabel = (pieData: any) => {
-    console.log(pieData);
-
     return (
       <g>
         <text x={pieData.x} y={pieData.y} fill={pieData.fill} textAnchor={pieData.x > pieData.cx ? 'start' : 'end'} dominantBaseline="central" fontSize="1em">
@@ -87,18 +85,17 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
   // JSX //
   /////////
   return (
-    <div className={style.selectedCategories}>
-
-      <PieChart width={350} height={450}>
-        <Pie data={data} dataKey="Amount" nameKey="Category" cx="50%" cy="50%" outerRadius={150} fill="#8884d8" label={renderCustomLabel}>
+    <ResponsiveContainer height="100%" width="100%" className={style.selectedCategories}>
+      <PieChart>
+        <Pie data={data} dataKey="Amount" nameKey="Category" label={renderCustomLabel}>
           {data.map((entry) => (
             <Cell key={entry.Category} fill={entry.Category !== 'No Transactions' ? style[entry.Category + 'Color'] : style.primary} />
           ))}
         </Pie>
-        <Legend formatter={renderCustomLegend} iconSize={0} />
+        <br />
+        <Legend formatter={renderCustomLegend} iconSize={0} wrapperStyle={{ paddingTop: '25px' }} />
       </PieChart>
-
-    </div>
+    </ResponsiveContainer>
   );
 };
 

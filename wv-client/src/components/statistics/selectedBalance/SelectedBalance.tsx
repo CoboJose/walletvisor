@@ -1,8 +1,7 @@
 import React from 'react';
 import logger from 'utils/logger';
 import style from './SelectedBalance.module.scss';
-//import { useAppSelector } from 'store/hooks';
-import { BarChart, Bar, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useAppSelector } from 'store/hooks';
 import { TransactionKind } from 'types/types';
 
@@ -44,14 +43,13 @@ const SelectedBalance = (): JSX.Element => {
   //////////////
   // HANDLERS //
   //////////////
-  
+
   /////////
   // JSX //
   /////////
   return (
-    <div className={style.SelectedBalance}>
-      
-      <BarChart width={400} height={250} data={getData()}>
+    <ResponsiveContainer height="100%" width="100%" className={style.selectedBalance}>
+      <BarChart data={getData()}>
         <CartesianGrid strokeDasharray="3 3" />
         <YAxis label={{ value: '€', angle: 0, position: 'insideLeft', fill: style.primary }} />
         <Tooltip contentStyle={{ color: style.primary }} />
@@ -59,8 +57,7 @@ const SelectedBalance = (): JSX.Element => {
         <Bar dataKey="Incomes" unit="€" fill={style.success} label={{ position: 'insideTop' }} />
         <Bar dataKey="Expenses" unit="€" fill={style.error} label={{ position: 'insideTop' }} />
       </BarChart>
-
-    </div>
+    </ResponsiveContainer>
   );
 };
 
