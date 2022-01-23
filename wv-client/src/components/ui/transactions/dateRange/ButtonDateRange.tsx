@@ -5,7 +5,7 @@ import logger from 'utils/logger';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import TransactionsDateRange from 'components/transactions/transactionsDateRange/TransactionsDateRange';
 import { SvgIcons } from 'types/types';
-import SVG from '../svg/SVG';
+import SVG from 'components/ui/svg/SVG';
 
 const ButtonDateRange = (): JSX.Element => {
   logger.rendering();

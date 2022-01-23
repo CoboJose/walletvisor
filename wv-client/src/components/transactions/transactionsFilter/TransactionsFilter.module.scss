@@ -1,0 +1,28 @@
+@import "themes/theme.module";
+
+.transactionsFilter{
+    display: block;
+}
+
+.cancelButton{
+    color: $secondary !important;
+}
+
+.deleteButton{
+    color: $error !important;
+}
+
+.okButton{
+    color: $success !important;
+
+    &:disabled {
+        color: $disabled !important;
+    }
+}
+
+.buttonIcon {
+    $size: 15px;
+    height: $size;
+    width: $size;
+    fill: currentColor;
+}

@@ -23,18 +23,6 @@
     }
 }
 
-.addTransactionButton {
-
-    .addIcon {
-        $size: 12px;
-        height: $size;
-        width: $size;
-        fill: $primary;
-        stroke: $primary;
-        stroke-width: 5px;
-    }
-}
-
 .list {
     width: 100%;
     max-height: calc(100vh - 280px);

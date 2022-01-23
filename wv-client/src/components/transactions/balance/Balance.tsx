@@ -10,7 +10,9 @@ import TransactionsDateRange from 'components/transactions/transactionsDateRange
 import Paper from '@mui/material/Paper';
 
 import style from './Balance.module.scss';
-import ButtonDateRange from 'components/ui/dateRange/ButtonDateRange';
+import ButtonAddTransaction from 'components/ui/transactions/addTransactionButton/ButtonAddTransaction';
+import ButtonDateRange from 'components/ui/transactions/dateRange/ButtonDateRange';
+import FilterByCategoriesButton from 'components/ui/transactions/filterByCategoriesButton/filterByCategoriesButton';
 
 //////////////////////
 // HELPER FUNCTIONS //
@@ -69,9 +71,7 @@ const Balance = (): JSX.Element => {
       </div>
 
       <div className={style.dateRangeSelector}>
-        {isPhone ? (
-          <ButtonDateRange />
-        ) : (
+        {!isPhone && (
           <div className={style.dateRangeInputs}>
             <TransactionsDateRange variant="standard" />
           </div>
@@ -87,6 +87,12 @@ const Balance = (): JSX.Element => {
           <span className={style.text}>Total: </span> 
           <span className={style.amount}> {balance >= 0 ? '+' : '-'} {formatNumber(totalBalance)} </span>
         </div>
+      </div>
+
+      <div className={style.actionButtons}>
+        <ButtonAddTransaction />
+        {isPhone && <ButtonDateRange />}
+        <FilterByCategoriesButton />
       </div>
 
     </Paper>

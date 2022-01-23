@@ -8,7 +8,7 @@ import { Card, useMediaQuery } from '@mui/material';
 import MonthlyBalance from 'components/statistics/monthlyBalance/MonthlyBalance';
 import SelectedCategories from 'components/statistics/selectedCategories/SelectedCategories';
 import { TransactionKind } from 'types/types';
-import ButtonDateRange from 'components/ui/dateRange/ButtonDateRange';
+import ButtonDateRange from 'components/ui/transactions/dateRange/ButtonDateRange';
 import dates from 'utils/dates';
 import { useAppSelector } from 'store/hooks';
 

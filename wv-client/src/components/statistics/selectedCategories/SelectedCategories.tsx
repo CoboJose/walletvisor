@@ -86,7 +86,7 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
   return (
     <ResponsiveContainer height="100%" width="100%" className={style.selectedCategories}>
       <PieChart>
-        <Pie data={data} dataKey="Amount" nameKey="Category" label={renderCustomLabel}>
+        <Pie data={data} dataKey="Amount" nameKey="Category" label={renderCustomLabel} paddingAngle={5} innerRadius="60%" outerRadius="80%">
           {data.map((entry) => (
             <Cell key={entry.Category} fill={entry.Category !== 'No Transactions' ? style[entry.Category + 'Color'] : style.primary} />
           ))}
