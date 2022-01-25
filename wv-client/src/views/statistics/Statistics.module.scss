@@ -12,7 +12,19 @@ $maxWidth: 1000px;
     maxWidth: $maxWidth
 }
 
+.label {
+    margin-bottom: 7px;
+    font-size: 12px;
+    color: $primary;
+}
+
+.card {
+    width: 100%;
+    padding: 7px;
+}
+
 .cards {
+    text-align: center;
     //Phone
     @media (max-width: $maxWidth) {
         display: flex;
@@ -20,28 +32,20 @@ $maxWidth: 1000px;
         align-items: center;
         gap: 10px;
 
-        .selectedBalance {
-            width: 100%;
+        .selectedBalanceContent {
             height: 200px;
-            padding: 5px;
         }
         
-        .monthlyBalance {
-            width: 100%;
+        .monthlyBalanceContent {
             height: 250px;
-            padding: 5px;
         }
         
-        .selectedCategoriesIncome {
-            width: 100%;
+        .selectedCategoriesIncomeContent {
             height: 300px;
-            padding: 10px;
         }
         
-        .selectedCategoriesExpense {
-            width: 100%;
+        .selectedCategoriesExpenseContent {
             height: 300px;
-            padding: 10px;
         }
     }
 
@@ -49,46 +53,51 @@ $maxWidth: 1000px;
     @media (min-width: $maxWidth) {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-rows:  0.95fr 1.05fr;
+        grid-template-rows:  1fr 1fr;
         gap: 15px 10px;
         grid-template-areas:
             "dateRange selectedBalance monthlyBalance monthlyBalance"
             "selectedCategoriesIncome selectedCategoriesIncome selectedCategoriesExpense selectedCategoriesExpense";
+        $height: 350px;
 
-        .dateRange {
+        .dateRangeCard {
             grid-area: dateRange;
-            width: 100%;
-            padding: 17px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
         }
 
-        .selectedBalance {
+        .dateRangeContent {
+            align-self: center;
+            margin: auto 0;
+            padding: 7px;
+        }
+
+        .selectedBalanceCard {
             grid-area: selectedBalance;
-            width: 100%;
-            height: 260px;
-            padding: 5px;
+        }
+        .selectedBalanceContent {
+            height: $height;
         }
         
-        .monthlyBalance {
+        .monthlyBalanceCard {
             grid-area: monthlyBalance;
-            width: 100%;
-            height: 260x;
-            padding: 5px;
+        }
+        .monthlyBalanceContent {
+            height: $height;
         }
         
-        .selectedCategoriesIncome {
+        .selectedCategoriesIncomeCard {
             grid-area: selectedCategoriesIncome;
-            width: 100%;
-            height: 300px;
-            padding: 10px;
+        }
+        .selectedCategoriesIncomeContent {
+            height: $height;
         }
         
-        .selectedCategoriesExpense {
+        .selectedCategoriesExpenseCard {
             grid-area: selectedCategoriesExpense;
-            width: 100%;
-            height: 300px;
-            padding: 10px;
+        }
+        .selectedCategoriesExpenseContent {
+            height: $height;
         }
     }
 }

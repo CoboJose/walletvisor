@@ -30,11 +30,12 @@ const buttonDisabled = (trn: Transaction): boolean => {
 
 type TransactionFormModalProps = {
   transactionToUpdate: Transaction | null,
-  onClose: () => void
+  open: boolean,
+  onClose: () => void,
   setSnackbarText: (arg0: string) => void
 }
 
-const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }: TransactionFormModalProps): JSX.Element => {
+const TransactionFormModal = ({ transactionToUpdate, open, onClose, setSnackbarText }: TransactionFormModalProps): JSX.Element => {
   logger.rendering();
 
   ///////////
@@ -47,7 +48,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
   ///////////
   // STATE //
   ///////////
-  const emptyTransaction: Transaction = { id: -1, name: '', kind: TransactionKind.Income, category: TransactionCategory.Salary, amount: -1, date: new Date().getTime(), userID: -1 };
+  const emptyTransaction: Transaction = { id: -1, name: '', kind: TransactionKind.Expense, category: TransactionCategory.Shopping, amount: -1, date: new Date().getTime(), userID: -1 };
   const isEdit: boolean = transactionToUpdate != null;
 
   const [transaction, setTransaction] = useState<Transaction>(transactionToUpdate !== null ? transactionToUpdate : emptyTransaction);
@@ -117,7 +118,7 @@ const TransactionFormModal = ({ transactionToUpdate, onClose, setSnackbarText }:
   // JSX //
   /////////
   return (
-    <Dialog open fullScreen={isPhone}>
+    <Dialog open={open} fullScreen={isPhone} onClose={onClose}>
       <div className={style.transactionFormModal}>
 
         <DialogTitle>

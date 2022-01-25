@@ -8,7 +8,9 @@ import { Card, useMediaQuery } from '@mui/material';
 import MonthlyBalance from 'components/statistics/monthlyBalance/MonthlyBalance';
 import SelectedCategories from 'components/statistics/selectedCategories/SelectedCategories';
 import { TransactionKind } from 'types/types';
-import ButtonDateRange from 'components/ui/dateRange/ButtonDateRange';
+import ButtonDateRange from 'components/ui/transactions/dateRange/ButtonDateRange';
+import dates from 'utils/dates';
+import { useAppSelector } from 'store/hooks';
 
 const Statistics: React.FC = () => {
   logger.rendering();
@@ -17,6 +19,9 @@ const Statistics: React.FC = () => {
   // STATE //
   ///////////
   const isPhone = useMediaQuery('(max-width:' + style.maxWidth + ')');
+  const fromDate = useAppSelector((state) => state.transactions.fromDate);
+  const toDate = useAppSelector((state) => state.transactions.toDate);
+  const dateRange = dates.getDateRangeString(fromDate, toDate);
   
   //////////////////////
   // HELPER FUNCTIONS //
@@ -34,29 +39,34 @@ const Statistics: React.FC = () => {
       <div className={style.cards}>
 
         {isPhone ? (
-          <div className={style.dateRange}>
+          <div className={style.dateRangeCard}>
             <ButtonDateRange />
           </div>
         ) : (
-          <Card className={style.dateRange} variant="outlined">
-            <TransactionsDateRange variant="standard" />
+          <Card className={`${style.card} ${style.dateRangeCard}`} variant="outlined">
+            <div className={style.label}>Date Selector</div>
+            <div className={style.dateRangeContent}> <TransactionsDateRange variant="standard" /> </div>
           </Card>
         )}
 
-        <Card className={style.selectedBalance} variant="outlined">
-          <SelectedBalance />
+        <Card className={`${style.card} ${style.selectedBalanceCard}`} variant="outlined">
+          <div className={style.label}>{isPhone ? ('Balance for (' + dateRange + ')') : ('Balance for Selected Dates')}</div>
+          <div className={style.selectedBalanceContent}> <SelectedBalance /> </div>
         </Card>
 
-        <Card className={style.monthlyBalance} variant="outlined">
-          <MonthlyBalance />
+        <Card className={`${style.card} ${style.monthlyBalanceCard}`} variant="outlined">
+          <div className={style.label}>Balance for Last 4 Months</div>
+          <div className={style.monthlyBalanceContent}> <MonthlyBalance /> </div>
         </Card>
 
-        <Card className={style.selectedCategoriesIncome} variant="outlined">
-          <SelectedCategories transactionKind={TransactionKind.Income} />
+        <Card className={`${style.card} ${style.selectedCategoriesIncomeCard}`} variant="outlined">
+          <div className={style.label}>{isPhone ? ('Incomes Categories Distribution for (' + dateRange + ')') : ('Incomes Categories Distribution for Selected Dates')}</div>
+          <div className={style.selectedCategoriesIncomeContent}> <SelectedCategories transactionKind={TransactionKind.Income} /> </div>
         </Card>
 
-        <Card className={style.selectedCategoriesExpense} variant="outlined">
-          <SelectedCategories transactionKind={TransactionKind.Expense} />
+        <Card className={`${style.card} ${style.selectedCategoriesExpenseCard}`} variant="outlined">
+          <div className={style.label}>{isPhone ? ('Expenses Categories Distribution for (' + dateRange + ')') : ('Expenses Categories Distribution for Selected Dates')}</div>
+          <div className={style.selectedCategoriesExpenseContent}> <SelectedCategories transactionKind={TransactionKind.Expense} /> </div>
         </Card>
 
       </div>

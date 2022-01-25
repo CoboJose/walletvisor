@@ -4,13 +4,15 @@ import { Transaction, TransactionKind } from 'types/types';
 import logger from 'utils/logger';
 import math from 'utils/math';
 import dates from 'utils/dates';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import TransactionsDateRange from 'components/transactions/transactionsDateRange/TransactionsDateRange';
 
 import Paper from '@mui/material/Paper';
 
 import style from './Balance.module.scss';
-import ButtonDateRange from 'components/ui/dateRange/ButtonDateRange';
+import ButtonAddTransaction from 'components/ui/transactions/addTransactionButton/ButtonAddTransaction';
+import ButtonDateRange from 'components/ui/transactions/dateRange/ButtonDateRange';
+import FilterByCategoriesButton from 'components/ui/transactions/filterByCategoriesButton/filterByCategoriesButton';
 
 //////////////////////
 // HELPER FUNCTIONS //
@@ -36,29 +38,13 @@ const formatNumber = (n: number): string => {
   return Number(math.round(Math.abs(n), 2)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
 };
 
-const getDateRange = (fromDate: number|null, toDate: number|null): string => {
-  let res = 'All time transactions';
-  if (fromDate !== null && toDate === null) {
-    res = 'from ' + dates.timestampToStringDate(fromDate);
-  }
-  else if (fromDate === null && toDate !== null) {
-    res = 'to ' + dates.timestampToStringDate(toDate);
-  }
-  else if (fromDate !== null && toDate !== null) {
-    res = dates.timestampToStringDate(fromDate) + ' - ' + dates.timestampToStringDate(toDate);
-  }
-
-  return res;
-};
-
 const Balance = (): JSX.Element => {
   logger.rendering();
 
   ///////////
   // HOOKS //
   ///////////
-  const theme = useTheme();
-  const isPhone = useMediaQuery(theme.breakpoints.only('xs'));
+  const isPhone = useMediaQuery('(max-width:' + style.intermediateWidth + ')');
 
   ///////////
   // STATE //
@@ -69,7 +55,7 @@ const Balance = (): JSX.Element => {
   const toDate = useAppSelector((state) => state.transactions.toDate);
 
   const [balance, income, expense] = getAmounts(transactions);
-  const dateRange = getDateRange(fromDate, toDate);
+  const dateRange = dates.getDateRangeString(fromDate, toDate);
   
   /////////
   // JSX //
@@ -82,16 +68,14 @@ const Balance = (): JSX.Element => {
         <div className={style.income}>+ {formatNumber(income)}</div>
         <div className={style.expense}>- {formatNumber(expense)}</div>
       </div>
-
+      
+      {!isPhone && (
       <div className={style.dateRangeSelector}>
-        {isPhone ? (
-          <ButtonDateRange />
-        ) : (
-          <div className={style.dateRangeInputs}>
-            <TransactionsDateRange variant="standard" />
-          </div>
-        )}
+        <div className={style.dateRangeInputs}>
+          <TransactionsDateRange variant="standard" />
+        </div>
       </div>
+      )}
 
       <div className={style.balances}>
         <div className={`${style.rangeBalance} ${balance >= 0 ? style.positive : style.negative}`}>
@@ -102,6 +86,12 @@ const Balance = (): JSX.Element => {
           <span className={style.text}>Total: </span> 
           <span className={style.amount}> {balance >= 0 ? '+' : '-'} {formatNumber(totalBalance)} </span>
         </div>
+      </div>
+
+      <div className={style.actionButtons}>
+        <ButtonAddTransaction isPhone={isPhone} />
+        {isPhone && <ButtonDateRange />}
+        <FilterByCategoriesButton isPhone={isPhone} />
       </div>
 
     </Paper>

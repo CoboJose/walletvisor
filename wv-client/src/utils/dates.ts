@@ -47,7 +47,22 @@ const getMonthString = (date: Date): string => {
   return date.toLocaleString('en-us', { month: 'long' });
 };
 
-export default { timestampToStringDate, getTimestampWithoutTime, getCurrentDateTimeString, getCurrentTime, getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth, getMonthString, getFirstDayOfNMonthAgo };
+const getDateRangeString = (fromDate: number|null, toDate: number|null): string => {
+  let res = 'All time transactions';
+  if (fromDate !== null && toDate === null) {
+    res = 'from ' + timestampToStringDate(fromDate);
+  }
+  else if (fromDate === null && toDate !== null) {
+    res = 'to ' + timestampToStringDate(toDate);
+  }
+  else if (fromDate !== null && toDate !== null) {
+    res = timestampToStringDate(fromDate) + ' - ' + timestampToStringDate(toDate);
+  }
+
+  return res;
+};
+
+export default { timestampToStringDate, getTimestampWithoutTime, getCurrentDateTimeString, getCurrentTime, getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth, getMonthString, getFirstDayOfNMonthAgo, getDateRangeString };
 
 const addZero = (element: number): string => {
   let res = element.toString();

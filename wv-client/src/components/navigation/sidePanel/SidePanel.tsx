@@ -22,7 +22,7 @@ const principalRoutesList: SidePanelListItems[] = [
   {
     text: 'Configuration',
     path: 'configuration',
-    svg: SvgIcons.Edit,
+    svg: SvgIcons.Settings,
   },
   {
     text: 'About',

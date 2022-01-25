@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import logger from 'utils/logger';
 import style from './MonthlyBalance.module.scss';
-//import { useAppSelector } from 'store/hooks';
-import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart, Line, ReferenceLine, ResponsiveContainer } from 'recharts';
+import { Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart, Line, ResponsiveContainer } from 'recharts';
 import dates from 'utils/dates';
 import { ApiError, Transaction, TransactionKind } from 'types/types';
 import api from 'api/api';
@@ -72,6 +72,14 @@ const MonthlyBalance = (): JSX.Element => {
     return res;
   };
 
+  const CustomLabel = ({ x, y, value }: any) => {
+    return (
+      <text x={x} y={y} dy={-4} fill="currentColor" fontSize={16} textAnchor="middle">
+        {value}
+      </text>
+    );
+  };
+
   //////////////
   // HANDLERS //
   //////////////
@@ -80,19 +88,20 @@ const MonthlyBalance = (): JSX.Element => {
   // JSX //
   /////////
   return (
-    <ResponsiveContainer height="100%" width="100%" className={style.monthlyBalance}>
-      <ComposedChart data={getData()}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="Month" scale="band" />
-        <YAxis label={{ value: '€', angle: 0, position: 'insideLeft', fill: style.primary }} />
-        <Tooltip contentStyle={{ color: style.primary }} />
-        <Legend />
-        <ReferenceLine y={0} stroke={style.info} />
-        <Bar dataKey="Incomes" unit="€" fill={style.success} label={{ position: 'insideTop' }} barSize={20} />
-        <Bar dataKey="Expenses" unit="€" fill={style.error} label={{ position: 'insideTop' }} barSize={20} />
-        <Line type="monotone" dataKey="Balance" stroke={style.primary} />
-      </ComposedChart>
-    </ResponsiveContainer>
+    <>
+      <ResponsiveContainer height="100%" width="100%" className={style.monthlyBalance}>
+        <ComposedChart data={getData()}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="Month" scale="band" />
+          <YAxis label={{ value: '€', angle: 0, position: 'insideLeft', fill: style.primary }} />
+          <Tooltip contentStyle={{ color: style.primary }} />
+          <Legend />
+          <Bar dataKey="Incomes" unit="€" fill={style.success} barSize={20} />
+          <Bar dataKey="Expenses" unit="€" fill={style.error} barSize={20} />
+          <Line type="monotone" dataKey="Balance" stroke={style.primary} {...{ label: <CustomLabel /> }} />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </>
   );
 };
 

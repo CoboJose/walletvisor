@@ -97,4 +97,5 @@ export enum SvgIcons {
   Calendar = 'calendar',
   Settings = 'settings',
   Logout = 'logout',
+  Filter = 'filter',
 }

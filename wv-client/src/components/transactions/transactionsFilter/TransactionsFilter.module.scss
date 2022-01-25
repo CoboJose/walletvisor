@@ -1,0 +1,21 @@
+@import "themes/theme.module";
+
+.transactionFilter {
+    max-width: 350px;
+    min-width: 300px;
+}
+
+.radios {
+    //Phone
+    @media (max-width: $phoneMaxWidth) {
+        flex-direction: column;
+    }
+}
+
+.selectSVG{
+    $size: 15px;
+    height: $size;
+    width: $size;
+    fill: currentColor;
+    margin-right: 5px;
+}

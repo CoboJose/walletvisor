@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import logger from 'utils/logger';
 import style from './SelectedCategories.module.scss';
@@ -56,7 +57,6 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
   };
   const data = getData();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderCustomLabel = (pieData: any) => {
     return (
       <g>
@@ -70,7 +70,6 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
     );
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderCustomLegend = (value: string) => {
     const text = value.charAt(0).toUpperCase() + value.slice(1);
     const category = transactionCategoriesData.find((c) => c.key === value);
@@ -87,7 +86,7 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
   return (
     <ResponsiveContainer height="100%" width="100%" className={style.selectedCategories}>
       <PieChart>
-        <Pie data={data} dataKey="Amount" nameKey="Category" label={renderCustomLabel}>
+        <Pie data={data} dataKey="Amount" nameKey="Category" label={renderCustomLabel} paddingAngle={5} innerRadius="60%" outerRadius="80%">
           {data.map((entry) => (
             <Cell key={entry.Category} fill={entry.Category !== 'No Transactions' ? style[entry.Category + 'Color'] : style.primary} />
           ))}
