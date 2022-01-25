@@ -4,7 +4,7 @@ import { Transaction, TransactionKind } from 'types/types';
 import logger from 'utils/logger';
 import math from 'utils/math';
 import dates from 'utils/dates';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import TransactionsDateRange from 'components/transactions/transactionsDateRange/TransactionsDateRange';
 
 import Paper from '@mui/material/Paper';
@@ -44,8 +44,7 @@ const Balance = (): JSX.Element => {
   ///////////
   // HOOKS //
   ///////////
-  const theme = useTheme();
-  const isPhone = useMediaQuery(theme.breakpoints.only('xs'));
+  const isPhone = useMediaQuery('(max-width:' + style.intermediateWidth + ')');
 
   ///////////
   // STATE //
@@ -69,14 +68,14 @@ const Balance = (): JSX.Element => {
         <div className={style.income}>+ {formatNumber(income)}</div>
         <div className={style.expense}>- {formatNumber(expense)}</div>
       </div>
-
+      
+      {!isPhone && (
       <div className={style.dateRangeSelector}>
-        {!isPhone && (
-          <div className={style.dateRangeInputs}>
-            <TransactionsDateRange variant="standard" />
-          </div>
-        )}
+        <div className={style.dateRangeInputs}>
+          <TransactionsDateRange variant="standard" />
+        </div>
       </div>
+      )}
 
       <div className={style.balances}>
         <div className={`${style.rangeBalance} ${balance >= 0 ? style.positive : style.negative}`}>
@@ -90,9 +89,9 @@ const Balance = (): JSX.Element => {
       </div>
 
       <div className={style.actionButtons}>
-        <ButtonAddTransaction />
+        <ButtonAddTransaction isPhone={isPhone} />
         {isPhone && <ButtonDateRange />}
-        <FilterByCategoriesButton />
+        <FilterByCategoriesButton isPhone={isPhone} />
       </div>
 
     </Paper>

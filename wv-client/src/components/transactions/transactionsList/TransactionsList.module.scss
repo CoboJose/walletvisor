@@ -7,30 +7,22 @@
     margin-top: 15px;
 }
 
-.addTransactionFab {
-    position: absolute !important;
-    bottom: 23px !important;
-    right: 15px !important;
-    z-index: 10 !important;
-
-    .addIcon {
-        $size: 30px;
-        height: $size;
-        width: $size;
-        fill: white;
-        stroke: white;
-        stroke-width: 15px;
-    }
-}
-
 .list {
     width: 100%;
-    max-height: calc(100vh - 280px);
     overflow-y: auto;
 
     .listMonth {
         padding: 7px;
         color: $primary;
+    }
+
+    // Phone
+    @media (max-width: $phoneMaxWidth) {
+        max-height: calc(100vh - 280px);
+    }
+    // Desktop
+    @media (min-width: $phoneMaxWidth) {
+        max-height: calc(100vh - 320px);
     }
 }
 

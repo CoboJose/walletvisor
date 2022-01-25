@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import api from 'api/api';
-import { ApiError, GetTransactionsResponse, Transaction } from 'types/types';
+import { ApiError, GetTransactionsResponse, Transaction, TransactionCategory, TransactionKind } from 'types/types';
 import { RootState } from 'store/store';
 import { logout } from './auth';
 import dates from 'utils/dates';
@@ -10,6 +10,8 @@ interface TransactionsState {
   totalBalance: number,
   fromDate: number | null,
   toDate: number | null,
+  filterKind: TransactionKind | string,
+  filterCategory: TransactionCategory | string,
   isLoading: boolean,
 }
 
@@ -18,6 +20,8 @@ const initialState: TransactionsState = {
   totalBalance: 0,
   fromDate: dates.getFirstDayOfCurrentMonth().getTime(),
   toDate: dates.getLastDayOfCurrentMonth().getTime(),
+  filterKind: '',
+  filterCategory: '',
   isLoading: false,
 };
 
@@ -102,6 +106,13 @@ export const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
   reducers: {
+    setFilterKind: (state, action: PayloadAction<TransactionKind | string>) => {
+      state.filterCategory = '';
+      state.filterKind = action.payload;
+    },
+    setFilterCategory: (state, action: PayloadAction<TransactionCategory | string>) => {
+      state.filterCategory = action.payload;
+    },
   },
   extraReducers: (builder) => {
     //GET
@@ -172,5 +183,5 @@ export const transactionsSlice = createSlice({
   },
 });
 
-// export const { } = transactionsSlice.actions;
+export const { setFilterKind, setFilterCategory } = transactionsSlice.actions;
 export default transactionsSlice.reducer;

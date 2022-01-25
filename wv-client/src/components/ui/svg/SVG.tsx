@@ -30,6 +30,7 @@ import { ReactComponent as Exchange } from 'assets/icons/exchange.svg';
 import { ReactComponent as Calendar } from 'assets/icons/calendar.svg';
 import { ReactComponent as Settings } from 'assets/icons/settings.svg';
 import { ReactComponent as Logout } from 'assets/icons/logout.svg';
+import { ReactComponent as Filter } from 'assets/icons/filter.svg';
 
 type SVGProps = {
   name: SvgIcons,
@@ -123,6 +124,9 @@ const SVG = ({ name, className, style }: SVGProps): JSX.Element => {
 
       case 'logout':
         return <Logout className={className} style={style} />; 
+
+      case 'filter':
+        return <Filter className={className} style={style} />; 
       
       default:
         return <Logo className={className} style={style} />;

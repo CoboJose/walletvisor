@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import logger from 'utils/logger';
 
-import { Alert, Button, Snackbar, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Button, Snackbar } from '@mui/material';
 import { SvgIcons } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
 import TransactionFormModal from 'components/transactions/transactionForm/TransactionFormModal';
 
-const ButtonAddTransaction = (): JSX.Element => {
-  logger.rendering();
+type ButtonAddTransactionProps = {
+  isPhone: boolean
+}
 
-  const theme = useTheme();
-  const isPhone = useMediaQuery(theme.breakpoints.only('xs'));
+const ButtonAddTransaction = ({ isPhone }: ButtonAddTransactionProps): JSX.Element => {
+  logger.rendering();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState<string>('');
@@ -45,7 +46,7 @@ const ButtonAddTransaction = (): JSX.Element => {
         </>
       )}
 
-      {isModalOpen && <TransactionFormModal transactionToUpdate={null} onClose={onCloseModal} setSnackbarText={setSnackbarText} />}
+      {isModalOpen && <TransactionFormModal transactionToUpdate={null} open={isModalOpen} onClose={onCloseModal} setSnackbarText={setSnackbarText} />}
 
       <Snackbar 
         open={snackbarText !== ''} 

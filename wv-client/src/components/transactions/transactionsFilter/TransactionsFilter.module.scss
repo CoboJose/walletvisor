@@ -1,28 +1,21 @@
 @import "themes/theme.module";
 
-.transactionsFilter{
-    display: block;
+.transactionFilter {
+    max-width: 350px;
+    min-width: 300px;
 }
 
-.cancelButton{
-    color: $secondary !important;
-}
-
-.deleteButton{
-    color: $error !important;
-}
-
-.okButton{
-    color: $success !important;
-
-    &:disabled {
-        color: $disabled !important;
+.radios {
+    //Phone
+    @media (max-width: $phoneMaxWidth) {
+        flex-direction: column;
     }
 }
 
-.buttonIcon {
+.selectSVG{
     $size: 15px;
     height: $size;
     width: $size;
     fill: currentColor;
+    margin-right: 5px;
 }

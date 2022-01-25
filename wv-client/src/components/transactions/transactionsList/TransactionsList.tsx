@@ -33,6 +33,8 @@ const TransactionsList = (): JSX.Element => {
   // STATE //
   ///////////
   const transactions: Transaction[] = useAppSelector((state) => state.transactions.transactions);
+  const transactionsFilterKind = useAppSelector((state) => state.transactions.filterKind);
+  const transactionsFilterCategory = useAppSelector((state) => state.transactions.filterCategory);
   const totalBalance: number = useAppSelector((state) => state.transactions.totalBalance);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -120,18 +122,31 @@ const TransactionsList = (): JSX.Element => {
     return <Divider />;
   };
 
-  const getTransactionsBalance = (): Array<number> => {
-    const res = new Array<number>();
+  const getTransactionsBalance = (): Map<number, number> => {
+    const res = new Map<number, number>();
+    const aux = new Array<number>();
 
-    res[0] = totalBalance;
+    aux[0] = totalBalance;
     for (let i = 0; i < transactions.length; i++) {
       const t = transactions[i];
-      res[i + 1] = res[i] - (t.kind === TransactionKind.Income ? t.amount : -t.amount);
+      res.set(t.id, aux[i]);
+      aux[i + 1] = aux[i] - (t.kind === TransactionKind.Income ? t.amount : -t.amount);
     }
 
     return res;
   };
-  const transactionsBalance: Array<number> = getTransactionsBalance();
+
+  const filterTransactions = (): Transaction[] => {
+    let res = transactions;
+
+    (transactionsFilterKind !== '') && (res = res.filter((trn) => trn.kind === transactionsFilterKind));
+    (transactionsFilterCategory !== '') && (res = res.filter((trn) => trn.category === transactionsFilterCategory));
+
+    return res;
+  };
+
+  const transactionsBalance: Map<number, number> = getTransactionsBalance();
+  const filteredTransactions: Transaction[] = filterTransactions();
 
   /////////
   // JSX //
@@ -139,11 +154,11 @@ const TransactionsList = (): JSX.Element => {
   return (
     <div className={style.transactionsList}>
 
-      {transactions.length > 0 
+      {filteredTransactions.length > 0 
         ? (
           <List className={style.list}>
            
-            {transactions.map((t, i, arr) => (
+            {filteredTransactions.map((t, i, arr) => (
               <div key={t.id}>
 
                 {month(i, arr)}
@@ -169,7 +184,7 @@ const TransactionsList = (): JSX.Element => {
                       <div className={`${style.amount} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}>
                         {t.kind === TransactionKind.Income ? '+' : '-'} {t.amount}€
                       </div>
-                      <div className={style.trnBalance}>{transactionsBalance[i]}€</div>
+                      <div className={style.trnBalance}>{transactionsBalance.get(t.id)}€</div>
                     </div>
                   </ListItemSecondaryAction>
 
@@ -210,7 +225,7 @@ const TransactionsList = (): JSX.Element => {
         onOk={confirmDeleteHandler} 
       />
 
-      {isModalOpen && <TransactionFormModal transactionToUpdate={transactionToUpdate} onClose={onCloseModal} setSnackbarText={setSnackbarText} />}
+      {isModalOpen && <TransactionFormModal transactionToUpdate={transactionToUpdate} open={isModalOpen} onClose={onCloseModal} setSnackbarText={setSnackbarText} />}
 
       <Snackbar 
         open={snackbarText !== ''} 
