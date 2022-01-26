@@ -5,6 +5,7 @@ import style from './SelectedBalance.module.scss';
 import { BarChart, Bar, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line } from 'recharts';
 import { useAppSelector } from 'store/hooks';
 import { TransactionKind } from 'types/types';
+import mathUtils from 'utils/math';
 
 //////////////////////
 // HELPER FUNCTIONS //
@@ -46,16 +47,16 @@ const SelectedBalance = (): JSX.Element => {
   //////////////
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
-      const income = payload[0].value;
-      const expense = payload[1].value;
-      const balance = income - expense;
+      const income = mathUtils.round(payload[0].value, 2);
+      const expense = mathUtils.round(payload[1].value, 2);
+      const balance = mathUtils.round(income - expense, 2);
 
       return (
         <div className={style.customTooltipWrapper}>
           <div className={style.customTooltipContent}>
-            <p className={style.balance}>Balance: {balance}€</p>
-            <p className={style.income}>Income: {income}€</p>
-            <p className={style.expense}>Expense: {expense}€</p>
+            <p className={style.balance}>Balance: {mathUtils.formatEurNumber(balance)}</p>
+            <p className={style.income}>Income: {mathUtils.formatEurNumber(income)}</p>
+            <p className={style.expense}>Expense: {mathUtils.formatEurNumber(expense)}</p>
           </div>
         </div>
       );
@@ -72,10 +73,10 @@ const SelectedBalance = (): JSX.Element => {
       <BarChart data={getData()}>
         <CartesianGrid strokeDasharray="3 3" />
         <YAxis label={{ value: '€', angle: 0, position: 'insideLeft', fill: style.primary }} />
-        <Tooltip contentStyle={{ color: style.primary }} content={<CustomTooltip />} />
+        <Tooltip contentStyle={{ color: style.primary, overflow: 'visible' }} content={<CustomTooltip />} />
         <Legend />
-        <Bar dataKey="Incomes" unit="€" fill={style.success} label={{ position: 'insideTop' }} />
-        <Bar dataKey="Expenses" unit="€" fill={style.error} label={{ position: 'insideTop' }} />
+        <Bar dataKey="Incomes" unit="€" fill={style.success} label={{ position: 'insideTop', fill: 'currentColor' }} />
+        <Bar dataKey="Expenses" unit="€" fill={style.error} label={{ position: 'insideTop', fill: 'currentColor' }} />
         <Line type="monotone" dataKey="Incomes" stroke="red" />
       </BarChart>
     </ResponsiveContainer>

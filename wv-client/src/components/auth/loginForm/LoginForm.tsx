@@ -78,9 +78,10 @@ const LoginForm = (): JSX.Element => {
   return (
     <div className={style.loginForm}>
 
-      <SVG name={SvgIcons.Lock} className={style.lockIcon} />
-
-      <h1 className={style.title}>Log In</h1>
+      <div className={style.titleContainer}>
+        <SVG name={SvgIcons.Lock} className={style.lockIcon} />
+        <h1 className={style.title}>Log In</h1>
+      </div>
 
       { serverError.length > 0 && (
         <div>

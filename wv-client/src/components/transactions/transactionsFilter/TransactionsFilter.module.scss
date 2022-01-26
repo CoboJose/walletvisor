@@ -2,13 +2,13 @@
 
 .transactionFilter {
     max-width: 350px;
-    min-width: 300px;
+    min-width: 250px;
 }
 
 .radios {
     //Phone
     @media (max-width: $phoneMaxWidth) {
-        flex-direction: column;
+        flex-direction: column !important;
     }
 }
 

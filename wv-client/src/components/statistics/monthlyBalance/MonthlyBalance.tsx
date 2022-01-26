@@ -7,6 +7,7 @@ import dates from 'utils/dates';
 import { ApiError, Transaction, TransactionKind } from 'types/types';
 import api from 'api/api';
 import apiErrors from 'api/apiErrors';
+import math from 'utils/math';
 
 //////////////////////
 // HELPER FUNCTIONS //
@@ -69,6 +70,13 @@ const MonthlyBalance = (): JSX.Element => {
         res.push(newMonthEntry);
       }
     }
+
+    for (const month of res) {
+      month.Balance = math.round(month.Balance, 2);
+      month.Incomes = math.round(month.Incomes, 2);
+      month.Expenses = math.round(month.Expenses, 2);
+    }
+
     return res;
   };
 
@@ -98,7 +106,7 @@ const MonthlyBalance = (): JSX.Element => {
           <Legend />
           <Bar dataKey="Incomes" unit="€" fill={style.success} barSize={20} />
           <Bar dataKey="Expenses" unit="€" fill={style.error} barSize={20} />
-          <Line type="monotone" dataKey="Balance" stroke={style.primary} {...{ label: <CustomLabel /> }} />
+          <Line type="monotone" dataKey="Balance" stroke={style.primary} unit="€" {...{ label: <CustomLabel /> }} />
         </ComposedChart>
       </ResponsiveContainer>
     </>

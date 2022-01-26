@@ -31,6 +31,8 @@ $maxWidth: 1000px;
         flex-direction: column;
         align-items: center;
         gap: 10px;
+        max-width: 315px;
+        margin: 0 auto;
 
         .selectedBalanceContent {
             height: 200px;
@@ -58,6 +60,7 @@ $maxWidth: 1000px;
         grid-template-areas:
             "dateRange selectedBalance monthlyBalance monthlyBalance"
             "selectedCategoriesIncome selectedCategoriesIncome selectedCategoriesExpense selectedCategoriesExpense";
+
         $height: 350px;
 
         .dateRangeCard {
@@ -70,6 +73,7 @@ $maxWidth: 1000px;
             align-self: center;
             margin: auto 0;
             padding: 7px;
+            max-width: 250px;
         }
 
         .selectedBalanceCard {

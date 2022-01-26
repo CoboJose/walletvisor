@@ -25,7 +25,6 @@ beforeEach(() => {
     // LOCAL STORAGE //
     ///////////////////
     localStorage.clear();
-    localStorage.setItem("MobileUseAlerted", "true");
 
     ///////////////
     // LOAD PAGE //

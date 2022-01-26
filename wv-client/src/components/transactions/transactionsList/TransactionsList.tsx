@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useState } from 'react';
 import { useAppSelector } from 'store/hooks';
 import { ApiError, SvgIcons, Transaction, TransactionKind } from 'types/types';
@@ -20,6 +21,7 @@ import style from './TransactionsList.module.scss';
 import Confirmation from 'components/ui/confirmation/Confirmation';
 import { useDispatch } from 'react-redux';
 import { deleteTransaction } from 'store/slices/transactions';
+import math from 'utils/math';
 
 const TransactionsList = (): JSX.Element => {
   logger.rendering();
@@ -182,9 +184,9 @@ const TransactionsList = (): JSX.Element => {
                   <ListItemSecondaryAction>
                     <div>
                       <div className={`${style.amount} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}>
-                        {t.kind === TransactionKind.Income ? '+' : '-'} {t.amount}€
+                        {t.kind === TransactionKind.Income ? '+' : '-'} {math.formatEurNumber(t.amount)}
                       </div>
-                      <div className={style.trnBalance}>{transactionsBalance.get(t.id)}€</div>
+                      <div className={style.trnBalance}>{math.formatEurNumber(transactionsBalance.get(t.id)!)}</div>
                     </div>
                   </ListItemSecondaryAction>
 
