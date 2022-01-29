@@ -1,0 +1,13 @@
+@import "themes/theme.module";
+
+.groupForm{
+    @include flex-column-center;
+}
+
+.svgIcon {
+    $size: 15px;
+    height: $size;
+    width: $size;
+    fill: currentColor;
+    margin-right: 5px;
+}

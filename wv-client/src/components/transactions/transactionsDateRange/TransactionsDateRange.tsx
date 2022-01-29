@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { changeTransactionsRangeAction } from 'store/slices/transactions';
 import logger from 'utils/logger';
-import DateRange from 'components/ui/transactions/dateRange/DateRange';
+import DateRange from 'components/transactions/transactionsDateRange/DateRange';
 import dates from 'utils/dates';
 import style from './TransactionsDateRange.module.scss';
 import { Button, IconButton, Tooltip, useMediaQuery, useTheme } from '@mui/material';

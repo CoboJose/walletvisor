@@ -6,13 +6,11 @@ import math from 'utils/math';
 import dates from 'utils/dates';
 import { useMediaQuery } from '@mui/material';
 import TransactionsDateRange from 'components/transactions/transactionsDateRange/TransactionsDateRange';
-
 import Paper from '@mui/material/Paper';
-
 import style from './Balance.module.scss';
-import ButtonAddTransaction from 'components/ui/transactions/addTransactionButton/ButtonAddTransaction';
-import ButtonDateRange from 'components/ui/transactions/dateRange/ButtonDateRange';
-import FilterByCategoriesButton from 'components/ui/transactions/filterByCategoriesButton/filterByCategoriesButton';
+import ButtonAddTransaction from 'components/navigation/modalButtons/ButtonAddTransaction';
+import ButtonDateRange from 'components/navigation/modalButtons/ButtonDateRange';
+import FilterByCategoriesButton from 'components/navigation/modalButtons/ButtonfilterByCategories';
 
 //////////////////////
 // HELPER FUNCTIONS //

@@ -31,6 +31,7 @@ import { ReactComponent as Calendar } from 'assets/icons/calendar.svg';
 import { ReactComponent as Settings } from 'assets/icons/settings.svg';
 import { ReactComponent as Logout } from 'assets/icons/logout.svg';
 import { ReactComponent as Filter } from 'assets/icons/filter.svg';
+import { ReactComponent as Group } from 'assets/icons/group.svg';
 
 type SVGProps = {
   name: SvgIcons,
@@ -127,6 +128,9 @@ const SVG = ({ name, className, style }: SVGProps): JSX.Element => {
 
       case 'filter':
         return <Filter className={className} style={style} />; 
+
+      case 'group':
+        return <Group className={className} style={style} />; 
       
       default:
         return <Logo className={className} style={style} />;

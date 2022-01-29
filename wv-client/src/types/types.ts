@@ -98,4 +98,5 @@ export enum SvgIcons {
   Settings = 'settings',
   Logout = 'logout',
   Filter = 'filter',
+  Group = 'group',
 }
