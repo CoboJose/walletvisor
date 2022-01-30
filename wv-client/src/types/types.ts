@@ -18,6 +18,12 @@ export type User = {
   name: string,
 }
 
+export type Group = {
+  id: number,
+  name: string,
+  color: string,
+}
+
 /////////////////
 // API HELPERS //
 /////////////////

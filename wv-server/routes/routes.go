@@ -71,5 +71,6 @@ func transaction() {
 func group() {
 	group := api.Group("/groups", middlewares.ValidToken("user"))
 
+	group.GET("", groupHandler.GetUserGroups)
 	group.POST("", groupHandler.CreateGroup)
 }

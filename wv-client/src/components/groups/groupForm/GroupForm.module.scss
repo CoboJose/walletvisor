@@ -4,6 +4,10 @@
     @include flex-column-center;
 }
 
+.groupFormForm {
+    min-width: 300px;
+}
+
 .svgIcon {
     $size: 15px;
     height: $size;

@@ -5,10 +5,11 @@ import TextField from '@mui/material/TextField/TextField';
 import { Alert } from '@mui/material';
 
 import style from './GroupForm.module.scss';
+import { Group } from 'types/types';
 
 type GroupFormProps = {
-  group: string,
-  setGroup : (arg0: string) => void,
+  group: Group,
+  setGroup : (arg0: Group) => void,
   formErrors: Record<string, string>,
   serverError: string
 }
@@ -19,19 +20,16 @@ const GroupForm = ({ group, setGroup, formErrors, serverError }: GroupFormProps)
   ///////////
   // STATE //
   ///////////
-  const [name, setName] = useState<string>(group);
+  const [name, setName] = useState<string>(group.name);
+  const [color, setColor] = useState<string>(group.color);
 
   ////////////////
   // USE EFFECT //
   ////////////////
   useEffect(() => {
     //Update the group when some input is updated
-    setGroup('a');
-  }, [name]);
-
-  //////////////
-  // HANDLERS //
-  //////////////
+    setGroup({ ...group, name, color });
+  }, [name, color]);
 
   /////////
   // JSX //
@@ -43,7 +41,7 @@ const GroupForm = ({ group, setGroup, formErrors, serverError }: GroupFormProps)
         <Alert severity="error">{serverError}</Alert>
       ) }
 
-      <form>
+      <form className={style.groupFormForm}>
         
         <TextField
           type="text"
@@ -57,6 +55,19 @@ const GroupForm = ({ group, setGroup, formErrors, serverError }: GroupFormProps)
           onChange={(e) => setName(e.target.value)}
           error={formErrors.name != null}
           helperText={formErrors.name}
+        />
+
+        <TextField
+          type="color"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Color"
+          value={color} 
+          onChange={(e) => setColor(e.target.value)}
+          error={formErrors.color != null}
+          helperText={formErrors.color}
         />
 
       </form>

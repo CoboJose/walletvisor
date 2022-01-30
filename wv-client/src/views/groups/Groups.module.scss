@@ -8,3 +8,13 @@
         max-width: 95%;
     }
 }
+
+.outsideGroup {
+    @include flex-column-center;
+    width: 100%;
+}
+
+.insideGroup {
+    @include flex-column-center;
+    width: 100%;
+}

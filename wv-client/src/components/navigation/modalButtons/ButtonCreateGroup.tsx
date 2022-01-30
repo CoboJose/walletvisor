@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import logger from 'utils/logger';
 
-import { Button, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Button, Snackbar, useMediaQuery, useTheme } from '@mui/material';
 import { SvgIcons } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
 import GroupFormModal from 'components/groups/groupForm/GroupFormModal';
@@ -19,6 +19,7 @@ const ButtonCreateGroup = (): JSX.Element => {
   // STATE //
   ///////////
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [snackbarText, setSnackbarText] = useState<string>('');
 
   //////////////
   // HANDLERS //
@@ -49,7 +50,21 @@ const ButtonCreateGroup = (): JSX.Element => {
         </Button>
       )}
 
-      {isModalOpen && <GroupFormModal groupToUpdate={null} onClose={onCloseModal} />}
+      {isModalOpen && <GroupFormModal groupToUpdate={null} setSnackbarText={setSnackbarText} onClose={onCloseModal} />}
+
+      <Snackbar 
+        open={snackbarText !== ''} 
+        autoHideDuration={2500} 
+        onClose={() => setSnackbarText('')}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        <Alert onClose={() => setSnackbarText('')} severity="success">
+          {snackbarText}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

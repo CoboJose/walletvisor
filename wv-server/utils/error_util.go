@@ -85,6 +85,7 @@ var errorMessages = map[string]string{
 	// Group
 	"GR000": "There is no group with that id",
 	"GR001": "Invalid color",
+	"GR002": "This user has no groups",
 
 	// Group Invitation
 	"GI000": "There is no group invitation with that id",

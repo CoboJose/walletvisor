@@ -4,14 +4,18 @@ import { useAppDispatch } from 'store/hooks';
 import logger from 'utils/logger';
 import style from './GroupFormModal.module.scss';
 import SVG from 'components/ui/svg/SVG';
-import { SvgIcons } from 'types/types';
+import { ApiError, Group, SvgIcons } from 'types/types';
 import AddGroupForm from './GroupForm';
+import regex from 'utils/regex';
+import { createGroup } from 'store/slices/groups';
+import apiErrors from 'api/apiErrors';
 
 type GroupFormModalProps = {
-  groupToUpdate: string | null,
+  groupToUpdate: Group | null,
+  setSnackbarText: (arg0: string) => void
   onClose: () => void
 }
-const GroupFormModal = ({ groupToUpdate, onClose }: GroupFormModalProps): JSX.Element => {
+const GroupFormModal = ({ groupToUpdate, setSnackbarText, onClose }: GroupFormModalProps): JSX.Element => {
   logger.rendering();
 
   ///////////
@@ -26,13 +30,13 @@ const GroupFormModal = ({ groupToUpdate, onClose }: GroupFormModalProps): JSX.El
   ///////////
   
   //Helpers
-  const emptyGroup = '';
+  const emptyGroup: Group = { id: -1, name: '', color: '#ad1a1a' };
   const isEdit: boolean = groupToUpdate != null;
 
-  const [group, setGroup] = useState<string>(groupToUpdate !== null ? groupToUpdate : emptyGroup);
+  const [group, setGroup] = useState<Group>(groupToUpdate !== null ? groupToUpdate : emptyGroup);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string>('');
-  const [deleteConfirmationOpened, setDeleteConfirmationOpened] = useState<boolean>(false);
+  //const [deleteConfirmationOpened, setDeleteConfirmationOpened] = useState<boolean>(false);
 
   //////////////////////
   // HELPER FUNCTIONS //
@@ -40,19 +44,19 @@ const GroupFormModal = ({ groupToUpdate, onClose }: GroupFormModalProps): JSX.El
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
     
-    /*if (!transaction.name || transaction.name.length < 1) {
+    if (!group.name || group.name.length < 1) {
       errors.name = 'The name can not be empty';
     }
-    if (!transaction.amount || transaction.amount <= 0) {
-      errors.amount = 'The amount must be a positive number';
-    }*/
+    if (!group.color || group.color.length < 1 || !regex.hexColor.test(group.color)) {
+      errors.color = 'Must be a valid color';
+    }
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  const removeGroup = async () => {
-    /*try {
+  /*const removeGroup = async () => {
+    try {
       await dispatch(deleteTransaction({ transactionId: transaction.id }));
       onClose();
       setSnackbarText('Transaction deleted successfully');
@@ -60,13 +64,14 @@ const GroupFormModal = ({ groupToUpdate, onClose }: GroupFormModalProps): JSX.El
     catch (error) {
       const err = error as ApiError;
       setServerError(apiErrors(err.code));
-    }*/
-  };
+    }
+  };*/
 
   const buttonDisabled = (): boolean => {
     let res = false;
 
-    res = group === 'disabled';
+    res = res || !group.name;
+    res = res || !group.color;
 
     return res;
   };
@@ -78,27 +83,29 @@ const GroupFormModal = ({ groupToUpdate, onClose }: GroupFormModalProps): JSX.El
     setServerError('');
 
     if (validateForm()) {
-      /*try {
-        if (transaction.id < 0) {
-          await dispatch(createTransaction(transaction)).unwrap();
+      try {
+        if (group.id < 0) {
+          await dispatch(createGroup(group)).unwrap();
         } else {
-          await dispatch(updateTransaction(transaction)).unwrap();
+          //await dispatch(updateTransaction(transaction)).unwrap();
+          // TODO
+          console.log('to do update');
         }
         
         onClose();
-        setSnackbarText('Transaction saved successfully');
+        setSnackbarText('Group saved succesfully');
       }
       catch (error) {
         const err = error as ApiError;
         setServerError(apiErrors(err.code));
-      }*/
+      }
     }
   };
 
-  const confirmDeleteHandler = () => {
+  /*const confirmDeleteHandler = () => {
     setDeleteConfirmationOpened(false);
     removeGroup();
-  };
+  };*/
 
   return (
     <Dialog open fullScreen={isPhone} onClose={onClose}>
@@ -121,7 +128,7 @@ const GroupFormModal = ({ groupToUpdate, onClose }: GroupFormModalProps): JSX.El
 
         {isEdit && (
         <Button 
-          onClick={() => setDeleteConfirmationOpened(true)} 
+          onClick={() => console.log('setDeleteConfirmationOpened(true)')} 
           className={style.deleteButton}
           startIcon={<SVG name={SvgIcons.Delete} className={style.buttonIcon} />}
         >
