@@ -123,7 +123,7 @@ func (user *User) Delete() *utils.Cerr {
 		utils.ErrorLog.Println(err.Error())
 		return utils.NewCerr("GE000", err)
 	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected < 1 {
-		return utils.NewCerr("US002", errors.New("no rows affected"))
+		return utils.NewCerr("US000", errors.New("no rows affected"))
 	}
 
 	return nil

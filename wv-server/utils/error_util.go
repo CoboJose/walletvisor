@@ -81,4 +81,21 @@ var errorMessages = map[string]string{
 	"TR000": "Invalid Transaction, check that, 1:(kind=income OR kind=expense,) 2:(If kind=income then category IN ['salary', 'business', 'gifts', 'other']. If kind=expense then category IN ['food','home', 'shopping', 'transport', 'bills', 'entertainment', 'other']), 3:(amount and date >=0)",
 	"TR001": "This user has not any transaction",
 	"TR002": "There are no transactions with that id for that user",
+
+	// Group
+	"GR000": "There is no group with that id",
+	"GR001": "Invalid color",
+
+	// Group Invitation
+	"GI000": "There is no group invitation with that id",
+
+	// Group Transactions
+	"GT000": "There is no group transaction with that id",
+	"GT001": "There are no group transactions in that group",
+	"GT002": "Invalid GroupTransaction, check that, 1:(kind=income OR kind=expense,) 2:(If kind=income then category IN ['salary', 'business', 'gifts', 'other']. If kind=expense then category IN ['food','home', 'shopping', 'transport', 'bills', 'entertainment', 'other']), 3:(amount and date >=0)",
+
+	// Expense Limits
+	"EL000": "There is no expense limit with that id",
+	"EL001": "There are no expense limits for that group id",
+	"EL002": "Invalid Expense Limit, check the category is correct, or all, and the amount is greater than 0",
 }

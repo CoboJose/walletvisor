@@ -14,6 +14,7 @@ var (
 	authHandler        = &handlers.AuthHandler{}
 	userHandler        = &handlers.UserHandler{}
 	transactionHandler = &handlers.TransactionHandler{}
+	groupHandler       = &handlers.GroupHandler{}
 )
 
 // Init defines the routes and their handlers
@@ -35,6 +36,7 @@ func Init(e *echo.Echo) {
 	authentication()
 	user()
 	transaction()
+	group()
 }
 
 func ping() {
@@ -64,4 +66,10 @@ func transaction() {
 	transaction.POST("", transactionHandler.Create)
 	transaction.PUT("", transactionHandler.Update)
 	transaction.DELETE("", transactionHandler.Delete)
+}
+
+func group() {
+	group := api.Group("/groups", middlewares.ValidToken("user"))
+
+	group.POST("", groupHandler.CreateGroup)
 }
