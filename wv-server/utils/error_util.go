@@ -89,6 +89,10 @@ var errorMessages = map[string]string{
 
 	// Group Invitation
 	"GI000": "There is no group invitation with that id",
+	"GI001": "There are no group invitations for that group",
+	"GI002": "This user is already invited in this group",
+	"GI003": "There are no group invitations for that user",
+	"GI004": "This user already belongs in this group",
 
 	// Group Transactions
 	"GT000": "There is no group transaction with that id",

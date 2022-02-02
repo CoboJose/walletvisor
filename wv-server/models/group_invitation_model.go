@@ -43,11 +43,32 @@ func GetGroupInvitationByID(id int) (*GroupInvitation, *utils.Cerr) {
 	return groupInvitations, nil
 }
 
-// GetGroupInvitationByInvitedUserIdAndGroupId returns the group invitation identified by the id
-func GetGroupInvitationByInvitedUserIdAndGroupId(invitedUserId, groupId int) (*GroupInvitation, *utils.Cerr) {
-	groupInvitations := new(GroupInvitation)
-	if err := db.Get(groupInvitations, `SELECT * FROM group_invitations WHERE invited_user_id=$1 AND group_id=$2`, invitedUserId, groupId); err != nil {
+// GetGroupInvitationByUserId returns the group invitation sended to an user
+func GetGroupInvitationsByUserId(userId int) ([]GroupInvitation, *utils.Cerr) {
+	groupInvitations := []GroupInvitation{}
+	query := `SELECT * FROM group_invitations WHERE invited_user_id=$1`
+	if err := db.Select(&groupInvitations, query, userId); err != nil {
+		return nil, utils.NewCerr("GI003", err)
+	}
+	return groupInvitations, nil
+}
+
+// GetGroupInvitationsByInvitedUserIdAndGroupId returns the group invitation identified by the id
+func GetGroupInvitationsByInvitedUserIdAndGroupId(invitedUserId, groupId int) ([]GroupInvitation, *utils.Cerr) {
+	groupInvitations := []GroupInvitation{}
+	query := `SELECT * FROM group_invitations WHERE invited_user_id=$1 AND group_id=$2`
+	if err := db.Select(&groupInvitations, query, invitedUserId, groupId); err != nil {
 		return nil, utils.NewCerr("GI000", err)
+	}
+	return groupInvitations, nil
+}
+
+// GetGroupInvitationsByGroupId returns the group invitations identified by the group id
+func GetGroupInvitationsByGroupId(groupId int) ([]GroupInvitation, *utils.Cerr) {
+	groupInvitations := []GroupInvitation{}
+	query := `SELECT * FROM group_invitations WHERE group_id=$1`
+	if err := db.Select(&groupInvitations, query, groupId); err != nil {
+		return nil, utils.NewCerr("GI001", err)
 	}
 	return groupInvitations, nil
 }
@@ -64,13 +85,11 @@ func (groupInvitation *GroupInvitation) Save() *utils.Cerr {
 	}
 
 	if groupInvitation.ID < 0 { // Create
-		if !groupInvitation.exists() {
-			query := `INSERT INTO group_invitations (invited_user_id, inviter_user_id, group_id) VALUES($1, $2, $3) RETURNING id`
-			err = db.QueryRow(query, groupInvitation.InvitedUserId, groupInvitation.InviterUserId, groupInvitation.GroupId).Scan(&groupInvitation.ID)
-		} else {
-			err = errors.New("this user already has an invitation for this group")
+		if cerr := groupInvitation.checkBeforeCreating(); cerr != nil {
+			return cerr
 		}
-
+		query := `INSERT INTO group_invitations (invited_user_id, inviter_user_id, group_id) VALUES($1, $2, $3) RETURNING id`
+		err = db.QueryRow(query, groupInvitation.InvitedUserId, groupInvitation.InviterUserId, groupInvitation.GroupId).Scan(&groupInvitation.ID)
 	} else { //Update
 		query := `UPDATE group_invitations SET invited_user_id=:invited_user_id, inviter_user_id=:inviter_user_id, group_id=:group_id WHERE id=:id`
 		var res sql.Result
@@ -121,10 +140,21 @@ func (groupInvitation *GroupInvitation) validate() *utils.Cerr {
 	return nil
 }
 
-func (groupInvitation *GroupInvitation) exists() bool {
-	res := false
-	if _, cerr := GetGroupInvitationByInvitedUserIdAndGroupId(groupInvitation.InvitedUserId, groupInvitation.GroupId); cerr == nil {
-		res = true
+func (groupInvitation *GroupInvitation) checkBeforeCreating() *utils.Cerr {
+	groupInvitations, cerr := GetGroupInvitationsByInvitedUserIdAndGroupId(groupInvitation.InvitedUserId, groupInvitation.GroupId)
+	if cerr != nil || len(groupInvitations) > 0 {
+		return utils.NewCerr("GI002", nil)
 	}
-	return res
+
+	groupUsers, cerr := GetUsersByGroupId(groupInvitation.GroupId)
+	if cerr != nil {
+		return utils.NewCerr("GI002", nil)
+	}
+	for _, user := range groupUsers {
+		if user.ID == groupInvitation.InvitedUserId {
+			return utils.NewCerr("GI004", errors.New("this users already belongs to the group"))
+		}
+	}
+
+	return nil
 }

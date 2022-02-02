@@ -55,6 +55,17 @@ func GetGroupsByUserId(userID int) ([]Group, *utils.Cerr) {
 	return groups, nil
 }
 
+// GetUsersByGroupId returns all the users belonging to a group
+func GetUsersByGroupId(groupID int) ([]User, *utils.Cerr) {
+	groups := []User{}
+	query := `SELECT u.* FROM users u JOIN user_groups ug ON u.id=ug.user_id JOIN groups g ON ug.group_id=g.id WHERE g.id=$1`
+	if err := db.Select(&groups, query, groupID); err != nil {
+		return nil, utils.NewCerr("GR002", err)
+	}
+
+	return groups, nil
+}
+
 //////////
 // Save //
 //////////

@@ -5,7 +5,7 @@ import logger from 'utils/logger';
 import style from './GroupFormModal.module.scss';
 import SVG from 'components/ui/svg/SVG';
 import { ApiError, Group, SvgIcons } from 'types/types';
-import AddGroupForm from './GroupForm';
+import GroupForm from './GroupForm';
 import regex from 'utils/regex';
 import { createGroup } from 'store/slices/groups';
 import apiErrors from 'api/apiErrors';
@@ -114,7 +114,7 @@ const GroupFormModal = ({ groupToUpdate, setSnackbarText, onClose }: GroupFormMo
       </DialogTitle>
 
       <DialogContent dividers>
-        <AddGroupForm group={group} setGroup={setGroup} formErrors={formErrors} serverError={serverError} />
+        <GroupForm group={group} setGroup={setGroup} formErrors={formErrors} serverError={serverError} />
       </DialogContent>
 
       <DialogActions>

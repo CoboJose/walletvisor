@@ -10,11 +10,12 @@ import (
 )
 
 var (
-	api                *echo.Group
-	authHandler        = &handlers.AuthHandler{}
-	userHandler        = &handlers.UserHandler{}
-	transactionHandler = &handlers.TransactionHandler{}
-	groupHandler       = &handlers.GroupHandler{}
+	api                    *echo.Group
+	authHandler            = &handlers.AuthHandler{}
+	userHandler            = &handlers.UserHandler{}
+	transactionHandler     = &handlers.TransactionHandler{}
+	groupHandler           = &handlers.GroupHandler{}
+	groupInvitationHandler = &handlers.GroupInvitationHandler{}
 )
 
 // Init defines the routes and their handlers
@@ -37,6 +38,7 @@ func Init(e *echo.Echo) {
 	user()
 	transaction()
 	group()
+	groupInvitation()
 }
 
 func ping() {
@@ -73,4 +75,14 @@ func group() {
 
 	group.GET("", groupHandler.GetUserGroups)
 	group.POST("", groupHandler.CreateGroup)
+}
+
+func groupInvitation() {
+	group := api.Group("/groupinvitations", middlewares.ValidToken("user"))
+
+	group.GET("/group", groupInvitationHandler.GetGroupInvitations)
+	group.GET("/user", groupInvitationHandler.GetUserInvitations)
+	group.POST("/join", groupInvitationHandler.JoinGroup)
+	group.POST("/create", groupInvitationHandler.CreateGroupInvitation)
+	group.DELETE("/delete", groupInvitationHandler.Delete)
 }

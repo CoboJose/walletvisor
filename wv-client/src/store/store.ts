@@ -5,6 +5,7 @@ import configSlice from 'store/slices/config';
 import transactionsSlice from './slices/transactions';
 import userSlice from 'store/slices/user';
 import groupsSlice from 'store/slices/groups';
+import groupInvitationsSlice from './slices/groupInvitations';
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     config: configSlice,
     user: userSlice,
     groups: groupsSlice,
+    groupInvitations: groupInvitationsSlice,
   },
 });
 

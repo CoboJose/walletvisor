@@ -24,6 +24,13 @@ export type Group = {
   color: string,
 }
 
+export type GroupInvitation = {
+  id: number,
+  invitedUserId: number,
+  inviterUserId: number,
+  groupId: number
+}
+
 /////////////////
 // API HELPERS //
 /////////////////
@@ -50,6 +57,23 @@ export type UpdateUserPayload = {
   email: string,
   newPassword: string|null,
   oldPassword: string,
+}
+
+export type GroupInvitationResponse = {
+  id: number,
+  invitedUserId: number,
+  invitedUserEmail: string,
+  invitedUserName: string,
+  inviterUserId: number,
+  inviterUserEmail: string,
+  inviterUserName: string,
+  groupId: number,
+  groupName: string
+}
+
+export type CreateGroupInvitationRequest = {
+  email: string
+  groupId: number,
 }
 
 ///////////

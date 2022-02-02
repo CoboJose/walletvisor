@@ -3,6 +3,7 @@ import { Button, Card } from '@mui/material';
 import logger from 'utils/logger';
 import style from './SelectedGroup.module.scss';
 import { Group } from 'types/types';
+import ButtonGroupInvitations from 'components/navigation/modalButtons/ButtonGroupInvitations';
 
 type SelectedGroupProps = {
   group: Group,
@@ -17,7 +18,8 @@ const SelectedGroup = ({ group, setSelectedGroup }: SelectedGroupProps): JSX.Ele
         <Button onClick={() => setSelectedGroup(null)}>
           Go Back
         </Button>
-        { group.name }
+        <ButtonGroupInvitations group={group} />
+        {'Name: ' + group.name }
       </Card>
     </div>
   );

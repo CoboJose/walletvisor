@@ -66,19 +66,6 @@ func getCreateGroupPayload(c echo.Context) (*models.Group, *utils.Cerr) {
 	return createGroupPayload, nil
 }
 
-/*func createMultipleGroupInvitations(emails []string, userId int, groupId int) *utils.Cerr {
-	for _, email := range emails {
-		user, cerr := models.GetUserByEmail(email)
-		if cerr == nil {
-			groupInvitation := models.NewGroupInvitation(user.ID, userId, groupId)
-			if cerr = groupInvitation.Save(); cerr != nil {
-				return cerr
-			}
-		}
-	}
-	return nil
-}*/
-
 ///////////////////
 // Request Types //
 ///////////////////
