@@ -7,6 +7,7 @@ import (
 	"wv-server/utils"
 
 	"github.com/labstack/echo"
+	"gopkg.in/guregu/null.v3"
 )
 
 // GroupHandler holds all the groups handlers
@@ -69,6 +70,7 @@ func (h GroupTransactionHandler) Create(c echo.Context) error {
 	// Create the Transaction
 	amount := groupTrn.Amount / float64(len(users))
 	trn := models.NewTransaction(groupTrn.Name, groupTrn.Kind, groupTrn.Category, amount, groupTrn.Date, creatingUserId)
+	trn.GroupTransactionID = null.IntFrom(int64(groupTrn.ID))
 	if cerr = trn.Save(); cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}

@@ -5,6 +5,8 @@ import (
 	"errors"
 	"strings"
 	"wv-server/utils"
+
+	"gopkg.in/guregu/null.v3"
 )
 
 type Kind int
@@ -30,14 +32,14 @@ const (
 )
 
 type Transaction struct {
-	ID                 int           `json:"id"`
-	Name               string        `json:"name"`
-	Kind               string        `json:"kind"`
-	Category           string        `json:"category"`
-	Amount             float64       `json:"amount"`
-	Date               int           `json:"date"`
-	UserID             int           `json:"userID"  db:"user_id"`
-	GroupTransactionID sql.NullInt64 `json:"groupTransactionID"  db:"group_transaction_id"`
+	ID                 int      `json:"id"`
+	Name               string   `json:"name"`
+	Kind               string   `json:"kind"`
+	Category           string   `json:"category"`
+	Amount             float64  `json:"amount"`
+	Date               int      `json:"date"`
+	UserID             int      `json:"userID"  db:"user_id"`
+	GroupTransactionID null.Int `json:"groupTransactionID"  db:"group_transaction_id"`
 }
 
 var transactionsTable = `CREATE TABLE IF NOT EXISTS transactions (
@@ -144,8 +146,8 @@ func (trn *Transaction) Save() *utils.Cerr {
 	trn.Amount = utils.Round(trn.Amount, 2)
 
 	if trn.ID <= 0 { // Create
-		query := `INSERT INTO transactions (name, kind, category, amount, date, user_id, group_transaction_id) VALUES($1, $2, $3, $4, $5, $6, null) RETURNING id`
-		err = db.QueryRow(query, trn.Name, trn.Kind, trn.Category, trn.Amount, trn.Date, trn.UserID).Scan(&trn.ID)
+		query := `INSERT INTO transactions (name, kind, category, amount, date, user_id, group_transaction_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id`
+		err = db.QueryRow(query, trn.Name, trn.Kind, trn.Category, trn.Amount, trn.Date, trn.UserID, trn.GroupTransactionID).Scan(&trn.ID)
 	} else { //Update
 		query := `UPDATE transactions SET name=:name, kind=:kind, category=:category, amount=:amount, date=:date, group_transaction_id=:group_transaction_id WHERE id=:id AND user_id=:user_id`
 		var res sql.Result

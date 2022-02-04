@@ -8,7 +8,8 @@ export type Transaction = {
   category: TransactionCategory,
   amount: number,
   date: number,
-  userID: number
+  userID: number,
+  groupTransactionID: number | null,
 }
 
 export type User = {
