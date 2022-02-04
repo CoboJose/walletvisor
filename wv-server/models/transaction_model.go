@@ -115,6 +115,21 @@ func GetUserTotalBalance(userID int) (float64, *utils.Cerr) {
 	return totalBalance, nil
 }
 
+// GetTransactionsByGroupTransactionId returns all the transactions created by a group transaction
+func GetTransactionsByGroupTransactionId(groupTransactionId int) ([]Transaction, *utils.Cerr) {
+	transactions := []Transaction{}
+	query := `SELECT * FROM transactions WHERE group_transaction_id=$1`
+	if err := db.Select(&transactions, query, groupTransactionId); err != nil {
+		return nil, utils.NewCerr("TR003", err)
+	}
+
+	for i := 0; i < len(transactions); i++ {
+		transactions[i].Amount = utils.Round(transactions[i].Amount, 2)
+	}
+
+	return transactions, nil
+}
+
 //////////
 // Save //
 //////////

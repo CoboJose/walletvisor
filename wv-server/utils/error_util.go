@@ -81,11 +81,13 @@ var errorMessages = map[string]string{
 	"TR000": "Invalid Transaction, check that, 1:(kind=income OR kind=expense,) 2:(If kind=income then category IN ['salary', 'business', 'gifts', 'other']. If kind=expense then category IN ['food','home', 'shopping', 'transport', 'bills', 'entertainment', 'other']), 3:(amount and date >=0)",
 	"TR001": "This user has not any transaction",
 	"TR002": "There are no transactions with that id for that user",
+	"TR003": "There are no transactions with that groupTransaction id",
 
 	// Group
 	"GR000": "There is no group with that id",
 	"GR001": "Invalid color",
 	"GR002": "This user has no groups",
+	"GR003": "This group has no users",
 
 	// Group Invitation
 	"GI000": "There is no group invitation with that id",

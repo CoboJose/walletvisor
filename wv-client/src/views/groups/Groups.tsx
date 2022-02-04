@@ -4,7 +4,7 @@ import SelectedGroup from 'components/groups/selectedGroup/SelectedGroup';
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { getGroups } from 'store/slices/groups';
-import { Group } from 'types/types';
+import { UserGroup } from 'types/types';
 import logger from 'utils/logger';
 
 import style from './Groups.module.scss';
@@ -16,7 +16,7 @@ const Groups: React.FC = () => {
   ///////////
   // STATE //
   ///////////
-  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
+  const [selectedUserGroup, setSelectedUserGroup] = useState<UserGroup | null>(null);
   
   //////////////////////
   // HELPER FUNCTIONS //
@@ -38,16 +38,16 @@ const Groups: React.FC = () => {
   /////////
   return (
     <div className={style.groups}>
-      {selectedGroup == null
+      {selectedUserGroup == null
         ? (
           <div className={style.outsideGroup}>
             <GroupsDashboard />
-            <GroupsList setSelectedGroup={setSelectedGroup} />
+            <GroupsList setSelectedUserGroup={setSelectedUserGroup} />
           </div>
         )
         : (
           <div className={style.insideGroup}>
-            <SelectedGroup group={selectedGroup} setSelectedGroup={setSelectedGroup} />
+            <SelectedGroup userGroup={selectedUserGroup} setSelectedUserGroup={setSelectedUserGroup} />
           </div>
         )}
     </div>

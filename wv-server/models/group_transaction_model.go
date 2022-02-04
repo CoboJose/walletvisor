@@ -24,7 +24,6 @@ var groupTransactionsTable = `CREATE TABLE IF NOT EXISTS group_transactions (
 		category 	VARCHAR(100) 	NOT NULL	CHECK((kind='` + Income.String() + `' AND category IN(` + Income.getCategoriesString() + `)) OR (kind='` + Expense.String() + `' AND category IN(` + Expense.getCategoriesString() + `))),
 		amount 		REAL 			NOT NULL	CHECK(amount>=0),
 		date 		BIGINT			NOT NULL	CHECK(date>=0),
-		user_id		INT				NOT NULL	REFERENCES users(id) 	ON DELETE CASCADE,
 		group_id 	INT				NOT NULL	REFERENCES groups(id) 	ON DELETE CASCADE
 	)`
 
@@ -35,8 +34,8 @@ var groupTransactionsIndexes = `CREATE INDEX IF NOT EXISTS group_trn_date_index 
 /////////
 
 // NewTransaction creates a transaction struct, but does not store it in the database
-func NewGroupTransaction(name string, kind string, category string, amount float64, date int, groupID int) *GroupTransaction {
-	return &GroupTransaction{ID: -1, Name: name, Kind: kind, Category: category, Amount: utils.Round(amount, 2), Date: date, GroupId: groupID}
+func NewGroupTransaction(name string, kind string, category string, amount float64, date int, groupId int) *GroupTransaction {
+	return &GroupTransaction{ID: -1, Name: name, Kind: kind, Category: category, Amount: utils.Round(amount, 2), Date: date, GroupId: groupId}
 }
 
 /////////
@@ -46,7 +45,7 @@ func NewGroupTransaction(name string, kind string, category string, amount float
 // GetGroupTransactionByID returns the groupTransaction matching the id
 func GetGroupTransactionByID(groupTransactionID int) (*GroupTransaction, *utils.Cerr) {
 	groupTransaction := new(GroupTransaction)
-	if err := db.Get(groupTransaction, `SELECT * FROM transactions WHERE id=$1`, groupTransactionID); err != nil {
+	if err := db.Get(groupTransaction, `SELECT * FROM group_transactions WHERE id=$1`, groupTransactionID); err != nil {
 		return nil, utils.NewCerr("GT000", err)
 	}
 
@@ -87,7 +86,7 @@ func (groupTransaction *GroupTransaction) Save() *utils.Cerr {
 		query := `INSERT INTO group_transactions (name, kind, category, amount, date, group_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id`
 		err = db.QueryRow(query, groupTransaction.Name, groupTransaction.Kind, groupTransaction.Category, groupTransaction.Amount, groupTransaction.Date, groupTransaction.GroupId).Scan(&groupTransaction.ID)
 	} else { //Update
-		query := `UPDATE group_transactions SET name=:name, kind=:kind, category=:category, amount=:amount, date=:date WHERE id=:id AND group_id=:group_id`
+		query := `UPDATE group_transactions SET name=:name, kind=:kind, category=:category, amount=:amount, date=:date WHERE id=:id`
 		var res sql.Result
 		res, err = db.NamedExec(query, &groupTransaction)
 		if err == nil {
@@ -114,7 +113,7 @@ func (groupTransaction *GroupTransaction) Save() *utils.Cerr {
 
 // Delete deletes the groupTransaction from the database
 func (trn *GroupTransaction) Delete() *utils.Cerr {
-	query := `DELETE FROM group_transactions WHERE id=:id AND group_id=:group_id`
+	query := `DELETE FROM group_transactions WHERE id=:id`
 	res, err := db.NamedExec(query, &trn)
 
 	if err != nil {

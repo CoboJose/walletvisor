@@ -21,7 +21,17 @@ func (h GroupHandler) GetUserGroups(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	return c.JSON(200, groups)
+	response := []userGroup{}
+	for _, group := range groups {
+		// Get the group users from the database
+		users, cerr := models.GetUsersByGroupId(group.ID)
+		if cerr != nil {
+			return c.JSON(400, cerr.Response())
+		}
+		response = append(response, userGroup{Group: group, Users: users})
+	}
+
+	return c.JSON(200, response)
 }
 
 // Create creates a transaction
@@ -66,10 +76,10 @@ func getCreateGroupPayload(c echo.Context) (*models.Group, *utils.Cerr) {
 	return createGroupPayload, nil
 }
 
-///////////////////
-// Request Types //
-///////////////////
-
-////////////////////
-// Response Types //
-////////////////////
+///////////
+// Types //
+///////////
+type userGroup struct {
+	Group models.Group  `json:"group"`
+	Users []models.User `json:"users"`
+}

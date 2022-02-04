@@ -1,5 +1,6 @@
+/* eslint-disable object-property-newline */
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
-import { AuthResponse, ApiError, Transaction, GetTransactionsResponse, User, UpdateUserPayload, Group, GroupInvitationResponse, GroupInvitation, CreateGroupInvitationRequest } from 'types/types';
+import { AuthResponse, ApiError, Transaction, GetTransactionsResponse, User, UpdateUserPayload, Group, GroupInvitationResponse, GroupInvitation, CreateGroupInvitationRequest, UserGroup, GroupTransactionWithUsers } from 'types/types';
 
 const UNEXPECTED_ERROR: ApiError = { code: 'GE000', message: 'Unexpected Error, please contact with cobogue@gmail.com', debugMessage: '' };
 
@@ -137,7 +138,7 @@ const updateUser = async (updateUserPayload: UpdateUserPayload): Promise<User> =
 ////////////
 // Groups //
 ////////////
-const getUserGroups = async (): Promise<Group[]> => {
+const getUserGroups = async (): Promise<UserGroup[]> => {
   const url = '/groups';
 
   return new Promise((resolve, reject) => {
@@ -216,4 +217,34 @@ const deleteGroupInvitation = async (groupInvitationId: number): Promise<string>
   });
 };
 
-export default { ping, login, register, refreshToken, getTransactions, addTransaction, updateTransaction, deleteTransaction, getUser, updateUser, getUserGroups, createGroup, getGroupInvitations, getUserInvitations, joinGroup, createGroupInvitation, deleteGroupInvitation };
+////////////////////////
+// Group Transactions //
+////////////////////////
+
+const getGroupTransactions = async (groupId: number): Promise<GroupTransactionWithUsers[]> => {
+  const url = '/grouptransactions';
+  const params = { groupId };
+
+  return new Promise((resolve, reject) => {
+    axios.get(url, { params })
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
+const createGroupTransaction = async (groupTransactionWithUsers: GroupTransactionWithUsers): Promise<string> => {
+  const url = '/grouptransactions';
+  const body = groupTransactionWithUsers;
+
+  return new Promise((resolve, reject) => {
+    axios.post(url, body)
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
+export default { 
+  ping, login, register, refreshToken, getTransactions, addTransaction, updateTransaction, deleteTransaction, 
+  getUser, updateUser, getUserGroups, createGroup, getGroupInvitations, getUserInvitations, joinGroup, 
+  createGroupInvitation, deleteGroupInvitation, getGroupTransactions, createGroupTransaction
+};

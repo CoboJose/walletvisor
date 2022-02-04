@@ -9,7 +9,7 @@ import (
 
 var db *sqlx.DB
 var dbOperations = []string{usersTable, groupsTable, groupsIndexes, groupInvitationsTable, userGroupsTable,
-	groupTransactionsTable, groupTransactionsIndexes, transactionsTable, transactionsIndexes, expenselimitsTable}
+	groupTransactionsTable, groupTransactionsIndexes, groupTransactionUsersTable, transactionsTable, transactionsIndexes}
 
 func init() {
 	db = database.Get()

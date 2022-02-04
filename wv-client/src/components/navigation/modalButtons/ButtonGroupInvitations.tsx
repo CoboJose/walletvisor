@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import logger from 'utils/logger';
 
 import { Alert, Button, Snackbar, useMediaQuery, useTheme } from '@mui/material';
-import { Group, SvgIcons } from 'types/types';
+import { SvgIcons, UserGroup } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
-import GroupInvitationsModal from 'components/groups/groupInvitations/GroupInvitationsModal';
+import GroupInvitationsModal from 'components/groups/selectedGroup/groupInvitations/GroupInvitationsModal';
 
 type ButtonGroupInvitationsProps = {
-  group: Group
+  userGroup: UserGroup
 }
-const ButtonGroupInvitations = ({ group }: ButtonGroupInvitationsProps): JSX.Element => {
+const ButtonGroupInvitations = ({ userGroup }: ButtonGroupInvitationsProps): JSX.Element => {
   logger.rendering();
 
   ///////////
@@ -53,7 +53,7 @@ const ButtonGroupInvitations = ({ group }: ButtonGroupInvitationsProps): JSX.Ele
         </Button>
       )}
 
-      {isModalOpen && <GroupInvitationsModal group={group} setSnackbarText={setSnackbarText} onClose={onCloseModal} />}
+      {isModalOpen && <GroupInvitationsModal userGroup={userGroup} setSnackbarText={setSnackbarText} onClose={onCloseModal} />}
 
       <Snackbar 
         open={snackbarText !== ''} 

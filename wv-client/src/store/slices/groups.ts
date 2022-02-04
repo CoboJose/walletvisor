@@ -1,20 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'api/api';
-import { ApiError, Group } from 'types/types';
+import { ApiError, Group, UserGroup } from 'types/types';
 import { RootState } from 'store/store';
 import { logout } from './auth';
 
 interface GroupsState {
-  groups: Group[],
+  userGroups: UserGroup[],
   isLoading: boolean,
 }
 
 const initialState: GroupsState = {
-  groups: [],
+  userGroups: [],
   isLoading: false,
 };
 
-export const getGroups = createAsyncThunk<Group[], void, {state: RootState, rejectValue: ApiError }>(
+export const getGroups = createAsyncThunk<UserGroup[], void, {state: RootState, rejectValue: ApiError }>(
   'groups/getGroups',
   async (_, { rejectWithValue }) => {
     try { return await api.getUserGroups(); }
@@ -22,7 +22,7 @@ export const getGroups = createAsyncThunk<Group[], void, {state: RootState, reje
   }
 );
 
-export const createGroup = createAsyncThunk<Group[], Group, {state: RootState, rejectValue: ApiError }>(
+export const createGroup = createAsyncThunk<UserGroup[], Group, {state: RootState, rejectValue: ApiError }>(
   'groups/createGroup',
   async (group, { rejectWithValue }) => {
     try { 
@@ -74,7 +74,7 @@ export const groupsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getGroups.fulfilled, (state, action) => {
-      state.groups = action.payload.sort();
+      state.userGroups = action.payload;
       state.isLoading = false;
     });
     builder.addCase(getGroups.rejected, (state) => {
@@ -85,7 +85,7 @@ export const groupsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(createGroup.fulfilled, (state, action) => {
-      state.groups = action.payload.sort();
+      state.userGroups = action.payload;
       state.isLoading = false;
     });
     builder.addCase(createGroup.rejected, (state) => {

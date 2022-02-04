@@ -5,7 +5,7 @@ import (
 	"wv-server/utils"
 )
 
-// UserGroup represents a user of the application
+// UserGroup join users and groups
 type UserGroup struct {
 	UserId  int `json:"userId" db:"user_id"`
 	GroupId int `json:"groupId" db:"group_id"`
@@ -66,7 +66,7 @@ func (userGroup *UserGroup) Save() *utils.Cerr {
 
 // Delete deletes the group from the database
 func (userGroup *UserGroup) Delete() *utils.Cerr {
-	query := `DELETE FROM user_groups WHERE id=:id`
+	query := `DELETE FROM user_groups WHERE user_id=:user_id AND group_id=:group_id`
 	res, err := db.NamedExec(query, &userGroup)
 
 	if err != nil {

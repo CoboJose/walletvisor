@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, useMediaQuery, useTheme } from '@mui/material';
 import logger from 'utils/logger';
-import { Group } from 'types/types';
+import { UserGroup } from 'types/types';
 import GroupInvitations from './GroupInvitations';
 
 type GroupInvitationsModalProps = {
-  group: Group,
+  userGroup: UserGroup,
   setSnackbarText: (arg0: string) => void
   onClose: () => void
 }
-const GroupInvitationsModal = ({ group, setSnackbarText, onClose }: GroupInvitationsModalProps): JSX.Element => {
+const GroupInvitationsModal = ({ userGroup, setSnackbarText, onClose }: GroupInvitationsModalProps): JSX.Element => {
   logger.rendering();
 
   ///////////
@@ -37,7 +37,7 @@ const GroupInvitationsModal = ({ group, setSnackbarText, onClose }: GroupInvitat
       </DialogTitle>
 
       <DialogContent dividers>
-        <GroupInvitations group={group} setSnackbarText={setSnackbarText} />
+        <GroupInvitations userGroup={userGroup} setSnackbarText={setSnackbarText} />
       </DialogContent>
 
       <DialogActions>

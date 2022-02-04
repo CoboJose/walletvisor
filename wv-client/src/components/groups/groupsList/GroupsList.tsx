@@ -8,12 +8,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 import style from './GroupsList.module.scss';
-import { Group } from 'types/types';
+import { UserGroup } from 'types/types';
 
 type GroupListProps = {
-  setSelectedGroup: (arg0: Group|null) => void,
+  setSelectedUserGroup: (arg0: UserGroup|null) => void,
 }
-const GroupsList = ({ setSelectedGroup }: GroupListProps): JSX.Element => {
+const GroupsList = ({ setSelectedUserGroup }: GroupListProps): JSX.Element => {
   logger.rendering();
   
   ///////////
@@ -23,7 +23,7 @@ const GroupsList = ({ setSelectedGroup }: GroupListProps): JSX.Element => {
   ///////////
   // STATE //
   ///////////
-  const groups: Group[] = useAppSelector((state) => state.groups.groups);
+  const userGroups: UserGroup[] = useAppSelector((state) => state.groups.userGroups);
 
   //////////////
   // HANDLERS //
@@ -39,21 +39,21 @@ const GroupsList = ({ setSelectedGroup }: GroupListProps): JSX.Element => {
   return (
     <div className={style.groupsList}>
 
-      {groups.length > 0 
+      {userGroups.length > 0 
         ? (
           <List className={style.list}>
            
-            {groups.map((g) => (
-              <div key={g.id} className={style.listItemContainer} style={{ }}>
+            {userGroups.map((ug) => (
+              <div key={ug.group.id} className={style.listItemContainer} style={{ }}>
 
                 <ListItem
                   button
-                  onClick={() => setSelectedGroup(g)}
+                  onClick={() => setSelectedUserGroup(ug)}
                   className={style.listItem}
                 >
-                  <div className={style.filling} style={{ backgroundColor: g.color }} />
+                  <div className={style.filling} style={{ backgroundColor: ug.group.color }} />
                   <ListItemText
-                    primary={g.name}
+                    primary={ug.group.name}
                   />
 
                 </ListItem>

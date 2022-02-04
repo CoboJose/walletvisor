@@ -2,24 +2,29 @@ import React from 'react';
 import { Button, Card } from '@mui/material';
 import logger from 'utils/logger';
 import style from './SelectedGroup.module.scss';
-import { Group } from 'types/types';
+import { User, UserGroup } from 'types/types';
 import ButtonGroupInvitations from 'components/navigation/modalButtons/ButtonGroupInvitations';
+import ButtonAddGroupTransaction from 'components/navigation/modalButtons/ButtonAddGroupTransaction';
 
 type SelectedGroupProps = {
-  group: Group,
-  setSelectedGroup: (arg0: Group|null) => void,
+  userGroup: UserGroup,
+  setSelectedUserGroup: (arg0: UserGroup|null) => void,
 }
-const SelectedGroup = ({ group, setSelectedGroup }: SelectedGroupProps): JSX.Element => {
+const SelectedGroup = ({ userGroup, setSelectedUserGroup }: SelectedGroupProps): JSX.Element => {
   logger.rendering();
 
   return (
     <div className={style.selectedGroup}>
       <Card>
-        <Button onClick={() => setSelectedGroup(null)}>
+        <Button onClick={() => setSelectedUserGroup(null)}>
           Go Back
         </Button>
-        <ButtonGroupInvitations group={group} />
-        {'Name: ' + group.name }
+        <ButtonAddGroupTransaction userGroup={userGroup} />
+        <ButtonGroupInvitations userGroup={userGroup} />
+        {'Name: ' + userGroup.group.name }
+        {userGroup.users.map((u: User) => (
+          <p>{ u.email }</p>
+        ))}
       </Card>
     </div>
   );

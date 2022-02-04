@@ -9,7 +9,6 @@ export type Transaction = {
   amount: number,
   date: number,
   userID: number
-
 }
 
 export type User = {
@@ -28,6 +27,16 @@ export type GroupInvitation = {
   id: number,
   invitedUserId: number,
   inviterUserId: number,
+  groupId: number
+}
+
+export type GroupTransaction = {
+  id: number,
+  name: string,
+  kind: TransactionKind,
+  category: TransactionCategory,
+  amount: number,
+  date: number,
   groupId: number
 }
 
@@ -74,6 +83,16 @@ export type GroupInvitationResponse = {
 export type CreateGroupInvitationRequest = {
   email: string
   groupId: number,
+}
+
+export type UserGroup = {
+  group: Group,
+  users: User[],
+}
+
+export type GroupTransactionWithUsers = {
+  groupTransaction: GroupTransaction
+  users: User[]
 }
 
 ///////////
