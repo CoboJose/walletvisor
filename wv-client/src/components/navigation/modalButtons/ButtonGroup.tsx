@@ -19,7 +19,7 @@ const ButtonGroup = (): JSX.Element => {
   ///////////
   // STATE //
   ///////////
-  const userGroup = useAppSelector((state) => state.groups.selectedGroup)!;
+  const groupDto = useAppSelector((state) => state.groups.selectedGroupDto)!;
   
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState<string>('');
@@ -38,18 +38,18 @@ const ButtonGroup = (): JSX.Element => {
           variant="outlined"
           onClick={() => setIsModalOpen(true)}
           size="small"
-          startIcon={<SVG name={userGroup != null ? SvgIcons.Edit : SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
+          startIcon={<SVG name={groupDto != null ? SvgIcons.Edit : SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
         >
-          {userGroup != null ? 'Edit' : 'Create'}
+          {groupDto != null ? 'Edit' : 'Create'}
         </Button>
       ) : (
         <Button
           variant="text"
           onClick={() => setIsModalOpen(true)}
           size="medium"
-          startIcon={<SVG name={userGroup != null ? SvgIcons.Edit : SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
+          startIcon={<SVG name={groupDto != null ? SvgIcons.Edit : SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
         >
-          {userGroup != null ? 'Edit' : 'Create'} Group
+          {groupDto != null ? 'Edit' : 'Create'} Group
         </Button>
       )}
 

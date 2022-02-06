@@ -29,13 +29,13 @@ const GroupFormModal = ({ setSnackbarText, onClose }: GroupFormModalProps): JSX.
   ///////////
   // STATE //
   ///////////
-  const userGroupToUpdate = useAppSelector((state) => state.groups.selectedGroup)!;
+  const groupDtoToUpdate = useAppSelector((state) => state.groups.selectedGroupDto)!;
   
   //Helpers
   const emptyGroup: Group = { id: -1, name: '', color: '#ad1a1a' };
-  const isEdit: boolean = userGroupToUpdate != null;
+  const isEdit: boolean = groupDtoToUpdate != null;
 
-  const [group, setGroup] = useState<Group>(userGroupToUpdate !== null ? userGroupToUpdate.group : emptyGroup);
+  const [group, setGroup] = useState<Group>(groupDtoToUpdate !== null ? groupDtoToUpdate.group : emptyGroup);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string>('');
   const [deleteConfirmationOpened, setDeleteConfirmationOpened] = useState<boolean>(false);
@@ -116,8 +116,8 @@ const GroupFormModal = ({ setSnackbarText, onClose }: GroupFormModalProps): JSX.
 
         <GroupForm group={group} setGroup={setGroup} formErrors={formErrors} serverError={serverError} />
         
-        {userGroupToUpdate != null && (
-          <div className={style.editButtons}>
+        {groupDtoToUpdate != null && (
+          <div className={style.members}>
             <GroupMembers />
           </div>
         )}

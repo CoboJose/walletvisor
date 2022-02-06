@@ -9,7 +9,7 @@ import { Divider, List, ListItem, ListItemIcon, ListItemText, Drawer, Link } fro
 
 import style from './DesktopSidePanel.module.scss';
 import { useAppDispatch } from 'store/hooks';
-import { setSelectedGroup } from 'store/slices/groups';
+import { getGroups, setSelectedGroup } from 'store/slices/groups';
 
 type DesktopSidePanelProps = {
   principalRoutesList: SidePanelListItems[],
@@ -25,6 +25,7 @@ const DesktopSidePanel = ({ principalRoutesList }: DesktopSidePanelProps): JSX.E
   const onRouteClickHandler = (listItem: SidePanelListItems) => {
     history.push(listItem.path);
     dispatch(setSelectedGroup(null));
+    dispatch(getGroups());
   };
 
   return (

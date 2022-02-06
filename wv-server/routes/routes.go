@@ -99,4 +99,5 @@ func groupTransaction() {
 	groupTransaction.POST("", groupTransactionHandler.Create)
 	groupTransaction.PUT("", groupTransactionHandler.Update)
 	groupTransaction.DELETE("", groupTransactionHandler.Delete)
+	groupTransaction.POST("/pay", groupTransactionHandler.Pay)
 }

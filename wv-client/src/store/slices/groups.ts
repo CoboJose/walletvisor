@@ -1,68 +1,68 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import api from 'api/api';
-import { ApiError, Group, UserGroup } from 'types/types';
+import { ApiError, Group, GroupDTO } from 'types/types';
 import { RootState } from 'store/store';
 import { logout } from './auth';
 
 interface GroupsState {
-  userGroups: UserGroup[],
-  selectedGroup: UserGroup|null,
+  groupDtos: GroupDTO[],
+  selectedGroupDto: GroupDTO|null,
   isLoading: boolean,
 }
 
 const initialState: GroupsState = {
-  userGroups: [],
-  selectedGroup: null,
+  groupDtos: [],
+  selectedGroupDto: null,
   isLoading: false,
 };
 
-export const getGroups = createAsyncThunk<UserGroup[], void, {state: RootState, rejectValue: ApiError }>(
+export const getGroups = createAsyncThunk<GroupDTO[], void, {state: RootState, rejectValue: ApiError }>(
   'groups/getGroups',
   async (_, { rejectWithValue }) => {
-    try { return await api.getUserGroups(); }
+    try { return await api.getGroupDtos(); }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
 );
 
-export const createGroup = createAsyncThunk<UserGroup[], Group, {state: RootState, rejectValue: ApiError }>(
+export const createGroup = createAsyncThunk<GroupDTO[], Group, {state: RootState, rejectValue: ApiError }>(
   'groups/createGroup',
   async (group, { rejectWithValue }) => {
     try { 
       await api.createGroup(group);
-      return await api.getUserGroups();
+      return await api.getGroupDtos();
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
 );
 
-export const updateGroup = createAsyncThunk<UserGroup[], Group, {state: RootState, rejectValue: ApiError }>(
+export const updateGroup = createAsyncThunk<GroupDTO[], Group, {state: RootState, rejectValue: ApiError }>(
   'groups/updateGroup',
   async (group, { rejectWithValue }) => {
     try { 
       await api.updateGroup(group);
-      return await api.getUserGroups();
+      return await api.getGroupDtos();
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
 );
 
-export const deleteGroup = createAsyncThunk<UserGroup[], {groupId: number}, {state: RootState, rejectValue: ApiError }>(
+export const deleteGroup = createAsyncThunk<GroupDTO[], {groupId: number}, {state: RootState, rejectValue: ApiError }>(
   'groups/deleteGroup',
   async ({ groupId }, { rejectWithValue }) => {
     try { 
       await api.deleteGroup(groupId);
-      return await api.getUserGroups();
+      return await api.getGroupDtos();
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
 );
 
-export const removeUserGroup = createAsyncThunk<UserGroup[], {groupId: number, userId: number}, {state: RootState, rejectValue: ApiError }>(
-  'groups/removeUserGroup',
+export const removeGroup = createAsyncThunk<GroupDTO[], {groupId: number, userId: number}, {state: RootState, rejectValue: ApiError }>(
+  'groups/removeGroup',
   async ({ groupId, userId }, { rejectWithValue }) => {
     try { 
-      await api.removeUserGroup(groupId, userId);
-      return await api.getUserGroups();
+      await api.removeGroup(groupId, userId);
+      return await api.getGroupDtos();
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
@@ -72,8 +72,8 @@ export const groupsSlice = createSlice({
   name: 'groups',
   initialState,
   reducers: {
-    setSelectedGroup: (state, action: PayloadAction<UserGroup|null>) => {
-      state.selectedGroup = action.payload;
+    setSelectedGroup: (state, action: PayloadAction<GroupDTO|null>) => {
+      state.selectedGroupDto = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -82,7 +82,7 @@ export const groupsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getGroups.fulfilled, (state, action) => {
-      state.userGroups = action.payload;
+      state.groupDtos = action.payload;
       state.isLoading = false;
     });
     builder.addCase(getGroups.rejected, (state) => {
@@ -93,7 +93,7 @@ export const groupsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(createGroup.fulfilled, (state, action) => {
-      state.userGroups = action.payload;
+      state.groupDtos = action.payload;
       state.isLoading = false;
     });
     builder.addCase(createGroup.rejected, (state) => {
@@ -104,9 +104,9 @@ export const groupsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(updateGroup.fulfilled, (state, action) => {
-      state.userGroups = action.payload;
-      const updatedGroup = action.payload.find((g) => g.group.id === state.selectedGroup!.group.id);
-      state.selectedGroup = updatedGroup !== undefined ? updatedGroup : null;
+      state.groupDtos = action.payload;
+      const updatedGroup = action.payload.find((g) => g.group.id === state.selectedGroupDto!.group.id);
+      state.selectedGroupDto = updatedGroup !== undefined ? updatedGroup : null;
       state.isLoading = false;
     });
     builder.addCase(updateGroup.rejected, (state) => {
@@ -117,24 +117,24 @@ export const groupsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(deleteGroup.fulfilled, (state, action) => {
-      state.userGroups = action.payload;
-      state.selectedGroup = null;
+      state.groupDtos = action.payload;
+      state.selectedGroupDto = null;
       state.isLoading = false;
     });
     builder.addCase(deleteGroup.rejected, (state) => {
       state.isLoading = false;
     });
     //Remove User Group
-    builder.addCase(removeUserGroup.pending, (state) => {
+    builder.addCase(removeGroup.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(removeUserGroup.fulfilled, (state, action) => {
-      state.userGroups = action.payload;
-      const updatedGroup = action.payload.find((g) => g.group.id === state.selectedGroup!.group.id);
-      state.selectedGroup = updatedGroup !== undefined ? updatedGroup : null;
+    builder.addCase(removeGroup.fulfilled, (state, action) => {
+      state.groupDtos = action.payload;
+      const updatedGroup = action.payload.find((g) => g.group.id === state.selectedGroupDto!.group.id);
+      state.selectedGroupDto = updatedGroup !== undefined ? updatedGroup : null;
       state.isLoading = false;
     });
-    builder.addCase(removeUserGroup.rejected, (state) => {
+    builder.addCase(removeGroup.rejected, (state) => {
       state.isLoading = false;
     });
     //LOGOUT

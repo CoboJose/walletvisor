@@ -8,8 +8,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 import style from './GroupsList.module.scss';
-import { UserGroup } from 'types/types';
 import { setSelectedGroup } from 'store/slices/groups';
+import { GroupDTO } from 'types/types';
+import math from 'utils/math';
+import { ListItemSecondaryAction } from '@mui/material';
 
 const GroupsList = (): JSX.Element => {
   logger.rendering();
@@ -22,7 +24,7 @@ const GroupsList = (): JSX.Element => {
   ///////////
   // STATE //
   ///////////
-  const userGroups: UserGroup[] = useAppSelector((state) => state.groups.userGroups);
+  const groupDtos: GroupDTO[] = useAppSelector((state) => state.groups.groupDtos);
 
   //////////////
   // HANDLERS //
@@ -38,24 +40,33 @@ const GroupsList = (): JSX.Element => {
   return (
     <div className={style.groupsList}>
 
-      {userGroups.length > 0 
+      {groupDtos.length > 0 
         ? (
           <List className={style.list}>
            
-            {userGroups.map((ug) => (
-              <div key={ug.group.id} className={style.listItemContainer} style={{ }}>
+            {groupDtos.map((groupDto) => (
+              <div key={groupDto.group.id} className={style.listItemContainer} style={{ }}>
 
                 <ListItem
                   button
-                  onClick={() => dispatch(setSelectedGroup(ug))}
+                  onClick={() => dispatch(setSelectedGroup(groupDto))}
                   className={style.listItem}
                 >
-                  <div className={style.filling} style={{ backgroundColor: ug.group.color }} />
+                  <div className={style.filling} style={{ backgroundColor: groupDto.group.color }} />
                   <ListItemText
-                    primary={ug.group.name}
+                    primary={groupDto.group.name}
                   />
 
                 </ListItem>
+
+                <ListItemSecondaryAction>
+                  <div className={style.balance}>
+                    {groupDto.balance >= 0 ? 'You are owned ' : 'You own '} 
+                    <span className={`${style.balanceNumber} ${groupDto.balance >= 0 ? style.positive : style.negative}`}>
+                      {math.formatEurNumber(groupDto.balance)}
+                    </span>
+                  </div>
+                </ListItemSecondaryAction>
 
               </div>
             ))}

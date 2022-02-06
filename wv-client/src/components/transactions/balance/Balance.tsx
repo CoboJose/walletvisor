@@ -59,8 +59,8 @@ const Balance = (): JSX.Element => {
       
       <div className={style.dateRange}>
         <div className={style.text}>{dateRange}</div>
-        <div className={style.income}>+ {math.formatEurNumber(income)}</div>
-        <div className={style.expense}>- {math.formatEurNumber(expense)}</div>
+        <div className={style.income}>+{math.formatEurNumber(income)}</div>
+        <div className={style.expense}>-{math.formatEurNumber(expense)}</div>
       </div>
       
       {!isPhone && (
@@ -73,12 +73,12 @@ const Balance = (): JSX.Element => {
 
       <div className={style.balances}>
         <div className={`${style.rangeBalance} ${balance >= 0 ? style.positive : style.negative}`}>
-          {balance >= 0 ? '+' : '-'} {math.formatEurNumber(balance)}
+          {math.formatEurNumber(balance)}
         </div>
 
         <div className={`${style.totalBalance} ${balance >= 0 ? style.positive : style.negative}`}>
           <span className={style.text}>Total: </span> 
-          <span className={style.amount}> {balance >= 0 ? '+' : '-'} {math.formatEurNumber(totalBalance)} </span>
+          <span className={style.amount}> {math.formatEurNumber(totalBalance)} </span>
         </div>
       </div>
 

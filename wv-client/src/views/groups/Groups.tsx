@@ -15,7 +15,7 @@ const Groups: React.FC = () => {
   ///////////
   // STATE //
   ///////////
-  const selectedGroup = useAppSelector((state) => state.groups.selectedGroup);
+  const selectedGroup = useAppSelector((state) => state.groups.selectedGroupDto);
   
   //////////////////////
   // HELPER FUNCTIONS //

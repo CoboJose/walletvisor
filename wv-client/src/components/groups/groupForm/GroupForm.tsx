@@ -41,7 +41,7 @@ const GroupForm = ({ group, setGroup, formErrors, serverError }: GroupFormProps)
         <Alert severity="error">{serverError}</Alert>
       ) }
 
-      <form className={style.groupFormForm}>
+      <form className={style.groupFormForm} onSubmit={(e) => e.preventDefault()}>
         
         <TextField
           type="text"

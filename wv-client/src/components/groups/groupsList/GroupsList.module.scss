@@ -9,6 +9,7 @@
 
 .list {
     width: 100%;
+    max-width: 500px;
     overflow-y: auto;
 
     // Phone
@@ -32,6 +33,27 @@
     padding: 0 !important;
     background-color: $paper !important;
     border-radius: 7px !important;
+}
+
+.balance {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    padding-top: 10px;
+
+    .balanceNumber {
+        font-size: 20px;
+        
+        &.positive {
+            color: $success;
+        }
+
+        &.negative {
+            color: $error;
+        }
+    }
 }
 
 .filling {

@@ -24,7 +24,7 @@ func (h GroupHandler) GetUserGroups(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	response := []userGroup{}
+	response := []GroupDTO{}
 	for _, group := range groups {
 		// Get the group users from the database
 		users, cerr := models.GetUsersByGroupId(group.ID)
@@ -34,7 +34,42 @@ func (h GroupHandler) GetUserGroups(c echo.Context) error {
 		for _, u := range users {
 			u.Password = ""
 		}
-		response = append(response, userGroup{Group: group, Users: users})
+
+		// Get the balance of the group for the logged user
+		balance := 0.0
+		groupTrns, cerr := models.GetGroupTransactionsByGroupId(group.ID)
+		if cerr != nil {
+			return c.JSON(400, cerr.Response())
+		}
+		for _, groupTrn := range groupTrns {
+			if groupTrn.IsActive() {
+				isCreator := false
+				payingRemaining := 0
+
+				groupTrnUsers, cerr := models.GetGroupTransactionUsersByGroupTransactionId(groupTrn.ID)
+				if cerr != nil {
+					return c.JSON(400, cerr.Response())
+				}
+				for _, groupTrnUser := range groupTrnUsers {
+					if groupTrnUser.UserId == userId && groupTrnUser.IsCreator {
+						isCreator = true
+					}
+					if !groupTrnUser.IsPayed {
+						payingRemaining += 1
+					}
+				}
+
+				oweAmount := (groupTrn.Amount / float64(len(users))) * float64(payingRemaining)
+
+				if isCreator {
+					balance += oweAmount
+				} else {
+					balance -= oweAmount
+				}
+			}
+		}
+
+		response = append(response, GroupDTO{Group: group, Users: users, Balance: utils.Round(balance, 2)})
 	}
 
 	return c.JSON(200, response)
@@ -139,10 +174,8 @@ func (h GroupHandler) RemoveUser(c echo.Context) error {
 			if cerr != nil {
 				return c.JSON(400, cerr.Response())
 			}
-			for _, gtu := range groupTransactionsUsersTable {
-				if cerr := gtu.Delete(); cerr != nil {
-					return c.JSON(400, cerr.Response())
-				}
+			if cerr := groupTransactionsUsersTable.Delete(); cerr != nil {
+				return c.JSON(400, cerr.Response())
 			}
 			// Delete the transactions for the user
 			transactions, cerr := models.GetTransactionsByUserIdAndGroupTransactionId(userId, gt.ID)
@@ -168,13 +201,6 @@ func (h GroupHandler) RemoveUser(c echo.Context) error {
 				t.Amount = utils.Round(gt.Amount/float64(len(users)), 2)
 				if cerr := t.Save(); cerr != nil {
 					return c.JSON(400, cerr.Response())
-				}
-				// Set groupTransaction to inactive if all have paid
-				if len(users) == len(transactions) {
-					gt.Active = false
-					if cerr := gt.Save(); cerr != nil {
-						return c.JSON(400, cerr.Response())
-					}
 				}
 			}
 		}
@@ -230,6 +256,31 @@ func deleteGroup(groupID int) *utils.Cerr {
 		return cerr
 	}
 	for _, gt := range groupTransactions {
+		// Delete the active Group Transactions Transactions
+		if gt.IsActive() {
+			transactions, cerr := models.GetTransactionsByGroupTransactionId(gt.ID)
+			if cerr != nil {
+				return cerr
+			}
+			for _, t := range transactions {
+				if cerr := t.Delete(); cerr != nil {
+					return cerr
+				}
+			}
+		} else {
+			// Set the group_transaction_id in the inactive groupTransactions Transactions to null
+			transactions, cerr := models.GetTransactionsByGroupTransactionId(gt.ID)
+			if cerr != nil {
+				return cerr
+			}
+			for _, t := range transactions {
+				t.GroupTransactionID = null.IntFromPtr(nil)
+				if cerr := t.Save(); cerr != nil {
+					return cerr
+				}
+			}
+		}
+
 		// Delete the GroupTransactionUsers Join Tables
 		groupTransactionsUsers, cerr := models.GetGroupTransactionUsersByGroupTransactionId(gt.ID)
 		if cerr != nil {
@@ -240,17 +291,7 @@ func deleteGroup(groupID int) *utils.Cerr {
 				return cerr
 			}
 		}
-		// Set the group_transaction_id in transactions to null
-		transactions, cerr := models.GetTransactionsByGroupTransactionId(gt.ID)
-		if cerr != nil {
-			return cerr
-		}
-		for _, t := range transactions {
-			t.GroupTransactionID = null.IntFromPtr(nil)
-			if cerr := t.Save(); cerr != nil {
-				return cerr
-			}
-		}
+
 		// Delete the Group Transaction
 		if cerr := gt.Delete(); cerr != nil {
 			return cerr
@@ -268,7 +309,8 @@ func deleteGroup(groupID int) *utils.Cerr {
 ///////////
 // Types //
 ///////////
-type userGroup struct {
-	Group models.Group  `json:"group"`
-	Users []models.User `json:"users"`
+type GroupDTO struct {
+	Group   models.Group  `json:"group"`
+	Users   []models.User `json:"users"`
+	Balance float64       `json:"balance"`
 }

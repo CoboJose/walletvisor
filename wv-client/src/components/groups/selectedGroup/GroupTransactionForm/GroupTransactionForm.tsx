@@ -1,18 +1,13 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logger from 'utils/logger';
 import { transactionCategoriesData } from 'utils/transactionCategories';
-import { GroupTransaction, TransactionCategory, TransactionKind } from 'types/types';
+import { GroupTransaction, TransactionCategory } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
 import mathUtils from 'utils/math';
 import dates from 'utils/dates';
 
 import TextField from '@mui/material/TextField/TextField';
 import { Alert } from '@mui/material';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
 import DatePicker from '@mui/lab/DatePicker';
@@ -33,7 +28,6 @@ const GroupTransactionForm = ({ groupTransaction, setGroupTransaction, formError
   // STATE //
   ///////////
   const [name, setName] = useState<string>(groupTransaction.name);
-  const [kind, setKind] = useState<TransactionKind>(groupTransaction.kind);
   const [category, setCategory] = useState<TransactionCategory>(groupTransaction.category);
   const [amount, setAmount] = useState<number>(groupTransaction.amount);
   const [date, setDate] = useState<Date>(new Date(groupTransaction.date));
@@ -45,20 +39,12 @@ const GroupTransactionForm = ({ groupTransaction, setGroupTransaction, formError
     //Update the transaction when some input is updated
     const timestamp = date !== null ? dates.getTimestampWithoutTime(date) : 0;
     const roundedAmount = amount ? mathUtils.round(amount, 2) : 0;
-    setGroupTransaction({ ...groupTransaction, name, kind, category, amount: roundedAmount, date: timestamp });
-  }, [name, kind, category, amount, date]);
+    setGroupTransaction({ ...groupTransaction, name, category, amount: roundedAmount, date: timestamp });
+  }, [name, category, amount, date]);
 
   //////////////
   // HANDLERS //
   //////////////
-  const setKindHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
-    const newKind = e.target.value as TransactionKind;
-    setKind(newKind);
-    const newCategory = newKind === TransactionKind.Expense ? TransactionCategory.Food : TransactionCategory.Salary;
-    setCategory(newCategory);
-  };
 
   /////////
   // JSX //
@@ -86,18 +72,6 @@ const GroupTransactionForm = ({ groupTransaction, setGroupTransaction, formError
           helperText={formErrors.name}
         />
 
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Type</FormLabel>
-          <RadioGroup 
-            row
-            value={kind} 
-            onChange={(e) => setKindHandler(e)}
-          >
-            <FormControlLabel value={TransactionKind.Income} control={<Radio />} label="Income" />
-            <FormControlLabel value={TransactionKind.Expense} control={<Radio />} label="Expense" />
-          </RadioGroup>
-        </FormControl>
-
         <TextField
           select
           label="Category"
@@ -108,7 +82,7 @@ const GroupTransactionForm = ({ groupTransaction, setGroupTransaction, formError
           value={category}
           onChange={(e) => setCategory(e.target.value as TransactionCategory)}
         >
-          {transactionCategoriesData.filter((c) => c.type === kind).map((option) => (
+          {transactionCategoriesData.filter((c) => c.type === groupTransaction.kind).map((option) => (
             <MenuItem key={option.key} value={option.key}>
               <SVG name={option.svg} className={`${style.selectSVG} categoryColor ${option.key}`} /> {option.name}
             </MenuItem>

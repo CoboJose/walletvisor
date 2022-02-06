@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppSelector } from 'store/hooks';
-import { ApiError, GroupTransactionWithUsers, SvgIcons } from 'types/types';
+import { ApiError, GroupTransactionDTO, SvgIcons } from 'types/types';
 import logger from 'utils/logger';
 import SVG from 'components/ui/svg/SVG';
 import { getTransactionCategoryData } from 'utils/transactionCategories';
@@ -19,7 +19,7 @@ import style from './GroupTransactionsList.module.scss';
 import Confirmation from 'components/ui/confirmation/Confirmation';
 import { useDispatch } from 'react-redux';
 import math from 'utils/math';
-import { deleteGroupTransaction } from 'store/slices/groupTransactions';
+import { deleteGroupTransaction, payGroupTransaction } from 'store/slices/groupTransactions';
 import GroupTransactionFormModal from '../GroupTransactionForm/GroupTransactionFormModal';
 
 const GroupTransactionsList = (): JSX.Element => {
@@ -33,10 +33,11 @@ const GroupTransactionsList = (): JSX.Element => {
   ///////////
   // STATE //
   ///////////
-  const groupTrnsResp: GroupTransactionWithUsers[] = useAppSelector((state) => state.groupTransactions.groupTransactionsWithUsers);
+  const groupTrnDTOs = useAppSelector((state) => state.groupTransactions.groupTransactionDTOs);
+  const loggedUser = useAppSelector((state) => state.user.user!);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [groupTransactionWithUsersToUpdate, setGroupTransactionWithUsersToUpdate] = useState<GroupTransactionWithUsers | null>(null);
+  const [groupTrnDTOToUpdate, setGroupTrnDTOToUpdate] = useState<GroupTransactionDTO | null>(null);
   const [snackbarText, setSnackbarText] = useState<string>('');
   const [contextMenu, setContextMenu] = React.useState<{mouseX: number;mouseY: number; groupTrnId: number;} | null>(null);
   const [deleteConfirmationOpened, setDeleteConfirmationOpened] = useState<boolean>(false);
@@ -46,11 +47,11 @@ const GroupTransactionsList = (): JSX.Element => {
   //////////////
   const onCloseModal = () => {
     setIsModalOpen(false);
-    setGroupTransactionWithUsersToUpdate(null);
+    setGroupTrnDTOToUpdate(null);
   };
 
-  const updateGroupTransactionHandler = (groupTrn: GroupTransactionWithUsers) => {
-    setGroupTransactionWithUsersToUpdate(groupTrn);
+  const updateGroupTransactionHandler = (groupTrnDTO: GroupTransactionDTO) => {
+    setGroupTrnDTOToUpdate(groupTrnDTO);
     setIsModalOpen(true);
   };
 
@@ -95,7 +96,7 @@ const GroupTransactionsList = (): JSX.Element => {
   /////////////////////
   // HELPER FUNCTIONS//
   /////////////////////
-  const month = (i: number, arr: Array<GroupTransactionWithUsers>): JSX.Element => {
+  const month = (i: number, arr: Array<GroupTransactionDTO>): JSX.Element => {
     let res = null;
 
     const current = new Date(arr[i].groupTransaction.date);
@@ -120,18 +121,34 @@ const GroupTransactionsList = (): JSX.Element => {
     return <Divider />;
   };
 
+  const getPayedListSecondaryAction = (gtDto: GroupTransactionDTO) => {
+    const payRemaining = gtDto.userDTOs.reduce((sum, uDTO) => (!uDTO.hasPayed ? ++sum : sum), 0);
+    const oweAmount = (gtDto.groupTransaction.amount / gtDto.userDTOs.length) * (payRemaining);
+    return (
+      gtDto.userDTOs.find((uDTO) => uDTO.user.id === loggedUser.id)!.isCreator ? (
+        <div className={style.owned}>
+          <span className={style.ownedText}>You are owned</span> <span className={style.ownedAmount}>{math.formatEurNumber(oweAmount)}</span>
+        </div>
+      ) : (
+        <div className={style.owned}>
+          <span className={style.ownedText}>You payed</span> <span className={style.ownedAmount}>{math.formatEurNumber(oweAmount)}</span>
+        </div>
+      )
+    );
+  };
+
   /////////
   // JSX //
   /////////
   return (
     <div className={style.groupTransactionsList}>
 
-      {groupTrnsResp.length > 0 
+      {groupTrnDTOs.length > 0 
         ? (
           <List className={style.list}>
            
-            {groupTrnsResp.map((gtr, i, arr) => {
-              const groupTrn = gtr.groupTransaction;
+            {groupTrnDTOs.map((gtDto, i, arr) => {
+              const groupTrn = gtDto.groupTransaction;
               return (
                 <div key={groupTrn.id}>
 
@@ -140,7 +157,7 @@ const GroupTransactionsList = (): JSX.Element => {
                   <ListItem
                     button
                     onContextMenu={(e) => handleContextMenuOpen(e, groupTrn.id)}
-                    onClick={() => updateGroupTransactionHandler(gtr)}
+                    onClick={() => updateGroupTransactionHandler(gtDto)}
                     className={style.listItem}
                   >
             
@@ -159,13 +176,17 @@ const GroupTransactionsList = (): JSX.Element => {
                           {math.formatEurNumber(groupTrn.amount)}
                         </div>
                         <div className={style.pay}>
-                          <Button 
-                            onClick={() => console.log('TODO')}
-                            startIcon={<SVG name={SvgIcons.Ok} className={style.payIcon} />}
-                            className={style.payButton}
-                          >
-                            Pay {math.formatEurNumber(groupTrn.amount / gtr.users.length)}
-                          </Button>
+                          {gtDto.userDTOs.find((uDTO) => uDTO.user.id === loggedUser.id)!.hasPayed ? (
+                            getPayedListSecondaryAction(gtDto)
+                          ) : (
+                            <Button 
+                              onClick={() => dispatch(payGroupTransaction(groupTrn))}
+                              startIcon={<SVG name={SvgIcons.Ok} className={style.payIcon} />}
+                              className={style.payButton}
+                            >
+                              Pay {math.formatEurNumber(groupTrn.amount / gtDto.userDTOs.length)}
+                            </Button>
+                          )}
                         </div>
                       </div>
                     </ListItemSecondaryAction>
@@ -208,7 +229,7 @@ const GroupTransactionsList = (): JSX.Element => {
         onOk={confirmDeleteHandler} 
       />
 
-      {isModalOpen && <GroupTransactionFormModal groupTransactionToUpdate={groupTransactionWithUsersToUpdate!.groupTransaction} open={isModalOpen} onClose={onCloseModal} setSnackbarText={setSnackbarText} groupTransactionUsers={groupTransactionWithUsersToUpdate!.users} />}
+      {isModalOpen && <GroupTransactionFormModal groupTransactionToUpdate={groupTrnDTOToUpdate!.groupTransaction} open={isModalOpen} onClose={onCloseModal} setSnackbarText={setSnackbarText} groupTransactionUsers={groupTrnDTOToUpdate!.userDTOs} />}
 
       <Snackbar 
         open={snackbarText !== ''} 

@@ -11,7 +11,7 @@ import { SvgIcons } from 'types/types';
 import { Divider, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, IconButton } from '@mui/material';
 
 import style from './PhoneSidePanel.module.scss';
-import { setSelectedGroup } from 'store/slices/groups';
+import { getGroups, setSelectedGroup } from 'store/slices/groups';
 
 type PhoneSidePanelProps = {
   principalRoutesList: SidePanelListItems[],
@@ -34,6 +34,7 @@ const PhoneSidePanel = ({ principalRoutesList, phoneSidePanelOpen, handlePhoneSi
     history.push(listItem.path);
     handlePhoneSidePanelClose();
     dispatch(setSelectedGroup(null));
+    dispatch(getGroups());
   };
 
   return (

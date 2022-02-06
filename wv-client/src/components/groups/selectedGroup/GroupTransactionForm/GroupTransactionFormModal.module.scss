@@ -22,3 +22,27 @@
     width: $size;
     fill: currentColor;
 }
+
+.users {
+    .header {
+        font-size: large;
+        color: $primary;
+        font-weight: bold;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .listItem {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+
+        .listName {
+            color: $primary;
+        }
+    }
+}

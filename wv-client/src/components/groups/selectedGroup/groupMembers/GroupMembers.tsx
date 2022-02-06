@@ -5,7 +5,7 @@ import style from './GroupMembers.module.scss';
 import { ApiError, GroupInvitationResponse, SvgIcons, User } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { removeUserGroup } from 'store/slices/groups';
+import { removeGroup } from 'store/slices/groups';
 import regex from 'utils/regex';
 import apiErrors from 'api/apiErrors';
 import { createGroupInvitation, deleteGroupInvitation, getGroupInvitations } from 'store/slices/groupInvitations';
@@ -25,7 +25,7 @@ const GroupMembers = (): JSX.Element => {
   // STATE //
   ///////////
   const loggedUser = useAppSelector((state) => state.user.user!);
-  const userGroup = useAppSelector((state) => state.groups.selectedGroup)!;
+  const groupDto = useAppSelector((state) => state.groups.selectedGroupDto)!;
   const groupInvitations: GroupInvitationResponse[] = useAppSelector((state) => state.groupInvitations.groupInvitations);
 
   const [email, setEmail] = useState<string>('');
@@ -48,7 +48,7 @@ const GroupMembers = (): JSX.Element => {
       errors.email = 'User already invited';
     }
 
-    if (userGroup.users.some((u) => u.email === email)) {
+    if (groupDto.users.some((u) => u.email === email)) {
       errors.email = 'User already in the group';
     }
 
@@ -59,7 +59,7 @@ const GroupMembers = (): JSX.Element => {
   const removeUser = async () => {
     try {
       setServerError('');
-      await dispatch(removeUserGroup({ groupId: userGroup.group.id, userId: userToDelete!.id })).unwrap();
+      await dispatch(removeGroup({ groupId: groupDto.group.id, userId: userToDelete!.id })).unwrap();
     }
     catch (error) {
       const err = error as ApiError;
@@ -82,7 +82,7 @@ const GroupMembers = (): JSX.Element => {
     event.preventDefault();
     if (validateInvitationForm()) {
       try {
-        await dispatch(createGroupInvitation({ email, groupId: userGroup.group.id })).unwrap();
+        await dispatch(createGroupInvitation({ email, groupId: groupDto.group.id })).unwrap();
         setServerError('');
         setSnackbarText('Invitation Sended');
         setEmail('');
@@ -96,7 +96,7 @@ const GroupMembers = (): JSX.Element => {
   const deleteInvitationHandler = async (groupInvitationId: number) => {
     try {
       await dispatch(deleteGroupInvitation(groupInvitationId)).unwrap();
-      await dispatch(getGroupInvitations(userGroup.group.id)).unwrap();
+      await dispatch(getGroupInvitations(groupDto.group.id)).unwrap();
       setServerError('');
     } catch (error) {
       const err = error as ApiError;
@@ -151,10 +151,10 @@ const GroupMembers = (): JSX.Element => {
           <div className={style.dialogContent}>
 
             <div className={style.members}>
-              {userGroup.users.length > 0 
+              {groupDto.users.length > 0 
               && (
               <List className={style.membersList}>
-                {userGroup.users.map((u) => (
+                {groupDto.users.map((u) => (
                   <ListItem key={u.id} className={style.listItem}>
                     <ListItemText
                       primary={u.name}

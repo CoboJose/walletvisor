@@ -1,6 +1,6 @@
 /* eslint-disable object-property-newline */
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
-import { AuthResponse, ApiError, Transaction, GetTransactionsResponse, User, UpdateUserPayload, Group, GroupInvitationResponse, GroupInvitation, CreateGroupInvitationRequest, UserGroup, GroupTransactionWithUsers, GroupTransaction } from 'types/types';
+import { AuthResponse, ApiError, Transaction, GetTransactionsResponse, User, UpdateUserPayload, Group, GroupInvitationResponse, GroupInvitation, CreateGroupInvitationRequest, GroupTransaction, GroupTransactionDTO, GroupDTO } from 'types/types';
 
 const UNEXPECTED_ERROR: ApiError = { code: 'GE000', message: 'Unexpected Error, please contact with cobogue@gmail.com', debugMessage: '' };
 
@@ -138,7 +138,7 @@ const updateUser = async (updateUserPayload: UpdateUserPayload): Promise<User> =
 ////////////
 // Groups //
 ////////////
-const getUserGroups = async (): Promise<UserGroup[]> => {
+const getGroupDtos = async (): Promise<GroupDTO[]> => {
   const url = '/groups';
 
   return new Promise((resolve, reject) => {
@@ -181,7 +181,7 @@ const deleteGroup = async (groupId: number): Promise<string> => {
   });
 };
 
-const removeUserGroup = async (groupId: number, userId: number): Promise<string> => {
+const removeGroup = async (groupId: number, userId: number): Promise<string> => {
   const url = '/groups/removeuser';
   const params = { groupId, userId };
 
@@ -254,7 +254,7 @@ const deleteGroupInvitation = async (groupInvitationId: number): Promise<string>
 // Group Transactions //
 ////////////////////////
 
-const getGroupTransactions = async (groupId: number): Promise<GroupTransactionWithUsers[]> => {
+const getGroupTransactions = async (groupId: number): Promise<GroupTransactionDTO[]> => {
   const url = '/grouptransactions';
   const params = { groupId };
 
@@ -265,9 +265,9 @@ const getGroupTransactions = async (groupId: number): Promise<GroupTransactionWi
   });
 };
 
-const createGroupTransaction = async (groupTransactionWithUsers: GroupTransactionWithUsers): Promise<string> => {
+const createGroupTransaction = async (groupTransactionDTO: GroupTransactionDTO): Promise<GroupTransaction> => {
   const url = '/grouptransactions';
-  const body = groupTransactionWithUsers;
+  const body = groupTransactionDTO;
 
   return new Promise((resolve, reject) => {
     axios.post(url, body)
@@ -276,12 +276,23 @@ const createGroupTransaction = async (groupTransactionWithUsers: GroupTransactio
   });
 };
 
-const updateGroupTransaction = async (groupTransaction: GroupTransaction): Promise<GroupTransactionWithUsers> => {
+const updateGroupTransaction = async (groupTransaction: GroupTransaction): Promise<GroupTransaction> => {
   const url = '/grouptransactions';
   const body = groupTransaction;
 
   return new Promise((resolve, reject) => {
     axios.put(url, body)
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
+const payGroupTransaction = async (groupTransaction: GroupTransaction): Promise<string> => {
+  const url = '/grouptransactions/pay';
+  const body = groupTransaction;
+
+  return new Promise((resolve, reject) => {
+    axios.post(url, body)
       .then((response) => { resolve(response.data); })
       .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
   });
@@ -300,7 +311,7 @@ const deleteGroupTransaction = async (groupTransactionId: number): Promise<strin
 
 export default { 
   ping, login, register, refreshToken, getTransactions, addTransaction, updateTransaction, deleteTransaction, 
-  getUser, updateUser, getUserGroups, createGroup, updateGroup, deleteGroup, getGroupInvitations, removeUserGroup, 
+  getUser, updateUser, getGroupDtos, createGroup, updateGroup, deleteGroup, getGroupInvitations, removeGroup, 
   getUserInvitations, joinGroup, createGroupInvitation, deleteGroupInvitation, getGroupTransactions, createGroupTransaction,
-  updateGroupTransaction, deleteGroupTransaction
+  updateGroupTransaction, deleteGroupTransaction, payGroupTransaction
 };

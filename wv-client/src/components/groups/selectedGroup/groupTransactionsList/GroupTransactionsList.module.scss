@@ -46,6 +46,15 @@
     }
 }
 
+.owned {
+    .ownedText {
+        font-size: 12px;
+    }
+    .ownedAmount {
+        color: $error;
+    }
+}
+
 .menuDeleteButtonIcon {
     fill: $error;
     $size: 14px;

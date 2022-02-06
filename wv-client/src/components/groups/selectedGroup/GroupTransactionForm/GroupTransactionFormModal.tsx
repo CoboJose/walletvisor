@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import logger from 'utils/logger';
-import { TransactionCategory, TransactionKind, ApiError, SvgIcons, GroupTransaction, User } from 'types/types';
+import { TransactionCategory, TransactionKind, ApiError, SvgIcons, GroupTransaction, GroupTransactionUsersDTO } from 'types/types';
 import apiErrors from 'api/apiErrors';
 import SVG from 'components/ui/svg/SVG';
 import GroupTransactionForm from 'components/groups/selectedGroup/GroupTransactionForm/GroupTransactionForm';
@@ -23,7 +23,7 @@ type GroupTransactionFormModalProps = {
   open: boolean,
   onClose: () => void,
   setSnackbarText: (arg0: string) => void,
-  groupTransactionUsers?: User[] | null
+  groupTransactionUsers?: GroupTransactionUsersDTO[] | null
 }
 const GroupTransactionFormModal = ({ groupTransactionToUpdate, open, onClose, setSnackbarText, groupTransactionUsers }: GroupTransactionFormModalProps): JSX.Element => {
   logger.rendering();
@@ -38,9 +38,9 @@ const GroupTransactionFormModal = ({ groupTransactionToUpdate, open, onClose, se
   ///////////
   // STATE //
   ///////////
-  const emptyGroupTransactionToUpdate: GroupTransaction = { id: -1, name: '', kind: TransactionKind.Expense, category: TransactionCategory.Shopping, amount: -1, date: new Date().getTime(), active: true, groupId: -1 };
+  const emptyGroupTransactionToUpdate: GroupTransaction = { id: -1, name: '', kind: TransactionKind.Expense, category: TransactionCategory.Shopping, amount: -1, date: new Date().getTime(), groupId: -1 };
   const isEdit: boolean = groupTransactionToUpdate != null;
-  const userGroup = useAppSelector((state) => state.groups.selectedGroup)!;
+  const groupDto = useAppSelector((state) => state.groups.selectedGroupDto)!;
 
   const [groupTransaction, setGroupTransaction] = useState<GroupTransaction>(groupTransactionToUpdate !== null ? groupTransactionToUpdate : emptyGroupTransactionToUpdate);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
@@ -94,9 +94,11 @@ const GroupTransactionFormModal = ({ groupTransactionToUpdate, open, onClose, se
 
     if (validateForm()) {
       try {
-        groupTransaction.groupId = userGroup.group.id;
+        groupTransaction.groupId = groupDto.group.id;
         if (groupTransaction.id < 0) {
-          await dispatch(createGroupTransaction({ groupTransaction, users: userGroup.users })).unwrap();
+          const userDTOs: GroupTransactionUsersDTO[] = [];
+          groupDto.users.forEach((u) => userDTOs.push({ user: u, isCreator: false, hasPayed: false }));
+          await dispatch(createGroupTransaction({ groupTransaction, userDTOs, isActive: false })).unwrap();
           setSnackbarText('Group Transaction created successfully');
         } else {
           await dispatch(updateGroupTransaction(groupTransaction)).unwrap();
@@ -130,15 +132,24 @@ const GroupTransactionFormModal = ({ groupTransactionToUpdate, open, onClose, se
 
         <DialogContent dividers>
           <div>
+            
             <GroupTransactionForm groupTransaction={groupTransaction} setGroupTransaction={setGroupTransaction} formErrors={formErrors} serverError={serverError} />
+            
             {groupTransactionUsers != null && (
-              <div> 
-                Users:
-                {groupTransactionUsers.map((u) => (
-                  <div key={u.id}>{u.email}</div>
-                ))}
+              <div className={style.users}> 
+                <p className={style.header}>Users</p>
+                <div className={style.list}> 
+                  {groupTransactionUsers.map((uDTO) => (
+                    <div key={uDTO.user.id} className={style.listItem}>
+                      <span className={style.listName}>Email: </span> <span>{uDTO.user.email}</span>
+                      <span className={style.listName}>Has Payed: </span> <span>{uDTO.hasPayed ? 'Yes' : 'No'}</span>
+                      <span className={style.listName}>Is the Creator: </span> <span>{uDTO.isCreator ? 'Yes' : 'No'}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
+
           </div>
         </DialogContent>
 

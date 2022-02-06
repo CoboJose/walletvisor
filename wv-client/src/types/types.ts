@@ -38,7 +38,6 @@ export type GroupTransaction = {
   category: TransactionCategory,
   amount: number,
   date: number,
-  active: boolean,
   groupId: number
 }
 
@@ -87,14 +86,22 @@ export type CreateGroupInvitationRequest = {
   groupId: number,
 }
 
-export type UserGroup = {
-  group: Group,
-  users: User[],
+export type GroupDTO = {
+  group: Group
+  users: User[]
+  balance: number
 }
 
-export type GroupTransactionWithUsers = {
+export type GroupTransactionUsersDTO = {
+  user: User
+  isCreator: boolean
+  hasPayed: boolean
+}
+
+export type GroupTransactionDTO = {
   groupTransaction: GroupTransaction
-  users: User[]
+  userDTOs: GroupTransactionUsersDTO[]
+  isActive: boolean
 }
 
 ///////////
