@@ -1,21 +1,8 @@
 @import "themes/theme.module";
 
-.groupForm{
-    @include flex-column-center;
-}
-
-.groupFormForm {
-    min-width: 300px;
-}
-
-.svgIcon {
-    $size: 15px;
-    height: $size;
-    width: $size;
-    fill: currentColor;
-    margin-right: 5px;
-}
-
 .userInvitations {
-    min-width: 290px;
+    //Desktop
+    @media (min-width: $maxWidth) {
+        min-width: 350px;
+    }
 }

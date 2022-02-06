@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import style from './Balance.module.scss';
 import ButtonAddTransaction from 'components/navigation/modalButtons/ButtonAddTransaction';
 import ButtonDateRange from 'components/navigation/modalButtons/ButtonDateRange';
-import FilterByCategoriesButton from 'components/navigation/modalButtons/ButtonfilterByCategories';
+import FilterByCategoriesButton from 'components/navigation/modalButtons/ButtonFilterByCategories';
 
 //////////////////////
 // HELPER FUNCTIONS //

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from 'api/api';
-import { ApiError, GroupTransactionWithUsers } from 'types/types';
+import { ApiError, GroupTransaction, GroupTransactionWithUsers } from 'types/types';
 import { RootState } from 'store/store';
 import { logout } from './auth';
 
@@ -14,9 +14,9 @@ const initialState: GroupTransactionsState = {
   isLoading: false,
 };
 
-export const getGroupTransactions = createAsyncThunk<GroupTransactionWithUsers[], number, {state: RootState, rejectValue: ApiError }>(
+export const getGroupTransactions = createAsyncThunk<GroupTransactionWithUsers[], {groupId: number}, {state: RootState, rejectValue: ApiError }>(
   'groupTransactions/getGroupTransactions',
-  async (groupId, { rejectWithValue }) => {
+  async ({ groupId }, { rejectWithValue }) => {
     try { return await api.getGroupTransactions(groupId); }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
@@ -28,6 +28,28 @@ export const createGroupTransaction = createAsyncThunk<GroupTransactionWithUsers
     try { 
       await api.createGroupTransaction(groupTransactionWithUsers);
       return await api.getGroupTransactions(groupTransactionWithUsers.groupTransaction.groupId);
+    }
+    catch (error) { return rejectWithValue(error as ApiError); }
+  }
+);
+
+export const updateGroupTransaction = createAsyncThunk<GroupTransactionWithUsers[], GroupTransaction, {state: RootState, rejectValue: ApiError }>(
+  'transactions/updateGroupTransaction',
+  async (groupTransaction, { rejectWithValue }) => {
+    try { 
+      await api.updateGroupTransaction(groupTransaction);
+      return await api.getGroupTransactions(groupTransaction.groupId);
+    }
+    catch (error) { return rejectWithValue(error as ApiError); }
+  }
+);
+
+export const deleteGroupTransaction = createAsyncThunk<GroupTransactionWithUsers[], {groupTransactionId: number}, {state: RootState, rejectValue: ApiError }>(
+  'transactions/deleteGroupTransaction',
+  async ({ groupTransactionId }, { rejectWithValue }) => {
+    try { 
+      await api.deleteGroupTransaction(groupTransactionId);
+      return await api.getGroupTransactions(groupTransactionId);
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
@@ -59,6 +81,28 @@ export const groupTransactionsSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(createGroupTransaction.rejected, (state) => {
+      state.isLoading = false;
+    });
+    //UPDATE
+    builder.addCase(updateGroupTransaction.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateGroupTransaction.fulfilled, (state, action) => {
+      state.groupTransactionsWithUsers = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(updateGroupTransaction.rejected, (state) => {
+      state.isLoading = false;
+    });
+    //DELETE
+    builder.addCase(deleteGroupTransaction.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteGroupTransaction.fulfilled, (state, action) => {
+      state.groupTransactionsWithUsers = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(deleteGroupTransaction.rejected, (state) => {
       state.isLoading = false;
     });
     //LOGOUT

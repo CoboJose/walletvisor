@@ -22,3 +22,11 @@
     width: $size;
     fill: currentColor;
 }
+
+.editButtons {
+    display: flex;
+    flex-direction: row;
+    margin-top: 25px;
+    gap: 20px;
+    justify-content: center;
+}

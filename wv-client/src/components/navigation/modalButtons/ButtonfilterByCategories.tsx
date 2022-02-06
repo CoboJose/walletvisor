@@ -9,7 +9,6 @@ import TransactionsFilter from 'components/transactions/transactionsFilter/Trans
 type ButtonFilterByCategoriesProps = {
   isPhone: boolean
 }
-
 const ButtonFilterByCategories = ({ isPhone }: ButtonFilterByCategoriesProps): JSX.Element => {
   logger.rendering();
 

@@ -17,16 +17,16 @@ import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
 import DatePicker from '@mui/lab/DatePicker';
 
-import style from './AddGroupTransaction.module.scss';
+import style from './GroupTransactionForm.module.scss';
 
-type AddGroupTransactionProps = {
+type GroupTransactionFormProps = {
   groupTransaction: GroupTransaction,
   setGroupTransaction : (arg0: GroupTransaction) => void,
   formErrors: Record<string, string>,
   serverError: string
 }
 
-const AddGroupTransaction = ({ groupTransaction, setGroupTransaction, formErrors, serverError }: AddGroupTransactionProps): JSX.Element => {
+const GroupTransactionForm = ({ groupTransaction, setGroupTransaction, formErrors, serverError }: GroupTransactionFormProps): JSX.Element => {
   logger.rendering();
 
   ///////////
@@ -64,7 +64,7 @@ const AddGroupTransaction = ({ groupTransaction, setGroupTransaction, formErrors
   // JSX //
   /////////
   return (
-    <div className={style.addGroupTransaction}>
+    <div className={style.groupTransactionForm}>
 
       { serverError.length > 0 && (
         <Alert severity="error">{serverError}</Alert>
@@ -153,4 +153,4 @@ const AddGroupTransaction = ({ groupTransaction, setGroupTransaction, formErrors
   );
 };
 
-export default AddGroupTransaction;
+export default GroupTransactionForm;

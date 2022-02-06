@@ -5,8 +5,9 @@ import { Alert, Button, Snackbar, useMediaQuery, useTheme } from '@mui/material'
 import { SvgIcons } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
 import GroupFormModal from 'components/groups/groupForm/GroupFormModal';
+import { useAppSelector } from 'store/hooks';
 
-const ButtonCreateGroup = (): JSX.Element => {
+const ButtonGroup = (): JSX.Element => {
   logger.rendering();
 
   ///////////
@@ -18,6 +19,8 @@ const ButtonCreateGroup = (): JSX.Element => {
   ///////////
   // STATE //
   ///////////
+  const userGroup = useAppSelector((state) => state.groups.selectedGroup)!;
+  
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState<string>('');
 
@@ -35,22 +38,22 @@ const ButtonCreateGroup = (): JSX.Element => {
           variant="outlined"
           onClick={() => setIsModalOpen(true)}
           size="small"
-          startIcon={<SVG name={SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
+          startIcon={<SVG name={userGroup != null ? SvgIcons.Edit : SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
         >
-          Create
+          {userGroup != null ? 'Edit' : 'Create'}
         </Button>
       ) : (
         <Button
           variant="text"
           onClick={() => setIsModalOpen(true)}
           size="medium"
-          startIcon={<SVG name={SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
+          startIcon={<SVG name={userGroup != null ? SvgIcons.Edit : SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
         >
-          Create Group
+          {userGroup != null ? 'Edit' : 'Create'} Group
         </Button>
       )}
 
-      {isModalOpen && <GroupFormModal groupToUpdate={null} setSnackbarText={setSnackbarText} onClose={onCloseModal} />}
+      {isModalOpen && <GroupFormModal setSnackbarText={setSnackbarText} onClose={onCloseModal} />}
 
       <Snackbar 
         open={snackbarText !== ''} 
@@ -69,4 +72,4 @@ const ButtonCreateGroup = (): JSX.Element => {
   );
 };
 
-export default ButtonCreateGroup;
+export default ButtonGroup;

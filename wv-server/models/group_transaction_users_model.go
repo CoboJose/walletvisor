@@ -39,6 +39,26 @@ func GetGroupTransactionUsersById(userId, groupTransactionId int) (*GroupTransac
 	return groupTransactionUsers, nil
 }
 
+// GetGroupTransactionUsersByGroupTransactionId returns the groupTransactionUsers identified by the groupTransaction id
+func GetGroupTransactionUsersByGroupTransactionId(groupTransactionId int) ([]GroupTransactionUsers, *utils.Cerr) {
+	groupTransactionUsers := []GroupTransactionUsers{}
+	query := `SELECT * FROM group_transaction_users WHERE group_transaction_id=$1`
+	if err := db.Select(&groupTransactionUsers, query, groupTransactionId); err != nil {
+		return nil, utils.NewCerr("GE000", err)
+	}
+	return groupTransactionUsers, nil
+}
+
+// GetGroupTransactionUsersByUserIdAndGroupTransactionId returns the groupTransactionUsers identified by the groupTransaction id and the user id
+func GetGroupTransactionUsersByUserIdAndGroupTransactionId(userId, groupTransactionId int) ([]GroupTransactionUsers, *utils.Cerr) {
+	groupTransactionUsers := []GroupTransactionUsers{}
+	query := `SELECT * FROM group_transaction_users WHERE user_id=$1 AND group_transaction_id=$2`
+	if err := db.Select(&groupTransactionUsers, query, userId, groupTransactionId); err != nil {
+		return nil, utils.NewCerr("GE000", err)
+	}
+	return groupTransactionUsers, nil
+}
+
 //////////
 // Save //
 //////////

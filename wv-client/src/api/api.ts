@@ -1,6 +1,6 @@
 /* eslint-disable object-property-newline */
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
-import { AuthResponse, ApiError, Transaction, GetTransactionsResponse, User, UpdateUserPayload, Group, GroupInvitationResponse, GroupInvitation, CreateGroupInvitationRequest, UserGroup, GroupTransactionWithUsers } from 'types/types';
+import { AuthResponse, ApiError, Transaction, GetTransactionsResponse, User, UpdateUserPayload, Group, GroupInvitationResponse, GroupInvitation, CreateGroupInvitationRequest, UserGroup, GroupTransactionWithUsers, GroupTransaction } from 'types/types';
 
 const UNEXPECTED_ERROR: ApiError = { code: 'GE000', message: 'Unexpected Error, please contact with cobogue@gmail.com', debugMessage: '' };
 
@@ -159,6 +159,39 @@ const createGroup = async (group: Group): Promise<Group> => {
   });
 };
 
+const updateGroup = async (group: Group): Promise<Group> => {
+  const url = '/groups';
+  const body = group;
+
+  return new Promise((resolve, reject) => {
+    axios.put(url, body)
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
+const deleteGroup = async (groupId: number): Promise<string> => {
+  const url = '/groups';
+  const params = { groupId };
+
+  return new Promise((resolve, reject) => {
+    axios.delete(url, { params })
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
+const removeUserGroup = async (groupId: number, userId: number): Promise<string> => {
+  const url = '/groups/removeuser';
+  const params = { groupId, userId };
+
+  return new Promise((resolve, reject) => {
+    axios.delete(url, { params })
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
 ///////////////////////
 // Group Invitations //
 ///////////////////////
@@ -243,8 +276,31 @@ const createGroupTransaction = async (groupTransactionWithUsers: GroupTransactio
   });
 };
 
+const updateGroupTransaction = async (groupTransaction: GroupTransaction): Promise<GroupTransactionWithUsers> => {
+  const url = '/grouptransactions';
+  const body = groupTransaction;
+
+  return new Promise((resolve, reject) => {
+    axios.put(url, body)
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
+const deleteGroupTransaction = async (groupTransactionId: number): Promise<string> => {
+  const url = '/grouptransactions';
+  const params = { groupTransactionId };
+
+  return new Promise((resolve, reject) => {
+    axios.delete(url, { params })
+      .then((response) => { resolve(response.data); })
+      .catch((error) => { reject(error.response ? error.response.data : UNEXPECTED_ERROR); });
+  });
+};
+
 export default { 
   ping, login, register, refreshToken, getTransactions, addTransaction, updateTransaction, deleteTransaction, 
-  getUser, updateUser, getUserGroups, createGroup, getGroupInvitations, getUserInvitations, joinGroup, 
-  createGroupInvitation, deleteGroupInvitation, getGroupTransactions, createGroupTransaction
+  getUser, updateUser, getUserGroups, createGroup, updateGroup, deleteGroup, getGroupInvitations, removeUserGroup, 
+  getUserInvitations, joinGroup, createGroupInvitation, deleteGroupInvitation, getGroupTransactions, createGroupTransaction,
+  updateGroupTransaction, deleteGroupTransaction
 };

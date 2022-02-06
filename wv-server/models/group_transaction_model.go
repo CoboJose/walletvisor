@@ -14,6 +14,7 @@ type GroupTransaction struct {
 	Category string  `json:"category"`
 	Amount   float64 `json:"amount"`
 	Date     int     `json:"date"`
+	Active   bool    `json:"active"`
 	GroupId  int     `json:"groupId"  db:"group_id"`
 }
 
@@ -24,6 +25,7 @@ var groupTransactionsTable = `CREATE TABLE IF NOT EXISTS group_transactions (
 		category 	VARCHAR(100) 	NOT NULL	CHECK((kind='` + Income.String() + `' AND category IN(` + Income.getCategoriesString() + `)) OR (kind='` + Expense.String() + `' AND category IN(` + Expense.getCategoriesString() + `))),
 		amount 		REAL 			NOT NULL	CHECK(amount>=0),
 		date 		BIGINT			NOT NULL	CHECK(date>=0),
+		active		BOOLEAN			NOT NULL,
 		group_id 	INT				NOT NULL	REFERENCES groups(id) 	ON DELETE CASCADE
 	)`
 
@@ -34,8 +36,8 @@ var groupTransactionsIndexes = `CREATE INDEX IF NOT EXISTS group_trn_date_index 
 /////////
 
 // NewTransaction creates a transaction struct, but does not store it in the database
-func NewGroupTransaction(name string, kind string, category string, amount float64, date int, groupId int) *GroupTransaction {
-	return &GroupTransaction{ID: -1, Name: name, Kind: kind, Category: category, Amount: utils.Round(amount, 2), Date: date, GroupId: groupId}
+func NewGroupTransaction(name string, kind string, category string, amount float64, date int, active bool, groupId int) *GroupTransaction {
+	return &GroupTransaction{ID: -1, Name: name, Kind: kind, Category: category, Amount: utils.Round(amount, 2), Date: date, Active: active, GroupId: groupId}
 }
 
 /////////
@@ -54,11 +56,41 @@ func GetGroupTransactionByID(groupTransactionID int) (*GroupTransaction, *utils.
 	return groupTransaction, nil
 }
 
-// GetGroupTransactions returns all the groupTransactions in that group
-func GetGroupTransactions(groupId int) ([]GroupTransaction, *utils.Cerr) {
+// GetGroupTransactionsByGroupId returns all the groupTransactions in that group
+func GetGroupTransactionsByGroupId(groupId int) ([]GroupTransaction, *utils.Cerr) {
 	groupTransactions := []GroupTransaction{}
 	query := `SELECT * FROM group_transactions WHERE group_id=$1`
 	if err := db.Select(&groupTransactions, query, groupId); err != nil {
+		return nil, utils.NewCerr("GT001", err)
+	}
+
+	for i := 0; i < len(groupTransactions); i++ {
+		groupTransactions[i].Amount = utils.Round(groupTransactions[i].Amount, 2)
+	}
+
+	return groupTransactions, nil
+}
+
+// GetGroupTransactionsByUserIdAndGroupId returns all the groupTransactions in that group that the user is participating
+func GetGroupTransactionsByUserIdAndGroupId(userId, groupId int) ([]GroupTransaction, *utils.Cerr) {
+	groupTransactions := []GroupTransaction{}
+	query := `SELECT gt.* FROM group_transactions gt JOIN group_transaction_users gtu ON gt.id=gtu.group_transaction_id WHERE gtu.user_id=$1 AND gt.group_id=$2`
+	if err := db.Select(&groupTransactions, query, userId, groupId); err != nil {
+		return nil, utils.NewCerr("GT001", err)
+	}
+
+	for i := 0; i < len(groupTransactions); i++ {
+		groupTransactions[i].Amount = utils.Round(groupTransactions[i].Amount, 2)
+	}
+
+	return groupTransactions, nil
+}
+
+// GetActiveGroupTransactionsByUserIdAndGroupId returns all the groupTransactions in that group that the user is participating that are active
+func GetActiveGroupTransactionsByUserIdAndGroupId(userId, groupId int) ([]GroupTransaction, *utils.Cerr) {
+	groupTransactions := []GroupTransaction{}
+	query := `SELECT gt.* FROM group_transactions gt JOIN group_transaction_users gtu ON gt.id=gtu.group_transaction_id WHERE gtu.user_id=$1 AND gt.group_id=$2 AND gt.active=true`
+	if err := db.Select(&groupTransactions, query, userId, groupId); err != nil {
 		return nil, utils.NewCerr("GT001", err)
 	}
 
@@ -83,10 +115,10 @@ func (groupTransaction *GroupTransaction) Save() *utils.Cerr {
 	groupTransaction.Amount = utils.Round(groupTransaction.Amount, 2)
 
 	if groupTransaction.ID <= 0 { // Create
-		query := `INSERT INTO group_transactions (name, kind, category, amount, date, group_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id`
-		err = db.QueryRow(query, groupTransaction.Name, groupTransaction.Kind, groupTransaction.Category, groupTransaction.Amount, groupTransaction.Date, groupTransaction.GroupId).Scan(&groupTransaction.ID)
+		query := `INSERT INTO group_transactions (name, kind, category, amount, date, active, group_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id`
+		err = db.QueryRow(query, groupTransaction.Name, groupTransaction.Kind, groupTransaction.Category, groupTransaction.Amount, groupTransaction.Date, groupTransaction.Active, groupTransaction.GroupId).Scan(&groupTransaction.ID)
 	} else { //Update
-		query := `UPDATE group_transactions SET name=:name, kind=:kind, category=:category, amount=:amount, date=:date WHERE id=:id`
+		query := `UPDATE group_transactions SET name=:name, kind=:kind, category=:category, amount=:amount, date=:date, active=:active WHERE id=:id`
 		var res sql.Result
 		res, err = db.NamedExec(query, &groupTransaction)
 		if err == nil {

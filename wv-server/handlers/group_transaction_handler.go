@@ -22,7 +22,7 @@ func (h GroupTransactionHandler) Get(c echo.Context) error {
 	}
 
 	// Get the group transactions from the database
-	groupTrns, cerr := models.GetGroupTransactions(groupId)
+	groupTrns, cerr := models.GetGroupTransactionsByGroupId(groupId)
 	if cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
@@ -34,27 +34,36 @@ func (h GroupTransactionHandler) Get(c echo.Context) error {
 		if cerr != nil {
 			return c.JSON(400, cerr.Response())
 		}
+		for _, u := range users {
+			u.Password = ""
+		}
 		response = append(response, groupTransactionWithUsers{GroupTransaction: groupTrn, Users: users})
 	}
 
 	return c.JSON(200, response)
 }
 
-// Create creates a transaction
+// Create creates a groupTransaction
 func (h GroupTransactionHandler) Create(c echo.Context) error {
 	// Get the createGroupTransactionRequest from the body
 	groupTrnWithUsers, cerr := getGroupTransactionWithUsersPayload(c)
 	if cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
-	groupTrn := groupTrnWithUsers.GroupTransaction
-	users := groupTrnWithUsers.Users
-
 	// Get the userId from the token
 	claims := c.Get("claims").(utils.JwtClaims)
 	creatingUserId := claims.UserID
 
+	groupTrn := groupTrnWithUsers.GroupTransaction
+	users := groupTrnWithUsers.Users
+
+	// There should be at least 2 members in the group
+	if len(users) < 2 {
+		return c.JSON(400, utils.NewCerr("GT003", errors.New("there should be at least two users in the group to create a groupTransaction")).Response())
+	}
+
 	// Create the group Transaction
+	groupTrn.Active = true
 	if cerr = groupTrn.Save(); cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
@@ -68,7 +77,7 @@ func (h GroupTransactionHandler) Create(c echo.Context) error {
 	}
 
 	// Create the Transaction
-	amount := groupTrn.Amount / float64(len(users))
+	amount := utils.Round(groupTrn.Amount/float64(len(users)), 2)
 	trn := models.NewTransaction(groupTrn.Name, groupTrn.Kind, groupTrn.Category, amount, groupTrn.Date, creatingUserId)
 	trn.GroupTransactionID = null.IntFrom(int64(groupTrn.ID))
 	if cerr = trn.Save(); cerr != nil {
@@ -85,10 +94,32 @@ func (h GroupTransactionHandler) Update(c echo.Context) error {
 	if cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
-	// Get the update transactions boolean from the query
-	updateTransactions, err := strconv.ParseBool(c.QueryParam("updateTransactions"))
-	if err != nil {
-		return c.JSON(400, utils.NewCerr("GE001", err).Response())
+
+	// Only active groupTransactions can be updated
+	if !groupTrn.Active {
+		return c.JSON(400, utils.NewCerr("GT004", errors.New("only active groupTransactions can be deleted")).Response())
+	}
+
+	// Update the generated transactions
+	groupNumberOfParticipants, cerr := models.GetNumberOfUsersByGroupTransactionId(groupTrn.ID)
+	if cerr != nil {
+		return c.JSON(400, cerr.Response())
+	}
+
+	trns, cerr := models.GetTransactionsByGroupTransactionId(groupTrn.ID)
+	if cerr != nil {
+		return c.JSON(400, utils.NewCerr("GE000", cerr.Err).Response())
+	}
+	for _, t := range trns {
+		t.Name = groupTrn.Name
+		t.Kind = groupTrn.Kind
+		t.Category = groupTrn.Category
+		t.Date = groupTrn.Date
+		t.Amount = groupTrn.Amount / float64(groupNumberOfParticipants)
+
+		if cerr = t.Save(); cerr != nil {
+			return c.JSON(400, cerr.Response())
+		}
 	}
 
 	// Update the group transaction in the database
@@ -96,27 +127,7 @@ func (h GroupTransactionHandler) Update(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	// Update the generated transactions if requested by the user
-	if updateTransactions {
-		groupNumberOfParticipants, cerr := models.GetNumberOfUsersByGroupTransactionId(groupTrn.ID)
-		if cerr != nil {
-			return c.JSON(400, cerr.Response())
-		}
-
-		trns, cerr := models.GetTransactionsByGroupTransactionId(groupTrn.ID)
-		if cerr != nil {
-			return c.JSON(400, utils.NewCerr("GE000", cerr.Err).Response())
-		}
-		for _, t := range trns {
-			t.Name = groupTrn.Name
-			t.Kind = groupTrn.Kind
-			t.Category = groupTrn.Category
-			t.Date = groupTrn.Date
-			t.Amount = groupTrn.Amount / float64(groupNumberOfParticipants)
-		}
-	}
-
-	return c.JSON(201, "Group Transaction deleted succesfully")
+	return c.JSON(201, "Group Transaction updated succesfully")
 }
 
 //Delete deletes a group transaction
@@ -126,33 +137,31 @@ func (h GroupTransactionHandler) Delete(c echo.Context) error {
 	if err != nil {
 		return c.JSON(400, utils.NewCerr("GE001", errors.New("could not get the transactionId from the request")).Response())
 	}
-	// Get the delete transactions boolean from the query
-	deleteTransactions, err := strconv.ParseBool(c.QueryParam("deleteTransactions"))
-	if err != nil {
-		return c.JSON(400, utils.NewCerr("GE001", err).Response())
-	}
 
 	groupTrn, cerr := models.GetGroupTransactionByID(groupTrnID)
 	if cerr != nil {
 		return c.JSON(400, utils.NewCerr("GE000", cerr.Err).Response())
 	}
 
+	// Only active groupTransactions can be deleted
+	if !groupTrn.Active {
+		return c.JSON(400, utils.NewCerr("GT004", errors.New("only active groupTransactions can be deleted")).Response())
+	}
+
+	// Delete the generated transactions
+	trns, cerr := models.GetTransactionsByGroupTransactionId(groupTrnID)
+	if cerr != nil {
+		return c.JSON(400, utils.NewCerr("GE000", cerr.Err).Response())
+	}
+	for _, t := range trns {
+		if cerr := t.Delete(); cerr != nil {
+			return c.JSON(400, cerr.Response())
+		}
+	}
+
 	// Delete the group transaction in the database
 	if cerr := groupTrn.Delete(); cerr != nil {
 		return c.JSON(400, cerr.Response())
-	}
-
-	// Delete the generated transactions if requested by the user
-	if deleteTransactions {
-		trns, cerr := models.GetTransactionsByGroupTransactionId(groupTrnID)
-		if cerr != nil {
-			return c.JSON(400, utils.NewCerr("GE000", cerr.Err).Response())
-		}
-		for _, t := range trns {
-			if cerr := t.Delete(); cerr != nil {
-				return c.JSON(400, cerr.Response())
-			}
-		}
 	}
 
 	return c.JSON(201, "Group Transaction deleted succesfully")

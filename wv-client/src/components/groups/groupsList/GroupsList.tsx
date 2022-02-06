@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'react';
-import { useAppSelector } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import logger from 'utils/logger';
 
 import List from '@mui/material/List';
@@ -9,16 +9,15 @@ import ListItemText from '@mui/material/ListItemText';
 
 import style from './GroupsList.module.scss';
 import { UserGroup } from 'types/types';
+import { setSelectedGroup } from 'store/slices/groups';
 
-type GroupListProps = {
-  setSelectedUserGroup: (arg0: UserGroup|null) => void,
-}
-const GroupsList = ({ setSelectedUserGroup }: GroupListProps): JSX.Element => {
+const GroupsList = (): JSX.Element => {
   logger.rendering();
   
   ///////////
   // HOOKS //
   ///////////
+  const dispatch = useAppDispatch();
 
   ///////////
   // STATE //
@@ -48,7 +47,7 @@ const GroupsList = ({ setSelectedUserGroup }: GroupListProps): JSX.Element => {
 
                 <ListItem
                   button
-                  onClick={() => setSelectedUserGroup(ug)}
+                  onClick={() => dispatch(setSelectedGroup(ug))}
                   className={style.listItem}
                 >
                   <div className={style.filling} style={{ backgroundColor: ug.group.color }} />

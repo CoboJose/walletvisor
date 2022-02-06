@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { deleteGroupInvitation, getUserInvitations, joinGroup } from 'store/slices/groupInvitations';
 import SVG from 'components/ui/svg/SVG';
 import apiErrors from 'api/apiErrors';
+import { getGroups } from 'store/slices/groups';
 
 type UserInvitationsProps = {
   onClose: () => void
@@ -46,6 +47,7 @@ const UserInvitations = ({ onClose }: UserInvitationsProps): JSX.Element => {
   const acceptHandler = async (groupInvitationResponse: GroupInvitationResponse) => {
     try {
       await dispatch(joinGroup(groupInvitationResponse)).unwrap();
+      await dispatch(getGroups());
     } catch (error) {
       const err = error as ApiError;
       console.log(apiErrors(err.code));
@@ -88,10 +90,10 @@ const UserInvitations = ({ onClose }: UserInvitationsProps): JSX.Element => {
 
                       <ListItemSecondaryAction>
                         <IconButton onClick={() => deleteHandler(ui.id)}>
-                          <SVG name={SvgIcons.Delete} style={{ fill: style.error, width: '20px', height: '20px' }} />
+                          <SVG name={SvgIcons.Close} style={{ fill: style.error, width: '15px', height: '15px' }} />
                         </IconButton>
                         <IconButton onClick={() => acceptHandler(ui)}>
-                          <SVG name={SvgIcons.Add} style={{ fill: style.success, width: '20px', height: '20px' }} />
+                          <SVG name={SvgIcons.Ok} style={{ fill: style.success, width: '28px', height: '28px' }} />
                         </IconButton>
                       </ListItemSecondaryAction>
 

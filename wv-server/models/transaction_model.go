@@ -132,6 +132,21 @@ func GetTransactionsByGroupTransactionId(groupTransactionId int) ([]Transaction,
 	return transactions, nil
 }
 
+// GetTransactionsByUserIdAndGroupTransactionId returns all the transactions created by a group transaction for a user
+func GetTransactionsByUserIdAndGroupTransactionId(userId, groupTransactionId int) ([]Transaction, *utils.Cerr) {
+	transactions := []Transaction{}
+	query := `SELECT * FROM transactions WHERE user_id=$1 AND group_transaction_id=$2`
+	if err := db.Select(&transactions, query, userId, groupTransactionId); err != nil {
+		return nil, utils.NewCerr("GE000", err)
+	}
+
+	for i := 0; i < len(transactions); i++ {
+		transactions[i].Amount = utils.Round(transactions[i].Amount, 2)
+	}
+
+	return transactions, nil
+}
+
 //////////
 // Save //
 //////////

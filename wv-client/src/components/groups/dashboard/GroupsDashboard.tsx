@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@mui/material';
-import ButtonCreateGroup from 'components/navigation/modalButtons/ButtonCreateGroup';
+import ButtonGroup from 'components/navigation/modalButtons/ButtonGroup';
 import logger from 'utils/logger';
 import style from './GroupsDashboard.module.scss';
 
@@ -9,7 +9,7 @@ const GroupsDashboard = (): JSX.Element => {
 
   return (
     <Card className={style.groupsDashboard}>
-      <ButtonCreateGroup />
+      <ButtonGroup />
     </Card>
   );
 };

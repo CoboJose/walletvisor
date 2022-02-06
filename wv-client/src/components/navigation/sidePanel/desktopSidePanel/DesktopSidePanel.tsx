@@ -8,6 +8,8 @@ import logger from 'utils/logger';
 import { Divider, List, ListItem, ListItemIcon, ListItemText, Drawer, Link } from '@mui/material';
 
 import style from './DesktopSidePanel.module.scss';
+import { useAppDispatch } from 'store/hooks';
+import { setSelectedGroup } from 'store/slices/groups';
 
 type DesktopSidePanelProps = {
   principalRoutesList: SidePanelListItems[],
@@ -18,6 +20,12 @@ const DesktopSidePanel = ({ principalRoutesList }: DesktopSidePanelProps): JSX.E
   
   const history = useHistory();
   const location = useLocation();
+  const dispatch = useAppDispatch();
+
+  const onRouteClickHandler = (listItem: SidePanelListItems) => {
+    history.push(listItem.path);
+    dispatch(setSelectedGroup(null));
+  };
 
   return (
     <Drawer
@@ -42,7 +50,7 @@ const DesktopSidePanel = ({ principalRoutesList }: DesktopSidePanelProps): JSX.E
             key={listItem.path} 
             button 
             selected={listItem.path === location.pathname.replace('/', '')} 
-            onClick={() => history.push(listItem.path)}
+            onClick={() => onRouteClickHandler(listItem)}
           >
             <ListItemIcon> <SVG name={listItem.svg} className={style.icon} /> </ListItemIcon>
             <ListItemText primary={listItem.text} />

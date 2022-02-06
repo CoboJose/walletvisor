@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import logger from 'utils/logger';
 
 import { Alert, Button, Snackbar, useMediaQuery, useTheme } from '@mui/material';
-import { SvgIcons, UserGroup } from 'types/types';
+import { SvgIcons } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
-import AddGroupTransactionModal from 'components/groups/selectedGroup/addGroupTransaction/AddGroupTransactionModal';
+import GroupTransactionFormModal from 'components/groups/selectedGroup/GroupTransactionForm/GroupTransactionFormModal';
 
-type ButtonAddGroupTransactionProps = {
-  userGroup: UserGroup
-}
-const ButtonAddGroupTransaction = ({ userGroup }: ButtonAddGroupTransactionProps): JSX.Element => {
+const ButtonAddGroupTransaction = (): JSX.Element => {
   logger.rendering();
 
   ///////////
@@ -51,7 +48,7 @@ const ButtonAddGroupTransaction = ({ userGroup }: ButtonAddGroupTransactionProps
         </>
       )}
 
-      {isModalOpen && <AddGroupTransactionModal groupTransactionToUpdate={null} open={isModalOpen} onClose={onCloseModal} setSnackbarText={setSnackbarText} userGroup={userGroup} />}
+      {isModalOpen && <GroupTransactionFormModal groupTransactionToUpdate={null} open={isModalOpen} onClose={onCloseModal} setSnackbarText={setSnackbarText} />}
 
       <Snackbar 
         open={snackbarText !== ''} 

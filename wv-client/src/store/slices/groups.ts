@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import api from 'api/api';
 import { ApiError, Group, UserGroup } from 'types/types';
 import { RootState } from 'store/store';
@@ -6,11 +6,13 @@ import { logout } from './auth';
 
 interface GroupsState {
   userGroups: UserGroup[],
+  selectedGroup: UserGroup|null,
   isLoading: boolean,
 }
 
 const initialState: GroupsState = {
   userGroups: [],
+  selectedGroup: null,
   isLoading: false,
 };
 
@@ -33,40 +35,46 @@ export const createGroup = createAsyncThunk<UserGroup[], Group, {state: RootStat
   }
 );
 
-/*export const updateGroup = createAsyncThunk<GetTransactionsResponse, Transaction, {state: RootState, rejectValue: ApiError }>(
+export const updateGroup = createAsyncThunk<UserGroup[], Group, {state: RootState, rejectValue: ApiError }>(
   'groups/updateGroup',
-  async (transaction, { getState, rejectWithValue }) => {
-    const transactionState = getState().transactions;
-    const from = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
-    const to = transactionState.toDate ? transactionState.toDate.valueOf() : 999999999999999;
-
+  async (group, { rejectWithValue }) => {
     try { 
-      await api.updateTransaction(transaction);
-      return await api.getTransactions(from, to);
+      await api.updateGroup(group);
+      return await api.getUserGroups();
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
 );
 
-export const deleteGroup = createAsyncThunk<GetTransactionsResponse, {transactionId: number}, {state: RootState, rejectValue: ApiError }>(
+export const deleteGroup = createAsyncThunk<UserGroup[], {groupId: number}, {state: RootState, rejectValue: ApiError }>(
   'groups/deleteGroup',
-  async ({ transactionId }, { getState, rejectWithValue }) => {
-    const transactionState = getState().transactions;
-    const from = transactionState.fromDate ? transactionState.fromDate.valueOf() : 0;
-    const to = transactionState.toDate ? transactionState.toDate.valueOf() : 999999999999999;
-    
+  async ({ groupId }, { rejectWithValue }) => {
     try { 
-      await api.deleteTransaction(transactionId);
-      return await api.getTransactions(from, to);
+      await api.deleteGroup(groupId);
+      return await api.getUserGroups();
     }
     catch (error) { return rejectWithValue(error as ApiError); }
   }
-);*/
+);
+
+export const removeUserGroup = createAsyncThunk<UserGroup[], {groupId: number, userId: number}, {state: RootState, rejectValue: ApiError }>(
+  'groups/removeUserGroup',
+  async ({ groupId, userId }, { rejectWithValue }) => {
+    try { 
+      await api.removeUserGroup(groupId, userId);
+      return await api.getUserGroups();
+    }
+    catch (error) { return rejectWithValue(error as ApiError); }
+  }
+);
 
 export const groupsSlice = createSlice({
   name: 'groups',
   initialState,
   reducers: {
+    setSelectedGroup: (state, action: PayloadAction<UserGroup|null>) => {
+      state.selectedGroup = action.payload;
+    },
   },
   extraReducers: (builder) => {
     //GET
@@ -92,30 +100,43 @@ export const groupsSlice = createSlice({
       state.isLoading = false;
     });
     //UPDATE
-    /*builder.addCase(updateTransaction.pending, (state) => {
+    builder.addCase(updateGroup.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(updateTransaction.fulfilled, (state, action) => {
-      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
-      state.totalBalance = action.payload.totalBalance;
+    builder.addCase(updateGroup.fulfilled, (state, action) => {
+      state.userGroups = action.payload;
+      const updatedGroup = action.payload.find((g) => g.group.id === state.selectedGroup!.group.id);
+      state.selectedGroup = updatedGroup !== undefined ? updatedGroup : null;
       state.isLoading = false;
     });
-    builder.addCase(updateTransaction.rejected, (state) => {
+    builder.addCase(updateGroup.rejected, (state) => {
       state.isLoading = false;
     });
     //DELETE
-    builder.addCase(deleteTransaction.pending, (state) => {
+    builder.addCase(deleteGroup.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(deleteTransaction.fulfilled, (state, action) => {
-      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
-      state.totalBalance = action.payload.totalBalance;
+    builder.addCase(deleteGroup.fulfilled, (state, action) => {
+      state.userGroups = action.payload;
+      state.selectedGroup = null;
       state.isLoading = false;
     });
-    builder.addCase(deleteTransaction.rejected, (state) => {
+    builder.addCase(deleteGroup.rejected, (state) => {
       state.isLoading = false;
-    });*/
-    //CHANGE TRANSACTIONS RANGE
+    });
+    //Remove User Group
+    builder.addCase(removeUserGroup.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(removeUserGroup.fulfilled, (state, action) => {
+      state.userGroups = action.payload;
+      const updatedGroup = action.payload.find((g) => g.group.id === state.selectedGroup!.group.id);
+      state.selectedGroup = updatedGroup !== undefined ? updatedGroup : null;
+      state.isLoading = false;
+    });
+    builder.addCase(removeUserGroup.rejected, (state) => {
+      state.isLoading = false;
+    });
     //LOGOUT
     builder.addCase(logout, () => {
       return { ...initialState };
@@ -123,4 +144,5 @@ export const groupsSlice = createSlice({
   },
 });
 
+export const { setSelectedGroup } = groupsSlice.actions;
 export default groupsSlice.reducer;

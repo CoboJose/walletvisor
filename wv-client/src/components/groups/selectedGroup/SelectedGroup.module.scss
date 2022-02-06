@@ -1,5 +1,14 @@
+@import "themes/theme.module";
+
 .selectedGroup {
     width: 95%;
     max-width: 700px;
     padding: 15px;
+}
+
+.icon {
+    fill: currentColor;
+    $size: 15px;
+    width: $size;
+    height: $size;
 }

@@ -76,7 +76,10 @@ func group() {
 	group := api.Group("/groups", middlewares.ValidToken("user"))
 
 	group.GET("", groupHandler.GetUserGroups)
-	group.POST("", groupHandler.CreateGroup)
+	group.POST("", groupHandler.Create)
+	group.PUT("", groupHandler.Update)
+	group.DELETE("", groupHandler.Delete)
+	group.DELETE("/removeuser", groupHandler.RemoveUser)
 }
 
 func groupInvitation() {
@@ -94,5 +97,6 @@ func groupTransaction() {
 
 	groupTransaction.GET("", groupTransactionHandler.Get)
 	groupTransaction.POST("", groupTransactionHandler.Create)
+	groupTransaction.PUT("", groupTransactionHandler.Update)
 	groupTransaction.DELETE("", groupTransactionHandler.Delete)
 }

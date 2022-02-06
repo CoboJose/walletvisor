@@ -38,6 +38,7 @@ export type GroupTransaction = {
   category: TransactionCategory,
   amount: number,
   date: number,
+  active: boolean,
   groupId: number
 }
 
@@ -149,4 +150,5 @@ export enum SvgIcons {
   Logout = 'logout',
   Filter = 'filter',
   Group = 'group',
+  Ok = 'ok',
 }

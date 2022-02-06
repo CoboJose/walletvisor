@@ -1,10 +1,13 @@
 package handlers
 
 import (
+	"errors"
+	"strconv"
 	"wv-server/models"
 	"wv-server/utils"
 
 	"github.com/labstack/echo"
+	"gopkg.in/guregu/null.v3"
 )
 
 // GroupHandler holds all the groups handlers
@@ -28,14 +31,17 @@ func (h GroupHandler) GetUserGroups(c echo.Context) error {
 		if cerr != nil {
 			return c.JSON(400, cerr.Response())
 		}
+		for _, u := range users {
+			u.Password = ""
+		}
 		response = append(response, userGroup{Group: group, Users: users})
 	}
 
 	return c.JSON(200, response)
 }
 
-// Create creates a transaction
-func (h GroupHandler) CreateGroup(c echo.Context) error {
+// Create creates a group
+func (h GroupHandler) Create(c echo.Context) error {
 	// Get the createGroupRequest from the body
 	group, cerr := getCreateGroupPayload(c)
 	if cerr != nil {
@@ -60,6 +66,123 @@ func (h GroupHandler) CreateGroup(c echo.Context) error {
 	return c.JSON(201, group)
 }
 
+//Update updates a group
+func (h GroupHandler) Update(c echo.Context) error {
+	// Get the group from the body
+	group := &models.Group{}
+	if err := c.Bind(&group); err != nil {
+		return c.JSON(400, utils.NewCerr("GE002", err).Response())
+	}
+
+	// Update the group in the database
+	if cerr := group.Save(); cerr != nil {
+		return c.JSON(400, cerr.Response())
+	}
+
+	return c.JSON(201, group)
+}
+
+//Delete deletes a group
+func (h GroupHandler) Delete(c echo.Context) error {
+	// Get the group id from the query
+	groupID, err := strconv.Atoi(c.QueryParam("groupId"))
+	if err != nil {
+		return c.JSON(400, utils.NewCerr("GE001", errors.New("could not get the groupId from the request")).Response())
+	}
+
+	if cerr := deleteGroup(groupID); cerr != nil {
+		return c.JSON(400, cerr.Response())
+	}
+
+	return c.JSON(201, "Group deleted succesfully")
+}
+
+//RemoveUser remove the user from a group
+func (h GroupHandler) RemoveUser(c echo.Context) error {
+	// Get the group id from the query
+	groupId, err := strconv.Atoi(c.QueryParam("groupId"))
+	if err != nil {
+		return c.JSON(400, utils.NewCerr("GE001", errors.New("could not get the groupId from the request")).Response())
+	}
+	// Get the user id from the query
+	userId, err := strconv.Atoi(c.QueryParam("userId"))
+	if err != nil {
+		return c.JSON(400, utils.NewCerr("GE001", errors.New("could not get the userId from the request")).Response())
+	}
+
+	// If this is the last user of the group, delete it, else, remove the user
+	groupUsers, cerr := models.GetUsersByGroupId(groupId)
+	if cerr != nil {
+		return c.JSON(400, cerr.Response())
+	}
+	if len(groupUsers) == 1 && groupUsers[0].ID == userId {
+		if cerr := deleteGroup(groupId); cerr != nil {
+			return c.JSON(400, cerr.Response())
+		}
+	} else {
+		// Delete the UserGroups Join Tables
+		userGroup, cerr := models.GetUserGroupByID(userId, groupId)
+		if cerr != nil {
+			return c.JSON(400, cerr.Response())
+		}
+		if cerr := userGroup.Delete(); cerr != nil {
+			return c.JSON(400, cerr.Response())
+		}
+		// Delete the user from the Active Group Transactions
+		groupTransactions, cerr := models.GetActiveGroupTransactionsByUserIdAndGroupId(userId, groupId)
+		if cerr != nil {
+			return c.JSON(400, cerr.Response())
+		}
+		for _, gt := range groupTransactions {
+			// Delete the User GroupTransactionUsers Join Tables
+			groupTransactionsUsersTable, cerr := models.GetGroupTransactionUsersByUserIdAndGroupTransactionId(userId, gt.ID)
+			if cerr != nil {
+				return c.JSON(400, cerr.Response())
+			}
+			for _, gtu := range groupTransactionsUsersTable {
+				if cerr := gtu.Delete(); cerr != nil {
+					return c.JSON(400, cerr.Response())
+				}
+			}
+			// Delete the transactions for the user
+			transactions, cerr := models.GetTransactionsByUserIdAndGroupTransactionId(userId, gt.ID)
+			if cerr != nil {
+				return c.JSON(400, cerr.Response())
+			}
+			for _, t := range transactions {
+				if cerr := t.Delete(); cerr != nil {
+					return c.JSON(400, cerr.Response())
+				}
+			}
+			// Update the transactions amounts for the remaining users
+			transactions, cerr = models.GetTransactionsByGroupTransactionId(gt.ID)
+			if cerr != nil {
+				return c.JSON(400, cerr.Response())
+			}
+			// Get the users participating in that groupTransaction
+			users, cerr := models.GetUsersByGroupTransactionId(gt.ID)
+			if cerr != nil {
+				return c.JSON(400, cerr.Response())
+			}
+			for _, t := range transactions {
+				t.Amount = utils.Round(gt.Amount/float64(len(users)), 2)
+				if cerr := t.Save(); cerr != nil {
+					return c.JSON(400, cerr.Response())
+				}
+				// Set groupTransaction to inactive if all have paid
+				if len(users) == len(transactions) {
+					gt.Active = false
+					if cerr := gt.Save(); cerr != nil {
+						return c.JSON(400, cerr.Response())
+					}
+				}
+			}
+		}
+	}
+
+	return c.JSON(201, "Group deleted succesfully")
+}
+
 /////////////
 // HELPERS //
 /////////////
@@ -74,6 +197,72 @@ func getCreateGroupPayload(c echo.Context) (*models.Group, *utils.Cerr) {
 		return nil, utils.NewCerr("GE002", nil)
 	}
 	return createGroupPayload, nil
+}
+
+func deleteGroup(groupID int) *utils.Cerr {
+	group := models.Group{ID: groupID}
+
+	// Delete the UserGroups Join Tables
+	userGroups, cerr := models.GetUserGroupsByGroupId(group.ID)
+	if cerr != nil {
+		return cerr
+	}
+	for _, ug := range userGroups {
+		if cerr := ug.Delete(); cerr != nil {
+			return cerr
+		}
+	}
+
+	// Delete the Group Invitations
+	groupInvitations, cerr := models.GetGroupInvitationsByGroupId(group.ID)
+	if cerr != nil {
+		return cerr
+	}
+	for _, gi := range groupInvitations {
+		if cerr := gi.Delete(); cerr != nil {
+			return cerr
+		}
+	}
+
+	// Delete the Group Transactions
+	groupTransactions, cerr := models.GetGroupTransactionsByGroupId(group.ID)
+	if cerr != nil {
+		return cerr
+	}
+	for _, gt := range groupTransactions {
+		// Delete the GroupTransactionUsers Join Tables
+		groupTransactionsUsers, cerr := models.GetGroupTransactionUsersByGroupTransactionId(gt.ID)
+		if cerr != nil {
+			return cerr
+		}
+		for _, gtu := range groupTransactionsUsers {
+			if cerr := gtu.Delete(); cerr != nil {
+				return cerr
+			}
+		}
+		// Set the group_transaction_id in transactions to null
+		transactions, cerr := models.GetTransactionsByGroupTransactionId(gt.ID)
+		if cerr != nil {
+			return cerr
+		}
+		for _, t := range transactions {
+			t.GroupTransactionID = null.IntFromPtr(nil)
+			if cerr := t.Save(); cerr != nil {
+				return cerr
+			}
+		}
+		// Delete the Group Transaction
+		if cerr := gt.Delete(); cerr != nil {
+			return cerr
+		}
+	}
+
+	// Delete the group in the database
+	if cerr := group.Delete(); cerr != nil {
+		return cerr
+	}
+
+	return nil
 }
 
 ///////////

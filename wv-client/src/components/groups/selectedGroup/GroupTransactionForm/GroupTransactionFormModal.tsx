@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useAppDispatch } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import logger from 'utils/logger';
-import { TransactionCategory, TransactionKind, ApiError, SvgIcons, GroupTransaction, UserGroup } from 'types/types';
+import { TransactionCategory, TransactionKind, ApiError, SvgIcons, GroupTransaction, User } from 'types/types';
 import apiErrors from 'api/apiErrors';
-import { deleteTransaction } from 'store/slices/transactions';
 import SVG from 'components/ui/svg/SVG';
-import AddGroupTransaction from 'components/groups/selectedGroup/addGroupTransaction/AddGroupTransaction';
+import GroupTransactionForm from 'components/groups/selectedGroup/GroupTransactionForm/GroupTransactionForm';
 
 import { useMediaQuery, useTheme } from '@mui/material';
 import Confirmation from 'components/ui/confirmation/Confirmation';
@@ -16,18 +15,17 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import style from './AddGroupTransactionModal.module.scss';
-import { createGroupTransaction } from 'store/slices/groupTransactions';
+import style from './GroupTransactionFormModal.module.scss';
+import { createGroupTransaction, deleteGroupTransaction, updateGroupTransaction } from 'store/slices/groupTransactions';
 
-type AddGroupTransactionModalProps = {
+type GroupTransactionFormModalProps = {
   groupTransactionToUpdate: GroupTransaction | null,
-  userGroup: UserGroup,
   open: boolean,
   onClose: () => void,
-  setSnackbarText: (arg0: string) => void
+  setSnackbarText: (arg0: string) => void,
+  groupTransactionUsers?: User[] | null
 }
-
-const AddGroupTransactionModal = ({ groupTransactionToUpdate, userGroup, open, onClose, setSnackbarText }: AddGroupTransactionModalProps): JSX.Element => {
+const GroupTransactionFormModal = ({ groupTransactionToUpdate, open, onClose, setSnackbarText, groupTransactionUsers }: GroupTransactionFormModalProps): JSX.Element => {
   logger.rendering();
 
   ///////////
@@ -40,8 +38,9 @@ const AddGroupTransactionModal = ({ groupTransactionToUpdate, userGroup, open, o
   ///////////
   // STATE //
   ///////////
-  const emptyGroupTransactionToUpdate: GroupTransaction = { id: -1, name: '', kind: TransactionKind.Expense, category: TransactionCategory.Shopping, amount: -1, date: new Date().getTime(), groupId: -1 };
+  const emptyGroupTransactionToUpdate: GroupTransaction = { id: -1, name: '', kind: TransactionKind.Expense, category: TransactionCategory.Shopping, amount: -1, date: new Date().getTime(), active: true, groupId: -1 };
   const isEdit: boolean = groupTransactionToUpdate != null;
+  const userGroup = useAppSelector((state) => state.groups.selectedGroup)!;
 
   const [groupTransaction, setGroupTransaction] = useState<GroupTransaction>(groupTransactionToUpdate !== null ? groupTransactionToUpdate : emptyGroupTransactionToUpdate);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
@@ -65,11 +64,11 @@ const AddGroupTransactionModal = ({ groupTransactionToUpdate, userGroup, open, o
     return Object.keys(errors).length === 0;
   };
 
-  const removeTransaction = async () => {
+  const removeGroupTransaction = async () => {
     try {
-      await dispatch(deleteTransaction({ transactionId: groupTransaction.id }));
+      await dispatch(deleteGroupTransaction({ groupTransactionId: groupTransaction.id })).unwrap();
       onClose();
-      setSnackbarText('Transaction deleted successfully');
+      setSnackbarText('Group Transaction deleted successfully');
     }
     catch (error) {
       const err = error as ApiError;
@@ -97,14 +96,14 @@ const AddGroupTransactionModal = ({ groupTransactionToUpdate, userGroup, open, o
       try {
         groupTransaction.groupId = userGroup.group.id;
         if (groupTransaction.id < 0) {
-          dispatch(createGroupTransaction({ groupTransaction, users: userGroup.users }));
-          //await dispatch(createTransaction(transaction)).unwrap();
+          await dispatch(createGroupTransaction({ groupTransaction, users: userGroup.users })).unwrap();
+          setSnackbarText('Group Transaction created successfully');
         } else {
-          //await dispatch(updateTransaction(transaction)).unwrap();
+          await dispatch(updateGroupTransaction(groupTransaction)).unwrap();
+          setSnackbarText('Group Transaction saved successfully, and transactions updated');
         }
         
         onClose();
-        setSnackbarText('Group Transaction saved successfully');
       }
       catch (error) {
         const err = error as ApiError;
@@ -115,7 +114,7 @@ const AddGroupTransactionModal = ({ groupTransactionToUpdate, userGroup, open, o
 
   const confirmDeleteHandler = () => {
     setDeleteConfirmationOpened(false);
-    removeTransaction();
+    removeGroupTransaction();
   };
 
   /////////
@@ -123,14 +122,24 @@ const AddGroupTransactionModal = ({ groupTransactionToUpdate, userGroup, open, o
   /////////
   return (
     <Dialog open={open} fullScreen={isPhone} onClose={onClose}>
-      <div className={style.addGroupTransactionModal}>
+      <div className={style.GroupTransactionFormModal}>
 
         <DialogTitle>
-          {isEdit ? 'Edit' : 'Add'} Transaction
+          {isEdit ? 'Edit' : 'Add'} Group Transaction
         </DialogTitle>
 
         <DialogContent dividers>
-          <AddGroupTransaction groupTransaction={groupTransaction} setGroupTransaction={setGroupTransaction} formErrors={formErrors} serverError={serverError} />
+          <div>
+            <GroupTransactionForm groupTransaction={groupTransaction} setGroupTransaction={setGroupTransaction} formErrors={formErrors} serverError={serverError} />
+            {groupTransactionUsers != null && (
+              <div> 
+                Users:
+                {groupTransactionUsers.map((u) => (
+                  <div key={u.id}>{u.email}</div>
+                ))}
+              </div>
+            )}
+          </div>
         </DialogContent>
 
         <DialogActions>
@@ -165,7 +174,7 @@ const AddGroupTransactionModal = ({ groupTransactionToUpdate, userGroup, open, o
         </DialogActions>
         
         <Confirmation
-          text="Are you sure you want to delete the transaction?"
+          text="Are you sure you want to delete the Group Transaction? The created transactions will also be deleted"
           buttonCancel="Cancel" 
           buttonOk="Delete" 
           open={deleteConfirmationOpened} 
@@ -178,4 +187,8 @@ const AddGroupTransactionModal = ({ groupTransactionToUpdate, userGroup, open, o
   );
 };
 
-export default AddGroupTransactionModal;
+GroupTransactionFormModal.defaultProps = {
+  groupTransactionUsers: null,
+};
+
+export default GroupTransactionFormModal;

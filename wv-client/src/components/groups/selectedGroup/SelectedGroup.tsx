@@ -1,31 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Card } from '@mui/material';
 import logger from 'utils/logger';
 import style from './SelectedGroup.module.scss';
-import { User, UserGroup } from 'types/types';
-import ButtonGroupInvitations from 'components/navigation/modalButtons/ButtonGroupInvitations';
 import ButtonAddGroupTransaction from 'components/navigation/modalButtons/ButtonAddGroupTransaction';
+import GroupTransactionsList from './groupTransactionsList/GroupTransactionsList';
+import { getGroupTransactions } from 'store/slices/groupTransactions';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import ButtonGroup from 'components/navigation/modalButtons/ButtonGroup';
+import { setSelectedGroup } from 'store/slices/groups';
 
-type SelectedGroupProps = {
-  userGroup: UserGroup,
-  setSelectedUserGroup: (arg0: UserGroup|null) => void,
-}
-const SelectedGroup = ({ userGroup, setSelectedUserGroup }: SelectedGroupProps): JSX.Element => {
+const SelectedGroup = (): JSX.Element => {
   logger.rendering();
+
+  ///////////
+  // HOOKS //
+  ///////////
+  const dispatch = useAppDispatch();
+
+  ///////////
+  // STATE //
+  ///////////
+  const userGroup = useAppSelector((state) => state.groups.selectedGroup)!;
+  
+  ////////////////
+  // USE EFFECT //
+  ////////////////
+  useEffect(() => {
+    dispatch(getGroupTransactions({ groupId: userGroup.group.id }));
+  }, []);
 
   return (
     <div className={style.selectedGroup}>
       <Card>
-        <Button onClick={() => setSelectedUserGroup(null)}>
+        <Button onClick={() => dispatch(setSelectedGroup(null))}>
           Go Back
         </Button>
-        <ButtonAddGroupTransaction userGroup={userGroup} />
-        <ButtonGroupInvitations userGroup={userGroup} />
-        {'Name: ' + userGroup.group.name }
-        {userGroup.users.map((u: User) => (
-          <p>{ u.email }</p>
-        ))}
+
+        <ButtonAddGroupTransaction />
+        <ButtonGroup />
       </Card>
+
+      <GroupTransactionsList />
     </div>
   );
 };

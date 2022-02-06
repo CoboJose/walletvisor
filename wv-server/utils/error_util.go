@@ -100,6 +100,8 @@ var errorMessages = map[string]string{
 	"GT000": "There is no group transaction with that id",
 	"GT001": "There are no group transactions in that group",
 	"GT002": "Invalid GroupTransaction, check that, 1:(kind=income OR kind=expense,) 2:(If kind=income then category IN ['salary', 'business', 'gifts', 'other']. If kind=expense then category IN ['food','home', 'shopping', 'transport', 'bills', 'entertainment', 'other']), 3:(amount and date >=0)",
+	"GT003": "There should be at least two users in the group to create a groupTransaction",
+	"GT004": "Only active group transactions can be modified",
 
 	// Expense Limits
 	"EL000": "There is no expense limit with that id",
