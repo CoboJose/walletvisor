@@ -57,7 +57,7 @@ export const deleteGroup = createAsyncThunk<GroupDTO[], {groupId: number}, {stat
   }
 );
 
-export const removeGroup = createAsyncThunk<GroupDTO[], {groupId: number, userId: number}, {state: RootState, rejectValue: ApiError }>(
+export const removeFromGroup = createAsyncThunk<GroupDTO[], {groupId: number, userId: number}, {state: RootState, rejectValue: ApiError }>(
   'groups/removeGroup',
   async ({ groupId, userId }, { rejectWithValue }) => {
     try { 
@@ -125,16 +125,16 @@ export const groupsSlice = createSlice({
       state.isLoading = false;
     });
     //Remove User Group
-    builder.addCase(removeGroup.pending, (state) => {
+    builder.addCase(removeFromGroup.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(removeGroup.fulfilled, (state, action) => {
+    builder.addCase(removeFromGroup.fulfilled, (state, action) => {
       state.groupDtos = action.payload;
       const updatedGroup = action.payload.find((g) => g.group.id === state.selectedGroupDto!.group.id);
       state.selectedGroupDto = updatedGroup !== undefined ? updatedGroup : null;
       state.isLoading = false;
     });
-    builder.addCase(removeGroup.rejected, (state) => {
+    builder.addCase(removeFromGroup.rejected, (state) => {
       state.isLoading = false;
     });
     //LOGOUT

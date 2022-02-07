@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import logger from 'utils/logger';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 
 import style from './UserInvitations.module.scss';
 import { ApiError, GroupInvitationResponse, SvgIcons } from 'types/types';
@@ -82,20 +82,23 @@ const UserInvitations = ({ onClose }: UserInvitationsProps): JSX.Element => {
                 {userInvitations.map((ui) => (
                   <div key={ui.id} className={style.listItemContainer} style={{ }}>
 
-                    <ListItem className={style.listItem}>
+                    <ListItem 
+                      className={style.listItem}
+                      secondaryAction={(
+                        <div>
+                          <IconButton onClick={() => deleteHandler(ui.id)}>
+                            <SVG name={SvgIcons.Close} style={{ fill: style.error, width: '15px', height: '15px' }} />
+                          </IconButton>
+                          <IconButton onClick={() => acceptHandler(ui)}>
+                            <SVG name={SvgIcons.Ok} style={{ fill: style.success, width: '28px', height: '28px' }} />
+                          </IconButton>
+                        </div>
+                      )}
+                    >
                       <ListItemText
                         primary={ui.groupName}
                         secondary={ui.inviterUserEmail}
                       />
-
-                      <ListItemSecondaryAction>
-                        <IconButton onClick={() => deleteHandler(ui.id)}>
-                          <SVG name={SvgIcons.Close} style={{ fill: style.error, width: '15px', height: '15px' }} />
-                        </IconButton>
-                        <IconButton onClick={() => acceptHandler(ui)}>
-                          <SVG name={SvgIcons.Ok} style={{ fill: style.success, width: '28px', height: '28px' }} />
-                        </IconButton>
-                      </ListItemSecondaryAction>
 
                     </ListItem>
 

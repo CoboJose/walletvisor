@@ -181,7 +181,7 @@ const deleteGroup = async (groupId: number): Promise<string> => {
   });
 };
 
-const removeGroup = async (groupId: number, userId: number): Promise<string> => {
+const removeUserFromGroup = async (groupId: number, userId: number): Promise<string> => {
   const url = '/groups/removeuser';
   const params = { groupId, userId };
 
@@ -311,7 +311,7 @@ const deleteGroupTransaction = async (groupTransactionId: number): Promise<strin
 
 export default { 
   ping, login, register, refreshToken, getTransactions, addTransaction, updateTransaction, deleteTransaction, 
-  getUser, updateUser, getGroupDtos, createGroup, updateGroup, deleteGroup, getGroupInvitations, removeGroup, 
+  getUser, updateUser, getGroupDtos, createGroup, updateGroup, deleteGroup, getGroupInvitations, removeGroup: removeUserFromGroup, 
   getUserInvitations, joinGroup, createGroupInvitation, deleteGroupInvitation, getGroupTransactions, createGroupTransaction,
   updateGroupTransaction, deleteGroupTransaction, payGroupTransaction
 };

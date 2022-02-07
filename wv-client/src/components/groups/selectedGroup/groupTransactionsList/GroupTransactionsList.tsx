@@ -1,6 +1,7 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import { useAppSelector } from 'store/hooks';
-import { ApiError, GroupTransactionDTO, SvgIcons } from 'types/types';
+import { ApiError, GroupTransaction, GroupTransactionDTO, GroupTransactionUsersDTO, SvgIcons } from 'types/types';
 import logger from 'utils/logger';
 import SVG from 'components/ui/svg/SVG';
 import { getTransactionCategoryData } from 'utils/transactionCategories';
@@ -10,7 +11,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { Button, Divider, Menu, MenuItem } from '@mui/material';
@@ -41,6 +41,9 @@ const GroupTransactionsList = (): JSX.Element => {
   const [snackbarText, setSnackbarText] = useState<string>('');
   const [contextMenu, setContextMenu] = React.useState<{mouseX: number;mouseY: number; groupTrnId: number;} | null>(null);
   const [deleteConfirmationOpened, setDeleteConfirmationOpened] = useState<boolean>(false);
+
+  const activeGroupTrns = groupTrnDTOs.filter((gt) => gt.isActive);
+  const inactiveGroupTrns = groupTrnDTOs.filter((gt) => !gt.isActive);
 
   //////////////
   // HANDLERS //
@@ -93,6 +96,11 @@ const GroupTransactionsList = (): JSX.Element => {
     }
   };
 
+  const payGroupTransactionHandler = (groupTrn: GroupTransaction, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.stopPropagation();
+    dispatch(payGroupTransaction(groupTrn));
+  };
+
   /////////////////////
   // HELPER FUNCTIONS//
   /////////////////////
@@ -125,16 +133,20 @@ const GroupTransactionsList = (): JSX.Element => {
     const payRemaining = gtDto.userDTOs.reduce((sum, uDTO) => (!uDTO.hasPayed ? ++sum : sum), 0);
     const oweAmount = (gtDto.groupTransaction.amount / gtDto.userDTOs.length) * (payRemaining);
     return (
-      gtDto.userDTOs.find((uDTO) => uDTO.user.id === loggedUser.id)!.isCreator ? (
-        <div className={style.owned}>
-          <span className={style.ownedText}>You are owned</span> <span className={style.ownedAmount}>{math.formatEurNumber(oweAmount)}</span>
+      getGroupTransactionLoggedUser(gtDto)!.isCreator ? (
+        <div>
+          <span className={style.text}>Owned</span> <span className={style.amount}>{math.formatEurNumber(oweAmount)}</span>
         </div>
       ) : (
-        <div className={style.owned}>
-          <span className={style.ownedText}>You payed</span> <span className={style.ownedAmount}>{math.formatEurNumber(oweAmount)}</span>
+        <div>
+          <span className={style.text}>Payed</span> <span className={style.amount}>{math.formatEurNumber(oweAmount)}</span>
         </div>
       )
     );
+  };
+
+  const getGroupTransactionLoggedUser = (gtDto: GroupTransactionDTO): GroupTransactionUsersDTO | undefined => {
+    return gtDto.userDTOs.find((uDTO) => uDTO.user.id === loggedUser.id);
   };
 
   /////////
@@ -143,70 +155,142 @@ const GroupTransactionsList = (): JSX.Element => {
   return (
     <div className={style.groupTransactionsList}>
 
-      {groupTrnDTOs.length > 0 
-        ? (
-          <List className={style.list}>
+      <div className={style.list}>
+      
+        {/* 
+        /////////////////////////
+        ACTIVE GROUP TRANSACTIONS
+        /////////////////////////
+      */}
+        {activeGroupTrns.length > 0 
+          ? (
+            <List className={style.activeList}>
            
-            {groupTrnDTOs.map((gtDto, i, arr) => {
-              const groupTrn = gtDto.groupTransaction;
-              return (
-                <div key={groupTrn.id}>
+              {activeGroupTrns.map((gtDto, i, arr) => {
+                const groupTrn = gtDto.groupTransaction;
+                return (
+                  <div key={groupTrn.id}>
 
-                  {month(i, arr)}
+                    {month(i, arr)}
 
-                  <ListItem
-                    button
-                    onContextMenu={(e) => handleContextMenuOpen(e, groupTrn.id)}
-                    onClick={() => updateGroupTransactionHandler(gtDto)}
-                    className={style.listItem}
-                  >
+                    <ListItem
+                      button
+                      onContextMenu={(e) => handleContextMenuOpen(e, groupTrn.id)}
+                      onClick={() => updateGroupTransactionHandler(gtDto)}
+                      className={style.listItem}
+                      disabled={!gtDto.userDTOs.some((uDTO) => uDTO.user.id === loggedUser.id)}
+                      secondaryAction={(
+                        <div>
+                          <div className={style.amount}>
+                            {math.formatEurNumber(groupTrn.amount)}
+                          </div>
+                          <div>
+                            {getGroupTransactionLoggedUser(gtDto) !== undefined
+                              ? (
+                                getGroupTransactionLoggedUser(gtDto)!.hasPayed 
+                                  ? (
+                                    <div className={style.below}>
+                                      {getPayedListSecondaryAction(gtDto)}
+                                    </div>
+                                  ) : (
+                                    <div className={style.below}>
+                                      <Button 
+                                        onClick={(event) => payGroupTransactionHandler(groupTrn, event)/*dispatch(payGroupTransaction(groupTrn))*/}
+                                        startIcon={<SVG name={SvgIcons.Ok} className={style.payIcon} />}
+                                        className={style.payButton}
+                                      >
+                                        Pay {math.formatEurNumber(groupTrn.amount / gtDto.userDTOs.length)}
+                                      </Button>
+                                    </div>
+                                  )
+                              ) : (
+                                <div className={style.notParticipating}>Not Participating</div>
+                              )}
+                          </div>
+                        </div>
+                      )}
+                    >
             
-                    <ListItemIcon>
-                      <SVG name={getTransactionCategoryData(groupTrn.category).svg} className={`${style.categorySVG} categoryColor ${groupTrn.category}`} />
-                    </ListItemIcon>
+                      <ListItemIcon>
+                        <SVG name={getTransactionCategoryData(groupTrn.category).svg} className={`${style.categorySVG} categoryColor ${groupTrn.category}`} />
+                      </ListItemIcon>
 
-                    <ListItemText
-                      primary={groupTrn.name}
-                      secondary={dates.timestampToStringDate(groupTrn.date)}
-                    />
+                      <ListItemText
+                        primary={groupTrn.name}
+                        secondary={dates.timestampToStringDate(groupTrn.date)}
+                      />
 
-                    <ListItemSecondaryAction>
-                      <div>
-                        <div className={style.amount}>
-                          {math.formatEurNumber(groupTrn.amount)}
+                    </ListItem>
+
+                  </div>
+                );
+              })}
+            </List>
+          )
+          : (
+            <div className={style.noActiveGT}>
+              <br />
+              <br />
+              There are no active group transactions
+            </div>
+          )}
+
+        {/* 
+        ///////////////////////////
+        INACTIVE GROUP TRANSACTIONS
+        ///////////////////////////
+      */}
+        {inactiveGroupTrns.length > 0 
+          && (
+            <List className={style.inactiveList}>
+
+              <div className={style.payedHeader}>Payed</div>
+           
+              {inactiveGroupTrns.map((gtDto) => {
+                const groupTrn = gtDto.groupTransaction;
+                return (
+                  <div key={groupTrn.id}>
+
+                    <ListItem
+                      className={style.listItem} 
+                      disabled 
+                      secondaryAction={(
+                        <div>
+                          <div className={style.amount}>
+                            {math.formatEurNumber(groupTrn.amount)}
+                          </div>
+                          <div className={style.text}>
+                            {getGroupTransactionLoggedUser(gtDto) !== undefined
+                              ? (
+                                <div className={style.payed}>
+                                  Payed {math.formatEurNumber(gtDto.groupTransaction.amount / gtDto.userDTOs.length)}
+                                </div>
+                              ) : (
+                                <div className={style.noParticipate}>Not participated</div>
+                              )}
+                          </div>
                         </div>
-                        <div className={style.pay}>
-                          {gtDto.userDTOs.find((uDTO) => uDTO.user.id === loggedUser.id)!.hasPayed ? (
-                            getPayedListSecondaryAction(gtDto)
-                          ) : (
-                            <Button 
-                              onClick={() => dispatch(payGroupTransaction(groupTrn))}
-                              startIcon={<SVG name={SvgIcons.Ok} className={style.payIcon} />}
-                              className={style.payButton}
-                            >
-                              Pay {math.formatEurNumber(groupTrn.amount / gtDto.userDTOs.length)}
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </ListItemSecondaryAction>
+                      )}
+                    >
+            
+                      <ListItemIcon>
+                        <SVG name={getTransactionCategoryData(groupTrn.category).svg} className={`${style.categorySVG} categoryColor ${groupTrn.category}`} />
+                      </ListItemIcon>
 
-                  </ListItem>
+                      <ListItemText
+                        primary={groupTrn.name}
+                        secondary={dates.timestampToStringDate(groupTrn.date)}
+                      />
 
-                </div>
-              );
-            })}
-          </List>
-        )
-        : (
-          <div>
-            <br />
-            <br />
-            No Group Transactions to show
-            <br />
-            <br />
-          </div>
-        )}
+                    </ListItem>
+
+                  </div>
+                );
+              })}
+            </List>
+          )}
+
+      </div>
 
       <Menu
         open={contextMenu !== null}

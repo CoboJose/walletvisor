@@ -11,7 +11,6 @@ import style from './GroupsList.module.scss';
 import { setSelectedGroup } from 'store/slices/groups';
 import { GroupDTO } from 'types/types';
 import math from 'utils/math';
-import { ListItemSecondaryAction } from '@mui/material';
 
 const GroupsList = (): JSX.Element => {
   logger.rendering();
@@ -51,6 +50,15 @@ const GroupsList = (): JSX.Element => {
                   button
                   onClick={() => dispatch(setSelectedGroup(groupDto))}
                   className={style.listItem}
+                  secondaryAction={(
+                    <div className={style.balance}>
+                      {groupDto.balance > 0 && 'You are owned '} 
+                      {groupDto.balance < 0 && 'You own '} 
+                      <span className={`${style.balanceNumber} ${groupDto.balance >= 0 ? style.positive : style.negative}`}>
+                        {math.formatEurNumber(groupDto.balance)}
+                      </span>
+                    </div>
+                  )}
                 >
                   <div className={style.filling} style={{ backgroundColor: groupDto.group.color }} />
                   <ListItemText
@@ -58,15 +66,6 @@ const GroupsList = (): JSX.Element => {
                   />
 
                 </ListItem>
-
-                <ListItemSecondaryAction>
-                  <div className={style.balance}>
-                    {groupDto.balance >= 0 ? 'You are owned ' : 'You own '} 
-                    <span className={`${style.balanceNumber} ${groupDto.balance >= 0 ? style.positive : style.negative}`}>
-                      {math.formatEurNumber(groupDto.balance)}
-                    </span>
-                  </div>
-                </ListItemSecondaryAction>
 
               </div>
             ))}

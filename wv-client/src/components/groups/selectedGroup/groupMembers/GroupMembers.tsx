@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Snackbar, TextField, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemText, Snackbar, TextField, useMediaQuery, useTheme } from '@mui/material';
 import logger from 'utils/logger';
 import style from './GroupMembers.module.scss';
 import { ApiError, GroupInvitationResponse, SvgIcons, User } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { removeGroup } from 'store/slices/groups';
+import { removeFromGroup } from 'store/slices/groups';
 import regex from 'utils/regex';
 import apiErrors from 'api/apiErrors';
 import { createGroupInvitation, deleteGroupInvitation, getGroupInvitations } from 'store/slices/groupInvitations';
 import Confirmation from 'components/ui/confirmation/Confirmation';
+import { getGroupTransactions } from 'store/slices/groupTransactions';
 
 const GroupMembers = (): JSX.Element => {
   logger.rendering();
@@ -59,7 +60,8 @@ const GroupMembers = (): JSX.Element => {
   const removeUser = async () => {
     try {
       setServerError('');
-      await dispatch(removeGroup({ groupId: groupDto.group.id, userId: userToDelete!.id })).unwrap();
+      await dispatch(removeFromGroup({ groupId: groupDto.group.id, userId: userToDelete!.id })).unwrap();
+      await dispatch(getGroupTransactions({ groupId: groupDto.group.id })).unwrap();
     }
     catch (error) {
       const err = error as ApiError;
@@ -71,7 +73,7 @@ const GroupMembers = (): JSX.Element => {
     if (userToDelete?.id === loggedUser.id) {
       return 'Are you sure you want to leave the group? Your active group transactions will be deleted';
     } 
-    return 'Are you sure you want to remove the User from the group? The active transactions will be affected';
+    return 'Are you sure you want to remove the user from the group? The active transactions will be affected';
   };
 
   //////////////
@@ -155,14 +157,11 @@ const GroupMembers = (): JSX.Element => {
               && (
               <List className={style.membersList}>
                 {groupDto.users.map((u) => (
-                  <ListItem key={u.id} className={style.listItem}>
-                    <ListItemText
-                      primary={u.name}
-                      secondary={u.email}
-                      className={u.id === loggedUser.id ? style.loggedUser : style.otherUser}
-                    />
-                    <ListItemSecondaryAction>
-                      {u.id === loggedUser.id ? (
+                  <ListItem 
+                    key={u.id} 
+                    className={style.listItem}
+                    secondaryAction={(
+                      u.id === loggedUser.id ? (
                         <Button 
                           onClick={() => setUserToDelete(u)}
                           startIcon={<SVG name={SvgIcons.Close} className={style.icon} />}
@@ -178,9 +177,14 @@ const GroupMembers = (): JSX.Element => {
                         >
                           Remove
                         </Button>
-                      )}
-                      
-                    </ListItemSecondaryAction>
+                      )
+                    )}
+                  >
+                    <ListItemText
+                      primary={u.name}
+                      secondary={u.email}
+                      className={u.id === loggedUser.id ? style.loggedUser : style.otherUser}
+                    />
                   </ListItem>
                 ))}
               </List>
@@ -221,15 +225,17 @@ const GroupMembers = (): JSX.Element => {
                     <List className={style.list}>
                       {groupInvitations.map((gi) => (
                         <div key={gi.id} className={style.listItemContainer} style={{ }}>
-                          <ListItem className={style.listItem}>
-                            <ListItemText
-                              primary={gi.invitedUserEmail}
-                            />
-                            <ListItemSecondaryAction>
+                          <ListItem 
+                            className={style.listItem}
+                            secondaryAction={(
                               <IconButton onClick={() => deleteInvitationHandler(gi.id)}>
                                 <SVG name={SvgIcons.Delete} style={{ fill: style.error, width: '20px', height: '20px' }} />
                               </IconButton>
-                            </ListItemSecondaryAction>
+                            )}
+                          >
+                            <ListItemText
+                              primary={gi.invitedUserEmail}
+                            />
                           </ListItem>
                         </div>
                       ))}

@@ -50,7 +50,12 @@ func (h GroupHandler) GetUserGroups(c echo.Context) error {
 				if cerr != nil {
 					return c.JSON(400, cerr.Response())
 				}
+
+				isUserParticipating := false
 				for _, groupTrnUser := range groupTrnUsers {
+					if groupTrnUser.UserId == userId {
+						isUserParticipating = true
+					}
 					if groupTrnUser.UserId == userId && groupTrnUser.IsCreator {
 						isCreator = true
 					}
@@ -61,10 +66,12 @@ func (h GroupHandler) GetUserGroups(c echo.Context) error {
 
 				oweAmount := (groupTrn.Amount / float64(len(users))) * float64(payingRemaining)
 
-				if isCreator {
-					balance += oweAmount
-				} else {
-					balance -= oweAmount
+				if isUserParticipating {
+					if isCreator {
+						balance += oweAmount
+					} else {
+						balance -= oweAmount
+					}
 				}
 			}
 		}

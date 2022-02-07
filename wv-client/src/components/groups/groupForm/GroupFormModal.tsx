@@ -154,7 +154,7 @@ const GroupFormModal = ({ setSnackbarText, onClose }: GroupFormModalProps): JSX.
       </DialogActions>
 
       <Confirmation
-        text="Are you sure you want to delete the Group? The created Transactions will remain"
+        text="Are you sure you want to delete the group? The active created transactions will be deleted from the transactions of the users."
         buttonCancel="Cancel" 
         buttonOk="Delete" 
         open={deleteConfirmationOpened} 

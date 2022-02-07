@@ -141,9 +141,9 @@ const GroupTransactionFormModal = ({ groupTransactionToUpdate, open, onClose, se
                 <div className={style.list}> 
                   {groupTransactionUsers.map((uDTO) => (
                     <div key={uDTO.user.id} className={style.listItem}>
-                      <span className={style.listName}>Email: </span> <span>{uDTO.user.email}</span>
-                      <span className={style.listName}>Has Payed: </span> <span>{uDTO.hasPayed ? 'Yes' : 'No'}</span>
-                      <span className={style.listName}>Is the Creator: </span> <span>{uDTO.isCreator ? 'Yes' : 'No'}</span>
+                      <div className={style.listItemContainer}>{uDTO.user.email}</div>
+                      <div className={style.listItemContainer}><span className={style.listName}>Payed: </span> <span>{uDTO.hasPayed ? 'Yes' : 'No'}</span></div>
+                      <div className={style.listItemContainer}><span className={style.listName}>Creator: </span> <span>{uDTO.isCreator ? 'Yes' : 'No'}</span></div>
                     </div>
                   ))}
                 </div>
