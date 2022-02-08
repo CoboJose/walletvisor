@@ -20,6 +20,11 @@ const principalRoutesList: SidePanelListItems[] = [
     svg: SvgIcons.Chart,
   },
   {
+    text: 'Groups',
+    path: 'groups',
+    svg: SvgIcons.Group,
+  },
+  {
     text: 'Configuration',
     path: 'configuration',
     svg: SvgIcons.Settings,

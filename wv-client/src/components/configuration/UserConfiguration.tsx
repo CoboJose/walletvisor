@@ -125,7 +125,7 @@ const UserConfiguration = (): JSX.Element => {
             value={newPassword} 
             onChange={(e) => setNewPassword(e.target.value)}
             error={formErrors.newPassword != null}
-            helperText={formErrors.newPassword}
+            helperText={formErrors.newPassword != null ? formErrors.newPassword : 'Leave empty if you do not want to change your password'}
             inputProps={{
               autoComplete: 'new-password',
               form: {
@@ -139,13 +139,13 @@ const UserConfiguration = (): JSX.Element => {
             margin="normal"
             required
             fullWidth
-            label="Password"
+            label="Current Password"
             type="password"
             autoComplete="off"
             value={password} 
             onChange={(e) => setPassword(e.target.value)}
             error={formErrors.password != null}
-            helperText={formErrors.password}
+            helperText={formErrors.password != null ? formErrors.password : 'Write your current password to save the changes'}
             inputProps={{
               autoComplete: 'new-password',
               form: {

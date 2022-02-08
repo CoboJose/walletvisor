@@ -1,0 +1,64 @@
+@import "themes/theme.module";
+
+.groupsList{
+    @include flex-column-center;
+    display: flex;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.list {
+    width: 100%;
+    max-width: 500px;
+    overflow-y: auto;
+
+    // Phone
+    @media (max-width: $phoneMaxWidth) {
+        max-height: calc(100vh - 280px);
+    }
+    // Desktop
+    @media (min-width: $phoneMaxWidth) {
+        max-height: calc(100vh - 320px);
+    }
+}
+
+.listItemContainer {
+    margin-top: 10px;
+    display: flex;
+    min-height: 55px;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 0.2);
+}
+
+.listItem {
+    padding: 0 !important;
+    background-color: $paper !important;
+    border-radius: 7px !important;
+}
+
+.balance {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+
+    .balanceNumber {
+        font-size: 20px;
+        
+        &.positive {
+            color: $success;
+        }
+
+        &.negative {
+            color: $error;
+        }
+    }
+}
+
+.filling {
+    width: 1rem;
+    height: 100%;
+    margin-right: 1rem;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}

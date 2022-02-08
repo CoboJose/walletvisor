@@ -13,7 +13,12 @@ import { ReactComponent as Shopping } from 'assets/icons/shopping_bag.svg';
 import { ReactComponent as Home } from 'assets/icons/home.svg';
 import { ReactComponent as Transport } from 'assets/icons/train.svg';
 import { ReactComponent as Bills } from 'assets/icons/invoice.svg';
-import { ReactComponent as Entertainment } from 'assets/icons/popcorn.svg';
+import { ReactComponent as Health } from 'assets/icons/health.svg';
+import { ReactComponent as Leisure } from 'assets/icons/popcorn.svg';
+import { ReactComponent as Loan } from 'assets/icons/bank.svg';
+import { ReactComponent as Education } from 'assets/icons/education.svg';
+import { ReactComponent as Groceries } from 'assets/icons/grocery.svg';
+import { ReactComponent as Sport } from 'assets/icons/sport.svg';
 import { ReactComponent as Edit } from 'assets/icons/edit.svg';
 import { ReactComponent as Delete } from 'assets/icons/trash.svg';
 import { ReactComponent as Add } from 'assets/icons/add.svg';
@@ -31,6 +36,8 @@ import { ReactComponent as Calendar } from 'assets/icons/calendar.svg';
 import { ReactComponent as Settings } from 'assets/icons/settings.svg';
 import { ReactComponent as Logout } from 'assets/icons/logout.svg';
 import { ReactComponent as Filter } from 'assets/icons/filter.svg';
+import { ReactComponent as Group } from 'assets/icons/group.svg';
+import { ReactComponent as Ok } from 'assets/icons/ok.svg';
 
 type SVGProps = {
   name: SvgIcons,
@@ -41,92 +48,113 @@ type SVGProps = {
 const SVG = ({ name, className, style }: SVGProps): JSX.Element => {
   const returnedSVG = () => {
     switch (name) {
-      case 'logo':
+      case SvgIcons.Logo:
         return <Logo className={className} style={style} />;
 
-      case 'lock':
+      case SvgIcons.Lock:
         return <Lock className={className} style={style} />;
       
-      case 'moneyBag':
+      case SvgIcons.Moneybag:
         return <MoneyBag className={className} style={style} />;
 
-      case 'briefCase':
+      case SvgIcons.Briefcase:
         return <BriefCase className={className} style={style} />;
       
-      case 'gift':
+      case SvgIcons.Gift:
         return <Gift className={className} style={style} />;
 
-      case 'questionMark':
+      case SvgIcons.QuestionMark:
         return <QuestionMark className={className} style={style} />;
 
-      case 'food':
+      case SvgIcons.Food:
         return <FoodAndDrink className={className} style={style} />; 
 
-      case 'home':
+      case SvgIcons.Home:
         return <Home className={className} style={style} />;
 
-      case 'shopping':
+      case SvgIcons.Shopping:
         return <Shopping className={className} style={style} />;
 
-      case 'transport':
+      case SvgIcons.Transport:
         return <Transport className={className} style={style} />;
 
-      case 'bills':
+      case SvgIcons.Bills:
         return <Bills className={className} style={style} />;
 
-      case 'entertainment':
-        return <Entertainment className={className} style={style} />;
+      case SvgIcons.Health:
+        return <Health className={className} style={style} />;
 
-      case 'edit':
+      case SvgIcons.Leisure:
+        return <Leisure className={className} style={style} />;
+    
+      case SvgIcons.Loan:
+        return <Loan className={className} style={style} />;
+
+      case SvgIcons.Education:
+        return <Education className={className} style={style} />;
+
+      case SvgIcons.Groceries:
+        return <Groceries className={className} style={style} />;
+
+      case SvgIcons.Sport:
+        return <Sport className={className} style={style} />;
+
+      case SvgIcons.Edit:
         return <Edit className={className} style={style} />;
 
-      case 'delete':
+      case SvgIcons.Delete:
         return <Delete className={className} style={style} />;
 
-      case 'add':
+      case SvgIcons.Add:
         return <Add className={className} style={style} />;
 
-      case 'line':
+      case SvgIcons.Line:
         return <Line className={className} style={style} />;
 
-      case 'back':
+      case SvgIcons.Back:
         return <Back className={className} style={style} />;
 
-      case 'close':
+      case SvgIcons.Close:
         return <Close className={className} style={style} />;
 
-      case 'threeLines':
+      case SvgIcons.ThreeLines:
         return <ThreeLines className={className} style={style} />;
 
-      case 'sun':
+      case SvgIcons.Sun:
         return <Sun className={className} style={style} />;  
 
-      case 'moon':
+      case SvgIcons.Moon:
         return <Moon className={className} style={style} />;  
 
-      case 'user':
+      case SvgIcons.User:
         return <User className={className} style={style} />;  
 
-      case 'chart':
+      case SvgIcons.Chart:
         return <Chart className={className} style={style} />;  
 
-      case 'info':
+      case SvgIcons.Info:
         return <Info className={className} style={style} />;  
 
-      case 'exchange':
+      case SvgIcons.Exchange:
         return <Exchange className={className} style={style} />; 
         
-      case 'calendar':
+      case SvgIcons.Calendar:
         return <Calendar className={className} style={style} />; 
 
-      case 'settings':
+      case SvgIcons.Settings:
         return <Settings className={className} style={style} />; 
 
-      case 'logout':
+      case SvgIcons.Logout:
         return <Logout className={className} style={style} />; 
 
-      case 'filter':
+      case SvgIcons.Filter:
         return <Filter className={className} style={style} />; 
+
+      case SvgIcons.Group:
+        return <Group className={className} style={style} />; 
+
+      case SvgIcons.Ok:
+        return <Ok className={className} style={style} />; 
       
       default:
         return <Logo className={className} style={style} />;

@@ -1,0 +1,74 @@
+@import "themes/theme.module";
+
+.selectedGroup {
+    width: 95%;
+    max-width: 700px;
+    padding: 15px;
+}
+
+.card {
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .info {
+        margin-right: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+
+        .text {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            //Phone
+            @media (max-width: $maxWidth) {
+                font-size: 12px;
+                gap: 5px;
+            }
+            //Desktop
+            @media (min-width: $maxWidth) {
+                font-size: 15px;
+                gap: 15px;
+            }
+
+            .groupName {
+                margin-bottom: 3px;
+                font-size: large;
+                font-weight: bold;
+            }
+
+            .number {
+                font-size: 20px;
+                
+                &.positive {
+                    color: $success;
+                }
+        
+                &.negative {
+                    color: $error;
+                }
+            }
+        }
+    }
+}
+
+.icon {
+    fill: currentColor;
+    $size: 15px;
+    width: $size;
+    height: $size;
+}

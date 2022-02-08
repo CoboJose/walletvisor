@@ -10,6 +10,7 @@ import Configuration from 'views/configuration/Configuration';
 import NotFound from 'views/notFound/NotFound';
 import Transactions from 'views/transactions/Transactions';
 import Statistics from 'views/statistics/Statistics';
+import Groups from 'views/groups/Groups';
 
 const Routes: React.FC = () => {
   logger.rendering();
@@ -19,6 +20,7 @@ const Routes: React.FC = () => {
       <Route path="/" component={Welcome} exact />
       <PrivateRoute path="/transactions" component={Transactions} />
       <PrivateRoute path="/statistics" component={Statistics} />
+      <PrivateRoute path="/groups" component={Groups} />
       <PrivateRoute path="/configuration" component={Configuration} />
       <PrivateRoute path="*" component={NotFound} />
     </Switch>

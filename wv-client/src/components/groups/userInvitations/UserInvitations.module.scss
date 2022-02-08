@@ -1,0 +1,8 @@
+@import "themes/theme.module";
+
+.userInvitations {
+    //Desktop
+    @media (min-width: $maxWidth) {
+        min-width: 350px;
+    }
+}

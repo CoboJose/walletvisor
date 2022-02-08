@@ -71,6 +71,39 @@ func GetUserByAuthentication(email, password string) (*User, *utils.Cerr) {
 	return user, nil
 }
 
+// GetUsersByGroupId returns all the users belonging to a group
+func GetUsersByGroupId(groupID int) ([]User, *utils.Cerr) {
+	groups := []User{}
+	query := `SELECT u.* FROM users u JOIN user_groups ug ON u.id=ug.user_id JOIN groups g ON ug.group_id=g.id WHERE g.id=$1`
+	if err := db.Select(&groups, query, groupID); err != nil {
+		return nil, utils.NewCerr("GR003", err)
+	}
+
+	return groups, nil
+}
+
+// GetUsersByGroupTransactionId returns all the users that participated in a group transaction
+func GetUsersByGroupTransactionId(groupTransactionId int) ([]User, *utils.Cerr) {
+	groups := []User{}
+	query := `SELECT u.* FROM users u JOIN group_transaction_users gtu ON u.id=gtu.user_id JOIN group_transactions gt ON gtu.group_transaction_id=gt.id WHERE gt.id=$1`
+	if err := db.Select(&groups, query, groupTransactionId); err != nil {
+		return nil, utils.NewCerr("GE000", err)
+	}
+
+	return groups, nil
+}
+
+// GetNumberOfUsersByGroupTransactionId returns the number of users that participated in a group transaction
+func GetNumberOfUsersByGroupTransactionId(groupTransactionId int) (int, *utils.Cerr) {
+	var res int
+	query := `SELECT COUNT(u.*) FROM users u JOIN group_transaction_users gtu ON u.id=gtu.user_id JOIN group_transactions gt ON gtu.group_transaction_id=gt.id WHERE gt.id=$1`
+	if err := db.Get(&res, query, groupTransactionId); err != nil {
+		return 0, utils.NewCerr("GE000", err)
+	}
+
+	return res, nil
+}
+
 //////////
 // Save //
 //////////
@@ -123,7 +156,7 @@ func (user *User) Delete() *utils.Cerr {
 		utils.ErrorLog.Println(err.Error())
 		return utils.NewCerr("GE000", err)
 	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected < 1 {
-		return utils.NewCerr("US002", errors.New("no rows affected"))
+		return utils.NewCerr("US000", errors.New("no rows affected"))
 	}
 
 	return nil

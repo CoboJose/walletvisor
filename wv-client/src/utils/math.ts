@@ -4,7 +4,7 @@ const round = (number: number, decimals: number): number => {
 };
 
 const formatEurNumber = (n: number): string => {
-  return Number(round(Math.abs(n), 2)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+  return Number(round(n, 2)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
 };
 
 export default { round, formatEurNumber };

@@ -8,14 +8,37 @@ export type Transaction = {
   category: TransactionCategory,
   amount: number,
   date: number,
-  userID: number
-
+  userID: number,
+  groupTransactionID: number | null,
 }
 
 export type User = {
   id: number,
   email: string,
   name: string,
+}
+
+export type Group = {
+  id: number,
+  name: string,
+  color: string,
+}
+
+export type GroupInvitation = {
+  id: number,
+  invitedUserId: number,
+  inviterUserId: number,
+  groupId: number
+}
+
+export type GroupTransaction = {
+  id: number,
+  name: string,
+  kind: TransactionKind,
+  category: TransactionCategory,
+  amount: number,
+  date: number,
+  groupId: number
 }
 
 /////////////////
@@ -46,6 +69,41 @@ export type UpdateUserPayload = {
   oldPassword: string,
 }
 
+export type GroupInvitationResponse = {
+  id: number,
+  invitedUserId: number,
+  invitedUserEmail: string,
+  invitedUserName: string,
+  inviterUserId: number,
+  inviterUserEmail: string,
+  inviterUserName: string,
+  groupId: number,
+  groupName: string
+}
+
+export type CreateGroupInvitationRequest = {
+  email: string
+  groupId: number,
+}
+
+export type GroupDTO = {
+  group: Group
+  users: User[]
+  balance: number
+}
+
+export type GroupTransactionUsersDTO = {
+  user: User
+  isCreator: boolean
+  hasPayed: boolean
+}
+
+export type GroupTransactionDTO = {
+  groupTransaction: GroupTransaction
+  userDTOs: GroupTransactionUsersDTO[]
+  isActive: boolean
+}
+
 ///////////
 // OTHER //
 ///////////
@@ -57,13 +115,18 @@ export enum TransactionKind {
 export enum TransactionCategory {
   Salary = 'salary', 
   Business = 'business', 
+  Loan = 'loan',
   Gifts = 'gifts',
   Food = 'food',
   Home = 'home', 
   Shopping = 'shopping', 
   Transport = 'transport', 
   Bills = 'bills', 
-  Entertainment = 'entertainment', 
+  Leisure = 'leisure',
+  Health = 'health',
+  Education = 'education',
+  Groceries = 'groceries',
+  Sport = 'sport',
   Other = 'other'
 }
 
@@ -72,6 +135,7 @@ export enum SvgIcons {
   Lock = 'lock',
   Moneybag = 'moneyBag',
   Briefcase = 'briefCase',
+  Loan = 'loan',
   Gift = 'gift',
   QuestionMark = 'questionMark',
   Food = 'food',
@@ -79,7 +143,11 @@ export enum SvgIcons {
   Shopping= 'shopping',
   Transport = 'transport', 
   Bills = 'bills', 
-  Entertainment = 'entertainment', 
+  Health = 'health', 
+  Leisure = 'leisure',
+  Education = 'education',
+  Groceries = 'groceries',
+  Sport = 'sport', 
   Other = 'other', 
   Edit = 'edit', 
   Delete = 'delete', 
@@ -98,4 +166,6 @@ export enum SvgIcons {
   Settings = 'settings',
   Logout = 'logout',
   Filter = 'filter',
+  Group = 'group',
+  Ok = 'ok',
 }

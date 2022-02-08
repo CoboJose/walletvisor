@@ -6,11 +6,10 @@ import { SvgIcons } from 'types/types';
 import SVG from 'components/ui/svg/SVG';
 import TransactionsFilter from 'components/transactions/transactionsFilter/TransactionsFilter';
 
-type FilterByCategoriesButtonProps = {
+type ButtonFilterByCategoriesProps = {
   isPhone: boolean
 }
-
-const FilterByCategoriesButton = ({ isPhone }: FilterByCategoriesButtonProps): JSX.Element => {
+const ButtonFilterByCategories = ({ isPhone }: ButtonFilterByCategoriesProps): JSX.Element => {
   logger.rendering();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -51,4 +50,4 @@ const FilterByCategoriesButton = ({ isPhone }: FilterByCategoriesButtonProps): J
   );
 };
 
-export default FilterByCategoriesButton;
+export default ButtonFilterByCategories;

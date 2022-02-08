@@ -1,0 +1,53 @@
+@import "themes/theme.module";
+
+.cancelButton{
+    color: $secondary !important;
+}
+
+.deleteButton{
+    color: $error !important;
+}
+
+.okButton{
+    color: $success !important;
+
+    &:disabled {
+        color: $disabled !important;
+    }
+}
+
+.buttonIcon {
+    $size: 15px;
+    height: $size;
+    width: $size;
+    fill: currentColor;
+}
+
+.users {
+    .header {
+        font-size: large;
+        color: $primary;
+        font-weight: bold;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        overflow-x: auto;
+
+        .listItem {
+            display: flex;
+            flex-direction: row;
+            font-size: 14px;
+
+            .listItemContainer {
+                width: 100%;
+                .listName {
+                    color: $primary;
+                    padding-left: 15px;
+                }
+            }
+        }
+    }
+}

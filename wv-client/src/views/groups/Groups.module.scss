@@ -1,0 +1,20 @@
+@import "themes/theme.module";
+
+.groups {
+    @include flex-column-center;
+    width: 100%;
+
+    @media (min-width: $phoneMaxWidth) {
+        max-width: 95%;
+    }
+}
+
+.outsideGroup {
+    @include flex-column-center;
+    width: 100%;
+}
+
+.insideGroup {
+    @include flex-column-center;
+    width: 100%;
+}
