@@ -1,0 +1,79 @@
+@import "themes/theme.module";
+
+.button {
+    .icon {
+        fill: currentColor;
+        $size: 15px;
+        width: $size;
+        height: $size; 
+    }
+}
+
+.dialogContent {
+    //Phone
+    @media (max-width: $maxWidth) {
+        min-width: 230px;
+    }
+    //Desktop
+    @media (min-width: $maxWidth) {
+        min-width: 350px;
+    }
+}
+
+.members {
+    .loggedUser {
+        color: $primary;
+    }
+    
+    .leaveButton {
+        color: $error !important;
+    
+        .icon {
+            fill: $error;
+            $size: 12px;
+            width: $size;
+            height: $size; 
+        }
+    }
+    
+    .removeButton {
+        color: $error !important;
+    
+        .icon {
+            fill: $error;
+            $size: 15px;
+            width: $size;
+            height: $size; 
+        }
+    }
+}
+
+.invitations {
+
+    .invitationsTitle {
+        font-size: 18px;
+        color: $primary;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .invitationsForm {
+        //Phone
+        @media (max-width: $maxWidth) {
+            display: flex;
+            flex-direction: column;
+        }
+        //Desktop
+        @media (min-width: $maxWidth) {
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+        }
+    }
+
+    .listHeader {
+        font-size: 15px;
+        color: $primary;
+        text-align: center;
+    }
+}

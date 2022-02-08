@@ -40,10 +40,40 @@ export const transactionCategoriesData: TransactionCategoryData[] = [
     svg: SvgIcons.Home,
   },
   {
-    key: TransactionCategory.Entertainment,
+    key: TransactionCategory.Leisure,
     type: TransactionKind.Expense,
-    name: 'Entertainment',
-    svg: SvgIcons.Entertainment,
+    name: 'Leisure',
+    svg: SvgIcons.Leisure,
+  },
+  {
+    key: TransactionCategory.Health,
+    type: TransactionKind.Expense,
+    name: 'Health',
+    svg: SvgIcons.Health,
+  },
+  {
+    key: TransactionCategory.Gifts,
+    type: TransactionKind.Expense,
+    name: 'Gifts',
+    svg: SvgIcons.Gift,
+  },
+  {
+    key: TransactionCategory.Education,
+    type: TransactionKind.Expense,
+    name: 'Education',
+    svg: SvgIcons.Education,
+  },
+  {
+    key: TransactionCategory.Groceries,
+    type: TransactionKind.Expense,
+    name: 'Groceries',
+    svg: SvgIcons.Groceries,
+  },
+  {
+    key: TransactionCategory.Sport,
+    type: TransactionKind.Expense,
+    name: 'Sport',
+    svg: SvgIcons.Sport,
   },
   {
     key: TransactionCategory.Other,
@@ -69,6 +99,12 @@ export const transactionCategoriesData: TransactionCategoryData[] = [
     type: TransactionKind.Income,
     name: 'Gifts',
     svg: SvgIcons.Gift,
+  },
+  {
+    key: TransactionCategory.Loan,
+    type: TransactionKind.Income,
+    name: 'Loan',
+    svg: SvgIcons.Loan,
   },
   {
     key: TransactionCategory.Other,

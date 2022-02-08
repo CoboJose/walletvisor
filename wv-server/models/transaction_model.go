@@ -5,26 +5,57 @@ import (
 	"errors"
 	"strings"
 	"wv-server/utils"
+
+	"gopkg.in/guregu/null.v3"
+)
+
+type Kind int
+
+const (
+	Income Kind = iota
+	Expense
+)
+
+type Category int
+
+const (
+	Salary Category = iota
+	Business
+	Gifts
+	Loan
+	Food
+	Home
+	Shopping
+	Transport
+	Bills
+	Leisure
+	Health
+	Education
+	Groceries
+	Sport
+	Other
 )
 
 type Transaction struct {
-	ID       int     `json:"id"`
-	Name     string  `json:"name"`
-	Kind     string  `json:"kind"`
-	Category string  `json:"category"`
-	Amount   float64 `json:"amount"`
-	Date     int     `json:"date"`
-	UserID   int     `json:"userID"  db:"user_id"`
+	ID                 int      `json:"id"`
+	Name               string   `json:"name"`
+	Kind               string   `json:"kind"`
+	Category           string   `json:"category"`
+	Amount             float64  `json:"amount"`
+	Date               int      `json:"date"`
+	UserID             int      `json:"userID"  db:"user_id"`
+	GroupTransactionID null.Int `json:"groupTransactionID"  db:"group_transaction_id"`
 }
 
 var transactionsTable = `CREATE TABLE IF NOT EXISTS transactions (
-		id			SERIAL 			PRIMARY KEY,
-		name 		VARCHAR(100)	NOT NULL,
-		kind 		VARCHAR(100) 	NOT NULL	CHECK(kind IN('income', 'expense')),
-		category	VARCHAR(100) 	NOT NULL	CHECK((kind='income' AND category IN('salary', 'business', 'gifts', 'other')) OR (kind='expense' AND category IN('food','home', 'shopping', 'transport', 'bills', 'entertainment', 'other'))),
-		amount 		REAL 			NOT NULL	CHECK(amount>=0),
-		date 		BIGINT			NOT NULL	CHECK(date>=0),
-		user_id		INT				NOT NULL	REFERENCES users	ON DELETE CASCADE
+		id						SERIAL 			PRIMARY KEY,
+		name 					VARCHAR(100)	NOT NULL,
+		kind 					VARCHAR(100) 	NOT NULL	CHECK(kind IN('` + Income.String() + `', '` + Expense.String() + `')),
+		category				VARCHAR(100) 	NOT NULL	CHECK((kind='` + Income.String() + `' AND category IN(` + Income.getCategoriesString() + `)) OR (kind='` + Expense.String() + `' AND category IN(` + Expense.getCategoriesString() + `))),
+		amount 					REAL 			NOT NULL	CHECK(amount>=0),
+		date 					BIGINT			NOT NULL	CHECK(date>=0),
+		user_id					INT				NOT NULL	REFERENCES users(id)				ON DELETE CASCADE,
+		group_transaction_id 	INT							REFERENCES group_transactions(id) 	ON DELETE SET NULL
 	)`
 
 var transactionsIndexes = `CREATE INDEX IF NOT EXISTS trn_date_index ON transactions (date);
@@ -91,6 +122,36 @@ func GetUserTotalBalance(userID int) (float64, *utils.Cerr) {
 	return totalBalance, nil
 }
 
+// GetTransactionsByGroupTransactionId returns all the transactions created by a group transaction
+func GetTransactionsByGroupTransactionId(groupTransactionId int) ([]Transaction, *utils.Cerr) {
+	transactions := []Transaction{}
+	query := `SELECT * FROM transactions WHERE group_transaction_id=$1`
+	if err := db.Select(&transactions, query, groupTransactionId); err != nil {
+		return nil, utils.NewCerr("TR003", err)
+	}
+
+	for i := 0; i < len(transactions); i++ {
+		transactions[i].Amount = utils.Round(transactions[i].Amount, 2)
+	}
+
+	return transactions, nil
+}
+
+// GetTransactionsByUserIdAndGroupTransactionId returns all the transactions created by a group transaction for a user
+func GetTransactionsByUserIdAndGroupTransactionId(userId, groupTransactionId int) ([]Transaction, *utils.Cerr) {
+	transactions := []Transaction{}
+	query := `SELECT * FROM transactions WHERE user_id=$1 AND group_transaction_id=$2`
+	if err := db.Select(&transactions, query, userId, groupTransactionId); err != nil {
+		return nil, utils.NewCerr("GE000", err)
+	}
+
+	for i := 0; i < len(transactions); i++ {
+		transactions[i].Amount = utils.Round(transactions[i].Amount, 2)
+	}
+
+	return transactions, nil
+}
+
 //////////
 // Save //
 //////////
@@ -105,10 +166,10 @@ func (trn *Transaction) Save() *utils.Cerr {
 	trn.Amount = utils.Round(trn.Amount, 2)
 
 	if trn.ID <= 0 { // Create
-		query := `INSERT INTO transactions (name, kind, category, amount, date, user_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id`
-		err = db.QueryRow(query, trn.Name, trn.Kind, trn.Category, trn.Amount, trn.Date, trn.UserID).Scan(&trn.ID)
+		query := `INSERT INTO transactions (name, kind, category, amount, date, user_id, group_transaction_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id`
+		err = db.QueryRow(query, trn.Name, trn.Kind, trn.Category, trn.Amount, trn.Date, trn.UserID, trn.GroupTransactionID).Scan(&trn.ID)
 	} else { //Update
-		query := `UPDATE transactions SET name=:name, kind=:kind, category=:category, amount=:amount, date=:date WHERE id=:id AND user_id=:user_id`
+		query := `UPDATE transactions SET name=:name, kind=:kind, category=:category, amount=:amount, date=:date, group_transaction_id=:group_transaction_id WHERE id=:id AND user_id=:user_id`
 		var res sql.Result
 		res, err = db.NamedExec(query, &trn)
 		if err == nil {
@@ -151,19 +212,17 @@ func (trn *Transaction) Delete() *utils.Cerr {
 }
 
 func (trn *Transaction) validate() *utils.Cerr {
-	incomeCategories := []string{"salary", "business", "gifts", "other"}
-	expenseCategories := []string{"food", "home", "shopping", "transport", "bills", "entertainment", "other"}
 	// Not null
 	if trn.Name == "" || trn.Kind == "" || trn.Category == "" {
 		return utils.NewCerr("GE003", nil)
 	}
 	// Kind and Category
-	if trn.Kind == "income" {
-		if !utils.Contains(incomeCategories, trn.Category) {
+	if trn.Kind == Income.String() {
+		if !utils.Contains(Income.getCategoriesStringArray(), trn.Category) {
 			return utils.NewCerr("TR000", nil)
 		}
-	} else if trn.Kind == "expense" {
-		if !utils.Contains(expenseCategories, trn.Category) {
+	} else if trn.Kind == Expense.String() {
+		if !utils.Contains(Expense.getCategoriesStringArray(), trn.Category) {
 			return utils.NewCerr("TR000", nil)
 		}
 	} else {
@@ -175,4 +234,40 @@ func (trn *Transaction) validate() *utils.Cerr {
 	}
 
 	return nil
+}
+
+func (k Kind) String() string {
+	return []string{"income", "expense"}[k]
+}
+func (k Kind) categories() []Category {
+	switch k {
+	case Income:
+		return []Category{Salary, Business, Gifts, Loan, Other}
+	case Expense:
+		return []Category{Food, Home, Shopping, Transport, Bills, Leisure, Health, Gifts, Education, Groceries, Sport, Other}
+	default:
+		return []Category{}
+	}
+}
+func (k Kind) getCategoriesString() string {
+	res := ""
+	for i, c := range k.categories() {
+		if i == 0 {
+			res += "'" + c.String() + "'"
+		} else {
+			res += (", '" + c.String() + "'")
+		}
+	}
+	return res
+}
+func (k Kind) getCategoriesStringArray() []string {
+	res := []string{}
+	for _, c := range k.categories() {
+		res = append(res, c.String())
+	}
+	return res
+}
+
+func (c Category) String() string {
+	return []string{"salary", "business", "gifts", "loan", "food", "home", "shopping", "transport", "bills", "leisure", "health", "education", "groceries", "sport", "other"}[c]
 }

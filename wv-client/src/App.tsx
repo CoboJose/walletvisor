@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { refreshToken, logout } from 'store/slices/auth';
@@ -16,8 +16,6 @@ import es from 'date-fns/locale/es';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import lightTheme from 'themes/lightTheme';
 import darkTheme from 'themes/darkTheme';
-import Confirmation from 'components/ui/confirmation/Confirmation';
-import screenSizes from 'utils/screenSizes';
 import View from 'components/view/View';
 import { getUser } from 'store/slices/user';
 
@@ -39,7 +37,6 @@ const App: React.FC = () => {
   ///////////
   // STATE //
   ///////////
-  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   ////////////////
   // USE EFFECT //
@@ -81,12 +78,6 @@ const App: React.FC = () => {
           window.alert('The server is not responding. Please contact with cobogue@gmail.com');
         });
     }
-
-    //Show mobile use alert if it is the first time using this device
-    if (!screenSizes.isPhone() && localStorage.getItem('MobileUseAlerted') === null) {
-      localStorage.setItem('MobileUseAlerted', 'true');
-      setShowAlert(true);
-    }
   }, []);
 
   //////////////////////
@@ -101,19 +92,6 @@ const App: React.FC = () => {
       }, (0.5 * 1000));
     }
   };
-
-  const computerUsersAdvice = (): JSX.Element | null => {
-    return (showAlert ? (
-      <Confirmation 
-        title="Advice for computer users"
-        text="This application has been designed for mobile devices. Its use on computers is possible, but the experience will be inferior."
-        buttonOk="OK"
-        open
-        onOk={() => setShowAlert(false)}       
-      />
-    ) : null 
-    );
-  };
   
   /////////
   // JSX //
@@ -123,7 +101,6 @@ const App: React.FC = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <LoadingTopBar />
-        {computerUsersAdvice()}
         <View />
       </ThemeProvider>
     </LocalizationProvider>

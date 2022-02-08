@@ -5,9 +5,15 @@
     padding: $basePadding;
 }
 
+.titleContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    align-items: center;
+}
+
 .logo {
-    margin-top: 15px;
-    $logoSize: 80px;
+    $logoSize: 75px;
     height: $logoSize; 
     width: $logoSize;
 }
@@ -17,6 +23,10 @@
         color: $primary;
         font-style: italic;
     }
+}
+
+.form {
+    max-width: 500px;
 }
 
 .smallLinks {

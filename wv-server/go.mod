@@ -19,4 +19,5 @@ require (
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2
+	gopkg.in/guregu/null.v3 v3.5.0
 )

@@ -48,7 +48,7 @@ const TransactionFormModal = ({ transactionToUpdate, open, onClose, setSnackbarT
   ///////////
   // STATE //
   ///////////
-  const emptyTransaction: Transaction = { id: -1, name: '', kind: TransactionKind.Expense, category: TransactionCategory.Shopping, amount: -1, date: new Date().getTime(), userID: -1 };
+  const emptyTransaction: Transaction = { id: -1, name: '', kind: TransactionKind.Expense, category: TransactionCategory.Shopping, amount: -1, date: new Date().getTime(), userID: -1, groupTransactionID: null };
   const isEdit: boolean = transactionToUpdate != null;
 
   const [transaction, setTransaction] = useState<Transaction>(transactionToUpdate !== null ? transactionToUpdate : emptyTransaction);
@@ -153,7 +153,7 @@ const TransactionFormModal = ({ transactionToUpdate, open, onClose, setSnackbarT
             onClick={submitHandler} 
             className={style.okButton}
             disabled={buttonDisabled(transaction)}
-            startIcon={<SVG name={SvgIcons.Edit} className={style.buttonIcon} />}
+            startIcon={<SVG name={isEdit ? SvgIcons.Edit : SvgIcons.Add} className={style.buttonIcon} />}
           >
             {isEdit ? 'Save' : 'Add'}
           </Button>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useState } from 'react';
 import { useAppSelector } from 'store/hooks';
 import { ApiError, SvgIcons, Transaction, TransactionKind } from 'types/types';
@@ -11,7 +12,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { Divider, Menu, MenuItem } from '@mui/material';
@@ -20,6 +20,7 @@ import style from './TransactionsList.module.scss';
 import Confirmation from 'components/ui/confirmation/Confirmation';
 import { useDispatch } from 'react-redux';
 import { deleteTransaction } from 'store/slices/transactions';
+import math from 'utils/math';
 
 const TransactionsList = (): JSX.Element => {
   logger.rendering();
@@ -168,6 +169,14 @@ const TransactionsList = (): JSX.Element => {
                   onContextMenu={(e) => handleContextMenuOpen(e, t.id)}
                   onClick={() => updateTransactionHandler(t)}
                   className={`${style.listItem} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}
+                  secondaryAction={(
+                    <div>
+                      <div className={`${style.amount} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}>
+                        {t.kind === TransactionKind.Income ? '+' : '-'} {math.formatEurNumber(t.amount)}
+                      </div>
+                      <div className={style.trnBalance}>{math.formatEurNumber(transactionsBalance.get(t.id)!)}</div>
+                    </div>
+                  )}
                 >
             
                   <ListItemIcon>
@@ -178,15 +187,6 @@ const TransactionsList = (): JSX.Element => {
                     primary={t.name}
                     secondary={dates.timestampToStringDate(t.date)}
                   />
-
-                  <ListItemSecondaryAction>
-                    <div>
-                      <div className={`${style.amount} ${t.kind === TransactionKind.Income ? style.income : style.expense}`}>
-                        {t.kind === TransactionKind.Income ? '+' : '-'} {t.amount}€
-                      </div>
-                      <div className={style.trnBalance}>{transactionsBalance.get(t.id)}€</div>
-                    </div>
-                  </ListItemSecondaryAction>
 
                 </ListItem>
 

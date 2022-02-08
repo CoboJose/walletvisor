@@ -6,13 +6,11 @@ import math from 'utils/math';
 import dates from 'utils/dates';
 import { useMediaQuery } from '@mui/material';
 import TransactionsDateRange from 'components/transactions/transactionsDateRange/TransactionsDateRange';
-
 import Paper from '@mui/material/Paper';
-
 import style from './Balance.module.scss';
-import ButtonAddTransaction from 'components/ui/transactions/addTransactionButton/ButtonAddTransaction';
-import ButtonDateRange from 'components/ui/transactions/dateRange/ButtonDateRange';
-import FilterByCategoriesButton from 'components/ui/transactions/filterByCategoriesButton/filterByCategoriesButton';
+import ButtonAddTransaction from 'components/navigation/modalButtons/ButtonAddTransaction';
+import ButtonDateRange from 'components/navigation/modalButtons/ButtonDateRange';
+import ButtonFilterTransactions from 'components/navigation/modalButtons/ButtonFilterTransactions';
 
 //////////////////////
 // HELPER FUNCTIONS //
@@ -32,10 +30,6 @@ const getAmounts = (transactions: Transaction[]): number[] => {
   }
 
   return [balance, income, expense].map((e) => math.round(e, 2));
-};
-
-const formatNumber = (n: number): string => {
-  return Number(math.round(Math.abs(n), 2)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
 };
 
 const Balance = (): JSX.Element => {
@@ -65,8 +59,8 @@ const Balance = (): JSX.Element => {
       
       <div className={style.dateRange}>
         <div className={style.text}>{dateRange}</div>
-        <div className={style.income}>+ {formatNumber(income)}</div>
-        <div className={style.expense}>- {formatNumber(expense)}</div>
+        <div className={style.income}>+{math.formatEurNumber(income)}</div>
+        <div className={style.expense}>-{math.formatEurNumber(expense)}</div>
       </div>
       
       {!isPhone && (
@@ -79,19 +73,19 @@ const Balance = (): JSX.Element => {
 
       <div className={style.balances}>
         <div className={`${style.rangeBalance} ${balance >= 0 ? style.positive : style.negative}`}>
-          {balance >= 0 ? '+' : '-'} {formatNumber(balance)}
+          {math.formatEurNumber(balance)}
         </div>
 
         <div className={`${style.totalBalance} ${balance >= 0 ? style.positive : style.negative}`}>
           <span className={style.text}>Total: </span> 
-          <span className={style.amount}> {balance >= 0 ? '+' : '-'} {formatNumber(totalBalance)} </span>
+          <span className={style.amount}> {math.formatEurNumber(totalBalance)} </span>
         </div>
       </div>
 
       <div className={style.actionButtons}>
         <ButtonAddTransaction isPhone={isPhone} />
         {isPhone && <ButtonDateRange />}
-        <FilterByCategoriesButton isPhone={isPhone} />
+        <ButtonFilterTransactions isPhone={isPhone} />
       </div>
 
     </Paper>

@@ -10,10 +10,13 @@ import (
 )
 
 var (
-	api                *echo.Group
-	authHandler        = &handlers.AuthHandler{}
-	userHandler        = &handlers.UserHandler{}
-	transactionHandler = &handlers.TransactionHandler{}
+	api                     *echo.Group
+	authHandler             = &handlers.AuthHandler{}
+	userHandler             = &handlers.UserHandler{}
+	transactionHandler      = &handlers.TransactionHandler{}
+	groupHandler            = &handlers.GroupHandler{}
+	groupInvitationHandler  = &handlers.GroupInvitationHandler{}
+	groupTransactionHandler = &handlers.GroupTransactionHandler{}
 )
 
 // Init defines the routes and their handlers
@@ -35,6 +38,9 @@ func Init(e *echo.Echo) {
 	authentication()
 	user()
 	transaction()
+	group()
+	groupInvitation()
+	groupTransaction()
 }
 
 func ping() {
@@ -64,4 +70,34 @@ func transaction() {
 	transaction.POST("", transactionHandler.Create)
 	transaction.PUT("", transactionHandler.Update)
 	transaction.DELETE("", transactionHandler.Delete)
+}
+
+func group() {
+	group := api.Group("/groups", middlewares.ValidToken("user"))
+
+	group.GET("", groupHandler.GetUserGroups)
+	group.POST("", groupHandler.Create)
+	group.PUT("", groupHandler.Update)
+	group.DELETE("", groupHandler.Delete)
+	group.DELETE("/removeuser", groupHandler.RemoveUser)
+}
+
+func groupInvitation() {
+	group := api.Group("/groupinvitations", middlewares.ValidToken("user"))
+
+	group.GET("/group", groupInvitationHandler.GetGroupInvitations)
+	group.GET("/user", groupInvitationHandler.GetUserInvitations)
+	group.POST("/join", groupInvitationHandler.JoinGroup)
+	group.POST("/create", groupInvitationHandler.CreateGroupInvitation)
+	group.DELETE("/delete", groupInvitationHandler.Delete)
+}
+
+func groupTransaction() {
+	groupTransaction := api.Group("/grouptransactions", middlewares.ValidToken("user"))
+
+	groupTransaction.GET("", groupTransactionHandler.Get)
+	groupTransaction.POST("", groupTransactionHandler.Create)
+	groupTransaction.PUT("", groupTransactionHandler.Update)
+	groupTransaction.DELETE("", groupTransactionHandler.Delete)
+	groupTransaction.POST("/pay", groupTransactionHandler.Pay)
 }

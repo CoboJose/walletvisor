@@ -20,9 +20,10 @@ const Welcome: React.FC = () => {
   return (
     <div className={style.welcome}>
 
-      <SVG name={SvgIcons.Logo} className={style.logo} />
-
-      <h1 className={style.title}>WALLET<span className={style.visor}>VISOR</span></h1>
+      <div className={style.titleContainer}>
+        <SVG name={SvgIcons.Logo} className={style.logo} />
+        <h1 className={style.title}>WALLET<span className={style.visor}>VISOR</span></h1>
+      </div>
 
       <div className={style.form}>
 

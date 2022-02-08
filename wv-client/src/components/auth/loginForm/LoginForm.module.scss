@@ -6,8 +6,11 @@
 
 }
 
-.title {
-    margin: 7px;
+.titleContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
 }
 
 .lockIcon {

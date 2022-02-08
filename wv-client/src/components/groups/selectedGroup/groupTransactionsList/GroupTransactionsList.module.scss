@@ -1,0 +1,97 @@
+@import "themes/theme.module";
+
+.groupTransactionsList{
+    @include flex-column-center;
+    display: flex;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.list {
+    width: 100%;
+    overflow-y: auto;
+
+    // Phone
+    @media (max-width: $phoneMaxWidth) {
+        max-height: calc(100vh - 280px);
+    }
+    // Desktop
+    @media (min-width: $phoneMaxWidth) {
+        max-height: calc(100vh - 320px);
+    }
+
+    .noActiveGT{
+        text-align: center;
+    }
+}
+
+.activeList {
+    .listMonth {
+        padding: 7px;
+        color: $primary;
+    }
+
+    .listItem {
+        .amount {
+            font-size: large;
+            text-align: center;
+            color: $primary;
+        }
+
+        .below {
+            .text {
+                font-size: 12px;
+            }
+            .amount {
+                font-size: 14px;
+                color: $error;
+            }
+            .payButton {
+                color: $success !important;
+            }
+        }
+
+        .notParticipating {
+            font-size: 10px;
+        }
+    }
+}
+
+.inactiveList {
+    margin-top: 30px;
+
+    .payedHeader {
+        color: $primary;
+        font-size: large;
+        font-weight: bold;
+    }
+
+    .listItem {
+        .amount {
+            font-size: large;
+            text-align: center;
+            color: $primary;
+        }
+        .noParticipate {
+            font-size: 10px;
+        }
+        .payed {
+            font-size: 12px;
+        }
+    }
+}
+
+.categorySVG {
+    $size: 30px;
+    height: $size;
+    width: $size;
+    fill: currentColor;
+}
+
+.menuDeleteButtonIcon {
+    fill: $error;
+    $size: 14px;
+    height: $size;
+    width: $size;
+    margin-right: 5px;
+}

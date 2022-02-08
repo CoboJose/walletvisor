@@ -3,4 +3,8 @@ const round = (number: number, decimals: number): number => {
   return Math.round(number * h) / h;
 };
 
-export default { round };
+const formatEurNumber = (n: number): string => {
+  return Number(round(n, 2)).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+};
+
+export default { round, formatEurNumber };

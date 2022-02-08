@@ -11,6 +11,7 @@ import { SvgIcons } from 'types/types';
 import { Divider, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer, IconButton } from '@mui/material';
 
 import style from './PhoneSidePanel.module.scss';
+import { getGroups, setSelectedGroup } from 'store/slices/groups';
 
 type PhoneSidePanelProps = {
   principalRoutesList: SidePanelListItems[],
@@ -28,6 +29,13 @@ const PhoneSidePanel = ({ principalRoutesList, phoneSidePanelOpen, handlePhoneSi
   const theme = useAppSelector((state) => state.config.theme);
 
   const iOS = new RegExp(/iPad|iPhone|iPod/).test(navigator.userAgent);
+
+  const onRouteClickHandler = (listItem: SidePanelListItems) => {
+    history.push(listItem.path);
+    handlePhoneSidePanelClose();
+    dispatch(setSelectedGroup(null));
+    dispatch(getGroups());
+  };
 
   return (
     <SwipeableDrawer
@@ -59,7 +67,7 @@ const PhoneSidePanel = ({ principalRoutesList, phoneSidePanelOpen, handlePhoneSi
             key={listItem.path} 
             button 
             selected={listItem.path === location.pathname.replace('/', '')} 
-            onClick={() => [history.push(listItem.path), handlePhoneSidePanelClose()]}
+            onClick={() => onRouteClickHandler(listItem)}
           >
             <ListItemIcon> <SVG name={listItem.svg} className={style.icon} /> </ListItemIcon>
             <ListItemText primary={listItem.text} />

@@ -1,0 +1,30 @@
+@import "themes/theme.module";
+
+.cancelButton{
+    color: $secondary !important;
+}
+
+.deleteButton{
+    color: $error !important;
+}
+
+.okButton{
+    color: $success !important;
+
+    &:disabled {
+        color: $disabled !important;
+    }
+}
+
+.buttonIcon {
+    $size: 15px;
+    height: $size;
+    width: $size;
+    fill: currentColor;
+}
+
+.members {
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+}
