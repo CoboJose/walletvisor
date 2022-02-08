@@ -97,7 +97,7 @@ jobs:
           env:
             REACT_APP_API_URL: ${{ secrets.NETLIFY_SERVER_URL_DEV }}
             REACT_APP_LOGGER_LEVEL: info
-            REACT_APP_LOGGER_RENDERING: true
+            REACT_APP_LOGGER_RENDERING: false
           run: |
             npm install
             npm run-script build
