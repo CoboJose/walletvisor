@@ -3,12 +3,12 @@
 //Dark Theme
 $darkBackground: #262626;
 $darkPaper: #3a3a3a;
-$darkPrimary: #9968f0;
+$darkPrimary: #af80ff;
 $darkSecondary: #9E9E9E;
-$darkError: #f44336;
+$darkError: #DC3522;
 $darkWarning: #ff9800;
 $darkInfo: #2196f3;
-$darkSuccess: #4caf50;
+$darkSuccess: #45BF55;
 $darkDisabled: #8d8d8d;
 
 // Light Theme
@@ -16,23 +16,28 @@ $lightBackground: #ededed;
 $lightPaper: #f9f9f9;
 $lightPrimary: #556dd6;
 $lightSecondary: #19857b;
-$lightError: #f44336;
+$lightError: #DC3522;
 $lightWarning: #ff9800;
 $lightInfo: #2196f3;
-$lightSuccess: #4caf50;
+$lightSuccess: #45BF55;
 $lightDisabled: #b9b9b9;
 
 // Category Colors
-$salaryColor: #2CF295;
-$businessColor: #4657db;
-$giftsColor: #FC5905;
-$foodColor: #E63599;
-$homeColor: #C00FE6;
-$shoppingColor: #FCA22D;
-$transportColor: #18E8FF;
-$billsColor: #ff1d3b;
-$entertainmentColor: #84df1b;
-$otherColor: rgb(141, 141, 141);
+$salaryColor: #67CC8E;
+$businessColor: #347185;
+$giftsColor: #F3835D;
+$loanColor: #95A5A5;
+$foodColor: #DE9E36;
+$homeColor: #FBACBE;
+$shoppingColor: #EFC164;
+$transportColor: #587B7F;
+$billsColor: #F35955;
+$leisureColor: #F1C40F;
+$healthColor: #197bc6;
+$educationColor: #7EA8BE;
+$groceriesColor: #b08675;
+$sportColor: #2CDA9D;
+$otherColor: #D3D0CB;
 
 // Color depending on the theme
 $colors: (
@@ -59,12 +64,17 @@ $colors: (
   salaryColor: $salaryColor,
   businessColor: $businessColor,
   giftsColor: $giftsColor,
+  loanColor: $loanColor,
   foodColor: $foodColor,
   homeColor: $homeColor,
   shoppingColor: $shoppingColor,
   transportColor: $transportColor,
   billsColor: $billsColor,
-  entertainmentColor: $entertainmentColor,
+  leisureColor: $leisureColor,
+  healthColor: $healthColor,
+  educationColor: $educationColor,
+  groceriesColor: $groceriesColor,
+  sportColor: $sportColor,
   otherColor: $otherColor,
 );
 
@@ -102,13 +112,18 @@ $colors: (
 
   salaryColor: var(--salaryColor);
   businessColor: var(--businessColor);
+  loanColor: var(--businessColor);
   giftsColor: var(--giftsColor);
   foodColor: var(--foodColor);
   homeColor: var(--homeColor);
   shoppingColor: var(--shoppingColor);
   transportColor: var(--transportColor);
   billsColor: var(--billsColor);
-  entertainmentColor: var(--entertainmentColor);
+  leisureColor: var(--leisureColor);
+  healthColor: var(--healthColor);
+  educationColor: var(--educationColor);
+  groceriesColor: var(--groceriesColor);
+  sportColor: var(--sportColor);
   otherColor: var(--otherColor);
 }
 
@@ -151,6 +166,9 @@ $maxWidth: 600px;
   &.business{
     fill: $businessColor;
   }
+  &.loan {
+    fill: $loanColor;
+  }
   &.gifts{
     fill: $giftsColor;
   }
@@ -169,8 +187,20 @@ $maxWidth: 600px;
   &.bills{
     fill: $billsColor;
   }
-  &.entertainment{
-    fill: $entertainmentColor;
+  &.leisure{
+    fill: $leisureColor;
+  }
+  &.health{
+    fill: $healthColor;
+  }
+  &.education{
+    fill: $educationColor;
+  }
+  &.groceries{
+    fill: $groceriesColor;
+  }
+  &.sport{
+    fill: $sportColor;
   }
   &.other{
     fill: $otherColor;

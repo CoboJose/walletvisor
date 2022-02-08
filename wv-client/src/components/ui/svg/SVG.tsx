@@ -13,7 +13,12 @@ import { ReactComponent as Shopping } from 'assets/icons/shopping_bag.svg';
 import { ReactComponent as Home } from 'assets/icons/home.svg';
 import { ReactComponent as Transport } from 'assets/icons/train.svg';
 import { ReactComponent as Bills } from 'assets/icons/invoice.svg';
-import { ReactComponent as Entertainment } from 'assets/icons/popcorn.svg';
+import { ReactComponent as Health } from 'assets/icons/health.svg';
+import { ReactComponent as Leisure } from 'assets/icons/popcorn.svg';
+import { ReactComponent as Loan } from 'assets/icons/bank.svg';
+import { ReactComponent as Education } from 'assets/icons/education.svg';
+import { ReactComponent as Groceries } from 'assets/icons/grocery.svg';
+import { ReactComponent as Sport } from 'assets/icons/sport.svg';
 import { ReactComponent as Edit } from 'assets/icons/edit.svg';
 import { ReactComponent as Delete } from 'assets/icons/trash.svg';
 import { ReactComponent as Add } from 'assets/icons/add.svg';
@@ -76,8 +81,23 @@ const SVG = ({ name, className, style }: SVGProps): JSX.Element => {
       case SvgIcons.Bills:
         return <Bills className={className} style={style} />;
 
-      case SvgIcons.Entertainment:
-        return <Entertainment className={className} style={style} />;
+      case SvgIcons.Health:
+        return <Health className={className} style={style} />;
+
+      case SvgIcons.Leisure:
+        return <Leisure className={className} style={style} />;
+    
+      case SvgIcons.Loan:
+        return <Loan className={className} style={style} />;
+
+      case SvgIcons.Education:
+        return <Education className={className} style={style} />;
+
+      case SvgIcons.Groceries:
+        return <Groceries className={className} style={style} />;
+
+      case SvgIcons.Sport:
+        return <Sport className={className} style={style} />;
 
       case SvgIcons.Edit:
         return <Edit className={className} style={style} />;

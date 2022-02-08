@@ -36,7 +36,7 @@ const UserIcon = ({ size }: UserIconProps): JSX.Element => {
   const [isInvitationsOpen, setIsInvitationsOpen] = useState<boolean>(false);
 
   return (
-    <div>
+    <div className={style.userIcon}>
       
       <Tooltip title={userName || 'User'}>
         

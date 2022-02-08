@@ -22,12 +22,17 @@ const (
 	Salary Category = iota
 	Business
 	Gifts
+	Loan
 	Food
 	Home
 	Shopping
 	Transport
 	Bills
-	Entertainment
+	Leisure
+	Health
+	Education
+	Groceries
+	Sport
 	Other
 )
 
@@ -237,9 +242,9 @@ func (k Kind) String() string {
 func (k Kind) categories() []Category {
 	switch k {
 	case Income:
-		return []Category{Salary, Business, Gifts, Other}
+		return []Category{Salary, Business, Gifts, Loan, Other}
 	case Expense:
-		return []Category{Food, Home, Shopping, Transport, Bills, Entertainment, Other}
+		return []Category{Food, Home, Shopping, Transport, Bills, Leisure, Health, Gifts, Education, Groceries, Sport, Other}
 	default:
 		return []Category{}
 	}
@@ -264,5 +269,5 @@ func (k Kind) getCategoriesStringArray() []string {
 }
 
 func (c Category) String() string {
-	return []string{"salary", "business", "gifts", "food", "home", "shopping", "transport", "bills", "entertainment", "other"}[c]
+	return []string{"salary", "business", "gifts", "loan", "food", "home", "shopping", "transport", "bills", "leisure", "health", "education", "groceries", "sport", "other"}[c]
 }

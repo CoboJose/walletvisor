@@ -78,7 +78,7 @@ var errorMessages = map[string]string{
 	"US001": "There is no user with that email",
 
 	// Transactions
-	"TR000": "Invalid Transaction, check that, 1:(kind=income OR kind=expense,) 2:(If kind=income then category IN ['salary', 'business', 'gifts', 'other']. If kind=expense then category IN ['food','home', 'shopping', 'transport', 'bills', 'entertainment', 'other']), 3:(amount and date >=0)",
+	"TR000": "Invalid Transaction, check that, 1:(kind=income OR kind=expense,) 2:(If kind=income then category IN ['salary', 'business', 'gifts', 'loan', 'other']. If kind=expense then category IN ['food','home', 'shopping', 'transport', 'bills', 'leisure', 'health', 'education', 'groceries', 'sport', 'other']), 3:(amount and date >=0)",
 	"TR001": "This user has not any transaction",
 	"TR002": "There are no transactions with that id for that user",
 	"TR003": "There are no transactions with that groupTransaction id",
@@ -99,7 +99,7 @@ var errorMessages = map[string]string{
 	// Group Transactions
 	"GT000": "There is no group transaction with that id",
 	"GT001": "There are no group transactions in that group",
-	"GT002": "Invalid GroupTransaction, check that, 1:(kind=income OR kind=expense,) 2:(If kind=income then category IN ['salary', 'business', 'gifts', 'other']. If kind=expense then category IN ['food','home', 'shopping', 'transport', 'bills', 'entertainment', 'other']), 3:(amount and date >=0)",
+	"GT002": "Invalid Transaction, check that, 1:(kind=income OR kind=expense,) 2:(If kind=income then category IN ['salary', 'business', 'gifts', 'loan', 'other']. If kind=expense then category IN ['food','home', 'shopping', 'transport', 'bills', 'leisure', 'health', 'education', 'groceries', 'sport', 'other']), 3:(amount and date >=0)",
 	"GT003": "There should be at least two users in the group to create a groupTransaction",
 	"GT004": "Only active group transactions can be modified",
 
