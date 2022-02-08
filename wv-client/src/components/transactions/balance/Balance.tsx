@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import style from './Balance.module.scss';
 import ButtonAddTransaction from 'components/navigation/modalButtons/ButtonAddTransaction';
 import ButtonDateRange from 'components/navigation/modalButtons/ButtonDateRange';
-import FilterByCategoriesButton from 'components/navigation/modalButtons/ButtonFilterByCategories';
+import ButtonFilterTransactions from 'components/navigation/modalButtons/ButtonFilterTransactions';
 
 //////////////////////
 // HELPER FUNCTIONS //
@@ -85,7 +85,7 @@ const Balance = (): JSX.Element => {
       <div className={style.actionButtons}>
         <ButtonAddTransaction isPhone={isPhone} />
         {isPhone && <ButtonDateRange />}
-        <FilterByCategoriesButton isPhone={isPhone} />
+        <ButtonFilterTransactions isPhone={isPhone} />
       </div>
 
     </Paper>
