@@ -198,17 +198,14 @@ func getGroupInvitationPayload(c echo.Context) (*models.GroupInvitation, *utils.
 	return groupInvitationPayload, nil
 }
 
-///////////////////
-// Request Types //
-///////////////////
+///////////
+// Types //
+///////////
 type createInvitationPayload struct {
 	Email   string `json:"email" binding:"required"`
 	GroupId int    `json:"groupId" binding:"required"`
 }
 
-////////////////////
-// Response Types //
-////////////////////
 type GroupInvitationResponse struct {
 	ID               int    `json:"id"`
 	InvitedUserId    int    `json:"invitedUserId"`

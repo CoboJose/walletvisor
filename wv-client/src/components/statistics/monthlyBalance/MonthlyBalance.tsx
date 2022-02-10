@@ -17,14 +17,13 @@ const MonthlyBalance = (): JSX.Element => {
   logger.rendering();
 
   ///////////
-  // HOOKS //
-  ///////////
-
-  ///////////
   // STATE //
   ///////////
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
+  ////////////////
+  // USE EFFECT //
+  ////////////////
   useEffect(() => {
     const from = dates.getFirstDayOfNMonthAgo(3).getTime();
     const to = dates.getLastDayOfCurrentMonth().getTime();
@@ -87,10 +86,6 @@ const MonthlyBalance = (): JSX.Element => {
       </text>
     );
   };
-
-  //////////////
-  // HANDLERS //
-  //////////////
   
   /////////
   // JSX //

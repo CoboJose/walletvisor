@@ -21,13 +21,9 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
   logger.rendering();
 
   ///////////
-  // HOOKS //
-  ///////////
-  const transactions = useAppSelector((state) => state.transactions.transactions);
-
-  ///////////
   // STATE //
   ///////////
+  const transactions = useAppSelector((state) => state.transactions.transactions);
 
   //////////////////////
   // HELPER FUNCTIONS //
@@ -83,16 +79,14 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
       return (
         <div style={{ color, backgroundColor: 'white', padding: '10px' }}>
           {transactionCategoriesData.find((c) => c.key === p.name)?.name}
+          <br />
+          {mathUtils.formatEurNumber(p.value)}
         </div>
       );
     }
   
     return null;
   };
-
-  //////////////
-  // HANDLERS //
-  //////////////
   
   /////////
   // JSX //

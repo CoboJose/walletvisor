@@ -22,14 +22,6 @@ const Statistics: React.FC = () => {
   const fromDate = useAppSelector((state) => state.transactions.fromDate);
   const toDate = useAppSelector((state) => state.transactions.toDate);
   const dateRange = dates.getDateRangeString(fromDate, toDate);
-  
-  //////////////////////
-  // HELPER FUNCTIONS //
-  //////////////////////
-
-  //////////////
-  // HANDLERS //
-  //////////////
 
   /////////
   // JSX //

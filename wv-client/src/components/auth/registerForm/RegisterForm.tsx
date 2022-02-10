@@ -32,6 +32,7 @@ const RegisterForm = (): JSX.Element => {
 
   const [email, setEmail] = useState<string>('user1@test.com');
   const [password, setPassword] = useState<string>('c0mplexPa$$');
+  const [repeatPassword, setRepeatPassword] = useState<string>('');
 
   //////////////////////
   // HELPER FUNCTIONS //
@@ -44,6 +45,10 @@ const RegisterForm = (): JSX.Element => {
     }
     if (!password || !regex.password.test(password)) {
       errors.password = 'The password must have: lowercase, uppercase, special character, and more than 8 characters';
+    }
+
+    if (!repeatPassword || repeatPassword !== password) {
+      errors.repeatPassword = 'The passwords do not match up';
     }
 
     setFormErrors(errors);
@@ -113,11 +118,25 @@ const RegisterForm = (): JSX.Element => {
           label="Password"
           type="password"
           id="password"
-          autoComplete="current-password"
           value={password} 
           onChange={(e) => setPassword(e.target.value)}
           error={formErrors.password != null}
           helperText={formErrors.password}
+        />
+
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="repeatPassword"
+          label="Repeat Password"
+          type="password"
+          id="repatPassword"
+          value={repeatPassword} 
+          onChange={(e) => setRepeatPassword(e.target.value)}
+          error={formErrors.repeatPassword != null}
+          helperText={formErrors.repeatPassword}
         />
 
         <Button
@@ -126,6 +145,7 @@ const RegisterForm = (): JSX.Element => {
           variant="contained"
           color="primary"
           disabled={email.length === 0 || password.length === 0}
+          className={style.signUpButton}
         >
           Sign Up
         </Button>

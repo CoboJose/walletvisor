@@ -16,6 +16,9 @@ type DateRangeProps = {
 const DateRange = ({ fromDate, setFromDate, toDate, setToDate, variant }: DateRangeProps): JSX.Element => {
   logger.rendering();
     
+  /////////
+  // JSX //
+  /////////
   return (
     <div>
       <DatePicker

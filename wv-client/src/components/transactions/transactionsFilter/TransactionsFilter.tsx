@@ -44,10 +44,6 @@ const TransactionsFilter = ({ open, onClose }: TransactionFormModalProps): JSX.E
     dispatch(setFilterCategory(e.target.value));
   };
 
-  /////////////////////
-  // HELPER FUNCTIONS//
-  /////////////////////
-
   /////////
   // JSX //
   /////////

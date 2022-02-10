@@ -23,13 +23,18 @@ type PhoneSidePanelProps = {
 const PhoneSidePanel = ({ principalRoutesList, phoneSidePanelOpen, handlePhoneSidePanelOpen, handlePhoneSidePanelClose }: PhoneSidePanelProps): JSX.Element => {
   logger.rendering();
   
+  ///////////
+  // HOOKS //
+  ///////////
   const dispatch = useAppDispatch();
   const history = useHistory();
   const location = useLocation();
   const theme = useAppSelector((state) => state.config.theme);
-
   const iOS = new RegExp(/iPad|iPhone|iPod/).test(navigator.userAgent);
 
+  //////////////
+  // HANDLERS //
+  //////////////
   const onRouteClickHandler = (listItem: SidePanelListItems) => {
     history.push(listItem.path);
     handlePhoneSidePanelClose();
@@ -37,6 +42,9 @@ const PhoneSidePanel = ({ principalRoutesList, phoneSidePanelOpen, handlePhoneSi
     dispatch(getGroups());
   };
 
+  /////////
+  // JSX //
+  /////////
   return (
     <SwipeableDrawer
       className={style.phoneSidePanel}

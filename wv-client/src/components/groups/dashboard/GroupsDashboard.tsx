@@ -10,11 +10,16 @@ import math from 'utils/math';
 const GroupsDashboard = (): JSX.Element => {
   logger.rendering();
 
+  ///////////
+  // STATE //
+  ///////////
   const groupDtos: GroupDTO[] = useAppSelector((state) => state.groups.groupDtos);
-
   // eslint-disable-next-line no-return-assign
   const balance = groupDtos.reduce((sum, groupDto) => sum += groupDto.balance, 0);
 
+  /////////
+  // JSX //
+  /////////
   return (
     <Card className={style.groupsDashboard}>
 

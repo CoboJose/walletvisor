@@ -76,7 +76,7 @@ const Balance = (): JSX.Element => {
           {math.formatEurNumber(balance)}
         </div>
 
-        <div className={`${style.totalBalance} ${balance >= 0 ? style.positive : style.negative}`}>
+        <div className={`${style.totalBalance} ${totalBalance >= 0 ? style.positive : style.negative}`}>
           <span className={style.text}>Total: </span> 
           <span className={style.amount}> {math.formatEurNumber(totalBalance)} </span>
         </div>

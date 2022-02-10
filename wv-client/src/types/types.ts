@@ -168,4 +168,5 @@ export enum SvgIcons {
   Filter = 'filter',
   Group = 'group',
   Ok = 'ok',
+  Global = 'global',
 }

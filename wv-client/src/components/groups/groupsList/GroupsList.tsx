@@ -25,14 +25,6 @@ const GroupsList = (): JSX.Element => {
   ///////////
   const groupDtos: GroupDTO[] = useAppSelector((state) => state.groups.groupDtos);
 
-  //////////////
-  // HANDLERS //
-  //////////////
-
-  /////////////////////
-  // HELPER FUNCTIONS//
-  /////////////////////
-
   /////////
   // JSX //
   /////////

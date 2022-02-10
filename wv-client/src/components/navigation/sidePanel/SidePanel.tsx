@@ -45,9 +45,15 @@ type SidePanelProps = {
 const SidePanel = ({ phoneSidePanelOpen, handlePhoneSidePanelOpen, handlePhoneSidePanelClose }: SidePanelProps): JSX.Element => {
   logger.rendering();
 
+  ///////////
+  // HOOKS //
+  ///////////
   const theme = useTheme();
   const isPhone = useMediaQuery(theme.breakpoints.only('xs'));
   
+  /////////
+  // JSX //
+  /////////
   return (
     <div>
       {isPhone ? (

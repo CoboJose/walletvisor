@@ -8,11 +8,17 @@ import style from './LoadingTopBar.module.scss';
 const LoadingTopBar = (): JSX.Element => {
   logger.rendering();
 
+  ///////////
+  // STATE //
+  ///////////
   const isLoadingAuth = useAppSelector((state) => state.auth.isLoading);
   const isLoadingTransactions = useAppSelector((state) => state.transactions.isLoading);
   const isLoadingConfig = useAppSelector((state) => state.config.isLoading);
   const isLoading = isLoadingAuth || isLoadingTransactions || isLoadingConfig;
 
+  /////////
+  // JSX //
+  /////////
   return (
     <>
       { isLoading ? (

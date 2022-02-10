@@ -17,6 +17,9 @@ type UserIconProps = {
 const UserIcon = ({ size }: UserIconProps): JSX.Element => {
   logger.rendering();
 
+  ///////////
+  // HOOKS //
+  ///////////
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -28,6 +31,9 @@ const UserIcon = ({ size }: UserIconProps): JSX.Element => {
     dispatch(getUserInvitations());
   }, []);
 
+  ///////////
+  // STATE //
+  ///////////
   const userInvitations: GroupInvitationResponse[] = useAppSelector((state) => state.groupInvitations.userInvitations);
   const userName = useAppSelector((state) => state.user.user?.name);
   const theme = useAppSelector((state) => state.config.theme);
@@ -35,6 +41,9 @@ const UserIcon = ({ size }: UserIconProps): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isInvitationsOpen, setIsInvitationsOpen] = useState<boolean>(false);
 
+  /////////
+  // JSX //
+  /////////
   return (
     <div className={style.userIcon}>
       

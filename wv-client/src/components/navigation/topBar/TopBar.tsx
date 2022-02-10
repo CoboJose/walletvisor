@@ -21,15 +21,19 @@ type TopBarProps = {
 const TopBar = ({ handlePhoneSidePanelOpen }: TopBarProps): JSX.Element => {
   logger.rendering();
 
+  ///////////
+  // HOOKS //
+  ///////////
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.config.theme);
-
   const location = useLocation();
   const muiTheme = useTheme();
   const isPhone = useMediaQuery(muiTheme.breakpoints.only('xs'));
-
   const selected = location.pathname.replace('/', '');
 
+  /////////
+  // JSX //
+  /////////
   return (
     <AppBar position="fixed" className={style.topBar}>
       <Toolbar className={style.toolbar}>

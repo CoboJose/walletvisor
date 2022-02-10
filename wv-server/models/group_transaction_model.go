@@ -189,6 +189,7 @@ func (gtrn *GroupTransaction) validate() *utils.Cerr {
 	return nil
 }
 
+// IsActive returns false if all the users have paid
 func (gtrn *GroupTransaction) IsActive() bool {
 	isActive := false
 

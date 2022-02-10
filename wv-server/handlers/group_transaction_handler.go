@@ -13,7 +13,7 @@ import (
 // GroupHandler holds all the groups handlers
 type GroupTransactionHandler struct{}
 
-// GetUserTransactions returns all the transactions amde by the user defined in the token
+// Get returns all the transactions made in a group
 func (h GroupTransactionHandler) Get(c echo.Context) error {
 	// Get groupId from query
 	groupId, err := strconv.Atoi(c.QueryParam("groupId"))

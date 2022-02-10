@@ -31,6 +31,9 @@ const ButtonGroup = (): JSX.Element => {
     setIsModalOpen(false);
   };
     
+  /////////
+  // JSX //
+  /////////
   return (
     <div>
       {isPhone ? (
