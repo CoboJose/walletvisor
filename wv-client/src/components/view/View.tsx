@@ -16,6 +16,9 @@ const View = (): JSX.Element => {
   ///////////
   const location = useLocation();
 
+  ///////////
+  // STATE //
+  ///////////
   const [phoneSidePanelOpen, setPhoneSidePanelOpen] = useState<boolean>(false);
 
   //////////////////////
@@ -33,6 +36,9 @@ const View = (): JSX.Element => {
     setPhoneSidePanelOpen(false);
   };
 
+  /////////
+  // JSX //
+  /////////
   return (
     <div className={style.view}>
 

@@ -1,11 +1,11 @@
 import React from 'react';
-
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
+import logger from 'utils/logger';
 
 type ConfirmationProps = {
   open: boolean
@@ -18,6 +18,11 @@ type ConfirmationProps = {
 }
 
 const Confirmation = ({ title, text, buttonCancel, buttonOk, open, onCancel, onOk }: ConfirmationProps): JSX.Element => {
+  logger.rendering();
+  
+  /////////
+  // JSX //
+  /////////
   return (
     <Dialog open={open}>
       
@@ -47,6 +52,9 @@ const Confirmation = ({ title, text, buttonCancel, buttonOk, open, onCancel, onO
   );
 };
 
+///////////////////
+// DEFAULT PROPS //
+///////////////////
 Confirmation.defaultProps = {
   title: null,
   onCancel: null,

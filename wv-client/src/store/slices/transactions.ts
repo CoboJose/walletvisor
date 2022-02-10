@@ -102,6 +102,10 @@ export const changeTransactionsRangeAction = createAsyncThunk<ChangeTransactions
   }
 );
 
+const orderTransactions = (trns: Transaction[]): Transaction[] => {
+  return trns.sort((t1, t2) => t2.date - t1.date || t2.id - t1.id);
+};
+
 export const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
@@ -120,7 +124,7 @@ export const transactionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getTransactions.fulfilled, (state, action) => {
-      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
+      state.transactions = orderTransactions(action.payload.transactions);
       state.totalBalance = action.payload.totalBalance;
       state.isLoading = false;
     });
@@ -132,7 +136,7 @@ export const transactionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(createTransaction.fulfilled, (state, action) => {
-      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
+      state.transactions = orderTransactions(action.payload.transactions);
       state.totalBalance = action.payload.totalBalance;
       state.isLoading = false;
     });
@@ -144,7 +148,7 @@ export const transactionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(updateTransaction.fulfilled, (state, action) => {
-      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
+      state.transactions = orderTransactions(action.payload.transactions);
       state.totalBalance = action.payload.totalBalance;
       state.isLoading = false;
     });
@@ -156,7 +160,7 @@ export const transactionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(deleteTransaction.fulfilled, (state, action) => {
-      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
+      state.transactions = orderTransactions(action.payload.transactions);
       state.totalBalance = action.payload.totalBalance;
       state.isLoading = false;
     });
@@ -168,7 +172,7 @@ export const transactionsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(changeTransactionsRangeAction.fulfilled, (state, action) => {
-      state.transactions = action.payload.transactions.sort((t1, t2) => t2.date - t1.date);
+      state.transactions = orderTransactions(action.payload.transactions);
       state.fromDate = action.payload.fromDate;
       state.toDate = action.payload.toDate;
       state.isLoading = false;

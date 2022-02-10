@@ -42,10 +42,6 @@ const GroupTransactionForm = ({ groupTransaction, setGroupTransaction, formError
     setGroupTransaction({ ...groupTransaction, name, category, amount: roundedAmount, date: timestamp });
   }, [name, category, amount, date]);
 
-  //////////////
-  // HANDLERS //
-  //////////////
-
   /////////
   // JSX //
   /////////

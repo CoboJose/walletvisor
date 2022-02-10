@@ -38,6 +38,7 @@ import { ReactComponent as Logout } from 'assets/icons/logout.svg';
 import { ReactComponent as Filter } from 'assets/icons/filter.svg';
 import { ReactComponent as Group } from 'assets/icons/group.svg';
 import { ReactComponent as Ok } from 'assets/icons/ok.svg';
+import { ReactComponent as Global } from 'assets/icons/global.svg';
 
 type SVGProps = {
   name: SvgIcons,
@@ -155,6 +156,9 @@ const SVG = ({ name, className, style }: SVGProps): JSX.Element => {
 
       case SvgIcons.Ok:
         return <Ok className={className} style={style} />; 
+
+      case SvgIcons.Global:
+        return <Global className={className} style={style} />; 
       
       default:
         return <Logo className={className} style={style} />;

@@ -2,8 +2,6 @@
 
 .registerForm {
     @include flex-column-center;
-    padding: $basePadding;
-
 }
 
 .titleContainer {
@@ -21,4 +19,8 @@
     background-color: $primary;
     border-radius: 50%;
     padding: 10px;
+}
+
+.signUpButton {
+    margin-top: 15px !important;
 }

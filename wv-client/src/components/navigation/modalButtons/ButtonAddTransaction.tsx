@@ -13,13 +13,22 @@ type ButtonAddTransactionProps = {
 const ButtonAddTransaction = ({ isPhone }: ButtonAddTransactionProps): JSX.Element => {
   logger.rendering();
 
+  ///////////
+  // STATE //
+  ///////////
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState<string>('');
 
+  //////////////
+  // HANDLERS //
+  //////////////
   const onCloseModal = () => {
     setIsModalOpen(false);
   };
     
+  /////////
+  // JSX //
+  /////////
   return (
     <div>
       {isPhone ? (

@@ -1,4 +1,3 @@
-/* eslint-disable object-property-newline */
 import { axiosInstance as axios, axiosNoInterceptorInstance as axsNoInterceptor } from 'api/axiosInstance';
 import { AuthResponse, ApiError, Transaction, GetTransactionsResponse, User, UpdateUserPayload, Group, GroupInvitationResponse, GroupInvitation, CreateGroupInvitationRequest, GroupTransaction, GroupTransactionDTO, GroupDTO } from 'types/types';
 
@@ -310,8 +309,29 @@ const deleteGroupTransaction = async (groupTransactionId: number): Promise<strin
 };
 
 export default { 
-  ping, login, register, refreshToken, getTransactions, addTransaction, updateTransaction, deleteTransaction, 
-  getUser, updateUser, getGroupDtos, createGroup, updateGroup, deleteGroup, getGroupInvitations, removeGroup: removeUserFromGroup, 
-  getUserInvitations, joinGroup, createGroupInvitation, deleteGroupInvitation, getGroupTransactions, createGroupTransaction,
-  updateGroupTransaction, deleteGroupTransaction, payGroupTransaction
+  ping,
+  login,
+  register,
+  refreshToken,
+  getTransactions,
+  addTransaction,
+  updateTransaction,
+  deleteTransaction, 
+  getUser,
+  updateUser,
+  getGroupDtos,
+  createGroup,
+  updateGroup,
+  deleteGroup,
+  getGroupInvitations,
+  removeGroup: removeUserFromGroup, 
+  getUserInvitations,
+  joinGroup,
+  createGroupInvitation,
+  deleteGroupInvitation,
+  getGroupTransactions,
+  createGroupTransaction,
+  updateGroupTransaction,
+  deleteGroupTransaction,
+  payGroupTransaction
 };

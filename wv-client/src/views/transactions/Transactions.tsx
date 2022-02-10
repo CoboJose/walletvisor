@@ -10,10 +10,10 @@ import style from './Transactions.module.scss';
 const Transactions: React.FC = () => {
   logger.rendering();
 
+  ///////////
+  // HOOKS //
+  ///////////
   const dispatch = useAppDispatch();
-  ///////////
-  // STATE //
-  ///////////
 
   ////////////////
   // USE EFFECT //
@@ -21,19 +21,10 @@ const Transactions: React.FC = () => {
   useEffect(() => {
     dispatch(getTransactions());
   }, []);
-  
-  //////////////////////
-  // HELPER FUNCTIONS //
-  //////////////////////
-
-  //////////////
-  // HANDLERS //
-  //////////////
 
   /////////
   // JSX //
   /////////
-
   return (
     <div className={style.transactions}>
       <Balance />

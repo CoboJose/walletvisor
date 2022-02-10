@@ -12,12 +12,21 @@ type ButtonFilterTransactionsProps = {
 const ButtonFilterTransactions = ({ isPhone }: ButtonFilterTransactionsProps): JSX.Element => {
   logger.rendering();
 
+  ///////////
+  // STATE //
+  ///////////
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  //////////////
+  // HANDLERS //
+  //////////////
   const onCloseModal = () => {
     setIsModalOpen(false);
   };
     
+  /////////
+  // JSX //
+  /////////
   return (
     <div>
       {isPhone ? (

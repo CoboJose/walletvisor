@@ -18,16 +18,25 @@ type DesktopSidePanelProps = {
 const DesktopSidePanel = ({ principalRoutesList }: DesktopSidePanelProps): JSX.Element => {
   logger.rendering();
   
+  ///////////
+  // HOOKS //
+  ///////////
   const history = useHistory();
   const location = useLocation();
   const dispatch = useAppDispatch();
 
+  //////////////
+  // HANDLERS //
+  //////////////
   const onRouteClickHandler = (listItem: SidePanelListItems) => {
     history.push(listItem.path);
     dispatch(setSelectedGroup(null));
     dispatch(getGroups());
   };
 
+  /////////
+  // JSX //
+  /////////
   return (
     <Drawer
       variant="permanent"

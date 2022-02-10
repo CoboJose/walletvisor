@@ -37,10 +37,6 @@ const UserInvitations = ({ onClose }: UserInvitationsProps): JSX.Element => {
   ///////////
   const userInvitations: GroupInvitationResponse[] = useAppSelector((state) => state.groupInvitations.userInvitations);
 
-  //////////////////////
-  // HELPER FUNCTIONS //
-  //////////////////////
-
   //////////////
   // HANDLERS //
   //////////////

@@ -106,6 +106,9 @@ const GroupFormModal = ({ setSnackbarText, onClose }: GroupFormModalProps): JSX.
     removeGroup();
   };
 
+  /////////
+  // JSX //
+  /////////
   return (
     <Dialog open fullScreen={isPhone} onClose={onClose}>
       <DialogTitle>

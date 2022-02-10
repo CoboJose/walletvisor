@@ -39,7 +39,7 @@ func (h AuthHandler) Signup(c echo.Context) error {
 	return c.JSON(201, response)
 }
 
-//Login creates the user and return a token to access
+//Login log in the user and return a token to access
 func (h AuthHandler) Login(c echo.Context) error {
 	// Get Data
 	payload, cerr := getAuthPayload(c)

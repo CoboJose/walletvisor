@@ -1,0 +1,51 @@
+@import "themes/theme.module";
+
+.about {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.appInfo {
+    .appName {
+        color: $primary;
+        font-size: large;
+        font-weight: bold;
+    }
+}
+
+.technologiesUsed {
+    .title {
+        color: $primary;
+    }
+
+    .listTitle {
+        font-weight: bold;
+    }
+
+    .react {
+        color: #61DAFB;
+        font-weight: bold;
+    }
+    .go {
+        color: #08A6D0;
+        font-weight: bold;
+    }
+    .postgres {
+        color: #336790;
+        font-weight: bold;
+    }
+    .githubActions {
+        color: #2081F2;
+        font-weight: bold;
+    }
+    .netlify {
+        color: #4B9EBE;
+        font-weight: bold;
+    }
+    .heroku {
+        color: #6a38c1;
+        font-weight: bold;
+    }
+}

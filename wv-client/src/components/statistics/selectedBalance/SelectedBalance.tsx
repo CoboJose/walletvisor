@@ -15,13 +15,9 @@ const SelectedBalance = (): JSX.Element => {
   logger.rendering();
 
   ///////////
-  // HOOKS //
-  ///////////
-  const transactions = useAppSelector((state) => state.transactions.transactions);
-
-  ///////////
   // STATE //
   ///////////
+  const transactions = useAppSelector((state) => state.transactions.transactions);
 
   //////////////////////
   // HELPER FUNCTIONS //

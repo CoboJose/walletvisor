@@ -11,15 +11,15 @@ import style from './Groups.module.scss';
 const Groups: React.FC = () => {
   logger.rendering();
 
+  ///////////
+  // HOOKS //
+  ///////////
   const dispatch = useAppDispatch();
+
   ///////////
   // STATE //
   ///////////
   const selectedGroup = useAppSelector((state) => state.groups.selectedGroupDto);
-  
-  //////////////////////
-  // HELPER FUNCTIONS //
-  //////////////////////
 
   ////////////////
   // USE EFFECT //
@@ -27,10 +27,6 @@ const Groups: React.FC = () => {
   useEffect(() => {
     dispatch(getGroups());
   }, []);
-
-  //////////////
-  // HANDLERS //
-  //////////////
 
   /////////
   // JSX //

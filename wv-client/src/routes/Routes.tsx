@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable no-confusing-arrow */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { FC } from 'react';
 import { Switch, Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom';
 import { useAppSelector } from 'store/hooks';
@@ -11,6 +10,7 @@ import NotFound from 'views/notFound/NotFound';
 import Transactions from 'views/transactions/Transactions';
 import Statistics from 'views/statistics/Statistics';
 import Groups from 'views/groups/Groups';
+import About from 'views/about/About';
 
 const Routes: React.FC = () => {
   logger.rendering();
@@ -22,6 +22,7 @@ const Routes: React.FC = () => {
       <PrivateRoute path="/statistics" component={Statistics} />
       <PrivateRoute path="/groups" component={Groups} />
       <PrivateRoute path="/configuration" component={Configuration} />
+      <PrivateRoute path="/about" component={About} />
       <PrivateRoute path="*" component={NotFound} />
     </Switch>
   );

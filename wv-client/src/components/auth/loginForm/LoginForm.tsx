@@ -38,7 +38,7 @@ const LoginForm = (): JSX.Element => {
 
   //////////////////////
   // HELPER FUNCTIONS //
-  //////////////////////s
+  //////////////////////
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 

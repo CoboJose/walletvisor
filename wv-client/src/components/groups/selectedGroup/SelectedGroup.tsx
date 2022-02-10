@@ -67,6 +67,9 @@ const SelectedGroup = (): JSX.Element => {
 
   const [balance, oweToYou, youOwe] = getAmounts();
 
+  /////////
+  // JSX //
+  /////////
   return (
     <div className={style.selectedGroup}>
 

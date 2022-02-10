@@ -10,8 +10,14 @@ import SVG from 'components/ui/svg/SVG';
 const ButtonDateRange = (): JSX.Element => {
   logger.rendering();
 
+  ///////////
+  // STATE //
+  ///////////
   const [datesDialogOpen, setDatesDialogOpen] = useState<boolean>(false);
     
+  /////////
+  // JSX //
+  /////////
   return (
     <div>
       <Button

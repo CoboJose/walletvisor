@@ -15,13 +15,22 @@ const ButtonAddGroupTransaction = (): JSX.Element => {
   const theme = useTheme();
   const isPhone = useMediaQuery(theme.breakpoints.only('xs'));
 
+  ///////////
+  // STATE //
+  ///////////
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState<string>('');
 
+  //////////////
+  // HANDLERS //
+  //////////////
   const onCloseModal = () => {
     setIsModalOpen(false);
   };
     
+  /////////
+  // JSX //
+  /////////
   return (
     <div>
       {isPhone ? (
