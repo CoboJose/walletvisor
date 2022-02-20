@@ -23,8 +23,14 @@ var (
 	user2      *models.User
 	user2Token string
 
+	user3      *models.User
+	user3Token string
+
 	userUpdate      *models.User
 	userUpdateToken string
+
+	group1           *models.Group
+	groupInvitation1 *models.GroupInvitation
 
 	password = "c0mplexPa$$"
 )
@@ -36,7 +42,7 @@ func TestMain(m *testing.M) {
 	host = "http://localhost:" + os.Getenv("PORT") + "/v1/"
 
 	//Setup DB
-	// users
+	// Users
 	user1 = models.NewUser("user1@test.com", password, "user1", "user")
 	user1.Save()
 	user1Token, _, _ = utils.GenerateTokens(user1.ID, user1.Email, user1.Role)
@@ -45,11 +51,15 @@ func TestMain(m *testing.M) {
 	user2.Save()
 	user2Token, _, _ = utils.GenerateTokens(user2.ID, user2.Email, user2.Role)
 
+	user3 = models.NewUser("user3@test.com", password, "user3", "user")
+	user3.Save()
+	user3Token, _, _ = utils.GenerateTokens(user3.ID, user3.Email, user3.Role)
+
 	userUpdate = models.NewUser("userUpdate@test.com", password, "userUpdate", "user")
 	userUpdate.Save()
 	userUpdateToken, _, _ = utils.GenerateTokens(userUpdate.ID, userUpdate.Email, userUpdate.Role)
 
-	// transactions
+	// Transactions
 	trn1 := models.NewTransaction("trn1", "expense", "food", 50.5, 1600000000, user1.ID)
 	trn1.Save()
 
@@ -58,6 +68,14 @@ func TestMain(m *testing.M) {
 
 	trn3 := models.NewTransaction("trn3", "income", "salary", 100, 1800000000, user2.ID)
 	trn3.Save()
+
+	// Groups
+	group1 = models.NewGroup("Group1", "#000000")
+	group1.Save()
+	userGroup11 := models.NewUserGroup(user1.ID, group1.ID)
+	userGroup11.Save()
+	groupInvitation1 = models.NewGroupInvitation(user2.ID, user1.ID, group1.ID)
+	groupInvitation1.Save()
 
 	//Run Tests
 	code := m.Run()

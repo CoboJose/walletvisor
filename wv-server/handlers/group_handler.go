@@ -213,7 +213,7 @@ func (h GroupHandler) RemoveUser(c echo.Context) error {
 		}
 	}
 
-	return c.JSON(201, "Group deleted succesfully")
+	return c.JSON(201, "User removed succesfully")
 }
 
 /////////////
