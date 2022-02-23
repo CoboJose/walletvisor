@@ -6,7 +6,7 @@ describe('Others Test', () => {
     cy.contains('GitHub').should('have.css', 'color', 'rgb(85, 109, 214)')
     
     _changeTheme()
-    cy.contains('GitHub').should('have.css', 'color', 'rgb(153, 104, 240)')
+    cy.contains('GitHub').should('have.css', 'color', 'rgb(175, 128, 255)')
   })
 })
 

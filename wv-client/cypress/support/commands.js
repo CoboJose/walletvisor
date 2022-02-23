@@ -37,3 +37,11 @@ Cypress.Commands.add('clearTransactionDatesSelector', () => {
 Cypress.Commands.add('navigateToConfiguration', () => {
     cy.get('[class*="DesktopSidePanel_principalRoutesList"]').contains('Configuration').click()
 })
+
+Cypress.Commands.add('navigateToStatistics', () => {
+    cy.get('[class*="DesktopSidePanel_principalRoutesList"]').contains('Statistics').click()
+})
+
+Cypress.Commands.add('navigateToGroups', () => {
+    cy.get('[class*="DesktopSidePanel_principalRoutesList"]').contains('Groups').click()
+})
