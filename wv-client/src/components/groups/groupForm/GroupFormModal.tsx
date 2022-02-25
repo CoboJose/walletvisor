@@ -111,60 +111,61 @@ const GroupFormModal = ({ setSnackbarText, onClose }: GroupFormModalProps): JSX.
   /////////
   return (
     <Dialog open fullScreen={isPhone} onClose={onClose}>
-      <DialogTitle>
-        {isEdit ? 'Edit' : 'Create'} Group
-      </DialogTitle>
+      <div className={style.groupFormModal}>
+        <DialogTitle>
+          {isEdit ? 'Edit' : 'Create'} Group
+        </DialogTitle>
 
-      <DialogContent dividers>
+        <DialogContent dividers>
 
-        <GroupForm group={group} setGroup={setGroup} formErrors={formErrors} serverError={serverError} />
+          <GroupForm group={group} setGroup={setGroup} formErrors={formErrors} serverError={serverError} />
         
-        {groupDtoToUpdate != null && (
+          {groupDtoToUpdate != null && (
           <div className={style.members}>
             <GroupMembers />
           </div>
-        )}
+          )}
 
-      </DialogContent>
+        </DialogContent>
 
-      <DialogActions>
-        <Button 
-          onClick={onClose}
-          className={style.cancelButton}
-          startIcon={<SVG name={SvgIcons.Close} className={style.buttonIcon} />}
-        >
-          Cancel
-        </Button>
+        <DialogActions>
+          <Button 
+            onClick={onClose}
+            className={style.cancelButton}
+            startIcon={<SVG name={SvgIcons.Close} className={style.buttonIcon} />}
+          >
+            Cancel
+          </Button>
 
-        {isEdit && (
-        <Button 
-          onClick={() => setDeleteConfirmationOpened(true)} 
-          className={style.deleteButton}
-          startIcon={<SVG name={SvgIcons.Delete} className={style.buttonIcon} />}
-        >
-          Delete
-        </Button>
-        )}
+          {isEdit && (
+          <Button 
+            onClick={() => setDeleteConfirmationOpened(true)} 
+            className={style.deleteButton}
+            startIcon={<SVG name={SvgIcons.Delete} className={style.buttonIcon} />}
+          >
+            Delete
+          </Button>
+          )}
           
-        <Button 
-          onClick={submitHandler} 
-          className={style.okButton}
-          disabled={buttonDisabled()}
-          startIcon={<SVG name={isEdit ? SvgIcons.Edit : SvgIcons.Add} className={style.buttonIcon} />}
-        >
-          {isEdit ? 'Update' : 'Create'}
-        </Button>
-      </DialogActions>
+          <Button 
+            onClick={submitHandler} 
+            className={style.okButton}
+            disabled={buttonDisabled()}
+            startIcon={<SVG name={isEdit ? SvgIcons.Edit : SvgIcons.Add} className={style.buttonIcon} />}
+          >
+            {isEdit ? 'Update' : 'Create'}
+          </Button>
+        </DialogActions>
 
-      <Confirmation
-        text="Are you sure you want to delete the group? The active created transactions will be deleted from the transactions of the users."
-        buttonCancel="Cancel" 
-        buttonOk="Delete" 
-        open={deleteConfirmationOpened} 
-        onCancel={() => setDeleteConfirmationOpened(false)} 
-        onOk={confirmDeleteHandler}
-      />
-        
+        <Confirmation
+          text="Are you sure you want to delete the group? The active created transactions will be deleted from the transactions of the users."
+          buttonCancel="Cancel" 
+          buttonOk="Delete" 
+          open={deleteConfirmationOpened} 
+          onCancel={() => setDeleteConfirmationOpened(false)} 
+          onOk={confirmDeleteHandler}
+        />
+      </div>
     </Dialog>
   );
 };

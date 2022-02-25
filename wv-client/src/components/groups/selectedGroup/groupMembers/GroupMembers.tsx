@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemText, Snackbar, TextField, useMediaQuery, useTheme } from '@mui/material';
 import logger from 'utils/logger';
 import style from './GroupMembers.module.scss';
@@ -35,6 +35,13 @@ const GroupMembers = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState<string>('');
   const [userToDelete, setUserToDelete] = useState<User|null>(null);
+
+  ////////////////
+  // USE EFFECT //
+  ////////////////
+  useEffect(() => {
+    dispatch(getGroupInvitations(groupDto.group.id));
+  }, []);
 
   //////////////////////
   // HELPER FUNCTIONS //

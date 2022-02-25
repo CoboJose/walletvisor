@@ -102,7 +102,7 @@ function _stubDefaultApiResponses(){
         fixture: 'groups.json'
     })
     // ADD GROUP
-    cy.intercept('POST', Cypress.env("API_URL") + '/transactions', {
+    cy.intercept('POST', Cypress.env("API_URL") + '/groups', {
         statusCode: 200,
         fixture: 'groups.json'
     })
@@ -129,7 +129,7 @@ function _stubDefaultApiResponses(){
         fixture: 'groupInvitations.json'
     })
     // GET GROUP GROUP INVITATIONS
-    cy.intercept('GET', Cypress.env("API_URL") + '/groupinvitations/group', {
+    cy.intercept('GET', Cypress.env("API_URL") + '/groupinvitations/group?groupId=*', {
         statusCode: 200,
         fixture: 'groupInvitations.json'
     })
@@ -144,7 +144,7 @@ function _stubDefaultApiResponses(){
         fixture: 'groupInvitations.json'
     })
     // DELETE GROUP INVITATION
-    cy.intercept('DELETE', Cypress.env("API_URL") + '/groupinvitations/delete', {
+    cy.intercept('DELETE', Cypress.env("API_URL") + '/groupinvitations/delete?groupInvitationId=*', {
         statusCode: 200,
         body: 'Group Invitation deleted succesfully'
     })
@@ -153,7 +153,7 @@ function _stubDefaultApiResponses(){
     // GET GROUP TRANSACTIONS
     cy.intercept('GET', Cypress.env("API_URL") + '/grouptransactions?groupId=*', {
         statusCode: 200,
-        body: []
+        fixture: 'groupTransactions.json'
     })
     // ADD GROUP TRANSACTION
     cy.intercept('POST', Cypress.env("API_URL") + '/grouptransactions', {

@@ -45,3 +45,8 @@ Cypress.Commands.add('navigateToStatistics', () => {
 Cypress.Commands.add('navigateToGroups', () => {
     cy.get('[class*="DesktopSidePanel_principalRoutesList"]').contains('Groups').click()
 })
+
+Cypress.Commands.add('navigateToUserInvitations', () => {
+    cy.get('[class*="UserIcon_userIcon"]').click()
+    cy.get('[class*="MuiMenu-list"]').contains('Invitations').click()
+})

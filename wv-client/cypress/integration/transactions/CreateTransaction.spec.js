@@ -95,7 +95,6 @@ function _fillInputsValid() {
 }
 
 function _getTransactionsBody() {
-  console.log('now!')
   return {
       transactions:[ 
         {
