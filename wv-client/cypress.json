@@ -2,7 +2,7 @@
     "baseUrl": "http://localhost:3000",
     "video": false,
     "retries": {
-        "runMode": 4,
+        "runMode": 10,
         "openMode": 0
     },
     "env": {

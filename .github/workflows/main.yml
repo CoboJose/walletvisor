@@ -93,7 +93,6 @@ jobs:
             start: npm start
             wait-on: 'http://localhost:3000'
             wait-on-timeout: 120
-            browser: chrome
           timeout-minutes: 15
 
         - name: Development Build
