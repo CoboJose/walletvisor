@@ -1,5 +1,9 @@
 @import "themes/theme.module";
 
+.groupFormModal {
+    display: block;
+}
+
 .cancelButton{
     color: $secondary !important;
 }

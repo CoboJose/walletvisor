@@ -31,8 +31,8 @@ func (h GroupHandler) GetUserGroups(c echo.Context) error {
 		if cerr != nil {
 			return c.JSON(400, cerr.Response())
 		}
-		for _, u := range users {
-			u.Password = ""
+		for i := range users {
+			users[i].Password = ""
 		}
 
 		// Get the balance of the group for the logged user
@@ -213,7 +213,7 @@ func (h GroupHandler) RemoveUser(c echo.Context) error {
 		}
 	}
 
-	return c.JSON(201, "Group deleted succesfully")
+	return c.JSON(201, "User removed succesfully")
 }
 
 /////////////

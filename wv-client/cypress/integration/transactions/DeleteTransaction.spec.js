@@ -19,7 +19,6 @@ describe('Delete Transaction Test', () => {
   it('Should delete transaction', () => {
     // DELETE TRANSACTION REQUEST
     cy.intercept('DELETE', Cypress.env("API_URL") + '/transactions?transactionId=*', (req) => {
-      console.log(req)
       expect(parseInt(getUrlParam(req.url, "transactionId"))).to.eq(TRN_ID)
       req.reply({statusCode: 200, body: "Transaction deleted succesfully"})
     });

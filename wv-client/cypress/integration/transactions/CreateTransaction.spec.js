@@ -24,13 +24,13 @@ describe('Create Transaction Test', () => {
       // _getInput(2) -> expenseInput
       // _getInput(3) -> categoryInput
 
+      _getInput(3).should('have.value', 'shopping')
+
+      _getInput(1).click()
       _getInput(3).should('have.value', 'salary')
 
       _getInput(2).click()
       _getInput(3).should('have.value', 'food')
-
-      _getInput(1).click()
-      _getInput(3).should('have.value', 'salary')
     })
   })
 
@@ -95,7 +95,6 @@ function _fillInputsValid() {
 }
 
 function _getTransactionsBody() {
-  console.log('now!')
   return {
       transactions:[ 
         {

@@ -37,6 +37,16 @@ describe('RegisterForm Test', () => {
     _assertTextExists('The password must have: lowercase, uppercase, special character, and more than 8 characters')
   })
 
+  it('Should give error with invalid repeated password', () => {
+    _fillInputsValid()
+
+    let passwordRepeatInput = _getInput(2)
+    passwordRepeatInput.clear().type('badpass')
+    _clickSubmitButton()
+
+    _assertTextExists('The passwords do not match up')
+  })
+
   it('Should give server error when email is in use', () => {
     cy.intercept('POST', Cypress.env("API_URL") + '/auth/signup', {
       statusCode: 400,
@@ -64,6 +74,7 @@ function _getInput(inputNumber) {
 function _fillInputsValid() {
   _getInput(0).clear().type('user1@email.com') // Email
   _getInput(1).clear().type('C0mplexpass!') // Password
+  _getInput(2).clear().type('C0mplexpass!') // Repeat Password
 }
 
 function _clickSubmitButton() {

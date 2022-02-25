@@ -85,12 +85,15 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-node-
         
-        #- name: Test Cypress
-        #  uses: cypress-io/github-action@v2
-        #  with:
-        #    working-directory: ./wv-client
-        #    build: npm run build
-        #    start: npm start
+        - name: Test Cypress
+          uses: cypress-io/github-action@v2
+          with:
+            working-directory: ./wv-client
+            build: npm run build
+            start: npm start
+            wait-on: 'http://localhost:3000'
+            wait-on-timeout: 120
+          timeout-minutes: 15
 
         - name: Development Build
           if: github.ref == 'refs/heads/develop'

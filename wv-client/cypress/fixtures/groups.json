@@ -1,0 +1,20 @@
+[
+    {
+        "group": {"id":1,"name":"Group 1","color":"#ad1a1a"},
+        "users":
+            [
+                {"id":1,"email":"user1@test.com","password":"","name":"user1","role":"user"},
+                {"id":2,"email":"user2@test.com","password":"","name":"user2","role":"user"}
+            ],
+        "balance":10
+    },
+    {
+        "group": {"id":2,"name":"Group 2","color":"#ad1a1a"},
+        "users":
+            [
+                {"id":1,"email":"user1@test.com","password":"","name":"user1","role":"user"},
+                {"id":2,"email":"user2@test.com","password":"","name":"user2","role":"user"}
+            ],
+        "balance":-5
+    }
+]
