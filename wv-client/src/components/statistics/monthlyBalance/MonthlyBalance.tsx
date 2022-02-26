@@ -12,6 +12,13 @@ import math from 'utils/math';
 //////////////////////
 // HELPER FUNCTIONS //
 //////////////////////
+const CustomLabel = ({ x, y, value }: any) => {
+  return (
+    <text x={x} y={y} dy={-4} fill="currentColor" fontSize={16} textAnchor="middle">
+      {value}
+    </text>
+  );
+};
 
 const MonthlyBalance = (): JSX.Element => {
   logger.rendering();
@@ -78,33 +85,23 @@ const MonthlyBalance = (): JSX.Element => {
 
     return res;
   };
-
-  const CustomLabel = ({ x, y, value }: any) => {
-    return (
-      <text x={x} y={y} dy={-4} fill="currentColor" fontSize={16} textAnchor="middle">
-        {value}
-      </text>
-    );
-  };
   
   /////////
   // JSX //
   /////////
   return (
-    <>
-      <ResponsiveContainer height="100%" width="100%" className={style.monthlyBalance}>
-        <ComposedChart data={getData()}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="Month" scale="band" />
-          <YAxis label={{ value: '€', angle: 0, position: 'insideLeft', fill: style.primary }} />
-          <Tooltip contentStyle={{ color: style.primary }} />
-          <Legend />
-          <Bar dataKey="Incomes" unit="€" fill={style.success} barSize={20} />
-          <Bar dataKey="Expenses" unit="€" fill={style.error} barSize={20} />
-          <Line type="monotone" dataKey="Balance" stroke={style.primary} unit="€" {...{ label: <CustomLabel /> }} />
-        </ComposedChart>
-      </ResponsiveContainer>
-    </>
+    <ResponsiveContainer height="100%" width="100%" className={style.monthlyBalance}>
+      <ComposedChart data={getData()}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="Month" scale="band" />
+        <YAxis label={{ value: '€', angle: 0, position: 'insideLeft', fill: style.primary }} />
+        <Tooltip contentStyle={{ color: style.primary }} />
+        <Legend />
+        <Bar dataKey="Incomes" unit="€" fill={style.success} barSize={20} />
+        <Bar dataKey="Expenses" unit="€" fill={style.error} barSize={20} />
+        <Line type="monotone" dataKey="Balance" stroke={style.primary} unit="€" {...{ label: <CustomLabel /> }} />
+      </ComposedChart>
+    </ResponsiveContainer>
   );
 };
 

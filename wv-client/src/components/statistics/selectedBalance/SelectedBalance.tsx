@@ -10,6 +10,25 @@ import mathUtils from 'utils/math';
 //////////////////////
 // HELPER FUNCTIONS //
 //////////////////////
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    const income = mathUtils.round(payload[0].value, 2);
+    const expense = mathUtils.round(payload[1].value, 2);
+    const balance = mathUtils.round(income - expense, 2);
+
+    return (
+      <div className={style.customTooltipWrapper}>
+        <div className={style.customTooltipContent}>
+          <p className={style.balance}>Balance: {mathUtils.formatEurNumber(balance)}</p>
+          <p className={style.income}>Income: {mathUtils.formatEurNumber(income)}</p>
+          <p className={style.expense}>Expense: {mathUtils.formatEurNumber(expense)}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+};
 
 const SelectedBalance = (): JSX.Element => {
   logger.rendering();
@@ -36,29 +55,6 @@ const SelectedBalance = (): JSX.Element => {
       }
     }
     return res;
-  };
-
-  //////////////
-  // HANDLERS //
-  //////////////
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const income = mathUtils.round(payload[0].value, 2);
-      const expense = mathUtils.round(payload[1].value, 2);
-      const balance = mathUtils.round(income - expense, 2);
-
-      return (
-        <div className={style.customTooltipWrapper}>
-          <div className={style.customTooltipContent}>
-            <p className={style.balance}>Balance: {mathUtils.formatEurNumber(balance)}</p>
-            <p className={style.income}>Income: {mathUtils.formatEurNumber(income)}</p>
-            <p className={style.expense}>Expense: {mathUtils.formatEurNumber(expense)}</p>
-          </div>
-        </div>
-      );
-    }
-  
-    return null;
   };
 
   /////////

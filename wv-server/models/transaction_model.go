@@ -9,6 +9,7 @@ import (
 	"gopkg.in/guregu/null.v3"
 )
 
+// Kind defines the kind of a transaction (Income or Expense)
 type Kind int
 
 const (
@@ -16,6 +17,7 @@ const (
 	Expense
 )
 
+// Category defines the category of a transaction
 type Category int
 
 const (
@@ -36,6 +38,7 @@ const (
 	Other
 )
 
+// Transaction represents a transaction made by an user
 type Transaction struct {
 	ID                 int      `json:"id"`
 	Name               string   `json:"name"`

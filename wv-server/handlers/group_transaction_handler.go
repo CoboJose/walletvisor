@@ -10,19 +10,19 @@ import (
 	"gopkg.in/guregu/null.v3"
 )
 
-// GroupHandler holds all the groups handlers
+// GroupTransactionHandler holds all the group transactions handlers
 type GroupTransactionHandler struct{}
 
 // Get returns all the transactions made in a group
 func (h GroupTransactionHandler) Get(c echo.Context) error {
-	// Get groupId from query
-	groupId, err := strconv.Atoi(c.QueryParam("groupId"))
+	// Get groupID from query
+	groupID, err := strconv.Atoi(c.QueryParam("groupId"))
 	if err != nil {
 		return c.JSON(400, utils.NewCerr("GE001", errors.New("could not parse the query params")).Response())
 	}
 
 	// Get the group transactions from the database
-	groupTrns, cerr := models.GetGroupTransactionsByGroupId(groupId)
+	groupTrns, cerr := models.GetGroupTransactionsByGroupId(groupID)
 	if cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
@@ -73,7 +73,7 @@ func (h GroupTransactionHandler) Create(c echo.Context) error {
 	}
 	// Get the userId from the token
 	claims := c.Get("claims").(utils.JwtClaims)
-	creatingUserId := claims.UserID
+	creatingUserID := claims.UserID
 
 	groupTrn := groupTrnDTO.GroupTransaction
 	usersDTO := groupTrnDTO.UserDTOs
@@ -90,7 +90,7 @@ func (h GroupTransactionHandler) Create(c echo.Context) error {
 
 	// Create the groupTransactionUsers join tables
 	for _, userDTO := range usersDTO {
-		isCreator := userDTO.User.ID == creatingUserId
+		isCreator := userDTO.User.ID == creatingUserID
 		groupTransactionUsers := models.NewGroupTransactionUsers(userDTO.User.ID, groupTrn.ID, isCreator, isCreator)
 		if cerr = groupTransactionUsers.Save(false); cerr != nil {
 			return c.JSON(400, cerr.Response())
@@ -99,7 +99,7 @@ func (h GroupTransactionHandler) Create(c echo.Context) error {
 
 	// Create the Transaction
 	amount := utils.Round(groupTrn.Amount/float64(len(usersDTO)), 2)
-	trn := models.NewTransaction(groupTrn.Name, groupTrn.Kind, groupTrn.Category, amount, groupTrn.Date, creatingUserId)
+	trn := models.NewTransaction(groupTrn.Name, groupTrn.Kind, groupTrn.Category, amount, groupTrn.Date, creatingUserID)
 	trn.GroupTransactionID = null.IntFrom(int64(groupTrn.ID))
 	if cerr = trn.Save(); cerr != nil {
 		return c.JSON(400, cerr.Response())
@@ -160,7 +160,7 @@ func (h GroupTransactionHandler) Pay(c echo.Context) error {
 	}
 	// Get the userId from the token
 	claims := c.Get("claims").(utils.JwtClaims)
-	payingUserId := claims.UserID
+	payingUserID := claims.UserID
 
 	// Only active groupTransactions can be payed
 	if !groupTrn.IsActive() {
@@ -168,7 +168,7 @@ func (h GroupTransactionHandler) Pay(c echo.Context) error {
 	}
 
 	// Update the groupTransactionUsers for the user
-	groupTransactionUser, cerr := models.GetGroupTransactionUsersByUserIdAndGroupTransactionId(payingUserId, groupTrn.ID)
+	groupTransactionUser, cerr := models.GetGroupTransactionUsersByUserIdAndGroupTransactionId(payingUserID, groupTrn.ID)
 	if cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
@@ -183,7 +183,7 @@ func (h GroupTransactionHandler) Pay(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 	amount := utils.Round(groupTrn.Amount/float64(users), 2)
-	trn := models.NewTransaction(groupTrn.Name, groupTrn.Kind, groupTrn.Category, amount, groupTrn.Date, payingUserId)
+	trn := models.NewTransaction(groupTrn.Name, groupTrn.Kind, groupTrn.Category, amount, groupTrn.Date, payingUserID)
 	trn.GroupTransactionID = null.IntFrom(int64(groupTrn.ID))
 	if cerr = trn.Save(); cerr != nil {
 		return c.JSON(400, cerr.Response())

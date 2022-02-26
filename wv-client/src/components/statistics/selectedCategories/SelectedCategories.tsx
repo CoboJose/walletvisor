@@ -12,6 +12,39 @@ import mathUtils from 'utils/math';
 //////////////////////
 // HELPER FUNCTIONS //
 //////////////////////
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    const p = payload[0];
+    const color: string = p.payload.fill;
+    return (
+      <div style={{ color, backgroundColor: 'white', padding: '10px' }}>
+        {transactionCategoriesData.find((c) => c.key === p.name)?.name}
+        <br />
+        {mathUtils.formatEurNumber(p.value)}
+      </div>
+    );
+  }
+
+  return null;
+};
+
+const renderCustomLabel = (pieData: any) => {
+  return (
+    <g>
+      <text x={pieData.x} y={pieData.y} fill={pieData.fill} textAnchor={pieData.x > pieData.cx ? 'start' : 'end'} dominantBaseline="central" fontSize="1em">
+        {mathUtils.formatEurNumber(pieData.Amount)}
+      </text>
+      <text x={pieData.x} y={pieData.y + 15} fill={pieData.fill} textAnchor={pieData.x > pieData.cx ? 'start' : 'end'} dominantBaseline="central" fontSize="0.6em">
+        {`${(pieData.percent * 100).toFixed(0)}%`}
+      </text>
+    </g>
+  );
+};
+
+const renderCustomLegend = (value: string) => {
+  const category = transactionCategoriesData.find((c) => c.key === value);
+  return <span><SVG name={category ? category.svg : SvgIcons.QuestionMark} className={style.svg} /> {category?.name}</span>;
+};
 
 type SelectedCategoriesProps = {
   transactionKind: TransactionKind,
@@ -53,40 +86,6 @@ const SelectedCategories = ({ transactionKind }: SelectedCategoriesProps): JSX.E
     return res;
   };
   const data = getData();
-
-  const renderCustomLabel = (pieData: any) => {
-    return (
-      <g>
-        <text x={pieData.x} y={pieData.y} fill={pieData.fill} textAnchor={pieData.x > pieData.cx ? 'start' : 'end'} dominantBaseline="central" fontSize="1em">
-          {mathUtils.formatEurNumber(pieData.Amount)}
-        </text>
-        <text x={pieData.x} y={pieData.y + 15} fill={pieData.fill} textAnchor={pieData.x > pieData.cx ? 'start' : 'end'} dominantBaseline="central" fontSize="0.6em">
-          {`${(pieData.percent * 100).toFixed(0)}%`}
-        </text>
-      </g>
-    );
-  };
-
-  const renderCustomLegend = (value: string) => {
-    const category = transactionCategoriesData.find((c) => c.key === value);
-    return <span><SVG name={category ? category.svg : SvgIcons.QuestionMark} className={style.svg} /> {category?.name}</span>;
-  };
-
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const p = payload[0];
-      const color: string = p.payload.fill;
-      return (
-        <div style={{ color, backgroundColor: 'white', padding: '10px' }}>
-          {transactionCategoriesData.find((c) => c.key === p.name)?.name}
-          <br />
-          {mathUtils.formatEurNumber(p.value)}
-        </div>
-      );
-    }
-  
-    return null;
-  };
   
   /////////
   // JSX //
