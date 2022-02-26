@@ -29,8 +29,9 @@ Made with **GitHub Actions**, you can check it [here](https://github.com/CoboJos
 **Summary:**
 1. Install the dependencies
 2. Build the application
-3. Test it
-4. If tests passed, deploy it accordingly (Master or Develop)
+3. Send te code and code coverage to Codacy to analice it
+4. Test it
+5. If tests passed, deploy it accordingly (Master or Develop)
 
 ## About the author
 
