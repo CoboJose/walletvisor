@@ -24,6 +24,7 @@
 }
 
 .users {
+    
     .header {
         font-size: large;
         color: $primary;
@@ -43,6 +44,7 @@
 
             .listItemContainer {
                 width: 100%;
+
                 .listName {
                     color: $primary;
                     padding-left: 15px;

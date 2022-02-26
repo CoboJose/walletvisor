@@ -2,7 +2,7 @@
 
 $intermediateWidth: 820px;
 :export {
-    intermediateWidth: $intermediateWidth
+    intermediateWidth: $intermediateWidth;
 }
 
 .balance {
@@ -15,7 +15,7 @@ $intermediateWidth: 820px;
     // Phone
     @media (max-width: $intermediateWidth) {
         grid-template-columns: 1.1fr 0.9fr;
-        grid-template-rows:  1fr 0.1fr;
+        grid-template-rows: 1fr 0.1fr;
         gap: 3px 3px;
         grid-template-areas:
             "dateRange          balances"
@@ -45,7 +45,7 @@ $intermediateWidth: 820px;
         grid-area: income;
         color: $success;
     }
-    
+
     .expense {
         grid-area: expense;
         color: $error;
@@ -91,7 +91,7 @@ $intermediateWidth: 820px;
         &.positive {
             .amount {
                 color: $success;
-            }  
+            }
         }
         &.negative {
             .amount {
