@@ -32,8 +32,8 @@ const LoginForm = (): JSX.Element => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string>('');
 
-  const [email, setEmail] = useState<string>('user1@test.com');
-  const [password, setPassword] = useState<string>('c0mplexPa$$');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [rememberPassword, setRememberPassword] = useState<boolean>(false);
 
   //////////////////////
