@@ -24,7 +24,7 @@ func (h GroupHandler) GetUserGroups(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	response := []GroupDTO{}
+	response := []groupDTO{}
 	for _, group := range groups {
 		// Get the group users from the database
 		users, cerr := models.GetUsersByGroupId(group.ID)
@@ -60,7 +60,7 @@ func (h GroupHandler) GetUserGroups(c echo.Context) error {
 						isCreator = true
 					}
 					if !groupTrnUser.IsPayed {
-						payingRemaining += 1
+						payingRemaining++
 					}
 				}
 
@@ -76,7 +76,7 @@ func (h GroupHandler) GetUserGroups(c echo.Context) error {
 			}
 		}
 
-		response = append(response, GroupDTO{Group: group, Users: users, Balance: utils.Round(balance, 2)})
+		response = append(response, groupDTO{Group: group, Users: users, Balance: utils.Round(balance, 2)})
 	}
 
 	return c.JSON(200, response)
@@ -95,12 +95,12 @@ func (h GroupHandler) Create(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	// Get the userId from the token and the groupId
-	userId := c.Get("claims").(utils.JwtClaims).UserID
-	groupId := group.ID
+	// Get the userID from the token and the groupId
+	userID := c.Get("claims").(utils.JwtClaims).UserID
+	groupID := group.ID
 
 	// Create userGroup (intermediate Table)
-	userGroup := models.NewUserGroup(userId, groupId)
+	userGroup := models.NewUserGroup(userID, groupID)
 	if cerr = userGroup.Save(); cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
@@ -316,7 +316,8 @@ func deleteGroup(groupID int) *utils.Cerr {
 ///////////
 // Types //
 ///////////
-type GroupDTO struct {
+
+type groupDTO struct {
 	Group   models.Group  `json:"group"`
 	Users   []models.User `json:"users"`
 	Balance float64       `json:"balance"`

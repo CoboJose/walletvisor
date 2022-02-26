@@ -30,7 +30,7 @@ func Init(e *echo.Echo) {
 	}))
 
 	e.File("favicon.ico", "static/favicon.ico")
-	e.File("/", "static/apiDoc.html") // API Documentation
+	e.Static("/", "static/swaggerui")
 
 	api = e.Group("/v1")
 

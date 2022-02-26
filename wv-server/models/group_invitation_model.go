@@ -43,7 +43,7 @@ func GetGroupInvitationByID(id int) (*GroupInvitation, *utils.Cerr) {
 	return groupInvitations, nil
 }
 
-// GetGroupInvitationByUserId returns the group invitation sended to an user
+// GetGroupInvitationsByUserId returns the group invitation sended to an user
 func GetGroupInvitationsByUserId(userId int) ([]GroupInvitation, *utils.Cerr) {
 	groupInvitations := []GroupInvitation{}
 	query := `SELECT * FROM group_invitations WHERE invited_user_id=$1`

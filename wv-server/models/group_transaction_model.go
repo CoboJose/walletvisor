@@ -7,6 +7,7 @@ import (
 	"wv-server/utils"
 )
 
+// GroupTransaction represents a transaction made for a group
 type GroupTransaction struct {
 	ID       int     `json:"id"`
 	Name     string  `json:"name"`
@@ -33,7 +34,7 @@ var groupTransactionsIndexes = `CREATE INDEX IF NOT EXISTS group_trn_date_index 
 // NEW //
 /////////
 
-// NewTransaction creates a transaction struct, but does not store it in the database
+// NewGroupTransaction creates a groupTransaction struct, but does not store it in the database
 func NewGroupTransaction(name string, kind string, category string, amount float64, date int, groupId int) *GroupTransaction {
 	return &GroupTransaction{ID: -1, Name: name, Kind: kind, Category: category, Amount: utils.Round(amount, 2), Date: date, GroupId: groupId}
 }
@@ -150,9 +151,9 @@ func (groupTransaction *GroupTransaction) Save() *utils.Cerr {
 ////////////
 
 // Delete deletes the groupTransaction from the database
-func (trn *GroupTransaction) Delete() *utils.Cerr {
+func (groupTransaction *GroupTransaction) Delete() *utils.Cerr {
 	query := `DELETE FROM group_transactions WHERE id=:id`
-	res, err := db.NamedExec(query, &trn)
+	res, err := db.NamedExec(query, &groupTransaction)
 
 	if err != nil {
 		utils.ErrorLog.Println(err.Error())
@@ -164,25 +165,25 @@ func (trn *GroupTransaction) Delete() *utils.Cerr {
 	return nil
 }
 
-func (gtrn *GroupTransaction) validate() *utils.Cerr {
+func (groupTransaction *GroupTransaction) validate() *utils.Cerr {
 	// Not null
-	if gtrn.Name == "" || gtrn.Kind == "" || gtrn.Category == "" {
+	if groupTransaction.Name == "" || groupTransaction.Kind == "" || groupTransaction.Category == "" {
 		return utils.NewCerr("GE003", nil)
 	}
 	// Kind and Category
-	if gtrn.Kind == Income.String() {
-		if !utils.Contains(Income.getCategoriesStringArray(), gtrn.Category) {
+	if groupTransaction.Kind == Income.String() {
+		if !utils.Contains(Income.getCategoriesStringArray(), groupTransaction.Category) {
 			return utils.NewCerr("GT002", nil)
 		}
-	} else if gtrn.Kind == Expense.String() {
-		if !utils.Contains(Expense.getCategoriesStringArray(), gtrn.Category) {
+	} else if groupTransaction.Kind == Expense.String() {
+		if !utils.Contains(Expense.getCategoriesStringArray(), groupTransaction.Category) {
 			return utils.NewCerr("GT002", nil)
 		}
 	} else {
 		return utils.NewCerr("GT002", nil)
 	}
 	// Amount and Date
-	if gtrn.Amount < 0 || gtrn.Date < 0 {
+	if groupTransaction.Amount < 0 || groupTransaction.Date < 0 {
 		return utils.NewCerr("GT002", nil)
 	}
 
@@ -190,15 +191,15 @@ func (gtrn *GroupTransaction) validate() *utils.Cerr {
 }
 
 // IsActive returns false if all the users have paid
-func (gtrn *GroupTransaction) IsActive() bool {
+func (groupTransaction *GroupTransaction) IsActive() bool {
 	isActive := false
 
-	groupTransactionUsersNumber, cerr := GetNumberOfGroupTransactionUsersByGroupTransactionId(gtrn.ID)
+	groupTransactionUsersNumber, cerr := GetNumberOfGroupTransactionUsersByGroupTransactionId(groupTransaction.ID)
 	if cerr != nil {
 		utils.ErrorLog.Println(cerr.Err)
 		return isActive
 	}
-	payedGroupTransactionUsersNumber, cerr := GetNumberOfPayedGroupTransactionUsersByGroupTransactionId(gtrn.ID)
+	payedGroupTransactionUsersNumber, cerr := GetNumberOfPayedGroupTransactionUsersByGroupTransactionId(groupTransaction.ID)
 	if cerr != nil {
 		utils.ErrorLog.Println(cerr.Err)
 		return isActive

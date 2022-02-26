@@ -32,27 +32,23 @@ const ButtonAddTransaction = ({ isPhone }: ButtonAddTransactionProps): JSX.Eleme
   return (
     <div>
       {isPhone ? (
-        <>
-          <Button
-            variant="outlined"
-            onClick={() => setIsModalOpen(true)}
-            size="small"
-            startIcon={<SVG name={SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
-          >
-            Add
-          </Button>
-        </>
+        <Button
+          variant="outlined"
+          onClick={() => setIsModalOpen(true)}
+          size="small"
+          startIcon={<SVG name={SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
+        >
+          Add
+        </Button>
       ) : (
-        <>
-          <Button
-            variant="text"
-            onClick={() => setIsModalOpen(true)}
-            size="medium"
-            startIcon={<SVG name={SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
-          >
-            Add Transaction
-          </Button>
-        </>
+        <Button
+          variant="text"
+          onClick={() => setIsModalOpen(true)}
+          size="medium"
+          startIcon={<SVG name={SvgIcons.Add} style={{ fill: 'currentColor', width: '15px', height: '15px', stroke: 'currentColor', strokeWidth: '15px' }} />}
+        >
+          Add Transaction
+        </Button>
       )}
 
       {isModalOpen && <TransactionFormModal transactionToUpdate={null} open={isModalOpen} onClose={onCloseModal} setSnackbarText={setSnackbarText} />}

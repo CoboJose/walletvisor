@@ -22,6 +22,7 @@ func Contains(list interface{}, elem interface{}) bool {
 	return false
 }
 
+// Round rounds a decimal number
 func Round(number float64, precision int) float64 {
 	return math.Round(number*(math.Pow10(precision))) / math.Pow10(precision)
 }

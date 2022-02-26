@@ -8,10 +8,6 @@ import { ApiError, UpdateUserPayload } from 'types/types';
 import apiErrors from 'api/apiErrors';
 import regex from 'utils/regex';
 
-//////////////////////
-// HELPER FUNCTIONS //
-//////////////////////
-
 const UserConfiguration = (): JSX.Element => {
   logger.rendering();
 

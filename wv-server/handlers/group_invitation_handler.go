@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-// GroupHandler holds all the groups handlers
+// GroupInvitationHandler holds all the Group Invitations handlers
 type GroupInvitationHandler struct{}
 
 // GetGroupInvitations returns all the groupInvitations for the group provided
@@ -25,7 +25,7 @@ func (h GroupInvitationHandler) GetGroupInvitations(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	response := []GroupInvitationResponse{}
+	response := []groupInvitationResponse{}
 	for _, gi := range groupInvitations {
 		// Get the Groups Names
 		group, cerr := models.GetGroupByID(gi.GroupId)
@@ -43,7 +43,7 @@ func (h GroupInvitationHandler) GetGroupInvitations(c echo.Context) error {
 			return c.JSON(400, utils.NewCerr("GE000", nil))
 		}
 
-		response = append(response, GroupInvitationResponse{
+		response = append(response, groupInvitationResponse{
 			ID:               gi.ID,
 			InvitedUserId:    gi.InvitedUserId,
 			InvitedUserEmail: invitedUser.Email,
@@ -70,7 +70,7 @@ func (h GroupInvitationHandler) GetUserInvitations(c echo.Context) error {
 		return c.JSON(400, cerr.Response())
 	}
 
-	response := []GroupInvitationResponse{}
+	response := []groupInvitationResponse{}
 	for _, gi := range groupInvitations {
 		// Get the Groups Names
 		group, cerr := models.GetGroupByID(gi.GroupId)
@@ -88,7 +88,7 @@ func (h GroupInvitationHandler) GetUserInvitations(c echo.Context) error {
 			return c.JSON(400, utils.NewCerr("GE000", nil))
 		}
 
-		response = append(response, GroupInvitationResponse{
+		response = append(response, groupInvitationResponse{
 			ID:               gi.ID,
 			InvitedUserId:    gi.InvitedUserId,
 			InvitedUserEmail: invitedUser.Email,
@@ -126,7 +126,7 @@ func (h GroupInvitationHandler) JoinGroup(c echo.Context) error {
 	return c.JSON(200, "Joined successfully")
 }
 
-// CreatetGroupInvitation creates a groupInvitation
+// CreateGroupInvitation creates a groupInvitation
 func (h GroupInvitationHandler) CreateGroupInvitation(c echo.Context) error {
 	// Get the createGroupRequest from the body
 	groupInvitationPayload, cerr := getCreateInvitationPayload(c)
@@ -140,11 +140,11 @@ func (h GroupInvitationHandler) CreateGroupInvitation(c echo.Context) error {
 		return c.JSON(400, utils.NewCerr("US001", errors.New("no user found with that email")).Response())
 	}
 
-	// Get the userId from the token and the groupId
-	userId := c.Get("claims").(utils.JwtClaims).UserID
+	// Get the userID from the token and the groupId
+	userID := c.Get("claims").(utils.JwtClaims).UserID
 
 	// Create the Group Invitation
-	groupInvitation := models.NewGroupInvitation(invitedUser.ID, userId, groupInvitationPayload.GroupId)
+	groupInvitation := models.NewGroupInvitation(invitedUser.ID, userID, groupInvitationPayload.GroupId)
 	if cerr = groupInvitation.Save(); cerr != nil {
 		return c.JSON(400, cerr.Response())
 	}
@@ -206,7 +206,7 @@ type createInvitationPayload struct {
 	GroupId int    `json:"groupId" binding:"required"`
 }
 
-type GroupInvitationResponse struct {
+type groupInvitationResponse struct {
 	ID               int    `json:"id"`
 	InvitedUserId    int    `json:"invitedUserId"`
 	InvitedUserEmail string `json:"invitedUserEmail"`

@@ -9,7 +9,7 @@
 
 $maxWidth: 1000px;
 :export {
-    maxWidth: $maxWidth
+    maxWidth: $maxWidth;
 }
 
 .label {
@@ -55,7 +55,7 @@ $maxWidth: 1000px;
     @media (min-width: $maxWidth) {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-rows:  1fr 1fr;
+        grid-template-rows: 1fr 1fr;
         gap: 15px 10px;
         grid-template-areas:
             "dateRange selectedBalance monthlyBalance monthlyBalance"

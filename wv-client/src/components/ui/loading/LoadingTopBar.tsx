@@ -20,13 +20,13 @@ const LoadingTopBar = (): JSX.Element => {
   // JSX //
   /////////
   return (
-    <>
+    <div>
       { isLoading ? (
         <div className={style.loadingTopBar}> 
           <LinearProgress color="primary" />
         </div>
       ) : null }
-    </>
+    </div>
   );
 };
 
